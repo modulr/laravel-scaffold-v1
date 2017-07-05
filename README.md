@@ -3,21 +3,23 @@
 ## Table of Contents
 
 - [Install](#install)
+- [Config](#config)
+- [Contribute](#contribute)
 
 
 ### Install
 
-1. Clone repository
+Clone repository
 ```
 $ git clone https://github.com/modulr/modulr-laravel.git
 ```
 
-2. Enter to folder
+Enter to folder
 ```
 $ cd modulr-laravel
 ```
 
-3. Install composer dependencies
+Install dependencies
 ```
 // Composer
 ~/modulr-laravel$ composer install
@@ -26,12 +28,15 @@ $ cd modulr-laravel
 ~/modulr-laravel$ npm install
 ```
 
-4. Generate APP_KEY
+
+### Config
+
+Generate APP_KEY
 ```
 ~/modulr-laravel$ php artisan key:generate
 ```
 
-5. Configure .env file
+Configure .env file
 ```
 // Add database params
 DB_CONNECTION=mysql
@@ -42,19 +47,22 @@ DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 
-6. Run migrations
+Run migrations
 ```
 ~/modulr-laravel$ php artisan migrate
 ```
 
-7. Run seeders * *optional* *
+Run seeders * *optional* *
 > NOTE: Seeds create 10 users fake with gravatar
 
 ```
 ~/modulr-laravel$ php artisan db:seed
 ```
 
-8. Run serve * *optional* *
+
+### Contribute
+
+Run serve * *optional* *
 ```
 > NOTE: Developer mode
 ~/modulr-laravel$ npm run dev
