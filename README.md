@@ -3,11 +3,13 @@
 ## Table of Contents
 
 - [Install](#install)
-- [Config](#config)
+- [Configure](#configure)
 - [Contribute](#contribute)
+- [Community](#community)
+- [Credits](#credits)
+- [License](#license)
 
-
-### Install
+## Install
 
 Clone repository
 ```
@@ -29,7 +31,7 @@ Install dependencies
 ```
 
 
-### Config
+## Configure
 
 Generate APP_KEY
 ```
@@ -60,10 +62,24 @@ Run seeders * *optional* *
 ```
 
 
-### Contribute
+## Contribute
 
 Run serve * *optional* *
-```
 > NOTE: Developer mode
+
+```
 ~/modulr-laravel$ npm run dev
 ```
+
+
+## Community
+
+- Join [the official Slack room](https://modulr.slack.com/).
+- Implementation help may be found at Stack Overflow (tagged [`modulr`](http://stackoverflow.com/questions/tagged/modulr)).
+
+## Credits
+
+- [@Alfredobarronc](https://twitter.com/alfredobarronc)
+
+## License
+The [MIT©](https://github.com/modulr/modulr/blob/master/LICENSE) License 2017 - Modulr.
