@@ -17,7 +17,6 @@
 <script>
     export default {
         mounted() {
-            console.log(process.env.MIX_SENTRY_DSN_PUBLIC);
             console.log('Component mounted.')
         }
     }
