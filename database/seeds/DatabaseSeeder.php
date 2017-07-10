@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             ->create()
             ->each(function ($u) {
                 $u->news()->saveMany(factory(App\News::class, 3)->make());
+                $u->tasks()->saveMany(factory(App\Task::class, 3)->make());
             });
     }
 }

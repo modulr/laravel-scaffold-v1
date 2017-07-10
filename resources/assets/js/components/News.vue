@@ -1,95 +1,93 @@
 <template>
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="form-group" :class="{'has-error': error.title}">
-                        <textarea rows="2" class="form-control" placeholder="What are you thinking?"
-                            v-model="newsItem.title" autofocus></textarea>
-                        <small class="help-block" v-if="error.title">{{error.title[0]}}</small>
-                    </div>
-                    <div class="form-group" :class="{'has-error': error.images}">
-                        <dropzone id="myVueDropzone" ref="myVueDropzone" v-show="newsItem.type == 2"
-                            url="/news/upload/temp" :use-font-awesome=true
-                            :use-custom-dropzone-options=true :dropzoneOptions="dzOptions"
-                            v-on:vdropzone-success="uploadSuccess">
-                        </dropzone>
-                        <small class="help-block" v-if="error.images">{{error.images[0]}}</small>
-                    </div>
-                    <div class="form-group" :class="{'has-error': error.video}">
-                        <input type="url" class="form-control" placeholder="Insert Youtube video url"
-                            v-model="newsItem.video" v-show="newsItem.type == 3">
-                        <small class="help-block" v-if="error.video">{{error.video[0]}}</small>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <a href="#" class="btn btn-default btn-sm btn-type" @click.prevent="toogleType(1)">
-                                <span class="glyphicon glyphicon-font" aria-hidden="true"></span>
-                            </a>
-                            <a href="#" class="btn btn-default btn-sm btn-type" @click.prevent="toogleType(2)">
-                                <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                            </a>
-                            <a href="#" class="btn btn-default btn-sm btn-type" @click.prevent="toogleType(3)">
-                                <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
-                            </a>
-                        </div>
-                        <div class="col-xs-6 text-right">
-                            <button type="button" class="btn btn-default" @click="store">Publish</button>
-                        </div>
-                    </div>
+    <div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group" :class="{'has-error': error.title}">
+                    <textarea rows="2" class="form-control" placeholder="What are you thinking?"
+                        v-model="newsItem.title" autofocus></textarea>
+                    <small class="help-block" v-if="error.title">{{error.title[0]}}</small>
                 </div>
-            </div>
-
-            <div class="panel panel-default" v-for="(item, index) in news">
-                <div class="panel-heading">
-                    <img :src="item.user.avatar" alt="">
-                    <small>{{item.user.name}}</small>
-
-                    <div class="dropdown pull-right" v-if="user.id == item.user.id">
-                        <a href="#" class="btn btn-link" data-toggle="dropdown">
-                            <i class="fa fa-ellipsis-v fa-lg" aria-hidden="true"></i>
+                <div class="form-group" :class="{'has-error': error.images}">
+                    <dropzone id="myVueDropzone" ref="myVueDropzone" v-show="newsItem.type == 2"
+                        url="/news/upload/temp" :use-font-awesome=true
+                        :use-custom-dropzone-options=true :dropzoneOptions="dzOptions"
+                        v-on:vdropzone-success="uploadSuccess">
+                    </dropzone>
+                    <small class="help-block" v-if="error.images">{{error.images[0]}}</small>
+                </div>
+                <div class="form-group" :class="{'has-error': error.video}">
+                    <input type="url" class="form-control" placeholder="Insert Youtube video url"
+                        v-model="newsItem.video" v-show="newsItem.type == 3">
+                    <small class="help-block" v-if="error.video">{{error.video[0]}}</small>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <a href="#" class="btn btn-default btn-sm btn-type" @click.prevent="toogleType(1)">
+                            <span class="glyphicon glyphicon-font" aria-hidden="true"></span>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" @click.prevent="destroy(item.id, index)"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete</a></li>
-                        </ul>
+                        <a href="#" class="btn btn-default btn-sm btn-type" @click.prevent="toogleType(2)">
+                            <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                        </a>
+                        <a href="#" class="btn btn-default btn-sm btn-type" @click.prevent="toogleType(3)">
+                            <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <button type="button" class="btn btn-default" @click="store">Publish</button>
                     </div>
                 </div>
-                <div class="panel-body">
-                    <p :class="{'lead': item.title.length <= 50}" v-if="item.title">{{item.title}}</p>
-                    <swiper :options="swiperOption" v-if="item.type == 2">
-                        <swiper-slide v-for="image in item.images" :key="image.id">
-                            <img class="img-responsive" :src="image.url">
-                        </swiper-slide>
-                        <div class="swiper-pagination" slot="pagination"></div>
-                    </swiper>
-                    <div class="embed-responsive embed-responsive-4by3" v-if="item.type == 3">
-                        <iframe class="embed-responsive-item" :src="item.video"></iframe>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <a href="#" @click.prevent="like(item)">
-                        <i class="fa fa-lg" :class="[item.like ? 'fa-heart text-danger' : 'fa-heart-o']" aria-hidden="true"></i>
-                    </a>
-                    <a href="#">
-                        <i class="fa fa-comment-o fa-lg" aria-hidden="true"></i>
-                    </a>
-                    <span v-show="item.likes_counter > 0">{{item.likes_counter}} Likes</span>
-                    <small class="pull-right">{{item.created_at | ago}}</small>
-                </div>
             </div>
-
-            <div class="panel panel-default" v-if="news.length == 0">
-                <div class="panel-body text-center">
-                    <i class="fa fa-bullhorn fa-5x text-muted" aria-hidden="true"></i>
-                    <p class="lead text-muted">Publish the first news!!</p>
-                </div>
-            </div>
-
-            <infinite-loading :on-infinite="loadMore" ref="infiniteLoading">
-                <span slot="no-results"></span>
-                <span slot="no-more"></span>
-            </infinite-loading>
         </div>
+
+        <div class="panel panel-default" v-for="(item, index) in news">
+            <div class="panel-heading">
+                <img :src="item.user.avatar" alt="">
+                <small>{{item.user.name}}</small>
+
+                <div class="dropdown pull-right" v-if="user.id == item.user.id">
+                    <a href="#" class="btn btn-link" data-toggle="dropdown">
+                        <i class="fa fa-ellipsis-v fa-lg" aria-hidden="true"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" @click.prevent="destroy(item.id, index)"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body">
+                <p :class="{'lead': item.title.length <= 50}" v-if="item.title">{{item.title}}</p>
+                <swiper :options="swiperOption" v-if="item.type == 2">
+                    <swiper-slide v-for="image in item.images" :key="image.id">
+                        <img class="img-responsive" :src="image.url">
+                    </swiper-slide>
+                    <div class="swiper-pagination" slot="pagination"></div>
+                </swiper>
+                <div class="embed-responsive embed-responsive-4by3" v-if="item.type == 3">
+                    <iframe class="embed-responsive-item" :src="item.video"></iframe>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <a href="#" @click.prevent="like(item)">
+                    <i class="fa fa-lg" :class="[item.like ? 'fa-heart text-danger' : 'fa-heart-o']" aria-hidden="true"></i>
+                </a>
+                <a href="#">
+                    <i class="fa fa-comment-o fa-lg" aria-hidden="true"></i>
+                </a>
+                <span v-show="item.likes_counter > 0">{{item.likes_counter}} Likes</span>
+                <small class="pull-right">{{item.created_at | ago}}</small>
+            </div>
+        </div>
+
+        <div class="panel panel-default" v-if="news.length == 0">
+            <div class="panel-body text-center">
+                <i class="fa fa-bullhorn fa-5x text-muted" aria-hidden="true"></i>
+                <p class="lead text-muted">Publish the first news!!</p>
+            </div>
+        </div>
+
+        <infinite-loading :on-infinite="loadMore" ref="infiniteLoading">
+            <span slot="no-results"></span>
+            <span slot="no-more"></span>
+        </infinite-loading>
     </div>
 </template>
 

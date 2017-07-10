@@ -24,9 +24,13 @@ Auth::routes();
 Route::middleware('auth')->group(function () {
     //Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/dashboard', 'DashboardController@index');
+    // News
     Route::get('/news', 'NewsController@index');
     Route::post('/news/store', 'NewsController@store');
     Route::delete('/news/destroy/{id}', 'NewsController@destroy');
     Route::post('/news/like/{id}', 'NewsController@like');
     Route::post('/news/upload/temp', 'NewsController@uploadTemp');
+
+    Route::get('/task/{id}', 'TaskController@byUser');
+
 });
