@@ -38,15 +38,26 @@ Generate APP_KEY
 ~/modulr-laravel$ php artisan key:generate
 ```
 
+Create Data Base
+```
+~/modulr-laravel$ mysql -u{user} -p{password}
+~/modulr-laravel$ create database modulr_laravel
+```
+
+Create .env file
+```
+~/modulr-laravel$ cp .env.example .env
+```
+
 Configure .env file
 ```
 // Add database params
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=homestead
-DB_USERNAME=homestead
-DB_PASSWORD=secret
+DB_DATABASE=modulr_laravel
+DB_USERNAME=user
+DB_PASSWORD=password
 ```
 
 Run migrations
@@ -55,12 +66,16 @@ Run migrations
 ```
 
 Run seeders * *optional* *
-> NOTE: Seeds create 10 users fake with gravatar
+> NOTE: Seeds create 10 users and 3 news for user
 
 ```
 ~/modulr-laravel$ php artisan db:seed
 ```
 
+Run serve
+```
+~/modulr-laravel$ php artisan serve
+```
 
 ## Contribute
 
@@ -79,7 +94,7 @@ Run serve * *optional* *
 
 ## Credits
 
-- [@Alfredobarronc](https://twitter.com/alfredobarronc)
+- [@Alfredobarron](https://github.com/alfredobarron)
 
 ## License
 The [MIT©](https://github.com/modulr/modulr/blob/master/LICENSE) License 2017 - Modulr.

@@ -17,7 +17,11 @@ window.Vue = require('vue');
 
 Vue.component('tasks', require('./components/Tasks.vue'));
 Vue.component('example', require('./components/Example.vue'));
+Vue.component('news', require('./components/News.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+        user: Laravel.user
+    },
 });

@@ -66,6 +66,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'avatar' => 'https://www.gravatar.com/avatar/' . md5( strtolower( trim( $data['email'] ) ) ) . '?d=retro',
         ]);
     }
 }

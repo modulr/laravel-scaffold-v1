@@ -896,9 +896,13 @@ window.Vue = __webpack_require__(36);
 
 Vue.component('tasks', __webpack_require__(37));
 Vue.component('example', __webpack_require__(47));
+Vue.component('news', __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/News.vue\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())));
 
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  data: {
+    user: Laravel.user
+  }
 });
 
 /***/ }),
@@ -43980,33 +43984,9 @@ module.exports = Component.exports
 
 /***/ }),
 /* 48 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log(Object({"NODE_ENV":"development"}).MIX_SENTRY_DSN_PUBLIC);
-        console.log('Component mounted.');
-    }
-});
+throw new Error("Module build failed: SyntaxError: /var/www/modulr-laravel/package.json: Error while parsing JSON - Unexpected token < in JSON at position 1189\n    at JSON.parse (<anonymous>)\n    at ConfigChainBuilder.addConfig (/var/www/modulr-laravel/node_modules/babel-core/lib/transformation/file/options/build-config-chain.js:150:65)\n    at ConfigChainBuilder.findConfigs (/var/www/modulr-laravel/node_modules/babel-core/lib/transformation/file/options/build-config-chain.js:102:30)\n    at buildConfigChain (/var/www/modulr-laravel/node_modules/babel-core/lib/transformation/file/options/build-config-chain.js:61:13)\n    at OptionManager.init (/var/www/modulr-laravel/node_modules/babel-core/lib/transformation/file/options/option-manager.js:354:58)\n    at File.initOptions (/var/www/modulr-laravel/node_modules/babel-core/lib/transformation/file/index.js:212:65)\n    at new File (/var/www/modulr-laravel/node_modules/babel-core/lib/transformation/file/index.js:135:24)\n    at Pipeline.transform (/var/www/modulr-laravel/node_modules/babel-core/lib/transformation/pipeline.js:46:16)\n    at transpile (/var/www/modulr-laravel/node_modules/babel-loader/lib/index.js:49:20)\n    at /var/www/modulr-laravel/node_modules/babel-loader/lib/fs-cache.js:118:18\n    at ReadFileContext.callback (/var/www/modulr-laravel/node_modules/babel-loader/lib/fs-cache.js:31:21)\n    at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:406:13)");
 
 /***/ }),
 /* 49 */
@@ -44041,7 +44021,7 @@ if (false) {
 /* 50 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: \n@import \"node_modules/sweetalert/dev/sweetalert\";\n^\n      File to import not found or unreadable: node_modules/sweetalert/dev/sweetalert.\nParent style sheet: stdin\n      in /var/www/modulr-laravel/resources/assets/sass/app.scss (line 15, column 1)\n    at runLoaders (/var/www/modulr-laravel/node_modules/webpack/lib/NormalModule.js:193:19)\n    at /var/www/modulr-laravel/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/modulr-laravel/node_modules/loader-runner/lib/LoaderRunner.js:230:18\n    at context.callback (/var/www/modulr-laravel/node_modules/loader-runner/lib/LoaderRunner.js:111:13)\n    at Object.asyncSassJobQueue.push [as callback] (/var/www/modulr-laravel/node_modules/sass-loader/lib/loader.js:55:13)\n    at Object.<anonymous> (/var/www/modulr-laravel/node_modules/sass-loader/node_modules/async/dist/async.js:2244:31)\n    at Object.callback (/var/www/modulr-laravel/node_modules/sass-loader/node_modules/async/dist/async.js:906:16)\n    at options.error (/var/www/modulr-laravel/node_modules/node-sass/lib/index.js:294:32)");
 
 /***/ })
 /******/ ]);
