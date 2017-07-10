@@ -1,23 +1,35 @@
-.navbar-brand {
-  svg {
-    height: 20px;
-    margin-bottom: -3.5px;
-    margin-right: 10px;
-
-    path{
-      //@include transition(all .2s ease);
-    }
-
-    path:hover {
-      //fill: lighten($orange, 20%);
+.navbar {
+  .dropdown, .breadcrumb {
+    display: inline-block;
+  }
+  .menu {
+    padding-top: 13px;
+    padding-bottom: 13px;
+    a {
+      text-decoration: none;
+      svg {
+        height: 20px;
+        margin-bottom: -5px;
+        path{
+          -webkit-transition: (all .2s ease);
+          transition: (all .2s ease);
+        }
+        path:hover {
+          fill: darken($brand-orange, 15%);
+        }
+      }
     }
   }
-}
-.navbar-right {
-  .dropdown {
+  .breadcrumb {
+    background-color: transparent;
+    margin-bottom: 0;
+  }
+  .user {
+    padding-top: 7px;
+    padding-bottom: 7px;
     a {
-      padding-top: 7px;
-      padding-bottom: 7px;
+      color: inherit;
+      text-decoration: none;
       img {
         height: 35px;
         width: 35px;
