@@ -31,6 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/news/like/{id}', 'NewsController@like');
     Route::post('/news/upload/temp', 'NewsController@uploadTemp');
 
+    // Tasks
     Route::get('/task/{id}', 'TaskController@byUser');
 
+    // Contacts
+    Route::get('/contacts', 'ContactsController@index');
+    Route::get('/contacts/all', 'ContactsController@all');
 });
