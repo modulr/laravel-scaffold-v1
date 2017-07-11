@@ -26,12 +26,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', 'DashboardController@index');
     // News
     Route::get('/news', 'NewsController@index');
+    Route::get('/news/all', 'NewsController@all');
     Route::post('/news/store', 'NewsController@store');
     Route::delete('/news/destroy/{id}', 'NewsController@destroy');
     Route::post('/news/like/{id}', 'NewsController@like');
     Route::post('/news/upload/temp', 'NewsController@uploadTemp');
 
     // Tasks
+    Route::get('/tasks', 'TaskController@index');
     Route::get('/task/{id}', 'TaskController@byUser');
 
     // Contacts

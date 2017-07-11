@@ -13,7 +13,12 @@ use App\NewsImage;
 
 class NewsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
+    {
+        return view('news', ['breadcrumb' => $request->path()]);
+    }
+
+    public function all()
     {
         return News::with('user', 'images')->orderBy('id', 'desc')->paginate(10);
     }

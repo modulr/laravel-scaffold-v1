@@ -7,9 +7,9 @@ use App\User;
 
 class ContactsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('contacts');
+        return view('contacts', ['breadcrumb' => $request->path()]);
     }
 
     public function all()
