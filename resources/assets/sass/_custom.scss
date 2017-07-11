@@ -41,7 +41,17 @@
 }
 
 .main {
-    margin-top: 60px;
+    // margin-top: 60px;
+    padding: 0 !important;
+}
+
+.container-fluid {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+*{
+  outline: none;
 }
 
 .btn-type {

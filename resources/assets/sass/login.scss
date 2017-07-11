@@ -1,0 +1,176 @@
+.login{
+  padding: 0;
+  margin: 0;
+  .container-fluid{
+    .left-pane{
+      float: left;
+      width: 60%;
+      height: 100vh;
+      background: gray;
+      padding: 60px;
+      position: relative;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-image: url(/img/bg/bg-banner.png);
+      .content{
+        .logo{
+
+        }
+        .content{
+          margin-top: 80px;
+          color: white;
+          .heading{
+            width: 70%;
+            font-weight: 300;
+            font-size: 50px;
+          }
+          .text{
+            width: 80%;
+            margin-top: 50px;
+            font-weight: 300;
+            font-size: 20px;
+          }
+        }
+      }
+    }
+    .right-pane{
+      float: right;
+      width: 40%;
+      height: 100vh;
+      background: white;
+      .content{
+        margin: 0 auto;
+        height: 100%;
+        padding: 80px;
+        .indicator{
+          text-align: center;
+          .input{
+            width: 100%;
+            .sign-in, .sign-up{
+              font-size: 18px;
+              display: inline-block;
+              width: 48%;
+              background: none;
+              border: none;
+              border-bottom: 2px solid transparent;
+            }
+            .active{
+              border-bottom: 2px solid $brand-orange;
+              color: #FAAB4C;
+              margin-right: -3px;
+            }
+            .inactive{
+              border-bottom: 2px solid $inactive;
+              color: #DDDADA;
+            }
+          }
+        }
+        .form{
+          width: inherit;
+          padding: 20px 0px;
+          .input-group{
+            width: 100%;
+            input{
+              font-size: 18px;
+              color: black;
+              padding: 10px 0px;
+              margin: 50px 0px 20px 0px;
+              width: 100%;
+              border: none;
+              border-bottom: 1px solid $brand-gray;
+            }
+            &.has-error{
+              input{
+                border-bottom: 1px solid $brand-danger;
+              }
+            }
+          }
+          .remember-me{
+            margin: 10px 0px;
+            margin-bottom: 60px;
+            font-size: 18px;
+            color: $brand-gray;
+            span{
+              margin-left: 10px;
+            }
+          }
+          .send-input{
+            width: 100%;
+            button{
+              font-size: 20px!important;
+              font-weight: 300;
+              width: 100%;
+              padding: 15px;
+              background: $brand-orange;
+              color: white;
+              border: none;
+              font-size: 16px;
+              transition: background-color .2s ease;
+              &:hover{
+                background-color: darken($brand-orange, 10%);
+              }
+            }
+          }
+          .forgot{
+            width: 100%;
+            padding: 20px 0px;
+            text-align: center;
+            a{
+              color: $brand-gray;
+              transition: color .2s ease;
+              &:hover{
+                color: $brand-orange;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (min-width: 300px) {
+  .login .container-fluid .left-pane{
+    display: none;
+  }
+  .login .container-fluid .right-pane {
+    width: 100%;
+  }
+  .login .container-fluid .right-pane .content {
+    padding: 25px;
+  }
+}
+@media screen and (min-width: 680px) {
+  .login .container-fluid .left-pane{
+    display: none;
+  }
+  .login .container-fluid .right-pane {
+    width: 100%;
+  }
+  .login .container-fluid .right-pane .content {
+    padding: 60px;
+  }
+}
+@media screen and (min-width: 840px) {
+  .login .container-fluid .left-pane{
+    display: block;
+    width: 55%;
+  }
+  .login .container-fluid .right-pane {
+    width: 45%;
+  }
+  .login .container-fluid .right-pane .content {
+    padding: 60px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .login .container-fluid .left-pane{
+    display: block;
+    width: 55%;
+  }
+  .login .container-fluid .right-pane {
+    width: 45%;
+  }
+  .login .container-fluid .right-pane .content {
+    padding: 80px 120px;
+  }
+}

@@ -3104,7 +3104,16 @@
 }
 
 .main {
-  margin-top: 60px;
+  padding: 0 !important;
+}
+
+.container-fluid {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+* {
+  outline: none;
 }
 
 .btn-type {
@@ -3113,6 +3122,404 @@
 
 .btn-type .glyphicon {
   color: #3097D1;
+}
+
+.login {
+  padding: 0;
+  margin: 0;
+}
+
+.login .container-fluid .left-pane {
+  float: left;
+  width: 60%;
+  height: 100vh;
+  background: gray;
+  padding: 60px;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url(/img/bg/bg-banner.png);
+}
+
+.login .container-fluid .left-pane .content .content {
+  margin-top: 80px;
+  color: white;
+}
+
+.login .container-fluid .left-pane .content .content .heading {
+  width: 70%;
+  font-weight: 300;
+  font-size: 50px;
+}
+
+.login .container-fluid .left-pane .content .content .text {
+  width: 80%;
+  margin-top: 50px;
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.login .container-fluid .right-pane {
+  float: right;
+  width: 40%;
+  height: 100vh;
+  background: white;
+}
+
+.login .container-fluid .right-pane .content {
+  margin: 0 auto;
+  height: 100%;
+  padding: 80px;
+}
+
+.login .container-fluid .right-pane .content .indicator {
+  text-align: center;
+}
+
+.login .container-fluid .right-pane .content .indicator .input {
+  width: 100%;
+}
+
+.login .container-fluid .right-pane .content .indicator .input .sign-in,
+.login .container-fluid .right-pane .content .indicator .input .sign-up {
+  font-size: 18px;
+  display: inline-block;
+  width: 48%;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+}
+
+.login .container-fluid .right-pane .content .indicator .input .active {
+  border-bottom: 2px solid #feae3b;
+  color: #FAAB4C;
+  margin-right: -3px;
+}
+
+.login .container-fluid .right-pane .content .indicator .input .inactive {
+  border-bottom: 2px solid #dddada;
+  color: #DDDADA;
+}
+
+.login .container-fluid .right-pane .content .form {
+  width: inherit;
+  padding: 20px 0px;
+}
+
+.login .container-fluid .right-pane .content .form .input-group {
+  width: 100%;
+}
+
+.login .container-fluid .right-pane .content .form .input-group input {
+  font-size: 18px;
+  color: black;
+  padding: 10px 0px;
+  margin: 50px 0px 20px 0px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #95989A;
+}
+
+.login .container-fluid .right-pane .content .form .input-group.has-error input {
+  border-bottom: 1px solid #bf5329;
+}
+
+.login .container-fluid .right-pane .content .form .remember-me {
+  margin: 10px 0px;
+  margin-bottom: 60px;
+  font-size: 18px;
+  color: #95989A;
+}
+
+.login .container-fluid .right-pane .content .form .remember-me span {
+  margin-left: 10px;
+}
+
+.login .container-fluid .right-pane .content .form .send-input {
+  width: 100%;
+}
+
+.login .container-fluid .right-pane .content .form .send-input button {
+  font-size: 20px !important;
+  font-weight: 300;
+  width: 100%;
+  padding: 15px;
+  background: #feae3b;
+  color: white;
+  border: none;
+  font-size: 16px;
+  -webkit-transition: background-color .2s ease;
+  transition: background-color .2s ease;
+}
+
+.login .container-fluid .right-pane .content .form .send-input button:hover {
+  background-color: #fe9908;
+}
+
+.login .container-fluid .right-pane .content .form .forgot {
+  width: 100%;
+  padding: 20px 0px;
+  text-align: center;
+}
+
+.login .container-fluid .right-pane .content .form .forgot a {
+  color: #95989A;
+  -webkit-transition: color .2s ease;
+  transition: color .2s ease;
+}
+
+.login .container-fluid .right-pane .content .form .forgot a:hover {
+  color: #feae3b;
+}
+
+@media screen and (min-width: 300px) {
+  .login .container-fluid .left-pane {
+    display: none;
+  }
+
+  .login .container-fluid .right-pane {
+    width: 100%;
+  }
+
+  .login .container-fluid .right-pane .content {
+    padding: 25px;
+  }
+}
+
+@media screen and (min-width: 680px) {
+  .login .container-fluid .left-pane {
+    display: none;
+  }
+
+  .login .container-fluid .right-pane {
+    width: 100%;
+  }
+
+  .login .container-fluid .right-pane .content {
+    padding: 60px;
+  }
+}
+
+@media screen and (min-width: 840px) {
+  .login .container-fluid .left-pane {
+    display: block;
+    width: 55%;
+  }
+
+  .login .container-fluid .right-pane {
+    width: 45%;
+  }
+
+  .login .container-fluid .right-pane .content {
+    padding: 60px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .login .container-fluid .left-pane {
+    display: block;
+    width: 55%;
+  }
+
+  .login .container-fluid .right-pane {
+    width: 45%;
+  }
+
+  .login .container-fluid .right-pane .content {
+    padding: 80px 120px;
+  }
+}
+
+.register {
+  padding: 0;
+  margin: 0;
+}
+
+.register .container-fluid .left-pane {
+  float: left;
+  width: 60%;
+  height: 100vh;
+  background: gray;
+  padding: 60px;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url(/img/bg/bg-banner.png);
+}
+
+.register .container-fluid .left-pane .content .content {
+  margin-top: 80px;
+  color: white;
+}
+
+.register .container-fluid .left-pane .content .content .heading {
+  width: 70%;
+  font-weight: 300;
+  font-size: 50px;
+}
+
+.register .container-fluid .left-pane .content .content .text {
+  width: 80%;
+  margin-top: 50px;
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.register .container-fluid .right-pane {
+  float: right;
+  width: 40%;
+  height: 100vh;
+  background: white;
+}
+
+.register .container-fluid .right-pane .content {
+  margin: 0 auto;
+  height: 100%;
+  padding: 80px;
+}
+
+.register .container-fluid .right-pane .content .indicator {
+  text-align: center;
+}
+
+.register .container-fluid .right-pane .content .indicator .input {
+  width: 100%;
+}
+
+.register .container-fluid .right-pane .content .indicator .input .sign-in,
+.register .container-fluid .right-pane .content .indicator .input .sign-up {
+  font-size: 18px;
+  display: inline-block;
+  width: 48%;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+}
+
+.register .container-fluid .right-pane .content .indicator .input .active {
+  border-bottom: 2px solid #feae3b;
+  color: #FAAB4C;
+}
+
+.register .container-fluid .right-pane .content .indicator .input .inactive {
+  border-bottom: 2px solid #dddada;
+  margin-right: -3px;
+  color: #DDDADA;
+}
+
+.register .container-fluid .right-pane .content .form {
+  width: inherit;
+  padding: 20px 0px;
+}
+
+.register .container-fluid .right-pane .content .form .input-group {
+  width: 100%;
+}
+
+.register .container-fluid .right-pane .content .form .input-group input {
+  font-size: 18px;
+  color: black;
+  padding: 10px 0px;
+  margin: 20px 0px 0px 0px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #95989A;
+}
+
+.register .container-fluid .right-pane .content .form .input-group input.has-error input {
+  border-bottom: 1px solid #bf5329;
+}
+
+.register .container-fluid .right-pane .content .form .send-input {
+  width: 100%;
+  margin-top: 60px;
+}
+
+.register .container-fluid .right-pane .content .form .send-input button {
+  font-size: 20px !important;
+  font-weight: 300;
+  width: 100%;
+  padding: 15px;
+  background: #feae3b;
+  color: white;
+  border: none;
+  font-size: 16px;
+  -webkit-transition: background-color .2s ease;
+  transition: background-color .2s ease;
+}
+
+.register .container-fluid .right-pane .content .form .send-input button:hover {
+  background-color: #fe9908;
+}
+
+.register .container-fluid .right-pane .content .form .policy {
+  margin-top: 15px;
+}
+
+.register .container-fluid .right-pane .content .form .policy p {
+  color: #95989A;
+}
+
+.register .container-fluid .right-pane .content .form .policy p a {
+  color: #feae3b;
+}
+
+@media screen and (min-width: 300px) {
+  .register .container-fluid .left-pane {
+    display: none;
+  }
+
+  .register .container-fluid .right-pane {
+    width: 100%;
+  }
+
+  .register .container-fluid .right-pane .content {
+    padding: 25px;
+  }
+}
+
+@media screen and (min-width: 680px) {
+  .register .container-fluid .left-pane {
+    display: none;
+  }
+
+  .register .container-fluid .right-pane {
+    width: 100%;
+  }
+
+  .register .container-fluid .right-pane .content {
+    padding: 60px;
+  }
+}
+
+@media screen and (min-width: 840px) {
+  .register .container-fluid .left-pane {
+    display: block;
+    width: 55%;
+  }
+
+  .register .container-fluid .right-pane {
+    width: 45%;
+  }
+
+  .register .container-fluid .right-pane .content {
+    padding: 60px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .register .container-fluid .left-pane {
+    display: block;
+    width: 55%;
+  }
+
+  .register .container-fluid .right-pane {
+    width: 45%;
+  }
+
+  .register .container-fluid .right-pane .content {
+    padding: 80px 120px;
+  }
 }
 
 body.stop-scrolling {
@@ -5554,7 +5961,7 @@ html {
 }
 
 body {
-  font-family: "Raleway", sans-serif;
+  font-family: "Helvetica Neue", "Raleway", sans-serif;
   font-size: 14px;
   line-height: 1.6;
   color: #636b6f;
@@ -11651,7 +12058,7 @@ button.close {
   position: absolute;
   z-index: 1070;
   display: block;
-  font-family: "Raleway", sans-serif;
+  font-family: "Helvetica Neue", "Raleway", sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -11785,7 +12192,7 @@ button.close {
   display: none;
   max-width: 276px;
   padding: 1px;
-  font-family: "Raleway", sans-serif;
+  font-family: "Helvetica Neue", "Raleway", sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
