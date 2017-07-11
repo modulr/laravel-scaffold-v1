@@ -15,12 +15,9 @@
 $factory->define(App\Task::class, function (Faker\Generator $faker) {
 
     return [
-        'title' => $faker->paragraph,
-        'done' => 1,
+        'title' => $faker->text,
+        'done' => $faker->randomElement([0,1]),
         'order' => 1,
-        'user_id' => function () {
-            return factory(App\User::class)->create()->id;
-        }
     ];
 
 });

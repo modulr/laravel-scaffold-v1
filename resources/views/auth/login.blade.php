@@ -58,6 +58,12 @@
                                     Forgot Your Password?
                                 </a>
                             </div>
+                            <div class="col-md-8 col-md-offset-4">
+                                <br>
+                                <a class="btn btn-link" href="{{ route('register') }}">
+                                    Do you not have account? Sign up.
+                                </a>
+                            </div>
                         </div>
                     </form>
                 </div>

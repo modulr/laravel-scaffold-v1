@@ -15,12 +15,9 @@
 $factory->define(App\News::class, function (Faker\Generator $faker) {
 
     return [
-        'title' => $faker->paragraph,
+        'title' => $faker->text,
         'type' => 1,
         'likes' => [],
-        'user_id' => function () {
-            return factory(App\User::class)->create()->id;
-        }
     ];
 
 });
