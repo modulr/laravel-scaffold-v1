@@ -68178,7 +68178,7 @@ exports = module.exports = __webpack_require__(4)(undefined);
 
 
 // module
-exports.push([module.i, "\n.table > tbody > tr:first-child > td {\n  border-top-color: transparent;\n}\n.table img {\n  border-radius: 50%;\n  height: 35px;\n  width: 35px;\n  margin-right: 10px;\n}\n.modal .modal-header img {\n  border-radius: 50%;\n  height: 65px;\n  width: 65px;\n  margin-left: 15px;\n  margin-right: 15px;\n  -webkit-box-shadow: 0 0 1px 6px #e8e8e8;\n  box-shadow: 0 0 1px 6px #e8e8e8;\n}\n.modal .modal-body {\n  padding: 30px;\n}\n.modal .modal-body ul {\n    margin: 25px;\n}\n.modal .modal-body ul li {\n      margin-bottom: 15px;\n}\n.modal .modal-body ul li i {\n        margin-right: 30px;\n}\n", ""]);
+exports.push([module.i, "\n.table > tbody > tr:first-child > td {\n  border-top-color: transparent;\n}\n.table img {\n  border-radius: 50%;\n  height: 35px;\n  width: 35px;\n  margin-right: 10px;\n}\n.panel-body img {\n  border-radius: 50%;\n  height: 50px;\n  width: 50px;\n  margin-right: 10px;\n}\n.modal .modal-header img {\n  border-radius: 50%;\n  height: 60px;\n  width: 60px;\n  margin-left: 15px;\n  margin-right: 15px;\n  -webkit-box-shadow: 0 0 1px 6px #e8e8e8;\n  box-shadow: 0 0 1px 6px #e8e8e8;\n}\n.modal .modal-body {\n  padding: 30px;\n}\n.modal .modal-body ul {\n    margin: 25px;\n}\n.modal .modal-body ul li {\n      margin-bottom: 15px;\n}\n.modal .modal-body ul li i {\n        margin-right: 30px;\n}\n", ""]);
 
 // exports
 
@@ -68236,22 +68236,72 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             contacts: [],
-            contactsCopy: [],
             contact: [],
-            search: null
+            search: '',
+            layout: 'grid'
         };
     },
     mounted: function mounted() {
         this.getAll();
     },
 
-    watch: {
-        search: 'fetchContacts'
+    computed: {
+        filteredContacts: function filteredContacts() {
+            var filteredArray = this.contacts,
+                search = this.search;
+
+            if (!search) {
+                return filteredArray;
+            }
+
+            search = search.trim().toLowerCase();
+
+            filteredArray = filteredArray.filter(function (item) {
+                return Object.keys(item).some(function (key) {
+                    return String(item[key]).toLowerCase().indexOf(search) !== -1;
+                });
+            });
+
+            return filteredArray;;
+        }
     },
     methods: {
         getAll: function getAll() {
@@ -68259,20 +68309,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             axios.get('/contacts/all').then(function (response) {
                 _this.contacts = response.data;
-                _this.contactsCopy = response.data;
             });
-        },
-        fetchContacts: function fetchContacts() {
-            var self = this;
-            if (this.search) {
-                this.contacts = this.contacts.filter(function (row) {
-                    return Object.keys(row).some(function (key) {
-                        return String(row[key]).toLowerCase().indexOf(self.search) > -1;
-                    });
-                });
-            } else {
-                this.contacts = this.contactsCopy;
-            }
         },
         viewContact: function viewContact(contact) {
             this.contact = contact;
@@ -68287,10 +68324,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('div', {
-    staticClass: "panel panel-default"
+    staticClass: "row"
   }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_c('input', {
+    staticClass: "col-md-6"
+  }, [_c('div', {
+    staticClass: "input-group"
+  }, [_vm._m(0), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -68311,11 +68350,53 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.search = $event.target.value
       }
     }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-6 text-right"
+  }, [_c('a', {
+    staticClass: "btn btn-default",
+    class: {
+      'active': _vm.layout == 'list'
+    },
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.layout = 'list'
+      }
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-list",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "btn btn-default",
+    class: {
+      'active': _vm.layout == 'grid'
+    },
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.layout = 'grid'
+      }
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-th",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [(_vm.layout == 'list') ? _c('div', {
+    staticClass: "col-md-12"
   }, [_c('table', {
     staticClass: "table table-hover"
-  }, [_c('tbody', _vm._l((_vm.contacts), function(contact) {
+  }, [_c('tbody', _vm._l((_vm.filteredContacts), function(contact) {
     return _c('tr', [_c('td', {
       on: {
         "click": function($event) {
@@ -68333,7 +68414,36 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_vm._v("\n                            " + _vm._s(contact.email) + "\n                        ")])])
-  }))])])]), _vm._v(" "), _c('div', {
+  }))])]) : _vm._e(), _vm._v(" "), _vm._l((_vm.filteredContacts), function(contact) {
+    return (_vm.layout == 'grid') ? _c('div', {
+      staticClass: "col-md-4"
+    }, [_c('div', {
+      staticClass: "panel panel-default"
+    }, [_c('div', {
+      staticClass: "panel-body",
+      on: {
+        "click": function($event) {
+          _vm.viewContact(contact)
+        }
+      }
+    }, [_c('div', {
+      staticClass: "media"
+    }, [_c('div', {
+      staticClass: "media-left"
+    }, [_c('a', {
+      attrs: {
+        "href": "#"
+      }
+    }, [_c('img', {
+      attrs: {
+        "src": contact.avatar
+      }
+    })])]), _vm._v(" "), _c('div', {
+      staticClass: "media-body"
+    }, [_c('h4', {
+      staticClass: "media-heading"
+    }, [_vm._v(_vm._s(contact.name))]), _vm._v("\n                            " + _vm._s(contact.email) + "\n                        ")])])])])]) : _vm._e()
+  })], 2), _vm._v(" "), _c('div', {
     staticClass: "modal fade",
     attrs: {
       "id": "modalContact"
@@ -68347,15 +68457,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "modal-content"
   }, [_c('div', {
     staticClass: "modal-header"
-  }, [_vm._m(0), _vm._v(" "), _c('h4', {
+  }, [_vm._m(1), _vm._v(" "), _c('h4', {
     staticClass: "modal-title"
   }, [_c('img', {
     attrs: {
       "src": _vm.contact.avatar
     }
-  }), _vm._v(" " + _vm._s(_vm.contact.name))])]), _vm._v(" "), _c('div', {
+  }), _vm._v(_vm._s(_vm.contact.name))])]), _vm._v(" "), _c('div', {
     staticClass: "modal-body"
-  }, [_vm._m(1), _vm._v(" "), _c('ul', {
+  }, [_vm._m(2), _vm._v(" "), _c('ul', {
     staticClass: "list-unstyled"
   }, [_c('li', [_c('i', {
     staticClass: "fa fa-fw fa-envelope",
@@ -68366,8 +68476,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": ("mailto:" + (_vm.contact.email))
     }
-  }, [_vm._v(_vm._s(_vm.contact.email))])]), _vm._v(" "), _vm._m(2), _vm._v(" "), _vm._m(3), _vm._v(" "), _vm._m(4), _vm._v(" "), _vm._m(5), _vm._v(" "), _vm._m(6), _vm._v(" "), _vm._m(7)])])])])])])
+  }, [_vm._v(_vm._s(_vm.contact.email))])]), _vm._v(" "), _vm._m(3), _vm._v(" "), _vm._m(4), _vm._v(" "), _vm._m(5), _vm._v(" "), _vm._m(6), _vm._v(" "), _vm._m(7), _vm._v(" "), _vm._m(8)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "input-group-addon"
+  }, [_c('i', {
+    staticClass: "fa fa-search",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('button', {
     staticClass: "close",
     attrs: {
