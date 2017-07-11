@@ -192,7 +192,7 @@
             loadMore: function () {
                 var page = Number(this.pagination.current_page) + 1;
 
-                axios.get('/news?page='+ page)
+                axios.get('/news/all?page='+ page)
                 .then(response => {
                     this.news = this.news.concat(response.data.data);
                     this.pagination = response.data

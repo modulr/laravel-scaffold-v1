@@ -15,6 +15,7 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 //Vue.component('example', require('./components/Example.vue'));
+Vue.component('navbar', require('./components/Navbar.vue'));
 Vue.component('news', require('./components/News.vue'));
 Vue.component('tasks', require('./components/Tasks.vue'));
 Vue.component('contacts', require('./components/Contacts.vue'));
@@ -22,6 +23,7 @@ Vue.component('contacts', require('./components/Contacts.vue'));
 const app = new Vue({
     el: '#app',
     data: {
-        user: Laravel.user
+        user: Laravel.user,
+        guest: Laravel.guest,
     },
 });
