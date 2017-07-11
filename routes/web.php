@@ -10,6 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('test', function () {
+    event(new App\Events\StatusLiked('Helo pusher'));
+    return "Event has been sent!";
+});
 
 Route::get('/', function () {
     //return view('welcome');

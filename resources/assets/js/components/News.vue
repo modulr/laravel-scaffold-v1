@@ -1,6 +1,9 @@
 <template>
     <div>
         <div class="panel panel-default">
+            <div class="panel-heading">
+                {{not}}
+            </div>
             <div class="panel-body">
                 <div class="form-group" :class="{'has-error': error.title}">
                     <textarea rows="2" class="form-control" placeholder="What are you thinking?"
@@ -99,8 +102,23 @@
     import InfiniteLoading from 'vue-infinite-loading';
 
     export default {
+        mounted() {
+            Notification.requestPermission();
+            Echo.channel('news')
+                .listen('StatusLiked', (e) => {
+
+                    this.not.push(e.message);
+                    if (Notification.permission === "granted") {
+                        var options = {
+                            icon: 'http://www.technologybloggers.org/wp-content/uploads/2011/09/Google-Android-Logo.jpg'
+                        }
+                        var notification = new Notification(e.message, options);
+                    }
+                });
+        },
         data() {
             return {
+                not: [],
                 news: [],
                 newsItem: {
                     type: 1
