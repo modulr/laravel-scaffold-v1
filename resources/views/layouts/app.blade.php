@@ -18,13 +18,15 @@
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
             'user' => Auth::user(),
+            'notifications' => (Auth::user()) ? Auth::user()->notifications : [],
+            'unReadNotifications' => (Auth::user()) ? Auth::user()->unReadNotifications : [],
             'guest' => Auth::guest(),
         ]) !!};
     </script>
 </head>
 <body>
     <div id="app">
-        <navbar :user="user" :guest="guest"></navbar>
+        <navbar></navbar>
 
         <div class="container-fluid main">
             @yield('content')

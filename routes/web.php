@@ -10,10 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('test', function () {
-    event(new App\Events\StatusLiked('Helo pusher'));
-    return "Event has been sent!";
-});
 
 Route::get('/', function () {
     //return view('welcome');
@@ -27,7 +23,14 @@ Auth::routes();
 
 Route::middleware('auth')->group(function () {
     //Route::get('/home', 'HomeController@index')->name('home');
+
+    // Dashboard
     Route::get('/dashboard', 'DashboardController@index');
+    Route::get('/dashboard/markAsRead', 'DashboardController@markAsRead');
+
+    // Notifications
+    Route::get('/notifications', 'NotificationController@index');
+
     // News
     Route::get('/news', 'NewsController@index');
     Route::get('/news/all', 'NewsController@all');

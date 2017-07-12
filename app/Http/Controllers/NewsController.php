@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use DB;
 use Validator;
 use Storage;
 use Image;
+use App\User;
 use App\News;
 use App\NewsImage;
+use App\Notifications\NewsCreated;
+use App\Events\StatusLiked;
 
 class NewsController extends Controller
 {
@@ -59,7 +63,18 @@ class NewsController extends Controller
             }
         }
 
-        return News::with('user', 'images')->find($news->id);
+        $news = News::with('user', 'images')->find($news->id);
+
+        $users = User::where('id', '<>', Auth::id())->get();
+
+        Notification::send($users, new NewsCreated($news));
+
+        // event(new StatusLiked([
+        //     'user' => Auth::user(),
+        //     'message' => $news
+        // ]));
+
+        return $news;
     }
 
     public function destroy($id)

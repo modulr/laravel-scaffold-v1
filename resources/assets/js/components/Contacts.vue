@@ -85,7 +85,7 @@
                 contacts: [],
                 contact: [],
                 search: '',
-                layout: 'grid',
+                layout: 'list',
             }
         },
         mounted() {

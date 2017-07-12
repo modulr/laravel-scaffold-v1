@@ -16,7 +16,10 @@ window.Vue = require('vue');
  */
 //Vue.component('example', require('./components/Example.vue'));
 Vue.component('navbar', require('./components/Navbar.vue'));
+Vue.component('notifications', require('./components/Notifications.vue'));
 Vue.component('news', require('./components/News.vue'));
+Vue.component('newsPublish', require('./components/news/newsPublish.vue'));
+Vue.component('newsList', require('./components/news/newsList.vue'));
 Vue.component('tasks', require('./components/Tasks.vue'));
 Vue.component('contacts', require('./components/Contacts.vue'));
 

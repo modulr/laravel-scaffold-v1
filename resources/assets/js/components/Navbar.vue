@@ -42,12 +42,37 @@
                     </ol>
                 </div>
                 <div class="col-xs-6 text-right">
+                    <div class="dropdown notifications">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" @click="markAsRead">
+                            <i class="fa fa-bell fa-lg"></i>
+                            <span class="label label-danger" v-show="unReadNotifications.length>0">{{unReadNotifications.length}}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <div class="panel-default">
+                                <div class="panel-body">
+                                    <a href="notifications" v-for="notification in notifications">
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <img :src="notification.data.user.avatar">
+                                            </div>
+                                            <div class="media-body">
+                                                <h4 class="media-heading">{{notification.data.user.name}}</h4>
+                                                {{notification.data.title}}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="panel-footer text-center">
+                                    <a href="notifications"><small>View all notifications</small></a>
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
                     <div class="dropdown user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <img :src="user.avatar" alt="">
                             <span class="caret"></span>
                         </a>
-
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li>
                                 <a href="logout" @click.prevent="logout">
@@ -64,17 +89,119 @@
 
 <script>
     export default {
-        props: [
-            'user',
-            'guest',
-        ],
+        data() {
+            return {
+                user: Laravel.user,
+                notifications: Laravel.notifications,
+                unReadNotifications: Laravel.unReadNotifications,
+                guest: Laravel.guest,
+            }
+        },
+        mounted() {
+            Notification.requestPermission();
+
+            Echo.private('App.User.' + this.user.id)
+                .notification((e) => {
+                    this.notifications.unshift({data:e});
+                    this.unReadNotifications.unshift({data:e});
+
+                    if (Notification.permission === "granted") {
+                        var options = {
+                            body: e.title,
+                        }
+                        new Notification(e.user.name, options);
+                    }
+                });
+
+            // Echo.channel('news')
+            //     .listen('StatusLiked', (e) => {
+            //         this.notifications.push(e.message);
+            //
+            //         if (Notification.permission === "granted") {
+            //             var options = {
+            //                 body: e.message.message.title,
+            //             }
+            //             var notification = new Notification(e.message.user.name, options);
+            //         }
+            //     });
+        },
         methods: {
             logout: function () {
                 axios.post('/logout')
                 .then(response => {
                     location.href = '/';
                 });
+            },
+            markAsRead: function () {
+                axios.get('/dashboard/markAsRead')
+                .then(response => {
+                    console.log(response);
+                    this.unReadNotifications = [];
+                });
             }
         }
     }
 </script>
+
+<style lang="scss">
+.navbar {
+    .dropdown, .breadcrumb {
+        display: inline-block;
+    }
+    .menu {
+        padding-top: 13px;
+        padding-bottom: 13px;
+        a {
+            text-decoration: none;
+            svg {
+                height: 20px;
+                margin-bottom: -5px;
+                path{
+                    -webkit-transition: (all .2s ease);
+                    transition: (all .2s ease);
+                }
+                path:hover {
+                    fill: darken(#feae3b, 15%);
+                }
+            }
+        }
+    }
+    .breadcrumb {
+        background-color: transparent;
+        margin-bottom: 0;
+    }
+    .notifications {
+        margin-right: 20px;
+        a {
+            color: inherit;
+        }
+        .dropdown-menu {
+            width: 350px;
+            .panel-body {
+                height: 400px;
+                overflow: scroll;
+            }
+            img {
+                height: 35px;
+                width: 35px;
+                border-radius: 50%;
+                margin-right: 5px;
+            }
+        }
+    }
+    .user {
+        padding-top: 7px;
+        padding-bottom: 7px;
+        a {
+            color: inherit;
+            text-decoration: none;
+            img {
+                height: 35px;
+                width: 35px;
+                border-radius: 50%;
+                margin-right: 5px;
+            }
+        }
+    }
+}
+</style>
