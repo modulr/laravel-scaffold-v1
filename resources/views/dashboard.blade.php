@@ -10,7 +10,8 @@
                     <a href="news" class="pull-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
                 </div>
                 <div class="panel-body" style="height:400px; overflow-y:scroll;">
-                    <news :user="user"></news>
+                    <!-- <news :user="user"></news> -->
+                    <news-list></news-list>
                 </div>
             </div>
         </div>
