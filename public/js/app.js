@@ -68701,12 +68701,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         Notification.requestPermission();
 
         Echo.private('App.User.' + this.user.id).notification(function (e) {
+
+            console.log(e);
             _this.notifications.unshift({ data: e });
             _this.unReadNotifications.unshift({ data: e });
 
             if (Notification.permission === "granted") {
                 var options = {
-                    body: e.title
+                    body: e.message
                 };
                 new Notification(e.user.name, options);
             }
@@ -68870,7 +68872,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "media-body"
     }, [_c('h4', {
       staticClass: "media-heading"
-    }, [_vm._v(_vm._s(notification.data.user.name))]), _vm._v("\n                                            " + _vm._s(notification.data.title) + "\n                                        ")])])])
+    }, [_vm._v(_vm._s(notification.data.user.name))]), _vm._v("\n                                            " + _vm._s(notification.data.message) + "\n                                        ")])])])
   })), _vm._v(" "), _vm._m(2)])])]), _vm._v(" "), _c('div', {
     staticClass: "dropdown user"
   }, [_c('a', {
@@ -69045,7 +69047,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.media img {\n  width: 50px;\n  height: 50px;\n}\n", ""]);
+exports.push([module.i, "\n.media img {\n  border-radius: 50%;\n  width: 50px;\n  height: 50px;\n}\n", ""]);
 
 // exports
 
@@ -69078,9 +69080,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             notifications: Laravel.notifications
         };
-    },
-    mounted: function mounted() {
-        console.log('Component mounted.');
     }
 });
 
@@ -69107,7 +69106,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "media-body"
     }, [_c('h4', {
       staticClass: "media-heading"
-    }, [_vm._v(_vm._s(notification.data.user.name))]), _vm._v("\n        " + _vm._s(notification.data.title) + "\n      ")])])
+    }, [_vm._v(_vm._s(notification.data.user.name))]), _vm._v("\n        " + _vm._s(notification.data.message) + "\n      ")])])
   }))
 },staticRenderFns: []}
 module.exports.render._withStripped = true

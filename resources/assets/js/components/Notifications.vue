@@ -8,7 +8,7 @@
           </div>
           <div class="media-body">
             <h4 class="media-heading">{{ notification.data.user.name }}</h4>
-            {{ notification.data.title }}
+            {{ notification.data.message }}
           </div>
         </div>
     </div>
@@ -20,9 +20,6 @@
             return {
                 notifications: Laravel.notifications,
             }
-        },
-        mounted() {
-            console.log('Component mounted.')
         }
     }
 </script>
@@ -30,6 +27,7 @@
 <style lang="scss">
     .media {
         img {
+            border-radius: 50%;
             width: 50px;
             height: 50px;
         }
