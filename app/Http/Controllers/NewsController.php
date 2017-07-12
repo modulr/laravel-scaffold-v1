@@ -13,6 +13,7 @@ use App\User;
 use App\News;
 use App\NewsImage;
 use App\Notifications\NewsCreated;
+use App\Notifications\NewsLiked;
 use App\Events\StatusLiked;
 
 class NewsController extends Controller
@@ -65,9 +66,17 @@ class NewsController extends Controller
 
         $news = News::with('user', 'images')->find($news->id);
 
+        if ($news->type == 1) {
+            $message = 'Add a post '.$news->title;
+        } else if ($news->type == 2) {
+            $message = 'Add a photo';
+        } else {
+            $message = 'Add a video';
+        }
+
         $users = User::where('id', '<>', Auth::id())->get();
 
-        Notification::send($users, new NewsCreated($news));
+        Notification::send($users, new NewsCreated($news->user, $message));
 
         // event(new StatusLiked([
         //     'user' => Auth::user(),
@@ -101,6 +110,17 @@ class NewsController extends Controller
 
         $news->likes = $likes;
         $news->save();
+
+        if (!$request->like && ($news->user_id != Auth::id())) {
+            if ($news->type == 1) {
+                $message = 'Like your post '.$news->title;
+            } else if ($news->type == 2) {
+                $message = 'Like your photo';
+            } else {
+                $message = 'Like your video';
+            }
+            $news->user->notify(new NewsLiked($news->user, $message));
+        }
 
         return $news;
     }

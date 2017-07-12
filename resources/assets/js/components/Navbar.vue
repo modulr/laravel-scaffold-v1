@@ -57,7 +57,7 @@
                                             </div>
                                             <div class="media-body">
                                                 <h4 class="media-heading">{{notification.data.user.name}}</h4>
-                                                {{notification.data.title}}
+                                                {{notification.data.message}}
                                             </div>
                                         </div>
                                     </a>
@@ -102,12 +102,14 @@
 
             Echo.private('App.User.' + this.user.id)
                 .notification((e) => {
+
+                    console.log(e);
                     this.notifications.unshift({data:e});
                     this.unReadNotifications.unshift({data:e});
 
                     if (Notification.permission === "granted") {
                         var options = {
-                            body: e.title,
+                            body: e.message,
                         }
                         new Notification(e.user.name, options);
                     }
