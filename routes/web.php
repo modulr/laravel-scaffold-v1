@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/news/upload/temp', 'NewsController@uploadTemp');
 
     //Tasks
+    Route::get('/tasks', 'TaskController@view');
     Route::get('/task/byUser', 'TaskController@byUser');
     Route::post('/task/store', 'TaskController@store');
     Route::post('/task/updateOrder', 'TaskController@updateOrder');

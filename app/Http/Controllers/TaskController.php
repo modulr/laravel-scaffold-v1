@@ -8,6 +8,12 @@ use App\Task;
 
 class TaskController extends Controller
 {
+
+    public function view(Request $request)
+    {
+        return view('tasks', ['breadcrumb' => $request->path()]);
+    }
+
     public function byUser()
     {
         return Task::where('user_id', Auth::id())->orderBy('order', 'asc')->get();
