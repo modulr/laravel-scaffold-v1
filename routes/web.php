@@ -31,6 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/news/like/{id}', 'NewsController@like');
     Route::post('/news/upload/temp', 'NewsController@uploadTemp');
 
-    Route::get('/task/{id}', 'TaskController@byUser');
+    //Tasks
+    Route::get('/task/byUser', 'TaskController@byUser');
+    Route::post('/task/store', 'TaskController@store');
+    Route::post('/task/updateOrder', 'TaskController@updateOrder');
+    Route::delete('/task/destroy/{id}', 'TaskController@destroy');
 
 });
