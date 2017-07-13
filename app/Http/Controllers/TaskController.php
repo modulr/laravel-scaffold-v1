@@ -10,7 +10,7 @@ class TaskController extends Controller
 {
     public function byUser()
     {
-        return Task::where('user_id', Auth::id())->orderBy('order', 'desc')->get();
+        return Task::where('user_id', Auth::id())->orderBy('order', 'asc')->get();
     }
 
     public function store(Request $request)
@@ -41,7 +41,7 @@ class TaskController extends Controller
     {
         info($request);
         $x=0;
-        asort($request);
+        // asort($request);
         foreach ($request->tasks as $key => $v) {
             $x++;
              info($v);
