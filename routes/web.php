@@ -23,9 +23,17 @@ Auth::routes();
 
 Route::middleware('auth')->group(function () {
     //Route::get('/home', 'HomeController@index')->name('home');
+
+    // Dashboard
     Route::get('/dashboard', 'DashboardController@index');
+    Route::get('/dashboard/markAsRead', 'DashboardController@markAsRead');
+
+    // Notifications
+    Route::get('/notifications', 'NotificationController@index');
+
     // News
     Route::get('/news', 'NewsController@index');
+    Route::get('/news/all', 'NewsController@all');
     Route::post('/news/store', 'NewsController@store');
     Route::delete('/news/destroy/{id}', 'NewsController@destroy');
     Route::post('/news/like/{id}', 'NewsController@like');
@@ -37,4 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/task/updateOrder', 'TaskController@updateOrder');
     Route::delete('/task/destroy/{id}', 'TaskController@destroy');
 
+    // Contacts
+    Route::get('/contacts', 'ContactsController@index');
+    Route::get('/contacts/all', 'ContactsController@all');
 });

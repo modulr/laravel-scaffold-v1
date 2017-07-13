@@ -3053,24 +3053,6 @@
   clip: auto;
 }
 
-.navbar-brand svg {
-  height: 20px;
-  margin-bottom: -3.5px;
-  margin-right: 10px;
-}
-
-.navbar-right .dropdown a {
-  padding-top: 7px;
-  padding-bottom: 7px;
-}
-
-.navbar-right .dropdown a img {
-  height: 35px;
-  width: 35px;
-  border-radius: 50%;
-  margin-right: 5px;
-}
-
 .main {
   margin-top: 60px;
 }

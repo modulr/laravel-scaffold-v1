@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
+use Avatar;
+use Storage;
+
 class RegisterController extends Controller
 {
     /*
@@ -62,11 +65,16 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'avatar' => 'https://www.gravatar.com/avatar/' . md5( strtolower( trim( $data['email'] ) ) ) . '?d=retro',
         ]);
+
+        $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
+        Storage::put('avatars/'.$user->id.'/avatar.png', $avatar);
+
+        return $user;
     }
 }

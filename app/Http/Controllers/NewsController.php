@@ -4,16 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use DB;
 use Validator;
 use Storage;
 use Image;
+use App\User;
 use App\News;
 use App\NewsImage;
+use App\Notifications\NewsCreated;
+use App\Notifications\NewsLiked;
+use App\Events\StatusLiked;
 
 class NewsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
+    {
+        return view('news', ['breadcrumb' => $request->path()]);
+    }
+
+    public function all()
     {
         return News::with('user', 'images')->orderBy('id', 'desc')->paginate(10);
     }
@@ -54,7 +64,26 @@ class NewsController extends Controller
             }
         }
 
-        return News::with('user', 'images')->find($news->id);
+        $news = News::with('user', 'images')->find($news->id);
+
+        if ($news->type == 1) {
+            $message = 'Add a post '.$news->title;
+        } else if ($news->type == 2) {
+            $message = 'Add a photo';
+        } else {
+            $message = 'Add a video';
+        }
+
+        $users = User::where('id', '<>', Auth::id())->get();
+
+        Notification::send($users, new NewsCreated($news->user, $message));
+
+        // event(new StatusLiked([
+        //     'user' => Auth::user(),
+        //     'message' => $news
+        // ]));
+
+        return $news;
     }
 
     public function destroy($id)
@@ -81,6 +110,17 @@ class NewsController extends Controller
 
         $news->likes = $likes;
         $news->save();
+
+        if (!$request->like && ($news->user_id != Auth::id())) {
+            if ($news->type == 1) {
+                $message = 'Like your post '.$news->title;
+            } else if ($news->type == 2) {
+                $message = 'Like your photo';
+            } else {
+                $message = 'Like your video';
+            }
+            $news->user->notify(new NewsLiked($news->user, $message));
+        }
 
         return $news;
     }
