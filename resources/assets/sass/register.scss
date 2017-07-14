@@ -1,7 +1,7 @@
 .register{
   padding: 0;
   margin: 0;
-  .container-fluid{
+  .content{
     .left-pane{
       float: left;
       width: 60%;
@@ -118,48 +118,48 @@
   }
 }
 @media screen and (min-width: 300px) {
-  .register .container-fluid .left-pane{
+  .register .content .left-pane{
     display: none;
   }
-  .register .container-fluid .right-pane {
+  .register .content .right-pane {
     width: 100%;
   }
-  .register .container-fluid .right-pane .content {
+  .register .content .right-pane .content {
     padding: 25px;
   }
 }
 @media screen and (min-width: 680px) {
-  .register .container-fluid .left-pane{
+  .register .content .left-pane{
     display: none;
   }
-  .register .container-fluid .right-pane {
+  .register .content .right-pane {
     width: 100%;
   }
-  .register .container-fluid .right-pane .content {
+  .register .content .right-pane .content {
     padding: 60px;
   }
 }
 @media screen and (min-width: 840px) {
-  .register .container-fluid .left-pane{
+  .register .content .left-pane{
     display: block;
     width: 55%;
   }
-  .register .container-fluid .right-pane {
+  .register .content .right-pane {
     width: 45%;
   }
-  .register .container-fluid .right-pane .content {
+  .register .content .right-pane .content {
     padding: 60px;
   }
 }
 @media screen and (min-width: 1280px) {
-  .register .container-fluid .left-pane{
+  .register .content .left-pane{
     display: block;
     width: 55%;
   }
-  .register .container-fluid .right-pane {
+  .register .content .right-pane {
     width: 45%;
   }
-  .register .container-fluid .right-pane .content {
+  .register .content .right-pane .content {
     padding: 80px 120px;
   }
 }

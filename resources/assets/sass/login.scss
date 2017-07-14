@@ -1,7 +1,7 @@
 .login{
   padding: 0;
   margin: 0;
-  .container-fluid{
+  .content{
     .left-pane{
       float: left;
       width: 60%;
@@ -129,48 +129,48 @@
   }
 }
 @media screen and (min-width: 300px) {
-  .login .container-fluid .left-pane{
+  .login .content .left-pane{
     display: none;
   }
-  .login .container-fluid .right-pane {
+  .login .content .right-pane {
     width: 100%;
   }
-  .login .container-fluid .right-pane .content {
+  .login .content .right-pane .content {
     padding: 25px;
   }
 }
 @media screen and (min-width: 680px) {
-  .login .container-fluid .left-pane{
+  .login .content .left-pane{
     display: none;
   }
-  .login .container-fluid .right-pane {
+  .login .content .right-pane {
     width: 100%;
   }
-  .login .container-fluid .right-pane .content {
+  .login .content .right-pane .content {
     padding: 60px;
   }
 }
 @media screen and (min-width: 840px) {
-  .login .container-fluid .left-pane{
+  .login .content .left-pane{
     display: block;
     width: 55%;
   }
-  .login .container-fluid .right-pane {
+  .login .content .right-pane {
     width: 45%;
   }
-  .login .container-fluid .right-pane .content {
+  .login .content .right-pane .content {
     padding: 60px;
   }
 }
 @media screen and (min-width: 1280px) {
-  .login .container-fluid .left-pane{
+  .login .content .left-pane{
     display: block;
     width: 55%;
   }
-  .login .container-fluid .right-pane {
+  .login .content .right-pane {
     width: 45%;
   }
-  .login .container-fluid .right-pane .content {
+  .login .content .right-pane .content {
     padding: 80px 120px;
   }
 }

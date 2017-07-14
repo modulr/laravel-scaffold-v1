@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('content')
 <div class="login">
-  <div class="container-fluid">
+  <div class="content">
     <div class="left-pane">
       <div class="content">
         <div class="logo">

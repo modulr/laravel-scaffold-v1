@@ -12,6 +12,7 @@
 @import "custom";
 
 // General
+@import 'navbar';
 @import 'login';
 @import 'register';
 
@@ -20,3 +21,7 @@
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+// Bootswatch Paper
+@import "node_modules/bootswatch/paper/_variables";
+@import "node_modules/bootswatch/paper/_bootswatch";

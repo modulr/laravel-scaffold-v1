@@ -26,7 +26,7 @@
     <div id="app">
         <navbar :user="user" :guest="guest"></navbar>
 
-        <div class="main container-fluid">
+        <div>
             @yield('content')
         </div>
     </div>
