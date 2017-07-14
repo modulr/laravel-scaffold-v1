@@ -1,18 +1,18 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-xs-6">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
                     <input type="text" class="form-control" placeholder="Search" v-model="search">
                 </div>
             </div>
-            <div class="col-md-6 text-right">
-                <a href="#" class="btn btn-default" :class="{ 'active': layout == 'list'}"
+            <div class="col-xs-6 text-right">
+                <a href="#" class="btn btn-link" :class="{ 'active': layout == 'list'}"
                     @click.prevent="layout = 'list'">
                     <i class="fa fa-list" aria-hidden="true"></i>
                 </a>
-                <a href="#" class="btn btn-default" :class="{ 'active': layout == 'grid'}"
+                <a href="#" class="btn btn-link" :class="{ 'active': layout == 'grid'}"
                     @click.prevent="layout = 'grid'">
                     <i class="fa fa-th" aria-hidden="true"></i>
                 </a>
