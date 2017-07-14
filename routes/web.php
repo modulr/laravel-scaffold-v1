@@ -49,4 +49,12 @@ Route::middleware('auth')->group(function () {
     // Contacts
     Route::get('/contacts', 'ContactsController@index');
     Route::get('/contacts/all', 'ContactsController@all');
+
+    // Files
+    Route::get('/file/byUser/{parentId?}', 'FileController@byUser');
+    Route::post('/file/store', 'FileController@store');
+    Route::put('/file/update/{id}', 'FileController@update');
+    Route::delete('/file/destroy/{id}', 'FileController@destroy');
+    Route::get('/files/{folderId?}', 'FileController@view');
+
 });

@@ -22,6 +22,8 @@ Vue.component('newsPublish', require('./components/news/newsPublish.vue'));
 Vue.component('newsList', require('./components/news/newsList.vue'));
 Vue.component('tasks', require('./components/Tasks.vue'));
 Vue.component('contacts', require('./components/Contacts.vue'));
+Vue.component('files', require('./components/files/Files.vue'));
+
 
 const app = new Vue({
     el: '#app',

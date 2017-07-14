@@ -33,6 +33,7 @@
                             <li><a href="dashboard"><i class="fa fa-fw fa-home"></i> Dashboard</a></li>
                             <li><a href="news"><i class="fa fa-fw fa-bullhorn"></i> News</a></li>
                             <li><a href="tasks"><i class="fa fa-fw fa-tasks"></i> Tasks</a></li>
+                            <li><a href="files"><i class="fa fa-fw fa-folder-o"></i> Files</a></li>
                             <li><a href="contacts"><i class="fa fa-fw fa-address-book-o"></i> Contacts</a></li>
                         </ul>
                     </div>
