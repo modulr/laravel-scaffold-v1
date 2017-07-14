@@ -2,6 +2,7 @@
     <div class="navbar navbar-default navbar-fixed-top" v-if="!guest">
         <div class="container-fluid">
             <div class="row">
+                <!-- Logo -->
                 <div class="col-xs-6">
                     <div class="dropdown menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -35,13 +36,9 @@
                             <li><a href="contacts"><i class="fa fa-fw fa-address-book-o"></i> Contacts</a></li>
                         </ul>
                     </div>
-                    <ol class="breadcrumb">
-                      <li><a href="#">Home</a></li>
-                      <li><a href="#">Library</a></li>
-                      <li class="active">Data</li>
-                    </ol>
                 </div>
                 <div class="col-xs-6 text-right">
+                    <!-- Notifications -->
                     <div class="dropdown notifications">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" @click="markAsRead">
                             <i class="fa fa-bell fa-lg"></i>
@@ -50,16 +47,20 @@
                         <ul class="dropdown-menu dropdown-menu-right">
                             <div class="panel-default">
                                 <div class="panel-body">
-                                    <a href="notifications" v-for="notification in notifications">
+                                    <a href="notifications" v-for="item in notifications">
                                         <div class="media">
                                             <div class="media-left">
-                                                <img :src="notification.data.user.avatar">
+                                                <img :src="item.data.user.avatar">
                                             </div>
                                             <div class="media-body">
-                                                <h4 class="media-heading">{{notification.data.user.name}}</h4>
-                                                {{notification.data.message}}
+                                                <h4 class="media-heading">{{item.data.user.name}}</h4>
+                                                {{item.data.message.title}}
+                                            </div>
+                                            <div class="media-right" v-if="item.data.message.data.type == 2">
+                                                <img class="media-object" :src="item.data.message.data.images[0].url">
                                             </div>
                                         </div>
+                                        <hr>
                                     </a>
                                 </div>
                                 <div class="panel-footer text-center">
@@ -68,6 +69,7 @@
                             </div>
                         </ul>
                     </div>
+                    <!-- User -->
                     <div class="dropdown user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <img :src="user.avatar" alt="">
@@ -109,7 +111,11 @@
 
                     if (Notification.permission === "granted") {
                         var options = {
-                            body: e.message,
+                            body: e.message.title,
+                            icon: e.user.avatar,
+                        }
+                        if (e.message.data.type == 2) {
+                            options.image = e.message.data.images[0].url;
                         }
                         new Notification(e.user.name, options);
                     }
@@ -183,11 +189,19 @@
                 height: 400px;
                 overflow: scroll;
             }
-            img {
-                height: 35px;
-                width: 35px;
-                border-radius: 50%;
-                margin-right: 5px;
+            .media-left{
+                img {
+                    border-radius: 50%;
+                    width: 35px;
+                    height: 35px;
+                    margin-right: 5px;
+                }
+            }
+            .media-right{
+                img {
+                    width: 50px;
+                    height: 50px;
+                }
             }
         }
     }

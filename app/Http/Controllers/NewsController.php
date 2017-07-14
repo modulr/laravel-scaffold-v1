@@ -67,11 +67,20 @@ class NewsController extends Controller
         $news = News::with('user', 'images')->find($news->id);
 
         if ($news->type == 1) {
-            $message = 'Add a post '.$news->title;
+            $message = [
+                'title' => 'Add a post '.$news->title,
+                'data' => $news,
+            ];
         } else if ($news->type == 2) {
-            $message = 'Add a photo';
+            $message = [
+                'title' => 'Add a photo '.$news->title,
+                'data' => $news,
+            ];
         } else {
-            $message = 'Add a video';
+            $message = [
+                'title' => 'Add a video '.$news->title,
+                'data' => $news,
+            ];
         }
 
         $users = User::where('id', '<>', Auth::id())->get();
@@ -111,13 +120,24 @@ class NewsController extends Controller
         $news->likes = $likes;
         $news->save();
 
+        $news->images ;
+
         if (!$request->like && ($news->user_id != Auth::id())) {
             if ($news->type == 1) {
-                $message = 'Like your post '.$news->title;
+                $message = [
+                    'title' => 'Like your post '.$news->title,
+                    'data' => $news,
+                ];
             } else if ($news->type == 2) {
-                $message = 'Like your photo';
+                $message = [
+                    'title' => 'Like your post '.$news->title,
+                    'data' => $news,
+                ];
             } else {
-                $message = 'Like your video';
+                $message = [
+                    'title' => 'Like your post '.$news->title,
+                    'data' => $news,
+                ];
             }
             $news->user->notify(new NewsLiked($news->user, $message));
         }
