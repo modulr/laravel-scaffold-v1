@@ -72090,7 +72090,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.taskDone {\n    text-decoration: line-through;\n}\n.close {\n    display: none;\n}\nli:hover .close{\n    display: block;\n}\n.fa-lg {\n    margin-right: inherit;\n}\n", ""]);
+exports.push([module.i, "\n.taskDone {\n    text-decoration: line-through;\n}\n.close {\n    display: none;\n}\nli:hover .close{\n    display: block;\n}\n.fa-lg {\n    margin-right: inherit;\n}\n.my-handle {\n    cursor: move;\n}\n", ""]);
 
 // exports
 
@@ -72125,9 +72125,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
-        console.log('Component mounted.');
         this.getAll();
     },
     data: function data() {
@@ -72146,16 +72147,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             axios.get('/task/byUser').then(function (response) {
-                console.log(response);
                 _this.tasks = response.data;
-                console.log(_this.tasks);
             });
         },
         deleteTask: function deleteTask(task) {
             axios.delete('/task/destroy/' + task.id);
             this.tasks.splice(this.tasks.indexOf(task), 1);
         },
-        store: function store() {
+        storeTask: function storeTask() {
             var _this2 = this;
 
             axios.post('/task/store', this.newTask).then(function (response) {
@@ -72163,11 +72162,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.newTask = {};
             });
         },
+        doneTask: function doneTask(task) {
+            task.done = !task.done;
+            axios.put('/task/markDone/' + task.id, task).then(function (response) {
+                console.log(response);
+            });
+        },
         updateOrder: function updateOrder(e) {
-            console.log(e);
-            console.log(this.tasks);
-            axios.post('/task/updateOrder', { tasks: this.tasks }).then(function (response) {
-                //this.tasks = response.data;
+            axios.put('/task/updateOrder', { tasks: this.tasks }).then(function (response) {
+                console.log(response);
             });
         }
     }
@@ -74076,7 +74079,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "keyup": function($event) {
         if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
-        _vm.store($event)
+        _vm.storeTask($event)
       },
       "input": function($event) {
         if ($event.target.composing) { return; }
@@ -74086,6 +74089,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('hr'), _vm._v(" "), _c('ul', {
     staticClass: "list-group"
   }, [_c('draggable', {
+    attrs: {
+      "options": {
+        handle: '.my-handle'
+      }
+    },
     on: {
       "end": _vm.updateOrder
     },
@@ -74098,27 +74106,32 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, _vm._l((_vm.tasks), function(task, index) {
     return _c('li', {
+      key: task.id,
       staticClass: "list-group-item"
     }, [_c('span', {
-      staticClass: "glyphicon glyphicon-pushpin",
+      staticClass: "my-handle"
+    }, [_vm._v(":::")]), _vm._v(" "), _c('i', {
+      staticClass: "fa fa-lg fa-fw fa-2x",
+      class: {
+        'fa-circle-o': !task.done, 'fa-check-circle-o': task.done
+      },
       attrs: {
         "aria-hidden": "true"
+      },
+      on: {
+        "click": function($event) {
+          _vm.doneTask(task)
+        }
       }
-    }), _vm._v(" "), _c('i', {
-      staticClass: "fa fa-lg fa-circle-o",
-      attrs: {
-        "aria-hidden": "true",
-        "v.model": "task.done",
-        "type": "checkbox"
-      }
-    }), _vm._v("\n                " + _vm._s(task.title) + "\n                "), _c('button', {
+    }), _vm._v("\n                " + _vm._s(task.title) + "\n                "), _c('a', {
       staticClass: "close",
       attrs: {
-        "type": "button",
+        "href": "#",
         "aria-label": "Close"
       },
       on: {
         "click": function($event) {
+          $event.preventDefault();
           _vm.deleteTask(task)
         }
       }

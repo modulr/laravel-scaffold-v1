@@ -1,16 +1,16 @@
 <template>
     <div >
-        <!--Form -->
-        <input @keyup.enter="store" type="text" class="form-control" v-model="newTask.title" placeholder="Add new task">
+        <!-- newTask -->
+        <input @keyup.enter="storeTask" type="text" class="form-control" v-model="newTask.title" placeholder="Add new task">
         <hr>
         <!-- Lista -->
         <ul class="list-group">
-            <draggable v-model="tasks" @end="updateOrder">
-                <li class="list-group-item" v-for="(task, index) in tasks">
-                    <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
-                    <i class="fa fa-lg fa-circle-o" aria-hidden="true" v.model="task.done" type="checkbox"></i>
+            <draggable v-model="tasks" @end="updateOrder" :options="{handle:'.my-handle'}">
+                <li class="list-group-item" v-for="(task, index) in tasks" :key="task.id">
+                    <span class="my-handle">:::</span>
+                    <i class="fa fa-lg fa-fw fa-2x" :class="{'fa-circle-o': !task.done, 'fa-check-circle-o': task.done}" aria-hidden="true" @click="doneTask(task)"></i>
                     {{task.title}}
-                    <button type="button" class="close" aria-label="Close" @click="deleteTask(task)">x</button>
+                    <a href="#" class="close" aria-label="Close" @click.prevent="deleteTask(task)">x</a>
                 </li>
             </draggable>
         </ul>
@@ -19,10 +19,11 @@
 
 <!-- Scripts -->
 <script>
+
 import draggable from 'vuedraggable'
+
 export default {
     mounted() {
-        console.log('Component mounted.')
         this.getAll();
     },
     data() {
@@ -41,31 +42,31 @@ export default {
         getAll: function(){
             axios.get('/task/byUser')
             .then(response => {
-                console.log(response);
                 this.tasks = response.data;
-                console.log(this.tasks);
             });
         },
         deleteTask: function (task) {
             axios.delete('/task/destroy/' + task.id)
-                this.tasks.splice(
-                    this.tasks.indexOf(task),
-                    1
-                );
+                this.tasks.splice(this.tasks.indexOf(task),1);
         },
-        store: function () {
+        storeTask: function () {
             axios.post('/task/store', this.newTask)
             .then(response => {
                 this.tasks.unshift(response.data);
                 this.newTask = {};
             });
         },
-        updateOrder: function (e) {
-            console.log(e);
-            console.log(this.tasks);
-            axios.post('/task/updateOrder', {tasks:this.tasks})
+        doneTask: function (task) {
+            task.done = !task.done
+            axios.put('/task/markDone/'+ task.id , task)
             .then(response => {
-                //this.tasks = response.data;
+                console.log(response);
+            });
+        },
+        updateOrder: function (e) {
+            axios.put('/task/updateOrder', {tasks:this.tasks})
+            .then(response => {
+                console.log(response);
             });
         }
     }
@@ -85,5 +86,8 @@ li:hover .close{
 }
 .fa-lg {
     margin-right: inherit;
+}
+.my-handle {
+    cursor: move;
 }
 </style>
