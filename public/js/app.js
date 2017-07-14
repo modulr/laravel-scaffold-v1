@@ -68552,7 +68552,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.navbar .dropdown, .navbar .breadcrumb {\n  display: inline-block;\n}\n.navbar .menu {\n  padding-top: 13px;\n  padding-bottom: 13px;\n}\n.navbar .menu a {\n    text-decoration: none;\n}\n.navbar .menu a svg {\n      height: 20px;\n      margin-bottom: -5px;\n}\n.navbar .menu a svg path {\n        -webkit-transition: all 0.2s ease;\n        transition: all 0.2s ease;\n}\n.navbar .menu a svg path:hover {\n        fill: #eb8b01;\n}\n.navbar .breadcrumb {\n  background-color: transparent;\n  margin-bottom: 0;\n}\n.navbar .notifications {\n  margin-right: 20px;\n}\n.navbar .notifications a {\n    color: inherit;\n}\n.navbar .notifications .dropdown-menu {\n    width: 350px;\n}\n.navbar .notifications .dropdown-menu .panel-body {\n      height: 400px;\n      overflow: scroll;\n}\n.navbar .notifications .dropdown-menu img {\n      height: 35px;\n      width: 35px;\n      border-radius: 50%;\n      margin-right: 5px;\n}\n.navbar .user {\n  padding-top: 7px;\n  padding-bottom: 7px;\n}\n.navbar .user a {\n    color: inherit;\n    text-decoration: none;\n}\n.navbar .user a img {\n      height: 35px;\n      width: 35px;\n      border-radius: 50%;\n      margin-right: 5px;\n}\n", ""]);
+exports.push([module.i, "\n.navbar .dropdown, .navbar .breadcrumb {\n  display: inline-block;\n}\n.navbar .menu {\n  padding-top: 13px;\n  padding-bottom: 13px;\n}\n.navbar .menu a {\n    text-decoration: none;\n}\n.navbar .menu a svg {\n      height: 20px;\n      margin-bottom: -5px;\n}\n.navbar .menu a svg path {\n        -webkit-transition: all 0.2s ease;\n        transition: all 0.2s ease;\n}\n.navbar .menu a svg path:hover {\n        fill: #eb8b01;\n}\n.navbar .breadcrumb {\n  background-color: transparent;\n  margin-bottom: 0;\n}\n.navbar .notifications {\n  margin-right: 20px;\n}\n.navbar .notifications a {\n    color: inherit;\n}\n.navbar .notifications .dropdown-menu {\n    width: 350px;\n}\n.navbar .notifications .dropdown-menu .panel-body {\n      height: 400px;\n      overflow: scroll;\n}\n.navbar .notifications .dropdown-menu .media-left img {\n      border-radius: 50%;\n      width: 35px;\n      height: 35px;\n      margin-right: 5px;\n}\n.navbar .notifications .dropdown-menu .media-right img {\n      width: 50px;\n      height: 50px;\n}\n.navbar .user {\n  padding-top: 7px;\n  padding-bottom: 7px;\n}\n.navbar .user a {\n    color: inherit;\n    text-decoration: none;\n}\n.navbar .user a img {\n      height: 35px;\n      width: 35px;\n      border-radius: 50%;\n      margin-right: 5px;\n}\n", ""]);
 
 // exports
 
@@ -68685,6 +68685,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -68708,8 +68710,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             if (Notification.permission === "granted") {
                 var options = {
-                    body: e.message
+                    body: e.message.title,
+                    icon: e.user.avatar
                 };
+                if (e.message.data.type == 2) {
+                    options.image = e.message.data.images[0].url;
+                }
                 new Notification(e.user.name, options);
             }
         });
@@ -68824,7 +68830,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "fill": "#feae3b",
       "d": "M-472.2,400.8h-11.4c-0.6,0-1,0.5-1,1v6.7c0,0.6,0.5,1,1,1h11.4c0.6,0,1-0.5,1-1v-6.7\n                            C-471.2,401.3-471.7,400.8-472.2,400.8z"
     }
-  })])])]), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c('div', {
+  })])])]), _vm._v(" "), _vm._m(0)])]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-6 text-right"
   }, [_c('div', {
     staticClass: "dropdown notifications"
@@ -68855,7 +68861,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-default"
   }, [_c('div', {
     staticClass: "panel-body"
-  }, _vm._l((_vm.notifications), function(notification) {
+  }, _vm._l((_vm.notifications), function(item) {
     return _c('a', {
       attrs: {
         "href": "notifications"
@@ -68866,14 +68872,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "media-left"
     }, [_c('img', {
       attrs: {
-        "src": notification.data.user.avatar
+        "src": item.data.user.avatar
       }
     })]), _vm._v(" "), _c('div', {
       staticClass: "media-body"
     }, [_c('h4', {
       staticClass: "media-heading"
-    }, [_vm._v(_vm._s(notification.data.user.name))]), _vm._v("\n                                            " + _vm._s(notification.data.message) + "\n                                        ")])])])
-  })), _vm._v(" "), _vm._m(2)])])]), _vm._v(" "), _c('div', {
+    }, [_vm._v(_vm._s(item.data.user.name))]), _vm._v("\n                                            " + _vm._s(item.data.message.title) + "\n                                        ")]), _vm._v(" "), (item.data.message.data.type == 2) ? _c('div', {
+      staticClass: "media-right"
+    }, [_c('img', {
+      staticClass: "media-object",
+      attrs: {
+        "src": item.data.message.data.images[0].url
+      }
+    })]) : _vm._e()]), _vm._v(" "), _c('hr')])
+  })), _vm._v(" "), _vm._m(1)])])]), _vm._v(" "), _c('div', {
     staticClass: "dropdown user"
   }, [_c('a', {
     staticClass: "dropdown-toggle",
@@ -68937,20 +68950,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('i', {
     staticClass: "fa fa-fw fa-address-book-o"
   }), _vm._v(" Contacts")])])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('ol', {
-    staticClass: "breadcrumb"
-  }, [_c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Home")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Library")])]), _vm._v(" "), _c('li', {
-    staticClass: "active"
-  }, [_vm._v("Data")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-footer text-center"
@@ -69047,7 +69046,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.media img {\n  border-radius: 50%;\n  width: 50px;\n  height: 50px;\n}\n", ""]);
+exports.push([module.i, "\n.media .media-left img {\n  border-radius: 50%;\n  width: 50px;\n  height: 50px;\n}\n.media .media-right img {\n  width: 70px;\n  height: 70px;\n}\n", ""]);
 
 // exports
 
@@ -69058,6 +69057,10 @@ exports.push([module.i, "\n.media img {\n  border-radius: 50%;\n  width: 50px;\n
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
 //
 //
 //
@@ -69088,25 +69091,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', _vm._l((_vm.notifications), function(notification) {
-    return _c('div', {
+  return _c('div', _vm._l((_vm.notifications), function(item) {
+    return _c('a', {
+      attrs: {
+        "href": "notifications"
+      }
+    }, [_c('div', {
       staticClass: "media"
     }, [_c('div', {
       staticClass: "media-left"
-    }, [_c('a', {
-      attrs: {
-        "href": "#"
-      }
     }, [_c('img', {
       staticClass: "media-object",
       attrs: {
-        "src": notification.data.user.avatar
+        "src": item.data.user.avatar
       }
-    })])]), _vm._v(" "), _c('div', {
+    })]), _vm._v(" "), _c('div', {
       staticClass: "media-body"
     }, [_c('h4', {
       staticClass: "media-heading"
-    }, [_vm._v(_vm._s(notification.data.user.name))]), _vm._v("\n        " + _vm._s(notification.data.message) + "\n      ")])])
+    }, [_vm._v(_vm._s(item.data.user.name))]), _vm._v("\n                " + _vm._s(item.data.message.title) + "\n            ")]), _vm._v(" "), (item.data.message.data.type == 2) ? _c('div', {
+      staticClass: "media-right"
+    }, [_c('img', {
+      staticClass: "media-object",
+      attrs: {
+        "src": item.data.message.data.images[0].url
+      }
+    })]) : _vm._e()]), _vm._v(" "), _c('hr')])
   }))
 },staticRenderFns: []}
 module.exports.render._withStripped = true
