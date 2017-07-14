@@ -43,8 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks', 'TaskController@view');
     Route::get('/task/byUser', 'TaskController@byUser');
     Route::post('/task/store', 'TaskController@store');
-    Route::post('/task/updateOrder', 'TaskController@updateOrder');
     Route::delete('/task/destroy/{id}', 'TaskController@destroy');
+    Route::put('/task/markDone/{id}', 'TaskController@markDone');
+    Route::put('/task/updateOrder', 'TaskController@updateOrder');
 
     // Contacts
     Route::get('/contacts', 'ContactsController@index');

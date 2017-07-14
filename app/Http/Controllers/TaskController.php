@@ -21,9 +21,9 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-      $this->validate($request, [
-          'title' => 'required|string',
-      ]);
+        $this->validate($request, [
+            'title' => 'required|string',
+        ]);
 
       $maxOrder = Task::where('user_id', Auth::id())->max('order');
       $maxOrder ++;
@@ -42,17 +42,23 @@ class TaskController extends Controller
       return Task::destroy($id);
     }
 
-
     public function updateOrder(Request $request)
     {
-        info($request);
         $x=0;
-        // asort($request);
         foreach ($request->tasks as $key => $v) {
             $x++;
-             info($v);
-             $task = Task::where('id',$v['id'])
+            return Task::where('id', $v['id'])
                  ->update(['order'=>$x]);
         }
+    }
+
+    public function markDone(Request $request, $id)
+    {
+        $this->validate($request, [
+            'done' => 'required|boolean',
+        ]);
+
+        return Task::where('id', $id)
+             ->update(['done' => $request->done]);
     }
 }
