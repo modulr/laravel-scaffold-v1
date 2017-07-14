@@ -68687,10 +68687,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-<<<<<<< HEAD
 //
-=======
->>>>>>> files
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
