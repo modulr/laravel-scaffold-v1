@@ -6,10 +6,10 @@
 @import "node_modules/font-awesome/scss/font-awesome";
 
 // Variables
-@import "variables";
-
+@import "node_modules/bootswatch/paper/_variables";
 // Custom
-@import "custom";
+@import "variables";
+//@import "custom";
 
 // General
 @import 'navbar';
@@ -23,5 +23,4 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 // Bootswatch Paper
-@import "node_modules/bootswatch/paper/_variables";
 @import "node_modules/bootswatch/paper/_bootswatch";
