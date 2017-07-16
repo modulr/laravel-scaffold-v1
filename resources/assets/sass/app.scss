@@ -6,15 +6,8 @@
 @import "node_modules/font-awesome/scss/font-awesome";
 
 // Variables
-@import "node_modules/bootswatch/paper/_variables";
-// Custom
 @import "variables";
-//@import "custom";
-
-// General
-@import 'navbar';
-@import 'login';
-@import 'register';
+@import "node_modules/bootswatch/paper/_variables";
 
 // sweetalert
 @import "node_modules/sweetalert/dev/sweetalert";
@@ -24,3 +17,7 @@
 
 // Bootswatch Paper
 @import "node_modules/bootswatch/paper/_bootswatch";
+
+// General
+@import 'auth';
+@import 'navbar';

@@ -27,8 +27,7 @@
 <body>
     <div id="app">
         <navbar></navbar>
-
-        <div class="main container-fluid">
+        <div>
             @yield('content')
         </div>
     </div>
