@@ -1,0 +1,116 @@
+.auth{
+    padding: 0;
+    margin: 0;
+    .left-pane{
+        position: relative;
+        float: left;
+        width: 60%;
+        height: 100vh;
+        margin: 0;
+        padding: 80px 60px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: url(/img/bg/bg-banner.png);
+        color: white;
+        .logo{
+            margin-bottom: 40px;
+        }
+        .heading{
+            color: white;
+            width: 70%;
+            font-weight: 250;
+            font-size: 50px;
+        }
+        .text{
+            color: white;
+            width: 80%;
+            margin-top: 50px;
+            font-weight: 300;
+            font-size: 20px;
+        }
+    }
+    .right-pane{
+        float: right;
+        width: 40%;
+        height: 100vh;
+        background: white;
+        padding: 60px;
+        .nav-tabs {
+            margin-bottom: 60px;
+            > li > a,
+            > li > a:focus {
+                @include box-shadow(inset 0 -1px 0 #ddd);
+                &:hover {
+                    @include box-shadow(inset 0 -2px 0 $brand-orange);
+                    color: $brand-orange;
+                }
+            }
+            & > li.active > a,
+            & > li.active > a:focus {
+                @include box-shadow(inset 0 -2px 0 $brand-orange);
+                color: $brand-orange;
+                &:hover {
+                    color: $brand-orange;
+                }
+            }
+        }
+        form{
+            .form-group {
+                margin-bottom: 40px;
+            }
+            .btn-warning {
+                margin-top: 80px;
+            }
+            .btn-link {
+                margin-top: 40px;
+            }
+        }
+    }
+
+}
+@media screen and (min-width: 300px) {
+    .auth .left-pane{
+        display: none;
+    }
+    .auth .right-pane {
+        width: 100%;
+    }
+    .auth .right-pane {
+        padding: 25px;
+    }
+}
+@media screen and (min-width: 680px) {
+    .auth .left-pane{
+        display: none;
+    }
+    .auth .right-pane {
+        width: 100%;
+    }
+    .auth .right-pane{
+        padding: 60px;
+    }
+}
+@media screen and (min-width: 840px) {
+    .auth .left-pane{
+        display: block;
+        width: 55%;
+    }
+    .auth .right-pane {
+        width: 45%;
+    }
+    .auth .right-pane {
+        padding: 60px;
+    }
+}
+@media screen and (min-width: 1280px) {
+    .auth .left-pane{
+        display: block;
+        width: 55%;
+    }
+    .auth .right-pane {
+        width: 45%;
+    }
+    .auth .right-pane {
+        padding: 60px 120px;
+    }
+}
