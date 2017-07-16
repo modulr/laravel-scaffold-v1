@@ -13566,8 +13566,8 @@ input[type="checkbox"]:disabled:checked:after,
   margin-right: 10px;
 }
 
-.files .table,
-.files .table i {
+.files .thumbnail ul i,
+.files table ul i {
   margin-right: 10px;
 }
 
