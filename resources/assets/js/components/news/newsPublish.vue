@@ -33,7 +33,7 @@
                         </a>
                     </div>
                     <div class="col-xs-6 text-right">
-                        <button type="button" class="btn btn-default" @click="store">Publish</button>
+                        <button type="button" class="btn btn-primary" @click="store">Publish</button>
                     </div>
                 </div>
             </div>
@@ -97,9 +97,3 @@
         }
     }
 </script>
-
-<style lang="scss">
-    .fa-cloud-upload {
-        font-size: 3em
-    }
-</style>

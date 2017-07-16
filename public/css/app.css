@@ -13492,10 +13492,26 @@ input[type="checkbox"]:disabled:checked:after,
   }
 }
 
-div.navbar {
-  height: 60px;
-  line-height: 35px;
-  -webkit-box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-          box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+.news .panel-default .fa-cloud-upload {
+  font-size: 3em;
+}
+
+.news .panel-default a {
+  color: #636b6f;
+}
+
+.news .panel-default .panel-heading img {
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  margin-right: 8px;
+}
+
+.news .panel-default .panel-footer {
+  background-color: #fff;
+}
+
+.news .panel-default .panel-footer > a {
+  margin-right: 10px;
 }
 

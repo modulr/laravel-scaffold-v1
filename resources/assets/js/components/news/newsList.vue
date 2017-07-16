@@ -150,25 +150,3 @@
         }
     }
 </script>
-
-<style lang="scss">
-    .panel-default {
-        a {
-            color: #636b6f;
-        }
-        .panel-heading {
-            img {
-                border-radius: 50%;
-                height: 30px;
-                width: 30px;
-                margin-right: 8px;
-            }
-        }
-        .panel-footer {
-            background-color: #fff;
-            > a {
-                margin-right: 10px;
-            }
-        }
-    }
-</style>
