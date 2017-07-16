@@ -13,11 +13,11 @@
             <div class="col-md-6 text-right">
                 <a href="#" class="btn btn-link" :class="{ 'active': layout == 'list'}"
                     @click.prevent="toggleLayout('list')">
-                    <i class="fa fa-list" aria-hidden="true"></i>
+                    <i class="fa fa-lg fa-list" aria-hidden="true"></i>
                 </a>
                 <a href="#" class="btn btn-link" :class="{ 'active': layout == 'grid'}"
                     @click.prevent="toggleLayout('grid')">
-                    <i class="fa fa-th" aria-hidden="true"></i>
+                    <i class="fa fa-lg fa-th" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
@@ -379,18 +379,3 @@ export default {
 }
 
 </script>
-
-<style lang="scss">
-    .table {
-        img {
-            display: inline-block;
-            width: 35px;
-            height: 35px;
-            margin-right: 10px;
-        },
-        i {
-            margin-right: 10px;
-        }
-    }
-
-</style>

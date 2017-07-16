@@ -13515,3 +13515,59 @@ input[type="checkbox"]:disabled:checked:after,
   margin-right: 10px;
 }
 
+.contacts .table > tbody > tr:first-child > td {
+  border-top-color: transparent;
+}
+
+.contacts .table img {
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+  margin-right: 10px;
+}
+
+.contacts .panel-body img {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  margin-right: 10px;
+}
+
+.contacts .modal .modal-header img {
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  margin-left: 15px;
+  margin-right: 15px;
+  -webkit-box-shadow: 0 0 1px 6px #e8e8e8;
+  box-shadow: 0 0 1px 6px #e8e8e8;
+}
+
+.contacts .modal .modal-body {
+  padding: 30px;
+}
+
+.contacts .modal .modal-body ul {
+  margin: 25px;
+}
+
+.contacts .modal .modal-body ul li {
+  margin-bottom: 15px;
+}
+
+.contacts .modal .modal-body ul li i {
+  margin-right: 30px;
+}
+
+.files .table img {
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+}
+
+.files .table,
+.files .table i {
+  margin-right: 10px;
+}
+
