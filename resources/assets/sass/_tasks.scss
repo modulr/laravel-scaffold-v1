@@ -1,14 +1,22 @@
 .tasks {
-    .task-done {
-        text-decoration: line-through;
-    }
-    .close {
-        display: none;
-    }
-    li:hover .close{
-        display: block;
-    }
-    .my-handle {
-        cursor: move;
+    .list-group {
+        .list-group-item {
+            .my-handle {
+                cursor: move;
+            }
+            a {
+                color: $brand-orange;
+            }
+            .task-done {
+                text-decoration: line-through;
+            }
+            .close {
+                display: none;
+            }
+            &:hover .close{
+                display: block;
+            }
+        }
+
     }
 }

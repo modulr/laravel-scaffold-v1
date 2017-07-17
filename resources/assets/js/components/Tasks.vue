@@ -11,7 +11,7 @@
                     <span class="my-handle">:::</span>
                     <span>
                         <a href="#" @click="doneTask(task)">
-                            <i class="fa fa-lg fa-fw fa-2x" :class="{'fa-circle-o': !task.done, 'fa-check-circle-o': task.done}" aria-hidden="true"></i>
+                            <i class="fa fa-lg fa-fw fa-2x" :class="{'fa-circle-thin': !task.done, 'fa-check-circle': task.done}" aria-hidden="true"></i>
                         </a>
                         <span :class="{'task-done': task.done}">{{task.title}}</span>
                         <a href="#" class="close" aria-label="Close" @click.prevent="deleteTask(task)">

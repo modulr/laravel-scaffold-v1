@@ -69537,6 +69537,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -69622,7 +69623,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "role": "button",
       "aria-expanded": "false"
     }
-  }, [_c('svg', {
+  }, [_c('i', {
+    staticClass: "fa fa-bars fa-lg",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" "), _c('svg', {
     attrs: {
       "version": "1.1",
       "id": "Layer_1",
@@ -73493,7 +73499,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-lg fa-fw fa-2x",
       class: {
-        'fa-circle-o': !task.done, 'fa-check-circle-o': task.done
+        'fa-circle-thin': !task.done, 'fa-check-circle': task.done
       },
       attrs: {
         "aria-hidden": "true"

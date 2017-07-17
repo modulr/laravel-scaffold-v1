@@ -13504,6 +13504,11 @@ input[type="checkbox"]:disabled:checked:after,
 
 .navbar .menu a {
   text-decoration: none;
+  color: inherit;
+}
+
+.navbar .menu a i {
+  margin-right: 10px;
 }
 
 .navbar .menu a svg {
@@ -13672,19 +13677,23 @@ input[type="checkbox"]:disabled:checked:after,
   margin-right: 10px;
 }
 
-.tasks .task-done {
+.tasks .list-group .list-group-item .my-handle {
+  cursor: move;
+}
+
+.tasks .list-group .list-group-item a {
+  color: #feae3b;
+}
+
+.tasks .list-group .list-group-item .task-done {
   text-decoration: line-through;
 }
 
-.tasks .close {
+.tasks .list-group .list-group-item .close {
   display: none;
 }
 
-.tasks li:hover .close {
+.tasks .list-group .list-group-item:hover .close {
   display: block;
-}
-
-.tasks .my-handle {
-  cursor: move;
 }
 
