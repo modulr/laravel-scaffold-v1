@@ -13492,48 +13492,158 @@ input[type="checkbox"]:disabled:checked:after,
   }
 }
 
-.news .panel-default .fa-cloud-upload {
+.navbar .dropdown,
+.navbar .breadcrumb {
+  display: inline-block;
+}
+
+.navbar .menu {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.navbar .menu a {
+  text-decoration: none;
+}
+
+.navbar .menu a svg {
+  height: 20px;
+  margin-bottom: -5px;
+}
+
+.navbar .menu a svg path {
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+.navbar .menu a svg path:hover {
+  fill: #eb8b01;
+}
+
+.navbar .breadcrumb {
+  background-color: transparent;
+  margin-bottom: 0;
+}
+
+.navbar .notifications {
+  margin-right: 20px;
+}
+
+.navbar .notifications a {
+  color: inherit;
+}
+
+.navbar .notifications .dropdown-menu {
+  width: 300px;
+}
+
+.navbar .notifications .dropdown-menu .panel-body {
+  height: 400px;
+  overflow: scroll;
+}
+
+.navbar .notifications .dropdown-menu .media-left img {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  margin-right: 5px;
+}
+
+.navbar .notifications .dropdown-menu .media-right img {
+  width: 50px;
+  height: 50px;
+}
+
+.navbar .user {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.navbar .user a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.navbar .user a img {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.dashboard .panel-heading {
+  background-color: #fff;
+}
+
+.dashboard .panel-heading p {
+  display: inline-block;
+  border-left: 2px solid #feae3b;
+  padding-left: 14px;
+}
+
+.dashboard .panel-heading a {
+  color: #feae3b !important;
+}
+
+.news .panel-default .fa-cloud-upload,
+.dashboard .panel-default .fa-cloud-upload {
   font-size: 3em;
 }
 
-.news .panel-default a {
+.news .panel-default a,
+.dashboard .panel-default a {
   color: #636b6f;
 }
 
-.news .panel-default .panel-heading img {
+.news .panel-default .panel-heading img,
+.dashboard .panel-default .panel-heading img {
   border-radius: 50%;
   height: 30px;
   width: 30px;
   margin-right: 8px;
 }
 
-.news .panel-default .panel-footer {
+.news .panel-default .panel-footer,
+.dashboard .panel-default .panel-footer {
   background-color: #fff;
 }
 
-.news .panel-default .panel-footer > a {
+.news .panel-default .panel-footer > a,
+.dashboard .panel-default .panel-footer > a {
   margin-right: 10px;
 }
 
-.contacts .table > tbody > tr:first-child > td {
+.dashboard .news .panel-body {
+  padding: 0 10px !important;
+}
+
+.dashboard .news .panel-body p {
+  margin-bottom: 0;
+}
+
+.contacts .table > tbody > tr:first-child > td,
+.dashboard .table > tbody > tr:first-child > td {
   border-top-color: transparent;
 }
 
-.contacts .table img {
+.contacts .table img,
+.dashboard .table img {
   border-radius: 50%;
   height: 35px;
   width: 35px;
   margin-right: 10px;
 }
 
-.contacts .panel-body img {
+.contacts .panel-body img,
+.dashboard .panel-body img {
   border-radius: 50%;
   height: 50px;
   width: 50px;
   margin-right: 10px;
 }
 
-.contacts .modal .modal-header img {
+.contacts .modal .modal-header img,
+.dashboard .modal .modal-header img {
   border-radius: 50%;
   height: 60px;
   width: 60px;
@@ -13543,19 +13653,23 @@ input[type="checkbox"]:disabled:checked:after,
   box-shadow: 0 0 1px 6px #e8e8e8;
 }
 
-.contacts .modal .modal-body {
+.contacts .modal .modal-body,
+.dashboard .modal .modal-body {
   padding: 30px;
 }
 
-.contacts .modal .modal-body ul {
+.contacts .modal .modal-body ul,
+.dashboard .modal .modal-body ul {
   margin: 25px;
 }
 
-.contacts .modal .modal-body ul li {
+.contacts .modal .modal-body ul li,
+.dashboard .modal .modal-body ul li {
   margin-bottom: 15px;
 }
 
-.contacts .modal .modal-body ul li i {
+.contacts .modal .modal-body ul li i,
+.dashboard .modal .modal-body ul li i {
   margin-right: 30px;
 }
 
@@ -13569,5 +13683,25 @@ input[type="checkbox"]:disabled:checked:after,
 .files .thumbnail ul i,
 .files table ul i {
   margin-right: 10px;
+}
+
+.tasks .task-done,
+.dashboard .task-done {
+  text-decoration: line-through;
+}
+
+.tasks .close,
+.dashboard .close {
+  display: none;
+}
+
+.tasks li:hover .close,
+.dashboard li:hover .close {
+  display: block;
+}
+
+.tasks .my-handle,
+.dashboard .my-handle {
+  cursor: move;
 }
 

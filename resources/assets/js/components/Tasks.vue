@@ -1,16 +1,23 @@
 <template>
     <div >
         <!-- newTask -->
-        <input @keyup.enter="storeTask" type="text" class="form-control" v-model="newTask.title" placeholder="Add new task">
-        <hr>
+        <div class="form-group">
+            <input @keyup.enter="storeTask" type="text" class="form-control" v-model="newTask.title" placeholder="Add new task">
+        </div>
         <!-- Lista -->
         <ul class="list-group">
             <draggable v-model="tasks" @end="updateOrder" :options="{handle:'.my-handle'}">
                 <li class="list-group-item" v-for="(task, index) in tasks" :key="task.id">
                     <span class="my-handle">:::</span>
-                    <i class="fa fa-lg fa-fw fa-2x" :class="{'fa-circle-o': !task.done, 'fa-check-circle-o': task.done}" aria-hidden="true" @click="doneTask(task)"></i>
-                    {{task.title}}
-                    <a href="#" class="close" aria-label="Close" @click.prevent="deleteTask(task)">x</a>
+                    <span>
+                        <a href="#" @click="doneTask(task)">
+                            <i class="fa fa-lg fa-fw fa-2x" :class="{'fa-circle-o': !task.done, 'fa-check-circle-o': task.done}" aria-hidden="true"></i>
+                        </a>
+                        <span :class="{'task-done': task.done}">{{task.title}}</span>
+                        <a href="#" class="close" aria-label="Close" @click.prevent="deleteTask(task)">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </span>
                 </li>
             </draggable>
         </ul>
@@ -29,12 +36,10 @@ export default {
     data() {
         return{
             tasks: [],
-            newTask:{}
+            newTask:{},
+            user: Laravel.user
         }
     },
-    props: [
-        'user'
-    ],
     components: {
         draggable,
     },
@@ -72,22 +77,3 @@ export default {
     }
 }
 </script>
-
-<!-- Styles -->
-<style>
-.taskDone {
-    text-decoration: line-through;
-}
-.close {
-    display: none;
-}
-li:hover .close{
-    display: block;
-}
-.fa-lg {
-    margin-right: inherit;
-}
-.my-handle {
-    cursor: move;
-}
-</style>

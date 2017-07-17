@@ -69369,17 +69369,13 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(180)
-}
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(183),
   /* template */
   __webpack_require__(184),
   /* styles */
-  injectStyle,
+  null,
   /* scopeId */
   null,
   /* moduleIdentifier (server only) */
@@ -69409,46 +69405,8 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 180 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(181);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("482f4d7b", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-22a79809\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Navbar.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-22a79809\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Navbar.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 181 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.navbar .dropdown, .navbar .breadcrumb {\n  display: inline-block;\n}\n.navbar .menu {\n  padding-top: 13px;\n  padding-bottom: 13px;\n}\n.navbar .menu a {\n    text-decoration: none;\n}\n.navbar .menu a svg {\n      height: 20px;\n      margin-bottom: -5px;\n}\n.navbar .menu a svg path {\n        -webkit-transition: all 0.2s ease;\n        transition: all 0.2s ease;\n}\n.navbar .menu a svg path:hover {\n        fill: #eb8b01;\n}\n.navbar .breadcrumb {\n  background-color: transparent;\n  margin-bottom: 0;\n}\n.navbar .notifications {\n  margin-right: 20px;\n}\n.navbar .notifications a {\n    color: inherit;\n}\n.navbar .notifications .dropdown-menu {\n    width: 350px;\n}\n.navbar .notifications .dropdown-menu .panel-body {\n      height: 400px;\n      overflow: scroll;\n}\n.navbar .notifications .dropdown-menu .media-left img {\n      border-radius: 50%;\n      width: 35px;\n      height: 35px;\n      margin-right: 5px;\n}\n.navbar .notifications .dropdown-menu .media-right img {\n      width: 50px;\n      height: 50px;\n}\n.navbar .user {\n  padding-top: 7px;\n  padding-bottom: 7px;\n}\n.navbar .user a {\n    color: inherit;\n    text-decoration: none;\n}\n.navbar .user a img {\n      height: 35px;\n      width: 35px;\n      border-radius: 50%;\n      margin-right: 5px;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 180 */,
+/* 181 */,
 /* 182 */
 /***/ (function(module, exports) {
 
@@ -69819,31 +69777,31 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('li', [_c('a', {
     attrs: {
-      "href": "dashboard"
+      "href": "/dashboard"
     }
   }, [_c('i', {
     staticClass: "fa fa-fw fa-home"
   }), _vm._v(" Dashboard")])]), _vm._v(" "), _c('li', [_c('a', {
     attrs: {
-      "href": "news"
+      "href": "/news"
     }
   }, [_c('i', {
     staticClass: "fa fa-fw fa-bullhorn"
   }), _vm._v(" News")])]), _vm._v(" "), _c('li', [_c('a', {
     attrs: {
-      "href": "tasks"
+      "href": "/tasks"
     }
   }, [_c('i', {
     staticClass: "fa fa-fw fa-tasks"
   }), _vm._v(" Tasks")])]), _vm._v(" "), _c('li', [_c('a', {
     attrs: {
-      "href": "files"
+      "href": "/files"
     }
   }, [_c('i', {
     staticClass: "fa fa-fw fa-folder-o"
   }), _vm._v(" Files")])]), _vm._v(" "), _c('li', [_c('a', {
     attrs: {
-      "href": "contacts"
+      "href": "/contacts"
     }
   }, [_c('i', {
     staticClass: "fa fa-fw fa-address-book-o"
@@ -71463,17 +71421,13 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(203)
-}
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(205),
   /* template */
   __webpack_require__(208),
   /* styles */
-  injectStyle,
+  null,
   /* scopeId */
   null,
   /* moduleIdentifier (server only) */
@@ -71503,46 +71457,8 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 203 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(204);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("1b218b74", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-471835a5\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Tasks.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-471835a5\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Tasks.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 204 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.taskDone {\n    text-decoration: line-through;\n}\n.close {\n    display: none;\n}\nli:hover .close{\n    display: block;\n}\n.fa-lg {\n    margin-right: inherit;\n}\n.my-handle {\n    cursor: move;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 203 */,
+/* 204 */,
 /* 205 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -71550,6 +71466,13 @@ exports.push([module.i, "\n.taskDone {\n    text-decoration: line-through;\n}\n.
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable__ = __webpack_require__(206);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuedraggable__);
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -71581,11 +71504,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             tasks: [],
-            newTask: {}
+            newTask: {},
+            user: Laravel.user
         };
     },
 
-    props: ['user'],
     components: {
         draggable: __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a
     },
@@ -73508,7 +73431,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('input', {
+  return _c('div', [_c('div', {
+    staticClass: "form-group"
+  }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -73533,7 +73458,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.newTask.title = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('hr'), _vm._v(" "), _c('ul', {
+  })]), _vm._v(" "), _c('ul', {
     staticClass: "list-group"
   }, [_c('draggable', {
     attrs: {
@@ -73557,20 +73482,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "list-group-item"
     }, [_c('span', {
       staticClass: "my-handle"
-    }, [_vm._v(":::")]), _vm._v(" "), _c('i', {
-      staticClass: "fa fa-lg fa-fw fa-2x",
-      class: {
-        'fa-circle-o': !task.done, 'fa-check-circle-o': task.done
-      },
+    }, [_vm._v(":::")]), _vm._v(" "), _c('span', [_c('a', {
       attrs: {
-        "aria-hidden": "true"
+        "href": "#"
       },
       on: {
         "click": function($event) {
           _vm.doneTask(task)
         }
       }
-    }), _vm._v("\n                " + _vm._s(task.title) + "\n                "), _c('a', {
+    }, [_c('i', {
+      staticClass: "fa fa-lg fa-fw fa-2x",
+      class: {
+        'fa-circle-o': !task.done, 'fa-check-circle-o': task.done
+      },
+      attrs: {
+        "aria-hidden": "true"
+      }
+    })]), _vm._v(" "), _c('span', {
+      class: {
+        'task-done': task.done
+      }
+    }, [_vm._v(_vm._s(task.title))]), _vm._v(" "), _c('a', {
       staticClass: "close",
       attrs: {
         "href": "#",
@@ -73582,7 +73515,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.deleteTask(task)
         }
       }
-    }, [_vm._v("x")])])
+    }, [_c('span', {
+      attrs: {
+        "aria-hidden": "true"
+      }
+    }, [_vm._v("×")])])])])
   }))], 1)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true

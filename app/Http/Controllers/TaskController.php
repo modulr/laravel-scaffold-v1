@@ -44,12 +44,16 @@ class TaskController extends Controller
 
     public function updateOrder(Request $request)
     {
+        info($request->tasks);
         $x=0;
         foreach ($request->tasks as $key => $v) {
             $x++;
-            return Task::where('id', $v['id'])
-                 ->update(['order'=>$x]);
+            info($v['id']);
+            info($x);
+            Task::where('id', $v['id'])
+                 ->update(['order' => $x]);
         }
+        return Task::orderBy('order', 'asc')->get();
     }
 
     public function markDone(Request $request, $id)

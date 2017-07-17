@@ -1,0 +1,15 @@
+.tasks,
+.dashboard {
+    .task-done {
+        text-decoration: line-through;
+    }
+    .close {
+        display: none;
+    }
+    li:hover .close{
+        display: block;
+    }
+    .my-handle {
+        cursor: move;
+    }
+}

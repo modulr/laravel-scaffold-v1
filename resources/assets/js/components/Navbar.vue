@@ -30,11 +30,11 @@
                             </svg>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="dashboard"><i class="fa fa-fw fa-home"></i> Dashboard</a></li>
-                            <li><a href="news"><i class="fa fa-fw fa-bullhorn"></i> News</a></li>
-                            <li><a href="tasks"><i class="fa fa-fw fa-tasks"></i> Tasks</a></li>
-                            <li><a href="files"><i class="fa fa-fw fa-folder-o"></i> Files</a></li>
-                            <li><a href="contacts"><i class="fa fa-fw fa-address-book-o"></i> Contacts</a></li>
+                            <li><a href="/dashboard"><i class="fa fa-fw fa-home"></i> Dashboard</a></li>
+                            <li><a href="/news"><i class="fa fa-fw fa-bullhorn"></i> News</a></li>
+                            <li><a href="/tasks"><i class="fa fa-fw fa-tasks"></i> Tasks</a></li>
+                            <li><a href="/files"><i class="fa fa-fw fa-folder-o"></i> Files</a></li>
+                            <li><a href="/contacts"><i class="fa fa-fw fa-address-book-o"></i> Contacts</a></li>
                         </ul>
                     </div>
                 </div>
@@ -151,74 +151,3 @@
         }
     }
 </script>
-
-<style lang="scss">
-.navbar {
-    .dropdown, .breadcrumb {
-        display: inline-block;
-    }
-    .menu {
-        padding-top: 13px;
-        padding-bottom: 13px;
-        a {
-            text-decoration: none;
-            svg {
-                height: 20px;
-                margin-bottom: -5px;
-                path{
-                    -webkit-transition: (all .2s ease);
-                    transition: (all .2s ease);
-                }
-                path:hover {
-                    fill: darken(#feae3b, 15%);
-                }
-            }
-        }
-    }
-    .breadcrumb {
-        background-color: transparent;
-        margin-bottom: 0;
-    }
-    .notifications {
-        margin-right: 20px;
-        a {
-            color: inherit;
-        }
-        .dropdown-menu {
-            width: 350px;
-            .panel-body {
-                height: 400px;
-                overflow: scroll;
-            }
-            .media-left{
-                img {
-                    border-radius: 50%;
-                    width: 35px;
-                    height: 35px;
-                    margin-right: 5px;
-                }
-            }
-            .media-right{
-                img {
-                    width: 50px;
-                    height: 50px;
-                }
-            }
-        }
-    }
-    .user {
-        padding-top: 7px;
-        padding-bottom: 7px;
-        a {
-            color: inherit;
-            text-decoration: none;
-            img {
-                height: 35px;
-                width: 35px;
-                border-radius: 50%;
-                margin-right: 5px;
-            }
-        }
-    }
-}
-</style>

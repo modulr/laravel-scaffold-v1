@@ -1,4 +1,5 @@
-.news {
+.news,
+.dashboard {
     .panel-default {
         .fa-cloud-upload {
             font-size: 3em
@@ -19,6 +20,15 @@
             > a {
                 margin-right: 10px;
             }
+        }
+    }
+}
+
+.dashboard .news {
+    .panel-body {
+        padding: 0 10px !important;
+        p {
+            margin-bottom: 0;
         }
     }
 }
