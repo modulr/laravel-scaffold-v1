@@ -13585,31 +13585,26 @@ input[type="checkbox"]:disabled:checked:after,
   color: #feae3b !important;
 }
 
-.news .panel-default .fa-cloud-upload,
-.dashboard .panel-default .fa-cloud-upload {
+.news .panel-default .fa-cloud-upload {
   font-size: 3em;
 }
 
-.news .panel-default a,
-.dashboard .panel-default a {
+.news .panel-default a {
   color: #636b6f;
 }
 
-.news .panel-default .panel-heading img,
-.dashboard .panel-default .panel-heading img {
+.news .panel-default .panel-heading img {
   border-radius: 50%;
   height: 30px;
   width: 30px;
   margin-right: 8px;
 }
 
-.news .panel-default .panel-footer,
-.dashboard .panel-default .panel-footer {
+.news .panel-default .panel-footer {
   background-color: #fff;
 }
 
-.news .panel-default .panel-footer > a,
-.dashboard .panel-default .panel-footer > a {
+.news .panel-default .panel-footer > a {
   margin-right: 10px;
 }
 
@@ -13621,29 +13616,25 @@ input[type="checkbox"]:disabled:checked:after,
   margin-bottom: 0;
 }
 
-.contacts .table > tbody > tr:first-child > td,
-.dashboard .table > tbody > tr:first-child > td {
+.contacts .table > tbody > tr:first-child > td {
   border-top-color: transparent;
 }
 
-.contacts .table img,
-.dashboard .table img {
+.contacts .table img {
   border-radius: 50%;
   height: 35px;
   width: 35px;
   margin-right: 10px;
 }
 
-.contacts .panel-body img,
-.dashboard .panel-body img {
+.contacts .panel-body img {
   border-radius: 50%;
   height: 50px;
   width: 50px;
   margin-right: 10px;
 }
 
-.contacts .modal .modal-header img,
-.dashboard .modal .modal-header img {
+.contacts .modal .modal-header img {
   border-radius: 50%;
   height: 60px;
   width: 60px;
@@ -13653,23 +13644,19 @@ input[type="checkbox"]:disabled:checked:after,
   box-shadow: 0 0 1px 6px #e8e8e8;
 }
 
-.contacts .modal .modal-body,
-.dashboard .modal .modal-body {
+.contacts .modal .modal-body {
   padding: 30px;
 }
 
-.contacts .modal .modal-body ul,
-.dashboard .modal .modal-body ul {
+.contacts .modal .modal-body ul {
   margin: 25px;
 }
 
-.contacts .modal .modal-body ul li,
-.dashboard .modal .modal-body ul li {
+.contacts .modal .modal-body ul li {
   margin-bottom: 15px;
 }
 
-.contacts .modal .modal-body ul li i,
-.dashboard .modal .modal-body ul li i {
+.contacts .modal .modal-body ul li i {
   margin-right: 30px;
 }
 
@@ -13685,23 +13672,19 @@ input[type="checkbox"]:disabled:checked:after,
   margin-right: 10px;
 }
 
-.tasks .task-done,
-.dashboard .task-done {
+.tasks .task-done {
   text-decoration: line-through;
 }
 
-.tasks .close,
-.dashboard .close {
+.tasks .close {
   display: none;
 }
 
-.tasks li:hover .close,
-.dashboard li:hover .close {
+.tasks li:hover .close {
   display: block;
 }
 
-.tasks .my-handle,
-.dashboard .my-handle {
+.tasks .my-handle {
   cursor: move;
 }
 
