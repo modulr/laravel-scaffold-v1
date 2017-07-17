@@ -69543,8 +69543,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             user: Laravel.user,
             notifications: Laravel.notifications,
-            unReadNotifications: Laravel.unReadNotifications,
-            guest: Laravel.guest
+            unReadNotifications: Laravel.unReadNotifications
         };
     },
     mounted: function mounted() {
@@ -69605,7 +69604,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (!_vm.guest) ? _c('div', {
+  return _c('div', {
     staticClass: "navbar navbar-default navbar-fixed-top"
   }, [_c('div', {
     staticClass: "container-fluid"
@@ -69768,7 +69767,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.logout($event)
       }
     }
-  }, [_vm._v("\n                                Logout\n                            ")])])])])])])])]) : _vm._e()
+  }, [_vm._v("\n                                Logout\n                            ")])])])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('ul', {
     staticClass: "dropdown-menu",
@@ -74304,7 +74303,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         }
 
-        this.layout = JSON.parse(localStorage.getItem('files')).layout;
+        if (JSON.parse(localStorage.getItem('files'))) {
+            this.layout = JSON.parse(localStorage.getItem('files')).layout;
+        }
     },
 
 

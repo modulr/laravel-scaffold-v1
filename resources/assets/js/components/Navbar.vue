@@ -1,5 +1,5 @@
 <template>
-    <div class="navbar navbar-default navbar-fixed-top" v-if="!guest">
+    <div class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <div class="row">
                 <!-- Logo -->
@@ -97,7 +97,6 @@
                 user: Laravel.user,
                 notifications: Laravel.notifications,
                 unReadNotifications: Laravel.unReadNotifications,
-                guest: Laravel.guest,
             }
         },
         mounted() {

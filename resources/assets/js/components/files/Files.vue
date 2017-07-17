@@ -301,7 +301,9 @@ export default {
             });
         }
 
-        this.layout = JSON.parse(localStorage.getItem('files')).layout;
+        if (JSON.parse(localStorage.getItem('files'))) {
+            this.layout = JSON.parse(localStorage.getItem('files')).layout;
+        }
     },
 
     methods: {
