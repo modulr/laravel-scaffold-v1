@@ -5,7 +5,7 @@
         <h2>{{$breadcrumb}}</h2>
         <div class="row">
             <div class="col-md-3">
-                <div class="panel panel-default tasks">
+                <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
                         <p class="lead">Tasks</p>
                         <a href="/tasks" class="pull-right">view all</a>
@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="col-md-5">
-                <div class="panel panel-default">
+                <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
                         <p class="lead">News</p>
                         <a href="/news" class="pull-right">view all</a>
@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="panel panel-default">
+                <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
                         <p class="lead">Contacts</p>
                         <a href="/contacts" class="pull-right">view all</a>
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="panel panel-default">
+                <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
                         <p class="lead">Files</p>
                         <a href="/files" class="pull-right">view all</a>

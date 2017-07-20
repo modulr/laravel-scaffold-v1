@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div class="tasks">
         <!-- newTask -->
         <div class="form-group">
             <input @keyup.enter="storeTask" type="text" class="form-control" v-model="newTask.title" placeholder="Add new task">
