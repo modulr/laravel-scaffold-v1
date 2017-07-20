@@ -59,7 +59,7 @@
                                                 <img :src="item.data.user.avatar">
                                             </div>
                                             <div class="media-body">
-                                                <h4 class="media-heading">{{item.data.user.name}}</h4>
+                                                <h6 class="media-heading">{{item.data.user.name}}</h6>
                                                 {{item.data.message.title}}
                                             </div>
                                             <div class="media-right" v-if="item.data.message.data.type == 2">
@@ -68,6 +68,12 @@
                                         </div>
                                         <hr>
                                     </a>
+                                    <!-- Init Message  -->
+                                    <div class="text-center" v-if="notifications.length == 0">
+                                        <br>
+                                        <i class="fa fa-bell fa-5x text-muted" aria-hidden="true"></i>
+                                        <p class="lead text-muted">Don't have notifications</p>
+                                    </div>
                                 </div>
                                 <div class="panel-footer text-center">
                                     <a href="notifications"><small>View all notifications</small></a>

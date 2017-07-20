@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="notifications">
+        <!-- List -->
         <a href="notifications" v-for="item in notifications">
             <div class="media">
                 <div class="media-left">
@@ -15,6 +16,15 @@
             </div>
             <hr>
         </a>
+
+        <!-- Init Message  -->
+        <div class="panel panel-default" v-if="notifications.length == 0">
+            <div class="panel-body text-center">
+                <br>
+                <i class="fa fa-bell fa-5x text-muted" aria-hidden="true"></i>
+                <p class="lead text-muted">Don't have notifications</p>
+            </div>
+        </div>
     </div>
 </template>
 

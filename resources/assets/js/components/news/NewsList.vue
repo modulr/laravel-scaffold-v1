@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="news">
         <!-- List -->
         <div class="panel panel-default" v-for="(item, index) in news">
             <div class="panel-heading">
@@ -42,6 +42,7 @@
         <!-- Init Message  -->
         <div class="panel panel-default" v-if="news.length == 0">
             <div class="panel-body text-center">
+                <br>
                 <i class="fa fa-bullhorn fa-5x text-muted" aria-hidden="true"></i>
                 <p class="lead text-muted">Publish the first news!!</p>
             </div>

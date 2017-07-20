@@ -6,12 +6,16 @@
             height: 35px;
             margin-right: 10px;
         }
-
     }
     .thumbnail,
     table {
         ul i {
             margin-right: 10px;
+        }
+    }
+    .modal-body {
+        .fa-cloud-upload {
+            font-size: 3em
         }
     }
 }

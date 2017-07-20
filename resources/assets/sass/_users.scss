@@ -6,10 +6,10 @@
             width: 35px;
             margin-right: 10px;
         }
-        .mdi-edit {
+        td:last-child i {
             opacity: 0;
         }
-        tr:hover .mdi-edit {
+        tr:hover td:last-child i {
             opacity: 1;
         }
     }
