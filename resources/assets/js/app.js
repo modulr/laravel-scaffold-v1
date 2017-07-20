@@ -24,8 +24,8 @@ Vue.component('notifications', require('./components/Notifications.vue'));
 Vue.component('users', require('./components/users/Users.vue'));
 // News
 //Vue.component('news', require('./components/News.vue'));
-Vue.component('newsPublish', require('./components/news/newsPublish.vue'));
-Vue.component('newsList', require('./components/news/newsList.vue'));
+Vue.component('newsPublish', require('./components/news/NewsPublish.vue'));
+Vue.component('newsList', require('./components/news/NewsList.vue'));
 // Tasks
 Vue.component('tasks', require('./components/Tasks.vue'));
 // Contacts
