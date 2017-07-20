@@ -116,7 +116,7 @@
                             timer: 1000,
                             showConfirmButton: false
                         });
-                        this.error = {};
+                        self.error = {};
                     })
                     .catch(error => {
                         self.error = error.response.data;

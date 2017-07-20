@@ -38,6 +38,8 @@
                             <li><a href="/tasks"><i class="fa fa-fw fa-tasks"></i> Tasks</a></li>
                             <li><a href="/files"><i class="fa fa-fw fa-folder-o"></i> Files</a></li>
                             <li><a href="/contacts"><i class="fa fa-fw fa-address-book-o"></i> Contacts</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/users"><i class="fa fa-fw fa-users"></i> Users</a></li>
                         </ul>
                     </div>
                 </div>

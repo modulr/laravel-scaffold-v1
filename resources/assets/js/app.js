@@ -20,6 +20,8 @@ Vue.component('carousel', require('./components/auth/Carousel.vue'));
 // Layout
 Vue.component('navbar', require('./components/Navbar.vue'));
 Vue.component('notifications', require('./components/Notifications.vue'));
+// Users
+Vue.component('users', require('./components/users/Users.vue'));
 // News
 //Vue.component('news', require('./components/News.vue'));
 Vue.component('newsPublish', require('./components/news/newsPublish.vue'));
