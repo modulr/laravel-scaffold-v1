@@ -332,7 +332,6 @@ export default {
         },
         uploadAvatar(response) {
             console.log(response);
-            //this.user.avatar = response.data.avatar;
         },
         generatePassword: function () {
             var length = 10;
