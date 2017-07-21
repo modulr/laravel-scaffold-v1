@@ -1,73 +1,58 @@
-@extends('layouts.auth')
+@extends('layouts.app')
 
 @section('content')
-<div class="register">
-  <div class="content">
+<div class="auth">
     <div class="left-pane">
-      <div class="content">
-        <div class="logo">
-          <img src="img/logos/logowhite.png" alt="">
-        </div>
-        <div class="content">
-          <h3 class="heading">
-            Lorem ipsum dolor sit amet, consectetur.
-          </h3>
-          <p class="text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque velit sapien, aliquam ac turpis a, varius condimentum risus. Integer eget velit id ex congue euismod.
-          </p>
-        </div>
-      </div>
+        <carousel></carousel>
     </div>
     <div class="right-pane">
-      <div class="content">
-        <div class="indicator">
-          <div class="input">
-            <a href="/login"><button class="sign-in inactive">Sign In</button></a>
-            <a href="/register"><button class="sign-up active">Sign Up</button></a>
-          </div>
-        </div>
-        <form class="form" method="POST" action="{{ route('register') }}">
+        <ul class="nav nav-tabs nav-justified">
+            <li><a href="{{ route('login') }}"><p class="lead">Sign In</p></a></li>
+            <li class="active"><a href="#signUp" data-toggle="tab"><p class="lead">Sign Up</p></a></li>
+        </ul>
+        <form method="POST" action="{{ route('register') }}">
             {{ csrf_field() }}
 
-          <div class="input-group{{ $errors->has('name') ? ' has-error' : '' }}">
-            <input id="name" type="text" placeholder="Name" name="name" value="{{ old('name') }}" required autofocus>
+            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Name" required autofocus>
 
-            @if ($errors->has('name'))
+                @if ($errors->has('name'))
                 <span class="help-block">
-                    <strong>{{ $errors->first('name') }}</strong>
+                    {{ $errors->first('name') }}
                 </span>
-            @endif
-          </div>
-          <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
-            <input id="email" type="email" placeholder="Email" name="email" value="{{ old('email') }}" required>
+                @endif
+            </div>
 
-            @if ($errors->has('email'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </span>
-            @endif
-          </div>
-          <div class="input-group{{ $errors->has('password') ? ' has-error' : '' }}">
-            <input id="password" type="password" placeholder="Password" name="password" required>
+            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="E-Mail Address" required>
 
-            @if ($errors->has('password'))
+                @if ($errors->has('email'))
                 <span class="help-block">
-                    <strong>{{ $errors->first('password') }}</strong>
+                    {{ $errors->first('email') }}
                 </span>
-            @endif
-          </div>
-          <div class="input-group">
-            <input id="password-confirm" type="password" placeholder="Repeat password" name="password_confirmation" required>
-          </div>
-          <div class="send-input">
-            <button type="submit">Sign Up</button>
-          </div>
-          <div class="policy">
-            <p>By clicking sign up you are agreeing to the <a href="#">terms of use and privacy policy.</a></p>
-          </div>
+                @endif
+            </div>
+
+            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
+
+                @if ($errors->has('password'))
+                <span class="help-block">
+                    {{ $errors->first('password') }}
+                </span>
+                @endif
+            </div>
+
+            <div class="form-group">
+                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password" required>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-warning btn-block">
+                    Register
+                </button>
+            </div>
         </form>
-      </div>
     </div>
-  </div>
 </div>
 @endsection
