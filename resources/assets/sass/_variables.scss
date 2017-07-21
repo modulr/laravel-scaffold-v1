@@ -3,14 +3,14 @@
 //$body-bg: #FAFAFA;
 
 // Brands
-$brand-primary: #3097D1;
-$brand-info: #8eb4cb;
-$brand-success: #2ab27b;
-$brand-warning: #feae3b;
-$brand-danger: #bf5329;
-$brand-orange: #feae3b;
+$brand-primary: #FEAE3B;
+$brand-info: #6E1BCB;
+$brand-success: #54FE88;
+$brand-warning: #FED33A;
+$brand-danger: #ec2121;
+$brand-orange: #FEAE3B;
 $brand-gray: #95989A;
-$inactive: #dddada;
+$inactive: #DDDADA;
 
 // Typography
 // $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
@@ -18,3 +18,8 @@ $inactive: #dddada;
 // $font-size-base: 14px;
 // $line-height-base: 1.6;
 // $text-color: #636b6f;
+
+// ** Bootstrap Overwrites
+.btn-warning, .btn-success, .btn-primary, .btn-danger{
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16)!important;
+}
