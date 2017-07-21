@@ -1,11 +1,14 @@
 <template>
-    <div class="navbar navbar-default navbar-fixed-top" v-if="!guest">
+    <div class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <div class="row">
                 <!-- Logo -->
                 <div class="col-xs-6">
                     <div class="dropdown menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
+                        </a>
+                        <a href="/dashboard">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="-527.2 390.3 55.9 29.6" enable-background="new -527.2 390.3 55.9 29.6" xml:space="preserve">
                               <g>
@@ -30,11 +33,13 @@
                             </svg>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="dashboard"><i class="fa fa-fw fa-home"></i> Dashboard</a></li>
-                            <li><a href="news"><i class="fa fa-fw fa-bullhorn"></i> News</a></li>
-                            <li><a href="tasks"><i class="fa fa-fw fa-tasks"></i> Tasks</a></li>
-                            <li><a href="files"><i class="fa fa-fw fa-folder-o"></i> Files</a></li>
-                            <li><a href="contacts"><i class="fa fa-fw fa-address-book-o"></i> Contacts</a></li>
+                            <li><a href="/dashboard"><i class="fa fa-fw fa-home"></i> Dashboard</a></li>
+                            <li><a href="/news"><i class="fa fa-fw fa-bullhorn"></i> News</a></li>
+                            <li><a href="/tasks"><i class="fa fa-fw fa-tasks"></i> Tasks</a></li>
+                            <li><a href="/files"><i class="fa fa-fw fa-folder-o"></i> Files</a></li>
+                            <li><a href="/contacts"><i class="fa fa-fw fa-address-book-o"></i> Contacts</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/users"><i class="fa fa-fw fa-users"></i> Users</a></li>
                         </ul>
                     </div>
                 </div>
@@ -54,7 +59,7 @@
                                                 <img :src="item.data.user.avatar">
                                             </div>
                                             <div class="media-body">
-                                                <h4 class="media-heading">{{item.data.user.name}}</h4>
+                                                <h6 class="media-heading">{{item.data.user.name}}</h6>
                                                 {{item.data.message.title}}
                                             </div>
                                             <div class="media-right" v-if="item.data.message.data.type == 2">
@@ -63,6 +68,12 @@
                                         </div>
                                         <hr>
                                     </a>
+                                    <!-- Init Message  -->
+                                    <div class="text-center" v-if="notifications.length == 0">
+                                        <br>
+                                        <i class="fa fa-bell fa-5x text-muted" aria-hidden="true"></i>
+                                        <p class="lead text-muted">Don't have notifications</p>
+                                    </div>
                                 </div>
                                 <div class="panel-footer text-center">
                                     <a href="notifications"><small>View all notifications</small></a>
@@ -97,7 +108,6 @@
                 user: Laravel.user,
                 notifications: Laravel.notifications,
                 unReadNotifications: Laravel.unReadNotifications,
-                guest: Laravel.guest,
             }
         },
         mounted() {
@@ -151,74 +161,3 @@
         }
     }
 </script>
-
-<style lang="scss">
-.navbar {
-    .dropdown, .breadcrumb {
-        display: inline-block;
-    }
-    .menu {
-        padding-top: 13px;
-        padding-bottom: 13px;
-        a {
-            text-decoration: none;
-            svg {
-                height: 20px;
-                margin-bottom: -5px;
-                path{
-                    -webkit-transition: (all .2s ease);
-                    transition: (all .2s ease);
-                }
-                path:hover {
-                    fill: darken(#feae3b, 15%);
-                }
-            }
-        }
-    }
-    .breadcrumb {
-        background-color: transparent;
-        margin-bottom: 0;
-    }
-    .notifications {
-        margin-right: 20px;
-        a {
-            color: inherit;
-        }
-        .dropdown-menu {
-            width: 350px;
-            .panel-body {
-                height: 400px;
-                overflow: scroll;
-            }
-            .media-left{
-                img {
-                    border-radius: 50%;
-                    width: 35px;
-                    height: 35px;
-                    margin-right: 5px;
-                }
-            }
-            .media-right{
-                img {
-                    width: 50px;
-                    height: 50px;
-                }
-            }
-        }
-    }
-    .user {
-        padding-top: 7px;
-        padding-bottom: 7px;
-        a {
-            color: inherit;
-            text-decoration: none;
-            img {
-                height: 35px;
-                width: 35px;
-                border-radius: 50%;
-                margin-right: 5px;
-            }
-        }
-    }
-}
-</style>

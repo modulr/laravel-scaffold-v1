@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="news">
         <!-- List -->
         <div class="panel panel-default" v-for="(item, index) in news">
             <div class="panel-heading">
@@ -42,6 +42,7 @@
         <!-- Init Message  -->
         <div class="panel panel-default" v-if="news.length == 0">
             <div class="panel-body text-center">
+                <br>
                 <i class="fa fa-bullhorn fa-5x text-muted" aria-hidden="true"></i>
                 <p class="lead text-muted">Publish the first news!!</p>
             </div>
@@ -116,7 +117,7 @@
                             timer: 1000,
                             showConfirmButton: false
                         });
-                        this.error = {};
+                        self.error = {};
                     })
                     .catch(error => {
                         self.error = error.response.data;
@@ -150,25 +151,3 @@
         }
     }
 </script>
-
-<style lang="scss">
-    .panel-default {
-        a {
-            color: #636b6f;
-        }
-        .panel-heading {
-            img {
-                border-radius: 50%;
-                height: 30px;
-                width: 30px;
-                margin-right: 8px;
-            }
-        }
-        .panel-footer {
-            background-color: #fff;
-            > a {
-                margin-right: 10px;
-            }
-        }
-    }
-</style>

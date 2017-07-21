@@ -1,0 +1,22 @@
+.tasks {
+    .list-group {
+        .list-group-item {
+            .my-handle {
+                cursor: move;
+            }
+            a {
+                color: $brand-orange;
+            }
+            .task-done {
+                text-decoration: line-through;
+            }
+            .close {
+                display: none;
+            }
+            &:hover .close{
+                display: block;
+            }
+        }
+
+    }
+}

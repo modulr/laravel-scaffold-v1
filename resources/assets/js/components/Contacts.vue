@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="contacts">
         <div class="row">
             <div class="col-xs-6">
                 <div class="input-group">
@@ -8,27 +8,30 @@
                 </div>
             </div>
             <div class="col-xs-6 text-right">
-                <a href="#" class="btn btn-link" :class="{ 'active': layout == 'list'}"
-                    @click.prevent="layout = 'list'">
-                    <i class="fa fa-list" aria-hidden="true"></i>
-                </a>
-                <a href="#" class="btn btn-link" :class="{ 'active': layout == 'grid'}"
-                    @click.prevent="layout = 'grid'">
-                    <i class="fa fa-th" aria-hidden="true"></i>
-                </a>
+                <div class="buttom-group">
+                    <a href="#" class="btn btn-link" :class="{ 'active': layout == 'list'}"
+                        @click.prevent="layout = 'list'">
+                        <i class="fa fa-lg fa-list" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="btn btn-link" :class="{ 'active': layout == 'grid'}"
+                        @click.prevent="layout = 'grid'">
+                        <i class="fa fa-lg fa-th" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
         </div>
-        <hr>
+        <br>
         <div class="row">
             <div class="col-md-12" v-if="layout == 'list'">
                 <table class="table table-hover">
                     <tbody>
                         <tr v-for="contact in filteredContacts">
                             <td @click="viewContact(contact)">
-                                <img :src="contact.avatar"> {{contact.name}}
+                                <img :src="contact.avatar">
                             </td>
                             <td @click="viewContact(contact)">
-                                {{contact.email}}
+                                {{contact.name}}<br>
+                                <small class="text-muted">{{contact.email}}</small>
                             </td>
                         </tr>
                     </tbody>
@@ -44,7 +47,7 @@
                                 </a>
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading">{{contact.name}}</h4>
+                                <h6 class="media-heading">{{contact.name}}</h6>
                                 {{contact.email}}
                             </div>
                         </div>
@@ -125,50 +128,3 @@
         }
     }
 </script>
-
-<style lang="scss">
-    .table {
-        > tbody > tr:first-child > td {
-            border-top-color: transparent;
-        }
-        img {
-            border-radius: 50%;
-            height: 35px;
-            width: 35px;
-            margin-right: 10px;
-        }
-    }
-    .panel-body {
-        img {
-            border-radius: 50%;
-            height: 50px;
-            width: 50px;
-            margin-right: 10px;
-        }
-    }
-    .modal {
-        .modal-header {
-            img {
-                border-radius: 50%;
-                height: 60px;
-                width: 60px;
-                margin-left: 15px;
-                margin-right: 15px;
-                -webkit-box-shadow: 0 0 1px 6px #e8e8e8;
-                box-shadow: 0 0 1px 6px #e8e8e8;
-            }
-        }
-        .modal-body {
-            padding: 30px;
-            ul {
-                margin: 25px;
-                li {
-                    margin-bottom: 15px;
-                    i {
-                        margin-right: 30px;
-                    }
-                }
-            }
-        }
-    }
-</style>

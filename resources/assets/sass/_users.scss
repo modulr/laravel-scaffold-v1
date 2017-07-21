@@ -1,0 +1,32 @@
+.users {
+    .table {
+        img {
+            border-radius: 50%;
+            height: 35px;
+            width: 35px;
+            margin-right: 10px;
+        }
+        td:last-child i {
+            opacity: 0;
+        }
+        tr:hover td:last-child i {
+            opacity: 1;
+        }
+    }
+    .modal {
+        .modal-body {
+            img {
+                height: 70px;
+                width: 70px;
+                border-radius: 50%;
+                -webkit-box-shadow: 0 0 1px 6px #e8e8e8;
+                box-shadow: 0 0 1px 6px #e8e8e8;
+            }
+            i {
+                border-radius: 50%;
+                -webkit-box-shadow: 0 0 1px 6px #e8e8e8;
+                box-shadow: 0 0 1px 6px #e8e8e8;
+            }
+        }
+    }
+}

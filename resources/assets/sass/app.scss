@@ -5,6 +5,9 @@
 // Fontawesome
 @import "node_modules/font-awesome/scss/font-awesome";
 
+// Material+Icons
+@import "node_modules/bootstrap-material-design-icons/scss/material-icons";
+
 // Variables
 @import "variables";
 @import "node_modules/bootswatch/paper/_variables";
@@ -21,3 +24,9 @@
 // General
 @import 'auth';
 @import 'navbar';
+@import 'users';
+@import 'dashboard';
+@import 'news';
+@import 'contacts';
+@import 'files';
+@import 'tasks';

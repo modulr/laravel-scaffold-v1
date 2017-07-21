@@ -20,13 +20,14 @@
             'user' => Auth::user(),
             'notifications' => (Auth::user()) ? Auth::user()->notifications : [],
             'unReadNotifications' => (Auth::user()) ? Auth::user()->unReadNotifications : [],
-            'guest' => Auth::guest(),
         ]) !!};
     </script>
 </head>
 <body>
     <div id="app">
+        @if (!Auth::guest())
         <navbar></navbar>
+        @endif
         <div>
             @yield('content')
         </div>

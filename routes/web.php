@@ -31,6 +31,14 @@ Route::middleware('auth')->group(function () {
     // Notifications
     Route::get('/notifications', 'NotificationController@index');
 
+    // Users
+    Route::get('/users', 'UserController@index');
+    Route::get('/user/all', 'UserController@all');
+    Route::post('/user/store', 'UserController@store');
+    Route::put('/user/update/{id}', 'UserController@update');
+    Route::delete('/user/destroy/{id}', 'UserController@destroy');
+    Route::post('/user/uploadAvatarTemp', 'UserController@uploadAvatarTemp');
+
     // News
     Route::get('/news', 'NewsController@index');
     Route::get('/news/all', 'NewsController@all');
