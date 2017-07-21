@@ -23,7 +23,7 @@
             </div>
 
             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                <input id="password" type="password" class="form-control input-lg" name="password" placeholder="password" required>
+                <input id="password" type="password" class="form-control input-lg" name="password" placeholder="Password" required>
                 @if ($errors->has('password'))
                 <span class="help-block">
                     {{ $errors->first('password') }}
@@ -33,14 +33,14 @@
 
             <div class="form-group">
                 <div class="checkbox">
-                    <label>
+                    <label>  
                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
                     </label>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-warning btn-block btn-lg">
-                Login
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+                Sign In
             </button>
 
             <a class="btn btn-link btn-block" href="{{ route('password.request') }}">
