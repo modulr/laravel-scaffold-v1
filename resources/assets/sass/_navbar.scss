@@ -34,9 +34,9 @@
             color: inherit;
         }
         .dropdown-menu {
-            width: 300px;
+            width: 250px;
             .panel-body {
-                height: 400px;
+                max-height: 400px;
                 overflow: scroll;
             }
             .media-left{

@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div class="tasks">
         <!-- newTask -->
         <div class="row">
             <div class="col-xs-12">

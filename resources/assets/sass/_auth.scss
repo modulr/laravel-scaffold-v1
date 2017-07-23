@@ -4,14 +4,17 @@
     .left-pane{
         position: relative;
         float: left;
-        width: 60%;
+        width: 70%;
         height: 100vh;
         margin: 0;
-        padding: 80px 60px;
+        padding: 130px 50px;
         background-size: cover;
         background-repeat: no-repeat;
         background-image: url(/img/bg/bg-banner.png);
         color: white;
+        .swiper-slide div {
+            margin: auto 40px;
+        }
         .logo{
             margin-bottom: 40px;
         }
@@ -31,7 +34,7 @@
     }
     .right-pane{
         float: right;
-        width: 40%;
+        width: 30%;
         height: 100vh;
         background: white;
         padding: 60px;
@@ -58,7 +61,7 @@
             .form-group {
                 margin-bottom: 40px;
             }
-            .btn-warning {
+            .btn-primary {
                 margin-top: 80px;
             }
             .btn-link {
@@ -87,16 +90,16 @@
         width: 100%;
     }
     .auth .right-pane{
-        padding: 60px;
+        padding: 60px 120px;
     }
 }
 @media screen and (min-width: 840px) {
     .auth .left-pane{
         display: block;
-        width: 55%;
+        width: 60%;
     }
     .auth .right-pane {
-        width: 45%;
+        width: 40%;
     }
     .auth .right-pane {
         padding: 60px;
@@ -105,10 +108,10 @@
 @media screen and (min-width: 1280px) {
     .auth .left-pane{
         display: block;
-        width: 55%;
+        width: 60%;
     }
     .auth .right-pane {
-        width: 45%;
+        width: 40%;
     }
     .auth .right-pane {
         padding: 60px 120px;

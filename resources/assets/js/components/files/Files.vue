@@ -1,27 +1,29 @@
 <template>
-    <div>
+    <div class="files">
         <!-- Actions buttons-->
         <div class="row">
             <div class="col-md-6">
                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModalFile">
-                    <i class="fa-fw fa fa-file" aria-hidden="true"></i> Upload files
+                    <i class="mdi mdi-note-add mdi-lg"></i> Upload files
                 </a>
                 <a href="#" class="btn btn-link" data-toggle="modal" data-target="#myModalFolder">
-                    <i class="fa-fw fa fa-folder-o" aria-hidden="true"></i> New folder
+                    <i class="mdi mdi-create-new-folder mdi-lg"></i> New folder
                 </a>
             </div>
             <div class="col-md-6 text-right">
-                <a href="#" class="btn btn-link" :class="{ 'active': layout == 'list'}"
-                    @click.prevent="toggleLayout('list')">
-                    <i class="fa fa-lg fa-list" aria-hidden="true"></i>
-                </a>
-                <a href="#" class="btn btn-link" :class="{ 'active': layout == 'grid'}"
-                    @click.prevent="toggleLayout('grid')">
-                    <i class="fa fa-lg fa-th" aria-hidden="true"></i>
-                </a>
+                <div class="buttom-group">
+                    <a href="#" class="btn btn-link" :class="{ 'active': layout == 'list'}"
+                        @click.prevent="toggleLayout('list')">
+                        <i class="fa fa-lg fa-list" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="btn btn-link" :class="{ 'active': layout == 'grid'}"
+                        @click.prevent="toggleLayout('grid')">
+                        <i class="fa fa-lg fa-th" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
         </div>
-        <hr>
+        <br>
         <!-- List -->
         <div class="row">
             <!-- Grid -->
@@ -107,7 +109,7 @@
                                     <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                         <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                     </a>
-                                    <ul class="dropdown-menu" >
+                                    <ul class="dropdown-menu dropdown-menu-right">
                                         <li>
                                             <a href="#" v-if="file.type == 2" @click.prevent="goToFolder(file.id)">
                                                 <i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Open
@@ -148,6 +150,7 @@
                 <p class="lead text-muted">Upload or create your first file/folder!!</p>
             </div>
         </div>
+
         <!-- Modal File -->
         <div class="modal fade" id="myModalFile">
             <div class="modal-dialog">
@@ -156,7 +159,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel">New File</h4>
+                        <h4 class="modal-title" id="myModalLabel">Upload Files</h4>
                     </div>
                     <div class="modal-body">
                         <dropzone id="myVueDropzone" ref="myVueDropzone"
@@ -170,6 +173,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Modal Folder -->
         <div class="modal fade" id="myModalFolder">
             <div class="modal-dialog">

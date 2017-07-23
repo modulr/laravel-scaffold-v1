@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="news">
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="form-group" :class="{'has-error': error.title}">

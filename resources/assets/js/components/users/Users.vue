@@ -21,29 +21,26 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Date</th>
+                            <th></th>
+                            <th>Name/Email</th>
                             <th class="text-center">Active</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(item, index) in filteredUsers">
-                            <td>
-                                <img :src="item.avatar"> {{item.name}}
+                            <td @click="edit(item, index)">
+                                <img :src="item.avatar">
                             </td>
-                            <td>
-                                <a :href="`mailto:${item.email}`">{{item.email}}</a>
+                            <td @click="edit(item, index)">
+                                {{item.name}}<br>
+                                <small class="text-muted">{{item.email}}</small>
                             </td>
-                            <td>
-                                {{item.created_at | date}}
-                            </td>
-                            <td class="text-center">
+                            <td class="text-center" @click="edit(item, index)">
                                 <i class="mdi mdi-2x" :class="{'mdi-mood text-success': item.active, 'mdi-mood-bad': !item.active}"></i>
                             </td>
-                            <td class="text-right">
-                                <a href="#" @click.prevent="edit(item, index)"><i class="mdi mdi-edit mdi-lg"></i></a>
+                            <td class="text-right" @click="edit(item, index)">
+                                <a href="#" class="btn btn-link" @click.prevent="edit(item, index)"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -61,11 +58,11 @@
                     <div class="modal-body">
                         <form class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">
+                                <label class="col-xs-4 control-label">
                                     <img :src="user.avatar" v-if="user.avatar">
                                     <i class="mdi mdi-account-circle mdi-5x" v-else></i>
                                 </label>
-                                <div class="col-sm-8">
+                                <div class="col-xs-8">
                                     <vue-core-image-upload
                                         class="btn btn-default"
                                         @imageuploaded="uploadAvatar"
@@ -202,7 +199,6 @@
 </template>
 
 <script>
-import moment from 'moment';
 import swal from 'sweetalert';
 import VueCoreImageUpload from 'vue-core-image-upload';
 export default {
@@ -220,11 +216,6 @@ export default {
     },
     components: {
         'vue-core-image-upload': VueCoreImageUpload,
-    },
-    filters: {
-        date(date) {
-            return moment(date).format('LLL');
-        }
     },
     computed: {
         filteredUsers: function () {
