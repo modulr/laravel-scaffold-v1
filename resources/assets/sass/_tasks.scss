@@ -1,5 +1,11 @@
 .tasks {
     .list-group {
+        .btn-default{
+            color: #fff;
+        }
+        .btn-default {
+            background-color: $brand-orange;
+        }
         .list-group-item {
             .my-handle {
                 cursor: move;

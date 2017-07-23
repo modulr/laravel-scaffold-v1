@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/task/destroy/{id}', 'TaskController@destroy');
     Route::put('/task/markDone/{id}', 'TaskController@markDone');
     Route::put('/task/updateOrder', 'TaskController@updateOrder');
+    Route::put('/task/editTask/{id}', 'TaskController@editTask');
 
     // Contacts
     Route::get('/contacts', 'ContactsController@index');
