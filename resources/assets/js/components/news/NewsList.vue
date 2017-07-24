@@ -3,7 +3,7 @@
         <!-- List -->
         <div class="panel panel-default" v-for="(item, index) in news">
             <div class="panel-heading">
-                <img :src="item.user.avatar" alt="">
+                <img :src="item.user.avatar_url" alt="">
                 <small>{{item.user.name}}</small>
 
                 <div class="dropdown pull-right" v-if="user.id == item.user.id">

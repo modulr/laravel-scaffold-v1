@@ -2,7 +2,7 @@
     <div class="files">
         <!-- Actions buttons-->
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModalFile">
                     <i class="mdi mdi-note-add mdi-lg"></i> Upload files
                 </a>
@@ -10,7 +10,7 @@
                     <i class="mdi mdi-create-new-folder mdi-lg"></i> New folder
                 </a>
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-sm-6 text-right">
                 <div class="buttom-group">
                     <a href="#" class="btn btn-link" :class="{ 'active': layout == 'list'}"
                         @click.prevent="toggleLayout('list')">

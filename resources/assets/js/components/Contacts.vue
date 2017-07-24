@@ -27,7 +27,7 @@
                     <tbody>
                         <tr v-for="contact in filteredContacts">
                             <td @click="viewContact(contact)">
-                                <img :src="contact.avatar">
+                                <img :src="contact.avatar_url">
                             </td>
                             <td @click="viewContact(contact)">
                                 {{contact.name}}<br>
@@ -43,7 +43,7 @@
                         <div class="media">
                             <div class="media-left">
                                 <a href="#">
-                                    <img :src="contact.avatar">
+                                    <img :src="contact.avatar_url">
                                 </a>
                             </div>
                             <div class="media-body">
@@ -61,7 +61,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"><img :src="contact.avatar">{{contact.name}}</h4>
+                        <h4 class="modal-title"><img :src="contact.avatar_url">{{contact.name}}</h4>
                     </div>
                     <div class="modal-body">
                         <p><strong>Contact details</strong></p>

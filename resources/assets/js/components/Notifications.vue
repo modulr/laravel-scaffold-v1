@@ -4,7 +4,7 @@
         <a href="notifications" v-for="item in notifications">
             <div class="media">
                 <div class="media-left">
-                    <img class="media-object" :src="item.data.user.avatar">
+                    <img class="media-object" :src="item.data.user.avatar_url">
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading">{{ item.data.user.name }}</h4>

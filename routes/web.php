@@ -37,7 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/store', 'UserController@store');
     Route::put('/user/update/{id}', 'UserController@update');
     Route::delete('/user/destroy/{id}', 'UserController@destroy');
-    Route::post('/user/uploadAvatarTemp', 'UserController@uploadAvatarTemp');
+    Route::post('/user/upload/avatar/temp', 'UserController@uploadAvatarTemp');
+    Route::post('/user/upload/avatar/{id}', 'UserController@uploadAvatar');
 
     // News
     Route::get('/news', 'NewsController@index');

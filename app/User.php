@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'active',
+        'name', 'email', 'password', 'avatar', 'active',
     ];
 
     /**
@@ -33,11 +33,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected $appends = ['avatar'];
+    protected $appends = ['avatar_url'];
 
-    public function getAvatarAttribute()
+    public function getAvatarUrlAttribute()
     {
-        return Storage::url('avatars/'.$this->id.'/avatar.png');
+        return Storage::url('avatars/'.$this->id.'/'.$this->avatar);
     }
 
     public function news()
