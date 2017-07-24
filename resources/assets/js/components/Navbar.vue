@@ -56,7 +56,7 @@
                                     <a href="notifications" v-for="item in notifications">
                                         <div class="media">
                                             <div class="media-left">
-                                                <img :src="item.data.user.avatar">
+                                                <img :src="item.data.user.avatar_url">
                                             </div>
                                             <div class="media-body">
                                                 <h6 class="media-heading">{{item.data.user.name}}</h6>
@@ -84,7 +84,7 @@
                     <!-- User -->
                     <div class="dropdown user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <img :src="user.avatar" alt="">
+                            <img :src="user.avatar_url" alt="">
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -123,7 +123,7 @@
                     if (Notification.permission === "granted") {
                         var options = {
                             body: e.message.title,
-                            icon: e.user.avatar,
+                            icon: e.user.avatar_url,
                         }
                         if (e.message.data.type == 2) {
                             options.image = e.message.data.images[0].url;

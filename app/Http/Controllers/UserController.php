@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Storage;
 use Avatar;
 use App\User;
+use App\Http\Helpers\Upload;
 
 class UserController extends Controller
 {
@@ -17,7 +19,7 @@ class UserController extends Controller
 
     public function all()
     {
-        return User::orderBy('name', 'asc')->get();
+        return User::get();
     }
 
     public function store(Request $request)
@@ -33,11 +35,23 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'avatar' => $request->avatar,
             'active' => $request->active,
         ]);
 
-        $avatar = Avatar::create($q->name)->getImageObject()->encode('png');
-        Storage::put('avatars/'.$q->id.'/avatar.png', $avatar);
+        if ($request->avatar_url) {
+            $upload = new Upload();
+            $avatar = $upload->moveFromTemp($request->avatar_url, 'avatars/'.$q->id)->resize(200)->getInfo();
+            $request->avatar = $avatar['basename'];
+        } else {
+            $avatar = Avatar::create($q->name)->getImageObject()->encode('png');
+            Storage::put('avatars/'.$q->id.'/avatar.png', $avatar);
+            $request->avatar = 'avatar.png';
+        }
+
+        $q = User::find($q->id);
+        $q->avatar = $request->avatar;
+        $q->save();
 
         return $q;
     }
@@ -82,18 +96,20 @@ class UserController extends Controller
 
     public function uploadAvatarTemp(Request $request)
     {
-        return $request;
-        // $pathFile = $request->file('files')->store('avatars/'.$id);
-        // $infoFile = pathinfo($pathFile);
-        // $file = Storage::disk('public')->get('avatars/'.$id.'/'.$infoFile['basename']);
-        // $image = Image::make($file)
-        //     ->resize(100, 100)
-        //     ->save(storage_path('app/public/avatars/'.$id.'/'.$infoFile['basename']));
-        // $user = User::find($id);
-        // $user->avatar = $infoFile['basename'];
-        // $user->save();
-        // return response()->json([
-        //     'data' => ['avatar' => $user->avatar]
-        // ]);
+        $upload = new Upload();
+        $avatar = $upload->uploadTemp($request->file('files'))->getInfo();
+        return ['avatar' => $avatar['basename'], 'avatar_url' => $avatar['pathFile']];
+    }
+
+    public function uploadAvatar(Request $request, $id)
+    {
+        $upload = new Upload();
+        $avatar = $upload->upload($request->file('files'), 'avatars/'.$id)->resize(200)->getInfo();
+
+        $q = User::find($id);
+        $q->avatar = $avatar['basename'];
+        $q->save();
+
+        return $q;
     }
 }

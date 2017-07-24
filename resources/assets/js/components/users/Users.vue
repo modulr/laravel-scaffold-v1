@@ -22,6 +22,7 @@
                     <thead>
                         <tr>
                             <th></th>
+                            <th>ID</th>
                             <th>Name/Email</th>
                             <th class="text-center">Active</th>
                             <th></th>
@@ -30,7 +31,10 @@
                     <tbody>
                         <tr v-for="(item, index) in filteredUsers">
                             <td @click="edit(item, index)">
-                                <img :src="item.avatar">
+                                <img :src="item.avatar_url">
+                            </td>
+                            <td @click="edit(item, index)">
+                                {{item.id}}
                             </td>
                             <td @click="edit(item, index)">
                                 {{item.name}}<br>
@@ -59,16 +63,16 @@
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-xs-4 control-label">
-                                    <img :src="user.avatar" v-if="user.avatar">
+                                    <img :src="user.avatar_url" v-if="user.avatar_url">
                                     <i class="mdi mdi-account-circle mdi-5x" v-else></i>
                                 </label>
                                 <div class="col-xs-8">
                                     <vue-core-image-upload
                                         class="btn btn-default"
-                                        @imageuploaded="uploadAvatar"
+                                        @imageuploaded="uploadAvatarTemp"
                                         extensions="png,jpeg,jpg"
                                         :headers=headers
-                                        :url="'user/uploadAvatarTemp'">
+                                        :url="'user/upload/avatar/temp'">
                                     </vue-core-image-upload>
                                 </div>
                             </div>
@@ -128,7 +132,7 @@
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">
-                                    <img :src="user.avatar">
+                                    <img :src="user.avatar_url">
                                 </label>
                                 <div class="col-sm-8">
                                     <vue-core-image-upload
@@ -136,8 +140,16 @@
                                         @imageuploaded="uploadAvatar"
                                         extensions="png,jpeg,jpg"
                                         :headers=headers
-                                        :url="'user/uploadAvatar'">
+                                        :url="'user/upload/avatar/'+user.id">
                                     </vue-core-image-upload>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ID</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">
+                                        <strong>{{user.id}}</strong>
+                                    </p>
                                 </div>
                             </div>
                             <div class="form-group" :class="{'has-error': error.name}">
@@ -161,6 +173,14 @@
                                             <input type="checkbox" v-model="user.active"> Active
                                         </label>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Created</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">
+                                        <small class="text-mute">{{user.created_at | date}}</small>
+                                    </p>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -199,6 +219,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import swal from 'sweetalert';
 import VueCoreImageUpload from 'vue-core-image-upload';
 export default {
@@ -216,6 +237,11 @@ export default {
     },
     components: {
         'vue-core-image-upload': VueCoreImageUpload,
+    },
+    filters: {
+        date(date) {
+            return moment(date).format('LLL');
+        }
     },
     computed: {
         filteredUsers: function () {
@@ -246,9 +272,7 @@ export default {
         },
         add: function () {
             this.user = {
-                avatar: '',
-                name: '',
-                email: '',
+                avatar_url: null,
                 password: '',
                 active: false
             };
@@ -321,8 +345,16 @@ export default {
                 });
             });
         },
+        uploadAvatarTemp(response) {
+            this.user.avatar = response.avatar;
+            this.user.avatar_url = response.avatar_url;
+        },
         uploadAvatar(response) {
-            console.log(response);
+            this.user.avatar_url = response.avatar_url;
+            this.users[this.user.index].avatar_url = response.avatar_url;
+            if (this.user.id == Laravel.user.id) {
+                Laravel.user.avatar_url =response.avatar_url;
+            }
         },
         generatePassword: function () {
             var length = 10;
