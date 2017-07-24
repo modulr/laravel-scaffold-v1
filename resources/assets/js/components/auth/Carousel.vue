@@ -3,7 +3,7 @@
         <swiper-slide>
             <div>
                 <div class="logo">
-                    <img src="/img/logos/logowhite.png" alt="">
+                    <img src="/img/logos/logo-white.png" alt="">
                 </div>
                 <div class="content">
                     <h3 class="heading">
