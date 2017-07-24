@@ -46,7 +46,7 @@
                 @endif
             </div>
 
-            <button type="submit" class="btn btn-warning btn-block">
+            <button type="submit" class="btn btn-primary btn-block">
                 Reset Password
             </button>
         </form>

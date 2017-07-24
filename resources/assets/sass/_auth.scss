@@ -7,29 +7,16 @@
         width: 70%;
         height: 100vh;
         margin: 0;
-        padding: 130px 50px;
+        padding: 150px 50px;
         background-size: cover;
         background-repeat: no-repeat;
         background-image: url(/img/bg/bg-banner.png);
         color: white;
-        .swiper-slide div {
+        .swiper-slide > div {
             margin: auto 40px;
-        }
-        .logo{
-            margin-bottom: 40px;
-        }
-        .heading{
-            color: white;
-            width: 70%;
-            font-weight: 250;
-            font-size: 50px;
-        }
-        .text{
-            color: white;
-            width: 80%;
-            margin-top: 50px;
-            font-weight: 300;
-            font-size: 20px;
+            h3, p{
+                color: white;
+            }
         }
     }
     .right-pane{

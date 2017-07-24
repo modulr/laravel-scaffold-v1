@@ -10,11 +10,11 @@
             <div class="col-xs-6 text-right">
                 <div class="buttom-group">
                     <a href="#" class="btn btn-link" :class="{ 'active': layout == 'list'}"
-                        @click.prevent="layout = 'list'">
+                        @click.prevent="toggleLayout('list')">
                         <i class="fa fa-lg fa-list" aria-hidden="true"></i>
                     </a>
                     <a href="#" class="btn btn-link" :class="{ 'active': layout == 'grid'}"
-                        @click.prevent="layout = 'grid'">
+                        @click.prevent="toggleLayout('grid')">
                         <i class="fa fa-lg fa-th" aria-hidden="true"></i>
                     </a>
                 </div>
@@ -93,6 +93,9 @@
         },
         mounted() {
             this.getAll();
+            if (JSON.parse(localStorage.getItem('contacts'))) {
+                this.layout = JSON.parse(localStorage.getItem('contacts')).layout;
+            }
         },
         computed: {
             filteredContacts: function () {
@@ -124,7 +127,11 @@
             viewContact: function (contact) {
                 this.contact = contact;
                 $('#modalContact').modal('show');
-            }
+            },
+            toggleLayout: function (layout) {
+                this.layout = layout;
+                localStorage.setItem('contacts', JSON.stringify({'layout':layout}));
+            },
         }
     }
 </script>

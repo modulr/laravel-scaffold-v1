@@ -1,33 +1,48 @@
 <template>
     <swiper :options="swiperOption" ref="mySwiper">
         <swiper-slide>
-            <div class="slider-content">
-                <div class="logo">
-                    <img src="/img/logos/logo-white.png" alt="">
-                </div>
-                <div class="content">
-                    <h3 class="heading">
-                        Lorem ipsum dolor sit amet, consectetur.
-                    </h3>
-                    <p class="text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque velit sapien, aliquam ac turpis a, varius condimentum risus. Integer eget velit id ex congue euismod.
-                    </p>
-                </div>
+            <div class="text-center">
+                <img src="http://modulr.io/img/modules/notifications2.png" class="img-responsive">
+                <h3>
+                    <i class="mdi mdi-notifications mdi-lg text-primary"></i> Notifications
+                </h3>
+                <p>You will know when there is news</p>
             </div>
         </swiper-slide>
         <swiper-slide>
-            <div>
-                <div class="logo">
-                    <img src="/img/logos/logowhite.png" alt="">
-                </div>
-                <div class="content">
-                    <h3 class="heading">
-                        Pellentesque velit sapien, aliquam ac turpis.
-                    </h3>
-                    <p class="text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque velit sapien, aliquam ac turpis a, varius condimentum risus. Integer eget velit id ex congue euismod.
-                    </p>
-                </div>
+            <div class="text-center">
+                <img src="http://modulr.io/img/modules/news2.png" class="img-responsive">
+                <h3>
+                    <i class="mdi mdi-whatshot mdi-lg text-primary"></i> News
+                </h3>
+                <p>Keep up to date</p>
+            </div>
+        </swiper-slide>
+        <swiper-slide>
+            <div class="text-center">
+                <img src="http://modulr.io/img/modules/contacts2.png" class="img-responsive">
+                <h3>
+                    <i class="mdi mdi-contacts mdi-lg text-primary"></i> Contacts
+                </h3>
+                <p>All your contacts in one click</p>
+            </div>
+        </swiper-slide>
+        <swiper-slide>
+            <div class="text-center">
+                <img src="http://modulr.io/img/modules/tasks2.png" class="img-responsive">
+                <h3>
+                    <i class="mdi mdi-view-list mdi-lg text-primary"></i> Tasks
+                </h3>
+                <p>Do not forget your obligations, order them</p>
+            </div>
+        </swiper-slide>
+        <swiper-slide>
+            <div class="text-center">
+                <img src="http://modulr.io/img/modules/files2.png" class="img-responsive">
+                <h3>
+                    <i class="mdi mdi-folder-open mdi-lg text-primary"></i> Files
+                </h3>
+                <p>Manage your files and share it</p>
             </div>
         </swiper-slide>
         <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>

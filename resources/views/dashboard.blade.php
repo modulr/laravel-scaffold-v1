@@ -37,8 +37,6 @@
                     </div>
                 </div>
             </div>
-          </div>
-        <div class="row"></div>
             <div class="col-md-6">
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">

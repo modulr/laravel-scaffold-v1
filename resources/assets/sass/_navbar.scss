@@ -1,33 +1,30 @@
 .navbar {
-    .dropdown, .breadcrumb {
+    .dropdown {
         display: inline-block;
     }
     .menu {
         padding-top: 20px;
         padding-bottom: 20px;
+        margin-right: 15px;
         a {
             text-decoration: none;
             color: inherit;
-            i{
-                margin-right: 10px;
-            }
-            svg {
-                height: 20px;
-                margin-bottom: -5px;
-                path{
-                    -webkit-transition: (all .2s ease);
-                    transition: (all .2s ease);
-                }
-                path:hover {
-                    fill: darken(#feae3b, 15%);
-                }
-            }
+
         }
     }
-    .breadcrumb {
-        background-color: transparent;
-        margin-bottom: 0;
+
+    svg {
+        height: 20px;
+        margin-bottom: -5px;
+        path{
+            -webkit-transition: (all .2s ease);
+            transition: (all .2s ease);
+        }
+        path:hover {
+            fill: darken(#feae3b, 15%);
+        }
     }
+
     .notifications {
         margin-right: 20px;
         a {
@@ -55,6 +52,7 @@
             }
         }
     }
+
     .user {
         padding-top: 7px;
         padding-bottom: 7px;
