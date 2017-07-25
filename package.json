@@ -24,6 +24,7 @@
     "bootstrap-material-design-icons": "^2.2.0",
     "bootswatch": "^3.3.7",
     "font-awesome": "^4.7.0",
+    "interpret": "^1.0.3",
     "laravel-echo": "^1.3.0",
     "moment": "^2.18.1",
     "pusher-js": "^4.1.0",
@@ -32,6 +33,7 @@
     "vue-core-image-upload": "^2.3.5",
     "vue-infinite-loading": "^2.1.3",
     "vue2-dropzone": "^2.3.4",
-    "vuedraggable": "^2.14.1"
+    "vuedraggable": "^2.14.1",
+    "yargs": "^8.0.2"
   }
 }

@@ -7,12 +7,19 @@
             color: #636b6f;
         }
         .panel-heading {
+            background: transparent;
+            .username{
+                font-size: 20px;
+            }
             img {
                 border-radius: 50%;
                 height: 30px;
                 width: 30px;
                 margin-right: 8px;
             }
+        }
+        .panel-body{
+            font-size: 14px;
         }
         .panel-footer {
             background-color: #fff;

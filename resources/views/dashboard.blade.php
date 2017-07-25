@@ -8,9 +8,9 @@
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
                         <p class="lead">Tasks</p>
-                        <a href="/tasks" class="pull-right">view all</a>
+                        <a href="/tasks" class="pull-right">View all</a>
                     </div>
-                    <div class="panel-body" style="height:400px; overflow-y:scroll;">
+                    <div class="panel-body" style="height:300px; overflow-y:scroll;">
                         <tasks></tasks>
                     </div>
                 </div>
@@ -19,9 +19,9 @@
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
                         <p class="lead">News</p>
-                        <a href="/news" class="pull-right">view all</a>
+                        <a href="/news" class="pull-right">View all</a>
                     </div>
-                    <div class="panel-body" style="height:400px; overflow-y:scroll;">
+                    <div class="panel-body" style="height:300px; overflow-y:scroll;">
                         <news-list></news-list>
                     </div>
                 </div>
@@ -29,22 +29,24 @@
             <div class="col-md-4">
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
-                        <p class="lead">Contacts</p>
-                        <a href="/contacts" class="pull-right">view all</a>
+                        <p class="lead">Files</p>
+                        <a href="/files" class="pull-right">View all</a>
                     </div>
-                    <div class="panel-body" style="height:400px; overflow-y:scroll;">
-                        <contacts></contacts>
+                    <div class="panel-body" style="height:300px; overflow-y:scroll;">
+                        <files></files>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+          </div>
+        <div class="row">
+            <div class="col-md-12">
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
-                        <p class="lead">Files</p>
-                        <a href="/files" class="pull-right">view all</a>
+                        <p class="lead">Contacts</p>
+                        <a href="/contacts" class="pull-right">View all</a>
                     </div>
                     <div class="panel-body" style="height:500px; overflow-y:scroll;">
-                        <files></files>
+                        <contacts></contacts>
                     </div>
                 </div>
             </div>

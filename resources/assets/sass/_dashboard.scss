@@ -1,7 +1,10 @@
 .dashboard {
+    background: $bg;
+    padding: 0px 3%;
     .panel-dashboard {
         > .panel-heading {
             background-color: #fff;
+            padding-top: 15px;
             p {
                 display: inline-block;
                 border-left: 2px solid $brand-orange;

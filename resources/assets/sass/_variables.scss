@@ -4,13 +4,15 @@
 
 // Brands
 $brand-primary: #FEAE3B;
-$brand-info: #6E1BCB;
-$brand-success: #54FE88;
+$brand-info: #7e76ee;
+$brand-success: #389E70;
 $brand-warning: #FED33A;
-$brand-danger: #ec2121;
+$brand-danger: #d16262;
 $brand-orange: #FEAE3B;
 $brand-gray: #95989A;
+$brand-grayer: #CECECE;
 $inactive: #DDDADA;
+$bg: #F7F7F7;
 
 // Typography
 // $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
@@ -22,4 +24,12 @@ $inactive: #DDDADA;
 // ** Bootstrap Overwrites
 .btn-warning, .btn-success, .btn-primary, .btn-danger{
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16)!important;
+}
+
+p,h1,h2,h3,h4,h5,h6,span{
+    color: $brand-gray;
+}
+
+.navbar, .panel{
+    box-shadow: 0px 3px 6px rgba(0,0,0,.16)!important;
 }

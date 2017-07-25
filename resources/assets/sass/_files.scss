@@ -4,6 +4,11 @@
             margin-right: 10px;
         }
     }
+    .button-group {
+        .active {
+            color: $brand-primary;
+        }
+    }
     .table {
         img {
             display: inline-block;

@@ -4,7 +4,8 @@
         <div class="panel panel-default" v-for="(item, index) in news">
             <div class="panel-heading">
                 <img :src="item.user.avatar_url" alt="">
-                <small>{{item.user.name}}</small>
+                <span class="username">{{item.user.name}}</span>
+                <span><small>{{item.created_at | ago}}</small></span>
 
                 <div class="dropdown pull-right" v-if="user.id == item.user.id">
                     <a href="#" class="btn btn-link" data-toggle="dropdown">
@@ -35,7 +36,6 @@
                     <i class="fa fa-comment-o fa-lg" aria-hidden="true"></i>
                 </a>
                 <span v-show="item.likes_counter > 0">{{item.likes_counter}} Likes</span>
-                <small class="pull-right">{{item.created_at | ago}}</small>
             </div>
         </div>
 

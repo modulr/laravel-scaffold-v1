@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class="col-xs-6 text-right">
-                <div class="buttom-group">
+                <div class="button-group">
                     <a href="#" class="btn btn-link" :class="{ 'active': layout == 'list'}"
                         @click.prevent="toggleLayout('list')">
                         <i class="fa fa-lg fa-list" aria-hidden="true"></i>
@@ -22,7 +22,7 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-md-12" v-if="layout == 'list'">
+            <div class="col-md-12 list" v-if="layout == 'list'">
                 <table class="table table-hover">
                     <tbody>
                         <tr v-for="contact in filteredContacts">
@@ -37,18 +37,18 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-4" v-if="layout == 'grid'" v-for="contact in filteredContacts">
+            <div class="col-sm-4 col-md-2 grid" v-if="layout == 'grid'" v-for="contact in filteredContacts">
                 <div class="panel panel-default">
                     <div class="panel-body" @click="viewContact(contact)">
                         <div class="media">
-                            <div class="media-left">
+                            <div class="media">
                                 <a href="#">
                                     <img :src="contact.avatar_url">
                                 </a>
                             </div>
                             <div class="media-body">
-                                <h6 class="media-heading">{{contact.name}}</h6>
-                                {{contact.email}}
+                                <h6 class="media-heading contact-name">{{contact.name}}</h6>
+                                <span class="contact-mail"><small>{{contact.email}}</small></span>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                 contacts: [],
                 contact: [],
                 search: '',
-                layout: 'list',
+                layout: 'grid',
             }
         },
         mounted() {
