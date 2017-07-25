@@ -1,4 +1,9 @@
 .files {
+    table, .thumbnail {
+        ul i {
+            margin-right: 10px;
+        }
+    }
     .table {
         img {
             display: inline-block;
@@ -6,11 +11,8 @@
             height: 35px;
             margin-right: 10px;
         }
-    }
-    .thumbnail,
-    table {
-        ul i {
-            margin-right: 10px;
+        a {
+            color: inherit;
         }
     }
     .modal-body {

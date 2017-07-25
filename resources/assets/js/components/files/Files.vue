@@ -32,12 +32,12 @@
                     <div class="thumbnail">
                         <!-- Folder -->
                         <a href="#" v-if="file.type == 2" @click.prevent="goToFolder(file.id)">
-                            <i class="fa fa-folder fa-5x"></i>
+                            <i class="fa fa-folder-o fa-5x"></i>
                         </a>
                         <!-- File -->
                         <a :href="file.url" v-else>
                             <img :src="file.url" class="img-responsive" v-if="file.is_image">
-                            <i class="fa fa-file fa-5x" v-else></i>
+                            <i class="fa fa-file-o fa-5x" v-else></i>
                         </a>
                         <div class="caption">
                             <p>{{file.name}}</p>
@@ -93,13 +93,13 @@
                             <td>
                                 <!-- Folder -->
                                 <a href="#" v-if="file.type == 2" @click.prevent="goToFolder(file.id)">
-                                    <i class="fa fa-fw fa-folder fa-2x"></i>
+                                    <i class="fa fa-fw fa-folder-o fa-2x"></i>
                                     {{file.name}}
                                 </a>
                                 <!-- File -->
                                 <a :href="file.url" target="_blank" v-else>
                                     <img :src="file.url" class="img-responsive" v-if="file.is_image">
-                                    <i class="fa fa-fw fa-file fa-2x" v-else></i>
+                                    <i class="fa fa-fw fa-file-o fa-2x" v-else></i>
                                     {{file.name}}
                                 </a>
                             </td>
@@ -146,7 +146,7 @@
         <!-- Init Message  -->
         <div class="panel panel-default" v-if="files.length == 0">
             <div class="panel-body text-center">
-                <i class="fa fa-folder fa-5x text-muted" aria-hidden="true"></i>
+                <i class="fa fa-folder-o fa-5x text-muted" aria-hidden="true"></i>
                 <p class="lead text-muted">Upload or create your first file/folder!!</p>
             </div>
         </div>
@@ -218,7 +218,7 @@
                 </div>
             </div>
         </div>
-        <!-- Modal Update -->
+        <!-- Modal Info -->
         <div class="modal fade" id="myModalInfo">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -227,9 +227,9 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <h4 class="modal-title">
-                            <i class="fa fa-folder fa-lg" v-if="file.type == 2"></i>
+                            <i class="fa fa-folder-o fa-lg" v-if="file.type == 2"></i>
                             <img :src="file.url" class="img-responsive" v-if="file.type == 1 && file.is_image">
-                            <i class="fa fa-file fa-lg" v-if="file.type == 1 && !file.is_image"></i>
+                            <i class="fa fa-file-o fa-lg" v-if="file.type == 1 && !file.is_image"></i>
                             {{file.name}}
                         </h4>
                     </div>
