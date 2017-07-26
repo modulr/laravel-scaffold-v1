@@ -89,7 +89,12 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li>
-                                <a href="logout" @click.prevent="logout">
+                                <a :href="'/profile/'+user.id">
+                                    Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" @click.prevent="logout">
                                     Logout
                                 </a>
                             </li>

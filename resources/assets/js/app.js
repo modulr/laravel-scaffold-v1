@@ -22,6 +22,8 @@ Vue.component('navbar', require('./components/Navbar.vue'));
 Vue.component('notifications', require('./components/Notifications.vue'));
 // Users
 Vue.component('users', require('./components/users/Users.vue'));
+// Profile
+Vue.component('profile', require('./components/profile/Profile.vue'));
 // News
 //Vue.component('news', require('./components/News.vue'));
 Vue.component('newsPublish', require('./components/news/NewsPublish.vue'));
