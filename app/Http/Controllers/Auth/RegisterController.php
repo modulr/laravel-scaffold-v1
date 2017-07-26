@@ -70,6 +70,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'avatar' => 'avatar.png',
         ]);
 
         $avatar = Avatar::create($user->name)->getImageObject()->encode('png');

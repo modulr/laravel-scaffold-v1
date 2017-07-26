@@ -42,6 +42,7 @@
                           </g>
                         </svg>
                     </a>
+                    <span class="breadcrumbs hidden-xs">{{breadcrumb}}</span>
                 </div>
                 <div class="col-xs-6 text-right">
                     <!-- Notifications -->
@@ -76,7 +77,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-footer text-center">
-                                    <a href="notifications"><small>View all notifications</small></a>
+                                    <a href="/notifications"><small>View all notifications</small></a>
                                 </div>
                             </div>
                         </ul>
@@ -89,7 +90,12 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li>
-                                <a href="logout" @click.prevent="logout">
+                                <a :href="'/profile/'+user.id">
+                                    Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" @click.prevent="logout">
                                     Logout
                                 </a>
                             </li>
@@ -144,6 +150,9 @@
             //         }
             //     });
         },
+        props: [
+            'breadcrumb'
+        ],
         methods: {
             logout: function () {
                 axios.post('/logout')
