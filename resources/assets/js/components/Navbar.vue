@@ -77,7 +77,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-footer text-center">
-                                    <a href="notifications"><small>View all notifications</small></a>
+                                    <a href="/notifications"><small>View all notifications</small></a>
                                 </div>
                             </div>
                         </ul>

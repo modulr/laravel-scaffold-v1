@@ -27,21 +27,27 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <ul class="nav nav-tabs nav-justified">
-                            <li class="active"><a href="#">Information</a></li>
-                            <li><a href="#">Notes</a></li>
-                            <li><a href="#">Work</a></li>
-                            <li><a href="#">Notifications</a></li>
-                            <li><a href="#">Documents</a></li>
+                            <li class="active"><a href="#information" data-toggle="tab">Information</a></li>
+                            <li><a href="#notes" data-toggle="tab">Notes</a></li>
+                            <li><a href="#work" data-toggle="tab">Work</a></li>
+                            <li><a href="#notifications" data-toggle="tab">Notifications</a></li>
+                            <li><a href="#documents" data-toggle="tab">Documents</a></li>
                         </ul>
                         <div class="tab-content">
-                            <h6>Personal</h6>
-                            <hr>
-                            <h6>Contact</h6>
-                            <hr>
-                            <h6>Education</h6>
-                            <hr>
-                            <h6>Family</h6>
-                            <hr>
+                            <div role="tabpanel" class="tab-pane active" id="information">
+                                <h6>Personal</h6>
+                                <hr>
+                                <h6>Contact</h6>
+                                <hr>
+                                <h6>Education</h6>
+                                <hr>
+                                <h6>Family</h6>
+                                <hr>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="notes">...</div>
+                            <div role="tabpanel" class="tab-pane" id="work">...</div>
+                            <div role="tabpanel" class="tab-pane" id="notifications">...</div>
+                            <div role="tabpanel" class="tab-pane" id="documents">...</div>
                         </div>
                     </div>
                 </div>
