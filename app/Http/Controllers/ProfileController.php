@@ -7,9 +7,9 @@ use App\user;
 
 class ProfileController extends Controller
 {
-    public function index(Request $request, $id)
+    public function show(Request $request, $id)
     {
         $user = User::find($id);
-        return view('profile.profile', ['breadcrumb' => $request->path(), 'user' => $user]);
+        return view('profile.show', ['breadcrumb' => $request->path(), 'user' => $user]);
     }
 }

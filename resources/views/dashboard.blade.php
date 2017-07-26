@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container-fluid dashboard">
-        <h2>{{$breadcrumb}}</h2>
         <div class="row">
             <div class="col-md-3">
                 <div class="panel panel-default panel-dashboard">

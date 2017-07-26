@@ -42,6 +42,7 @@
                           </g>
                         </svg>
                     </a>
+                    <span class="breadcrumbs hidden-xs">{{breadcrumb}}</span>
                 </div>
                 <div class="col-xs-6 text-right">
                     <!-- Notifications -->
@@ -149,6 +150,9 @@
             //         }
             //     });
         },
+        props: [
+            'breadcrumb'
+        ],
         methods: {
             logout: function () {
                 axios.post('/logout')
