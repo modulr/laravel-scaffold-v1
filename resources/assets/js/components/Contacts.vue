@@ -37,7 +37,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-sm-4 col-md-2 grid" v-if="layout == 'grid'" v-for="contact in filteredContacts">
+            <div class="col-sm-4 col-md-3 grid" v-if="layout == 'grid'" v-for="contact in filteredContacts">
                 <div class="panel panel-default">
                     <div class="panel-body" @click="viewContact(contact)">
                         <div class="media">
