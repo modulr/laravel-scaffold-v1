@@ -34,18 +34,14 @@
                             <li><a href="#">Documents</a></li>
                         </ul>
                         <div class="tab-content">
-                            <div class="panel panel-default">
-                                <div class="panel-body">Personal</div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-body">Contact</div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-body">Education</div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-body">Family</div>
-                            </div>
+                            <h6>Personal</h6>
+                            <hr>
+                            <h6>Contact</h6>
+                            <hr>
+                            <h6>Education</h6>
+                            <hr>
+                            <h6>Family</h6>
+                            <hr>
                         </div>
                     </div>
                 </div>
