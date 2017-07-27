@@ -38,7 +38,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'avatar' => $request->avatar,
             'active' => $request->active,
-            'role_id' => 1,
+            'role_id' => 2,
         ]);
 
         if ($request->avatar_url) {

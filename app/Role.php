@@ -9,12 +9,14 @@ class Role extends Model
 {
     use SoftDeletes;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'id', 'name',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
 }
