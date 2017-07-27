@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Storage;
 use Avatar;
 use App\User;
+use App\Role;
 use App\Http\Helpers\Upload;
 
 class UserController extends Controller
@@ -19,7 +20,7 @@ class UserController extends Controller
 
     public function all()
     {
-        return User::get();
+        return User::with('role')->get();
     }
 
     public function store(Request $request)
