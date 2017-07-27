@@ -11,6 +11,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+        DB::table('roles')->insert([
+            [
+                'id' => '1',
+                'name' => 'Admin'
+            ],
+            [
+                'id' => '2',
+                'name' => 'User'
+            ],
+            [
+                'id' => '3',
+                'name' => 'Guest'
+            ]
+        ]);
+        
         factory(App\User::class, 10)
             ->create()
             ->each(function ($u) {
@@ -21,20 +37,5 @@ class DatabaseSeeder extends Seeder
                 $u->news()->saveMany(factory(App\News::class, 3)->make());
                 $u->tasks()->saveMany(factory(App\Task::class, 3)->make());
             });
-
-        DB::table('roles')->insert([
-            [
-            'id' => '1',
-            'name' => 'Admin'
-            ],
-            [
-            'id' => '2',
-            'name' => 'User'
-            ],
-            [
-            'id' => '3',
-            'name' => 'Guest'
-            ]
-        ]);
     }
 }
