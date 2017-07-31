@@ -1,23 +1,20 @@
-.profile {
-    .panel-body {
-        .text-center {
-            img {
-                width: 120px;
-                height: 120px;
-                margin-bottom: 10px;
-            }
-            p {
-                margin-bottom: 0;
-            }
+.profile-sidebar {
+    img {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 10px;
+    }
+    p {
+        margin-bottom: 0;
+    }
+    li {
+        i {
+            margin-right: 10px;
         }
-        .list-unstyled li {
-            margin-bottom: 8px;
-            i {
-                margin-right: 10px;
-            }
-        }
-        .nav-tabs {
-            margin-bottom: 30px;
+        a {
+            color: inherit;
         }
     }
+}
+.profile-content {
 }

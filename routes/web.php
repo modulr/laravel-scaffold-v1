@@ -41,7 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/upload/avatar/{id}', 'UserController@uploadAvatar');
 
     // profile
-    Route::get('/profile/{id}', 'ProfileController@show');
+    Route::group(['namespace' => 'Profile'], function() {
+        Route::get('/profile/{id}', 'ProfileController@information');
+        Route::get('/profile/notifications/{id}', 'ProfileController@notifications');
+    });
 
     // News
     Route::get('/news', 'NewsController@index');

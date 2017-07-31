@@ -40,6 +40,31 @@ class User extends Authenticatable
         return Storage::url('avatars/'.$this->id.'/'.$this->avatar);
     }
 
+    public function profilePersonal()
+    {
+        return $this->hasOne(\App\Models\Profile\ProfilePersonal::class);
+    }
+
+    public function profileContact()
+    {
+        return $this->hasMany(\App\Models\Profile\ProfileContact::class);
+    }
+
+    public function profileEducation()
+    {
+        return $this->hasMany(\App\Models\Profile\ProfileEducation::class);
+    }
+
+    public function profileFamily()
+    {
+        return $this->hasMany(\App\Models\Profile\ProfileFamily::class);
+    }
+
+    public function profilePlace()
+    {
+        return $this->hasMany(\App\Models\Profile\ProfilePlace::class);
+    }
+
     public function news()
     {
         return $this->hasMany(News::class);
