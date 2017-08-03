@@ -65,6 +65,11 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Profile\ProfilePlace::class);
     }
 
+    public function profileWork()
+    {
+        return $this->hasOne(\App\Models\Profile\ProfileWork::class);
+    }
+
     public function news()
     {
         return $this->hasMany(News::class);

@@ -15,11 +15,11 @@ class ProfileContact extends Model
 
     public function user()
     {
-      return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function type()
     {
-      return $this->belongsTo(\App\Models\Lists\ListContact::class, 'type_id');
+        return $this->belongsTo(\App\Models\Lists\ListContact::class, 'type_id');
     }
 }

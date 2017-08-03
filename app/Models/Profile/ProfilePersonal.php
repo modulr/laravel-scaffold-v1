@@ -15,16 +15,16 @@ class ProfilePersonal extends Model
 
     public function user()
     {
-      return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function gender()
     {
-      return $this->belongsTo(\App\Models\Lists\ListGender::class);
+        return $this->belongsTo(\App\Models\Lists\ListGender::class);
     }
 
     public function relationship()
     {
-      return $this->belongsTo(\App\Models\Lists\ListRelationship::class);
+        return $this->belongsTo(\App\Models\Lists\ListRelationship::class);
     }
 }

@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::group(['namespace' => 'Profile'], function() {
         Route::get('/profile/{id}', 'ProfileController@information');
         Route::get('/profile/notifications/{id}', 'ProfileController@notifications');
+        Route::get('/profile/work/{id}', 'ProfileController@work');
     });
 
     // News

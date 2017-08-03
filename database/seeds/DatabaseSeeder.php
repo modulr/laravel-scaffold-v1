@@ -15,6 +15,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ListRelationshipTableSeeder::class);
         $this->call(ListRelationTableSeeder::class);
         $this->call(ListContactTableSeeder::class);
+        $this->call(ListProfessionTableSeeder::class);
+        $this->call(ListPositionTableSeeder::class);
+        $this->call(ListDepartmentTableSeeder::class);
 
         DB::table('roles')->insert([
             [
@@ -43,7 +46,11 @@ class DatabaseSeeder extends Seeder
                 $u->profileEducation()->saveMany(factory(App\Models\Profile\ProfileEducation::class, 3)->make());
                 $u->profileFamily()->saveMany(factory(App\Models\Profile\ProfileFamily::class, 3)->make());
                 $u->profilePlace()->saveMany(factory(App\Models\Profile\ProfilePlace::class, 3)->make());
+
+                $u->profileWork()->save(factory(App\Models\Profile\ProfileWork::class)->make());
+
                 $u->news()->saveMany(factory(App\News::class, 3)->make());
+
                 $u->tasks()->saveMany(factory(App\Task::class, 3)->make());
             });
     }
