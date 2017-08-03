@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}  - modulr app</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <link rel="shortcut icon" href="{{ asset('img/icon/favicon.ico') }}" type="image/x-icon"/>
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('img/icon/apple-touch-icon-57x57.png') }}">
