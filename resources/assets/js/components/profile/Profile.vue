@@ -34,11 +34,8 @@
                     <div role="tabpanel" class="tab-pane active" id="information">
                         <profile-information :user="user"></profile-information>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="work">
-                        <li><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> July 10, 2017</li>
-                    </div>
+                    <div role="tabpanel" class="tab-pane" id="work">...</div>
                     <div role="tabpanel" class="tab-pane" id="notes">...</div>
-
                     <div role="tabpanel" class="tab-pane" id="notifications">
                         <notifications></notifications>
                     </div>
