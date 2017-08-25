@@ -15,15 +15,20 @@ class CreateQuotesTable extends Migration
     {
       Schema::create('quotes', function (Blueprint $table) {
           $table->increments('id');
-          $table->foreign('desginer_id')->references('id')->on('employee');
-          $table->foreign('seller_id')->references('id')->on('employee');
+          $table->string('name');
+          $table->integer('desginer_id')->unsigned();
+          $table->foreign('desginer_id')->references('id')->on('employees');
+          $table->integer('seller_id')->unsigned();
+          $table->foreign('seller_id')->references('id')->on('employees');
+          $table->integer('project_id')->unsigned();
           $table->foreign('project_id')->references('id')->on('projects');
-          $table->foreign('customer_id')->references('id')->('customers');          
+          $table->integer('customer_id')->unsigned();
+          $table->foreign('customer_id')->references('id')->on('customers');
           $table->datetime('request_date');
           $table->datetime('delivery_date');
           $table->datetime('close_date');
-          $table->float('ammount', 8, 4)
-          $table->integer('status')
+          $table->float('ammount', 8, 4);
+          $table->integer('status');
       });
     }
 

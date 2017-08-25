@@ -15,6 +15,7 @@ class CreateAttachmentsTable extends Migration
     {
       Schema::create('attachments', function (Blueprint $table) {
           $table->increments('id');
+          $table->integer('quote_id')->unsigned();
           $table->foreign('quote_id')->references('id')->on('quotes');
           $table->text('route');
           $table->timestamps();
