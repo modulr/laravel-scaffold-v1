@@ -71,4 +71,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/file/destroy/{id}', 'FileController@destroy');
     Route::get('/files/{folderId?}', 'FileController@view');
 
+    // Projects and Opportunities
+    Route::get('/opportunities', 'OpportunityController@index');
+    Route::get('/opportunities/all', 'OpportunityController@all');
+    Route::post('/opportunities/store', 'OpportunityController@store');
 });
