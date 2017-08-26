@@ -34,6 +34,8 @@ Vue.component('tasks', require('./components/Tasks.vue'));
 Vue.component('contacts', require('./components/Contacts.vue'));
 // Files
 Vue.component('files', require('./components/files/Files.vue'));
+// Projects & Opportunities
+Vue.component('opportunities', require('./components/opportunities/Opportunities.vue'));
 
 
 const app = new Vue({
