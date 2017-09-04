@@ -71,4 +71,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/file/destroy/{id}', 'FileController@destroy');
     Route::get('/files/{folderId?}', 'FileController@view');
 
+    //Quotes
+    Route::get('/quote', 'QuoteController@index');
+    Route::get('/quote/all', 'QuoteController@all');
+    Route::get('/quote/{id}', 'QuoteController@show');
+    Route::post('/quote/store', 'QuoteController@store');
+    Route::put('/quote/update/{id}', 'QuoteController@update');
+    Route::delete('/quote/destroy/{id}', 'QuoteController@destroy');
 });

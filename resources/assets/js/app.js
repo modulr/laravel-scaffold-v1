@@ -34,7 +34,8 @@ Vue.component('tasks', require('./components/Tasks.vue'));
 Vue.component('contacts', require('./components/Contacts.vue'));
 // Files
 Vue.component('files', require('./components/files/Files.vue'));
-
+//Quotes
+Vue.component('quotes', require('./components/Quotes.vue'));
 
 const app = new Vue({
     el: '#app',
