@@ -9,8 +9,14 @@
             </div>
         </div>
         <br>
+        <!-- No items found -->
+        <div class="row" v-if="opportunities.length == 0">
+            <div class="col-md-12">
+                <h3>No opportunities found.</h3>
+            </div>
+        </div>
         <!-- List -->
-        <div class="row">
+        <div class="row" v-if="opportunities.length != 0">
             <div class="col-md-12">
                 <table class="table table-hover">
                     <thead>
