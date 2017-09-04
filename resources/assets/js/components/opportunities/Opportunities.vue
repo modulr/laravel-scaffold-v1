@@ -9,8 +9,14 @@
             </div>
         </div>
         <br>
+        <!-- No items found -->
+        <div class="row" v-if="opportunities.length == 0">
+            <div class="col-md-12">
+                <h3>No opportunities found.</h3>
+            </div>
+        </div>
         <!-- List -->
-        <div class="row">
+        <div class="row" v-if="opportunities.length != 0">
             <div class="col-md-12">
                 <table class="table table-hover">
                     <thead>
@@ -18,6 +24,7 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Start Date</th>
+                            <th>Description</th>
                             <!-- <th></th> -->
                         </tr>
                     </thead>
@@ -31,6 +38,9 @@
                             </td>
                             <td @click="edit(item, index)">
                                 {{item.start_date | date}}<br>
+                            </td>
+                            <td @click="edit(item, index)">
+                                {{item.description}}<br>
                             </td>
                             <!-- <td class="text-right" @click="edit(item, index)">
                                 <a href="#" class="btn btn-link" @click.prevent="edit(item, index)"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
@@ -62,6 +72,14 @@
                                 <div class="col-sm-10">
                                     <input type="email" class="form-control" placeholder="Start Date YYYY-MM-DD hh:mm:ss" required v-model="opportunity.start_date">
                                     <span class="help-block" v-if="error.start_date">{{error.start_date[0]}}</span>
+                                </div>
+                            </div>
+                            <div class="form-group" :class="{'has-error': error.description}">
+                                <label class="col-sm-2 control-label">Description</label>
+                                <div class="col-sm-10">
+                                    <textarea type="text" class="form-control" placeholder="Description" required v-model="opportunity.description">
+                                    </textarea>
+                                    <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
                                 </div>
                             </div>
                         </form>
@@ -108,6 +126,7 @@ export default {
             this.opportunity = {
                 name: '',
                 start_date: '',
+                description: '',
             };
             this.error = {};
             $('#modalAdd').modal('show');

@@ -52,6 +52,7 @@ class OpportunityController extends Controller
             'quotes' => $request->quotes,
             'start_date' => $request->start_date,
             'status' => 1, // 1 = Opportunity
+            'description' => $request->description,
         ]);
 
         return $opportunity;
