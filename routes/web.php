@@ -75,4 +75,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/opportunities', 'OpportunityController@index');
     Route::get('/opportunities/all', 'OpportunityController@all');
     Route::post('/opportunities/store', 'OpportunityController@store');
+
+    //Quotes
+    Route::get('/quote', 'QuoteController@index');
+    Route::get('/quote/all', 'QuoteController@all');
+    Route::get('/quote/{id}', 'QuoteController@show');
+    Route::post('/quote/store', 'QuoteController@store');
+    Route::put('/quote/update/{id}', 'QuoteController@update');
+    Route::delete('/quote/destroy/{id}', 'QuoteController@destroy');
+
 });
