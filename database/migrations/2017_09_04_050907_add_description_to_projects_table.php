@@ -14,7 +14,7 @@ class AddDescriptionToProjectsTable extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->text('description');
+            $table->text('description')->nullable();
         });
     }
 

@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Project extends Model
 {
     use SoftDeletes;
-    
+
     protected $dates = ['deleted_at'];
-    
-    protected $fillable = ['name', 'quotes', 'start_date', 'status'];
+
+    protected $fillable = ['name', 'quotes', 'start_date', 'status', 'description'];
 
 
 
