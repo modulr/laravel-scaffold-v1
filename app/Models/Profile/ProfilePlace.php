@@ -10,7 +10,7 @@ class ProfilePlace extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'user_id', 'palce', 'currently', 'description',
+        'user_id', 'place', 'currently', 'description',
     ];
 
     public function user()

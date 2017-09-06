@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::group(['namespace' => 'Lists'], function() {
         Route::get('/list/gender', 'ListGenderController@all');
         Route::get('/list/relationship', 'ListRelationshipController@all');
+        Route::get('/list/contact', 'ListContactController@all');
+        Route::get('/list/relation', 'ListRelationController@all');
     });
 
     // Notifications
@@ -53,6 +55,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile/notifications/{id}', 'ProfileController@notifications');
         Route::get('/profile/work/{id}', 'ProfileController@work');
         Route::put('/profile/personal/update/{id}', 'ProfileController@updatePersonal');
+        Route::post('/profile/contact/store', 'ProfileController@storeContact');
+        Route::delete('/profile/contact/destroy/{id}', 'ProfileController@destroyContact');
+        Route::post('/profile/education/store', 'ProfileController@storeEducation');
+        Route::delete('/profile/education/destroy/{id}', 'ProfileController@destroyEducation');
+        Route::post('/profile/family/store', 'ProfileController@storeFamily');
+        Route::delete('/profile/family/destroy/{id}', 'ProfileController@destroyFamily');
+        Route::post('/profile/place/store', 'ProfileController@storePlace');
+        Route::delete('/profile/place/destroy/{id}', 'ProfileController@destroyPlace');
     });
 
     // News

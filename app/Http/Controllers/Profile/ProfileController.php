@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\user;
 use App\Models\Profile\ProfilePersonal;
+use App\Models\Profile\ProfileContact;
+use App\Models\Profile\ProfileEducation;
+use App\Models\Profile\ProfileFamily;
+use App\Models\Profile\ProfilePlace;
 
 class ProfileController extends Controller
 {
@@ -55,16 +59,106 @@ class ProfileController extends Controller
             'nss' => 'alpha_num|nullable',
         ]);
 
-        $q = ProfilePersonal::with('gender', 'relationship')->find($id);
-        $q->birthday = $request->birthday;
-        $q->place_of_birth = $request->place_of_birth;
-        $q->gender_id = $request->gender_id;
-        $q->relationship_id = $request->relationship_id;
-        $q->rfc = $request->rfc;
-        $q->curp = $request->curp;
-        $q->nss = $request->nss;
-        $q->save();
+        $personal = ProfilePersonal::with('gender', 'relationship')->find($id);
+        $personal->birthday = $request->birthday;
+        $personal->place_of_birth = $request->place_of_birth;
+        $personal->gender_id = $request->gender_id;
+        $personal->relationship_id = $request->relationship_id;
+        $personal->rfc = $request->rfc;
+        $personal->curp = $request->curp;
+        $personal->nss = $request->nss;
+        $personal->save();
 
         return ProfilePersonal::with('gender', 'relationship')->find($id);
+    }
+
+    public function storeContact(Request $request)
+    {
+        $this->validate($request, [
+            'user_id' => 'required|integer',
+            'contact' => 'required|string|max:255',
+            'type_id' => 'required|integer',
+        ]);
+
+        return ProfileContact::create([
+            'user_id' => $request->user_id,
+            'contact' => $request->contact,
+            'type_id' => $request->type_id,
+        ]);
+    }
+
+    public function destroyContact($id)
+    {
+        return ProfileContact::destroy($id);
+    }
+
+    public function storeEducation(Request $request)
+    {
+        $this->validate($request, [
+            'user_id' => 'required|integer',
+            'title' => 'required|string|max:255',
+            'school_name' => 'required|string|max:255',
+            'start_year' => 'required|numeric',
+            'end_year' => 'required|numeric',
+        ]);
+
+        return ProfileEducation::create([
+            'user_id' => $request->user_id,
+            'title' => $request->title,
+            'school_name' => $request->school_name,
+            'start_year' => $request->start_year,
+            'end_year' => $request->end_year,
+        ]);
+    }
+
+    public function destroyEducation($id)
+    {
+        return ProfileEducation::destroy($id);
+    }
+
+    public function storeFamily(Request $request)
+    {
+        $this->validate($request, [
+            'user_id' => 'required|integer',
+            'name' => 'required|string|max:255',
+            'gender_id' => 'required|integer',
+            'relation_id' => 'required|integer',
+            'birthday' => 'required|date',
+        ]);
+
+        $family = ProfileFamily::create([
+            'user_id' => $request->user_id,
+            'name' => $request->name,
+            'gender_id' => $request->gender_id,
+            'relation_id' => $request->relation_id,
+            'birthday' => $request->birthday,
+        ]);
+
+        return ProfileFamily::with('relation', 'gender')->find($family->id);
+    }
+
+    public function destroyFamily($id)
+    {
+        return ProfileFamily::destroy($id);
+    }
+
+    public function storePlace(Request $request)
+    {
+        $this->validate($request, [
+            'user_id' => 'required|integer',
+            'place' => 'required|string|max:255',
+            'currently' => 'boolean',
+        ]);
+
+        return ProfilePlace::create([
+            'user_id' => $request->user_id,
+            'place' => $request->place,
+            'currently' => $request->currently,
+        ]);
+    }
+
+    public function destroyPlace($id)
+    {
+        return ProfilePlace::destroy($id);
     }
 }

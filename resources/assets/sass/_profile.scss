@@ -1,10 +1,34 @@
 .profile-sidebar {
-    img {
-        width: 120px;
-        height: 120px;
-        margin-bottom: 10px;
+    .avatar-upload {
+        position: relative;
+        display: inline-block;
+        img {
+            width: 120px;
+            height: 120px;
+        }
+        .btn-upload {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            left: 0;
+            top: 0;
+            background-color: rgba($brand-gray, 0.3);
+            opacity: 0;
+            i {
+                line-height: 120px;
+            }
+            form {
+                width: 120px !important;
+                height: 120px !important;
+            }
+        }
+        &:hover .btn-upload {
+            opacity: 1;
+        }
     }
     p {
+        margin-top: 10px;
         margin-bottom: 0;
     }
     li {
@@ -17,4 +41,18 @@
     }
 }
 .profile-content {
+    dl {
+        &:hover {
+            background-color: $body-bg;
+        }
+        .close {
+            font-size: 19.5px;
+            font-weight: normal;
+            line-height: 1;
+            opacity: 0;
+        }
+        &:hover .close {
+            opacity: 0.6;
+        }
+    }
 }

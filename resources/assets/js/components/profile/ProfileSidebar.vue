@@ -2,7 +2,17 @@
     <div>
         <!-- User -->
         <div class="text-center">
-            <img :src="user.avatar_url" class="img-circle">
+            <div class="avatar-upload">
+                <img :src="user.avatar_url" class="img-circle">
+                <vue-core-image-upload
+                    class="btn-upload"
+                    @imageuploaded="uploadAvatar"
+                    extensions="png,jpeg,jpg"
+                    :headers=headers
+                    :url="'/user/upload/avatar/'+user.id">
+                    <i class="fa fa-camera fa-inverse fa-3x" aria-hidden="true"></i>
+                </vue-core-image-upload>
+            </div>
             <p class="lead">{{user.name}}</p>
             <small class="text-muted">{{user.profile_work.position.title}}</small>
         </div>
@@ -32,16 +42,22 @@
 </template>
 
 <script>
+import VueCoreImageUpload from 'vue-core-image-upload';
 import comingSoon from '../../mixins/comingSoon'
 export default {
     data () {
         return {
-            activeLink: ''
+            user: this.usr,
+            activeLink: '',
+            headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
         }
     },
     props: [
-        'user'
+        'usr'
     ],
+    components: {
+        'vue-core-image-upload': VueCoreImageUpload,
+    },
     mixins: [ comingSoon ],
     mounted() {
         var str = window.location.pathname;
@@ -51,6 +67,16 @@ export default {
             this.activeLink = res[1];
         } else if (res.length == 4) {
             this.activeLink = res[2];
+        }
+    },
+    methods: {
+        uploadAvatar(response) {
+            this.user.avatar = response.avatar;
+            this.user.avatar_url = response.avatar_url;
+
+            if (this.user.id == Laravel.user.id) {
+                Laravel.user.avatar_url = response.avatar_url;
+            }
         }
     }
 }
