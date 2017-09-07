@@ -98,14 +98,8 @@
                                   <label class="col-sm-2 control-label">Priority</label>
                                   <div class="col-sm-10">
                                       <select class="form-control" required v-model="opportunity.priority">
-                                          <option value="1">
-                                              High
-                                          </option>
-                                          <option value="2">
-                                              Medium
-                                          </option>
-                                          <option value="3">
-                                              Low
+                                          <option v-for="option in list.priorities" :value="option.id">
+                                              {{ option.name }}
                                           </option>
                                       </select>
                                       <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
@@ -149,14 +143,8 @@
                                   <label class="col-sm-2 control-label">Priority</label>
                                   <div class="col-sm-10">
                                       <select v-if="opportunity.priority" class="form-control" required v-model="opportunity.priority.id">
-                                          <option value="1">
-                                              High
-                                          </option>
-                                          <option value="2">
-                                              Medium
-                                          </option>
-                                          <option value="3">
-                                              Low
+                                          <option v-for="option in list.priorities" :value="option.id">
+                                              {{ option.name }}
                                           </option>
                                       </select>
                                   </div>
@@ -205,7 +193,10 @@ export default {
             opportunity: {},
             search: '',
             error: {},
+            list: {
+                priorities: []
             }
+        }
     },
     components: {
       Spinner
@@ -228,6 +219,10 @@ export default {
                 });
         },
         add: function() {
+            axios.get('/opportunities/list/priorities')
+            .then(response => {
+                this.list.priorities = response.data;
+            });
             this.opportunity = {
                 name: '',
                 start_date: '',
@@ -252,6 +247,10 @@ export default {
                 });
         },
         edit: function (opportunity, index) {
+            axios.get('/opportunities/list/priorities')
+            .then(response => {
+                this.list.priorities = response.data;
+            });
             this.opportunity = _.clone(opportunity);
             this.opportunity.index = index;
             $('#modalEdit').modal('show');

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Project;
+use App\Priority;
 
 class OpportunityController extends Controller
 {
@@ -62,28 +63,6 @@ class OpportunityController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -121,4 +100,14 @@ class OpportunityController extends Controller
     {
         return Project::destroy($id);
     }
+
+    /**
+     * Get a list of oportunity priorities.
+     *
+     * @return \Illuminate\Http\Response
+     */
+     public function listPriorities()
+     {
+        return Priority::all();
+     }
 }

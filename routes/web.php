@@ -89,6 +89,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/opportunities/store', 'OpportunityController@store');
     Route::put('/opportunities/update/{id}', 'OpportunityController@update');
     Route::delete('/opportunities/destroy/{id}', 'OpportunityController@destroy');
+    Route::get('/opportunities/list/priorities', 'OpportunityController@listPriorities');
 
     //Quotes
     Route::get('/quote', 'QuoteController@index');
