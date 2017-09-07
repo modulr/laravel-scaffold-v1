@@ -20,14 +20,14 @@ $inactive: #DDDADA;
 // $text-color: #636b6f;
 
 // ** Bootstrap Overwrites
-.btn-warning, .btn-success, .btn-primary, .btn-danger{
+.btn-warning, .btn-success, .btn-primary, .btn-danger {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16)!important;
 }
 
-p,h1,h2,h3,h4,h5,h6,span{
+p,h1,h2,h3,h4,h5,h6,span {
     color: $brand-gray;
 }
 
-.navbar, .panel{
+.navbar, .panel {
     box-shadow: 0px 3px 6px rgba(0,0,0,.16)!important;
 }

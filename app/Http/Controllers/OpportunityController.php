@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Project;
 
@@ -20,7 +21,7 @@ class OpportunityController extends Controller
 
     public function all()
     {
-        return Project::where('status', 1)->get();
+        return Project::with('owner')->where('status', 1)->get();
     }
 
     /**
@@ -53,7 +54,8 @@ class OpportunityController extends Controller
             'start_date' => $request->start_date,
             'status' => 1, // 1 = Opportunity
             'description' => $request->description,
-        ]);
+            'owner_id' => Auth::id(),
+        ])->load('owner');
 
         return $opportunity;
     }
