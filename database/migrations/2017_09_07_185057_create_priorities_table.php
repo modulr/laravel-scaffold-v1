@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDescriptionToProjectsTable extends Migration
+class CreatePrioritiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddDescriptionToProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->text('description')->nullable();
+        Schema::create('priorities', function(Blueprint $table){
+          $table->increments('id');
+          $table->string('name');
+          $table->timestamps();
+          $table->softDeletes();
         });
     }
 
@@ -25,8 +28,6 @@ class AddDescriptionToProjectsTable extends Migration
      */
     public function down()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('description');
-        });
+        $tables->dropIfExists('priority');
     }
 }

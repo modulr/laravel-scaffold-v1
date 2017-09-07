@@ -11,11 +11,16 @@ class Project extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name', 'quotes', 'start_date', 'status', 'description', 'owner_id'];
+    protected $fillable = ['name', 'quotes', 'start_date', 'status', 'description', 'owner_id', 'priority_id'];
 
     public function owner()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function priority()
+    {
+        return $this->belongsTo(Priority::class);
     }
 
 }

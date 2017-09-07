@@ -21,7 +21,7 @@ class OpportunityController extends Controller
 
     public function all()
     {
-        return Project::with('owner')->where('status', 1)->get();
+        return Project::with('owner', 'priority')->where('status', 1)->get();
     }
 
     /**
@@ -55,7 +55,8 @@ class OpportunityController extends Controller
             'status' => 1, // 1 = Opportunity
             'description' => $request->description,
             'owner_id' => Auth::id(),
-        ])->load('owner');
+            'priority_id' => $request->priority,
+        ])->load('owner', 'priority');
 
         return $opportunity;
     }
@@ -91,7 +92,23 @@ class OpportunityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $q = Project::find($id);
+
+        if ($q->name != $request->name) {
+            $q->name = $request->name;
+        }
+
+        if ($q->description != $request->description) {
+            $q->description = $request->description;
+        }
+
+        if ($q->priority_id != $request->priority) {
+            $q->priority_id = $request->priority['id'];
+        }
+
+        $q->save();
+
+        return $q->load('owner', 'priority');
     }
 
     /**
@@ -102,6 +119,6 @@ class OpportunityController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return Project::destroy($id);
     }
 }

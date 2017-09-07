@@ -26,7 +26,22 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Guest'
             ]
         ]);
-        
+
+        DB::table('Priority')->insert([
+            [
+                'id' => '1',
+                'name' => 'High'
+            ],
+            [
+                'id' => '2',
+                'name' => 'Medium'
+            ],
+            [
+                'id' => '3',
+                'name' => 'Low'
+            ]
+        ]);
+
         factory(App\User::class, 10)
             ->create()
             ->each(function ($u) {

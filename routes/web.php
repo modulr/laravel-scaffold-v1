@@ -75,6 +75,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/opportunities', 'OpportunityController@index');
     Route::get('/opportunities/all', 'OpportunityController@all');
     Route::post('/opportunities/store', 'OpportunityController@store');
+    Route::put('/opportunities/update/{id}', 'OpportunityController@update');
+    Route::delete('/opportunities/destroy/{id}', 'OpportunityController@destroy');
 
     //Quotes
     Route::get('/quote', 'QuoteController@index');

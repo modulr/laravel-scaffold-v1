@@ -28,25 +28,31 @@
                               <th>Registered Date</th>
                               <th>Description</th>
                               <th>Owner</th>
+                              <th>Piority</th>
                               <th></th>
                           </tr>
                       </thead>
                       <tbody>
                           <tr v-for="(item, index) in opportunities">
-                              <td @click="edit(item, index)">
+                              <td>
                                   {{item.id}}
                               </td>
-                              <td @click="edit(item, index)">
+                              <td>
                                   {{item.name}}<br>
                               </td>
-                              <td @click="edit(item, index)">
+                              <td>
                                   {{item.start_date | date}}<br>
                               </td>
-                              <td @click="edit(item, index)">
+                              <td>
                                   {{item.description}}<br>
                               </td>
-                              <td @click="edit(item, index)">
-                                  {{item.owner.name}}
+                              <td>
+                                  <a v-bind:href="'/profile/'+item.owner.id">{{item.owner.name}}</a>
+                              </td>
+                              <td>
+                                  <span class="chip" :class="'priority-'+item.priority.name">
+                                      {{item.priority.name}}
+                                  </span>
                               </td>
                               <td class="text-right" @click="edit(item, index)">
                                   <a href="#" class="btn btn-link" @click.prevent="edit(item, index)"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
@@ -88,11 +94,97 @@
                                       <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
                                   </div>
                               </div>
+                              <div class="form-group" :class="{'has-error': error.priority}">
+                                  <label class="col-sm-2 control-label">Priority</label>
+                                  <div class="col-sm-10">
+                                      <select class="form-control" required v-model="opportunity.priority">
+                                          <option value="1">
+                                              High
+                                          </option>
+                                          <option value="2">
+                                              Medium
+                                          </option>
+                                          <option value="3">
+                                              Low
+                                          </option>
+                                      </select>
+                                      <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
+                                  </div>
+                              </div>
                           </form>
                       </div>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                           <button type="button" class="btn btn-success" @click="store">Add</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- Edit opportunity -->
+          <div class="modal fade" id="modalEdit">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title">Edit opportunity</h4>
+                      </div>
+                      <div class="modal-body">
+                          <form class="form-horizontal">
+                              <div class="form-group" :class="{'has-error': error.name}">
+                                  <label class="col-sm-2 control-label">Name</label>
+                                  <div class="col-sm-10">
+                                      <input type="text" class="form-control input-lg" placeholder="Name" required v-model="opportunity.name">
+                                        <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
+                                  </div>
+                              </div>
+                              <div class="form-group" :class="{'has-error': error.description}">
+                                  <label class="col-sm-2 control-label">Description</label>
+                                  <div class="col-sm-10">
+                                      <textarea type="text" class="form-control input-lg" placeholder="Description" required v-model="opportunity.description">
+                                      </textarea>
+                                      <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
+                                  </div>
+                              </div>
+                              <div class="form-group" :class="{'has-error': error.priority}">
+                                  <label class="col-sm-2 control-label">Priority</label>
+                                  <div class="col-sm-10">
+                                      <select v-if="opportunity.priority" class="form-control" required v-model="opportunity.priority.id">
+                                          <option value="1">
+                                              High
+                                          </option>
+                                          <option value="2">
+                                              Medium
+                                          </option>
+                                          <option value="3">
+                                              Low
+                                          </option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-sm-2 control-label">Owner</label>
+                                  <div class="col-sm-10">
+                                      <p class="form-control-static">
+                                          <small class="text-mute" v-if="opportunity.owner">{{opportunity.owner.name}}</small>
+                                      </p>
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-sm-2 control-label">Registered</label>
+                                  <div class="col-sm-10">
+                                      <p class="form-control-static">
+                                          <small class="text-mute">{{opportunity.start_date | date}}</small>
+                                      </p>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default pull-left" @click="destroy()">
+                              <i class="mdi mdi-delete mdi-lg"></i> Delete
+                          </button>
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                          <button type="button" class="btn btn-primary" @click="update">Save</button>
                       </div>
                   </div>
               </div>
@@ -158,6 +250,56 @@ export default {
                     this.error = error.response.data;
                     var btn = $(e.target).button('reset')
                 });
+        },
+        edit: function (opportunity, index) {
+            this.opportunity = _.clone(opportunity);
+            this.opportunity.index = index;
+            $('#modalEdit').modal('show');
+        },
+        update: function (e) {
+            var btn = $(e.target).button('loading')
+            axios.put('/opportunities/update/'+this.opportunity.id, this.opportunity)
+            .then(response => {
+                this.opportunities[this.opportunity.index] = response.data;
+                this.opportunity = {};
+                this.error = {};
+                var btn = $(e.target).button('reset')
+                $('#modalEdit').modal('hide');
+            })
+            .catch(error => {
+                this.error = error.response.data;
+                var btn = $(e.target).button('reset')
+            });
+        },
+        destroy: function () {
+            var self = this;
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this opportunity!",
+                type: "warning",
+                showLoaderOnConfirm: true,
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: false
+            },
+            function(){
+                axios.delete('/opportunities/destroy/' + self.opportunity.id)
+                .then(response => {
+                    self.opportunities.splice(self.opportunity.index, 1);
+                    swal({
+                        title: "Deleted!",
+                        text: "The opportunity has been deleted.",
+                        type: "success",
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    self.error = {};
+                    $('#modalEdit').modal('hide');
+                })
+                .catch(error => {
+                    self.error = error.response.data;
+                });
+            });
         },
     }
 }

@@ -9,8 +9,27 @@
         td:last-child i {
             opacity: 0;
         }
+        .priority-High {
+            color: $brand-danger;
+            background-color: lighten($brand-danger, 20%);
+        }
+        .priority-Medium {
+            color: $brand-warning;
+            background-color: lighten($brand-warning, 20%);
+        }
+        .priority-Low {
+            color: $brand-success;
+            background-color: lighten($brand-success, 20%);
+        }
         tr:hover td:last-child i {
             opacity: 1;
+        }
+        .chip {
+            display: inline-block;
+            padding: 0 15px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 25px;
         }
     }
     .modal {

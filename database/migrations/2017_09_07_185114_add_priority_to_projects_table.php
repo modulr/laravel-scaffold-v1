@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddOwnerIdToProjectsTable extends Migration
+class AddPriorityToProjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class AddOwnerIdToProjectsTable extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->integer('owner_id')->unsigned();
-            $table->foreign('owner_id')->references('id')->on('users');
+            $table->integer('priority_id')->unsigned();
+            $table->foreign('priority_id')->references('id')->on('priority');
         });
     }
 
@@ -27,7 +27,7 @@ class AddOwnerIdToProjectsTable extends Migration
     public function down()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('owner_id');
+            $table->dropColumn('priority_id');
         });
     }
 }
