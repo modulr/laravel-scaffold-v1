@@ -23,7 +23,9 @@ Vue.component('notifications', require('./components/Notifications.vue'));
 // Users
 Vue.component('users', require('./components/users/Users.vue'));
 // Profile
-Vue.component('profile', require('./components/profile/Profile.vue'));
+Vue.component('ProfileSidebar', require('./components/profile/ProfileSidebar.vue'));
+Vue.component('ProfileInformation', require('./components/profile/ProfileInformation.vue'));
+Vue.component('ProfileWork', require('./components/profile/ProfileWork.vue'));
 // News
 //Vue.component('news', require('./components/News.vue'));
 Vue.component('newsPublish', require('./components/news/NewsPublish.vue'));
