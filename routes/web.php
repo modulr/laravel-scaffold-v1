@@ -90,6 +90,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/opportunities/update/{id}', 'OpportunityController@update');
     Route::delete('/opportunities/destroy/{id}', 'OpportunityController@destroy');
     Route::get('/opportunities/list/priorities', 'OpportunityController@listPriorities');
+    Route::get('/opportunities/list/contacts', 'OpportunityController@listContacts');
 
     //Quotes
     Route::get('/quote', 'QuoteController@index');

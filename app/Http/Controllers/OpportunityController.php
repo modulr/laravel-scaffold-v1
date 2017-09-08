@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Project;
 use App\Priority;
+use App\Contact;
 
 class OpportunityController extends Controller
 {
@@ -22,7 +23,7 @@ class OpportunityController extends Controller
 
     public function all()
     {
-        return Project::with('owner', 'priority')->where('status', 1)->get();
+        return Project::with('owner', 'priority', 'contact', 'contact.customer')->where('status', 1)->get();
     }
 
     /**
@@ -57,6 +58,7 @@ class OpportunityController extends Controller
             'description' => $request->description,
             'owner_id' => Auth::id(),
             'priority_id' => $request->priority,
+            'contact_id' => $request->contact,
         ])->load('owner', 'priority');
 
         return $opportunity;
@@ -109,5 +111,15 @@ class OpportunityController extends Controller
      public function listPriorities()
      {
         return Priority::all();
+     }
+
+    /**
+     * Get a list of oportunity contacts.
+     *
+     * @return \Illuminate\Http\Response
+     */
+     public function listContacts()
+     {
+        return Contact::with('customer')->get();
      }
 }
