@@ -59,7 +59,7 @@ class OpportunityController extends Controller
             'owner_id' => Auth::id(),
             'priority_id' => $request->priority,
             'contact_id' => $request->contact,
-        ])->load('owner', 'priority');
+        ])->load('owner', 'priority', 'contact', 'contact.customer');
 
         return $opportunity;
     }
@@ -89,7 +89,7 @@ class OpportunityController extends Controller
 
         $q->save();
 
-        return $q->load('owner', 'priority');
+        return $q->load('owner', 'priority', 'contact', 'contact.customer');
     }
 
     /**
