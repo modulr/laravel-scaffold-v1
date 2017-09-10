@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Validator;
 use App\Quote;
 class QuoteController extends Controller
 {
 
   public function index(Request $request)
   {
-      return view('news', ['breadcrumb' => $request->path()]);
+      return view('quotes.quotes', ['breadcrumb' => $request->path()]);
   }
 
   public function all(Request $request)
   {
-      return Quote::all();
+      return Quote::with('designer', 'seller', 'customer')->get();
   }
 
   public function show($id)
@@ -25,18 +27,22 @@ class QuoteController extends Controller
 
   public function store(Request $request)
   {
+      // $this->validate($request, [
+      //     'name' => 'required|string',
+      // ]);
       $quote = Quote::create([
         'name' => $request->name,
-        'desginer_id' => $request->designer,
-        'seller_id' => $request->seller,
-        'project_id' => $request->project,
-        'customer_id' => $request->customer,
+        'description' => $request->description,
+        'owner_id' => Auth::id(),
+        'designer_id' => $request->designer_id,
+        'seller_id' => $request->seller_id,
+        'project_id' => $request->project_id,
+        'customer_id' => $request->customer_id,
         'request_date' => $request->request_date,
         'delivery_date' => $request->delivery_date,
         'close_date' => $request->close_date,
         'ammount' => $request->ammount,
-        'status' => 1,
-        'timestamps' => false]);
+        'status' => 1])->load('designer', 'seller', 'customer', 'owner');
       return $quote;
   }
 
@@ -45,24 +51,23 @@ class QuoteController extends Controller
 
       $q = Quote::find($id);
       $q->name = $request->name;
-      $q->desginer_id = $request->desginer_id;
+      $q->description = $request->description;
+      $q->designer_id = $request->designer_id;
       $q->seller_id = $request->seller_id;
       $q->project_id = $request->project_id;
       $q->customer_id = $request->customer_id;
-      $q->request_date = $request->request_date;
       $q->delivery_date = $request->delivery_date;
-      $q->close_date = $request->close_date;
       $q->ammount = $request->ammount;
-      $q->status = $request->status;
       $q->save();
       // $data = $request->all();
 
       // return response()->json($data);
-      return $q;
+      return $q->load('designer', 'seller', 'customer', 'owner');
   }
 
   public function destroy($id)
   {
       return Quote::destroy($id);
   }
+    
 }

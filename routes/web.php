@@ -82,7 +82,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/file/update/{id}', 'FileController@update');
     Route::delete('/file/destroy/{id}', 'FileController@destroy');
     Route::get('/files/{folderId?}', 'FileController@view');
-
+    
     // Projects and Opportunities
     Route::get('/opportunities', 'OpportunityController@index');
     Route::get('/opportunities/all', 'OpportunityController@all');
@@ -90,6 +90,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/opportunities/update/{id}', 'OpportunityController@update');
     Route::delete('/opportunities/destroy/{id}', 'OpportunityController@destroy');
     Route::get('/opportunities/list/priorities', 'OpportunityController@listPriorities');
+
+    //Employes
+    Route::get('/employees/sellers', 'EmployeeController@sellers');
+    Route::get('/employees/designers', 'EmployeeController@designers');
 
     //Quotes
     Route::get('/quote', 'QuoteController@index');

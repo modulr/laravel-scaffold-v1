@@ -89,4 +89,9 @@ class User extends Authenticatable
     {
       return $this->hasMany(Project::class);
     }
+
+    public function quotes()
+    {
+        return $this->hasMany(Quote::class);
+    }
 }
