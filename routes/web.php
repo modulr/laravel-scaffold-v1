@@ -71,6 +71,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/file/destroy/{id}', 'FileController@destroy');
     Route::get('/files/{folderId?}', 'FileController@view');
 
+    //Employes
+    Route::get('/employees/sellers', 'EmployeeController@sellers');
+    Route::get('/employees/designers', 'EmployeeController@designers');
+
     //Quotes
     Route::get('/quote', 'QuoteController@index');
     Route::get('/quote/all', 'QuoteController@all');

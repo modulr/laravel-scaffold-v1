@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Quote extends Model
 {
-    public $timestamps = false;
-    protected $fillable = ['name', 'desginer_id', 'seller_id', 'project_id', 'customer_id',
+
+    protected $fillable = ['name', 'description', 'owner_id', 'designer_id', 'seller_id', 'project_id', 'customer_id',
                           'request_date','delivery_date','close_date','ammount','status'];
 
     public function designer()
     {
-        return $this->belongsTo(Employee::class, 'desginer_id');
+        return $this->belongsTo(Employee::class, 'designer_id');
     }
 
     public function seller()
@@ -22,7 +22,17 @@ class Quote extends Model
 
     public function customer()
     {
-        return $this->hasOne(Customer::class);
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function attachment()
+    {
+      return $this->hasMany(Attachment::class);
     }
 
 }
