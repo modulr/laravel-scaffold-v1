@@ -23,4 +23,9 @@ class Project extends Model
         return $this->belongsTo(Priority::class);
     }
 
+    public function quote()
+    {
+      return $this->hasMany(Quote::class);
+    }
+
 }

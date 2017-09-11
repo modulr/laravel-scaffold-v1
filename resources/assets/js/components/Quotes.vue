@@ -38,7 +38,7 @@
               <tr v-for="(quote, index) in quotes">
                 <td> {{ quote.id }} </td>
                 <td> {{ quote.name }} </td>
-                <td> {{ quote.project }} </td>
+                <td> {{ quote.project.name }} </td>
                 <td> {{ quote.designer.name }} </td>
                 <td> {{ quote.seller.name }} </td>
                 <td> {{ quote.ammount }} </td>
@@ -73,7 +73,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Description</label>
                         <div class="col-sm-10">
-                            <textarea name="description" rows="4" cols="80" class="form-control input-lg" placeholder="Description" required v-model="quote.description">
+                            <textarea name="description" class="form-control input-lg" placeholder="Description" required v-model="quote.description">
                             </textarea>
                         </div>
                     </div>
@@ -160,14 +160,14 @@
                     </div>
                     <label class="col-sm-2 control-label">Description</label>
                     <div class="col-sm-10">
-                        <textarea name="description" rows="4" cols="80" class="form-control input-lg" placeholder="Description" required v-model="quote.description">
+                        <textarea name="description" class="form-control input-lg" placeholder="Description" required v-model="quote.description">
                         </textarea>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Project *</label>
                         <div class="col-sm-10">
                           <p class="form-control-static" v-if="quote.project">
-                            <small class="text-mute">{{quote.projet.name}}</small>
+                            <small class="text-mute">{{quote.project.name}}</small>
                           </p>
                         </div>
                     </div>
@@ -245,12 +245,11 @@ export default {
       quote: {
         close_date: "2017-08-05"
       },
-      projects: [],
       list: {
         designers: [],
         sellers: [],
         customers: [ { name: 'First customer', id: '1' }, { name: 'Second customer', id: '2' } ],
-        projects: [ { name: 'First project', id: '1' }, { name: 'Second project', id: '2' } ],
+        projects: [],
       }
     }
   },
@@ -281,16 +280,16 @@ export default {
         .then(response => {
           this.list.designers = response.data;
         });
+      axios.get('/opportunities/all')
+        .then(response => {
+          this.list.projects = response.data;
+        });
     },
     add () {
-      // axios.get('/opportunities/all')
-      //   .then(response => {
-      //     this.projects = response.data;
-      //   });
       this.quote = {}
       $('#modalAdd').modal('show');
     },
-    store (e) {      
+    store (e) {
       var btn = $(e.target).button('loading')
       axios.post('/quote/store', this.quote)
         .then(response => {
@@ -310,8 +309,7 @@ export default {
       $('#modalEdit').modal('show')
     },
     update (e) {
-      var btn = $(e.target).button('loading')
-      console.log(this.quote)
+      var btn = $(e.target).button('loading')      
       axios.put('/quote/update/'+this.quote.id, this.quote)
         .then(response => {
           this.quotes[this.quote.index] = response.data;
