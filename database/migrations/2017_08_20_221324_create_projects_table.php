@@ -18,6 +18,8 @@ class CreateProjectsTable extends Migration
             $table->string('name');
             $table->integer('owner_id')->unsigned();
             $table->foreign('owner_id')->references('id')->on('users');
+            $table->integer('contact_id')->unsigned();
+            $table->foreign('contact_id')->references('id')->on('contacts');
             $table->integer('quotes')->nullable();
             $table->datetime('start_date');
             $table->datetime('delivery_date')->nullable();

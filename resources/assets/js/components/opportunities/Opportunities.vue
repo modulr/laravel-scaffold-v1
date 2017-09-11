@@ -28,6 +28,8 @@
                               <th>Registered Date</th>
                               <th>Description</th>
                               <th>Owner</th>
+                              <th>Contact</th>
+                              <th>Customer</th>
                               <th>Piority</th>
                               <th></th>
                           </tr>
@@ -48,6 +50,12 @@
                               </td>
                               <td>
                                   <a v-bind:href="'/profile/'+item.owner.id">{{item.owner.name}}</a>
+                              </td>
+                              <td>
+                                  {{item.contact.name}}
+                              </td>
+                              <td>
+                                  {{item.contact.customer.name}}
                               </td>
                               <td>
                                   <span class="chip" :class="'priority-'+item.priority.name">
@@ -100,6 +108,17 @@
                                       <select class="form-control" required v-model="opportunity.priority">
                                           <option v-for="option in list.priorities" :value="option.id">
                                               {{ option.name }}
+                                          </option>
+                                      </select>
+                                      <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
+                                  </div>
+                              </div>
+                              <div class="form-group" :class="{'has-error': error.contact}">
+                                  <label class="col-sm-2 control-label">Contact</label>
+                                  <div class="col-sm-10">
+                                      <select class="form-control" required v-model="opportunity.contact">
+                                          <option v-for="option in list.contacts" :value="option.id">
+                                              {{option.name}}, {{option.customer.name}}
                                           </option>
                                       </select>
                                       <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
@@ -194,7 +213,8 @@ export default {
             search: '',
             error: {},
             list: {
-                priorities: []
+                priorities: [],
+                contacts: [],
             }
         }
     },
@@ -222,6 +242,10 @@ export default {
             axios.get('/opportunities/list/priorities')
             .then(response => {
                 this.list.priorities = response.data;
+            });
+            axios.get('/opportunities/list/contacts')
+            .then(response => {
+                this.list.contacts = response.data;
             });
             this.opportunity = {
                 name: '',
