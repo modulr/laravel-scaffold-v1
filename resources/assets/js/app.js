@@ -40,6 +40,8 @@ Vue.component('files', require('./components/files/Files.vue'));
 Vue.component('opportunities', require('./components/opportunities/Opportunities.vue'));
 //Quotes
 Vue.component('quotes', require('./components/Quotes.vue'));
+// Customers
+Vue.component('customers', require('./components/customers/Customers.vue'));
 
 const app = new Vue({
     el: '#app',

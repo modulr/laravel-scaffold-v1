@@ -16,6 +16,7 @@
                             <li><a href="/contacts"><i class="fa fa-fw fa-address-book-o"></i> Contacts</a></li>
                             <li><a href="/opportunities"><i class="fa fa-fw fa-suitcase"></i> Opportunities</a></li>
                             <li><a href="/quote"><i class="fa fa-fw fa-money"></i> Quotes</a></li>
+                            <li><a href="/customers"><i class="fa fa-fw fa-address-card-o"></i> Customers</a></li>
                             <li class="divider"></li>
                             <li><a href="/users"><i class="fa fa-fw fa-users"></i> Users</a></li>
                         </ul>
