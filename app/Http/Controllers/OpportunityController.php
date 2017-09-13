@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Project;
+use App\Priority;
+use App\Contact;
 
 class OpportunityController extends Controller
 {
@@ -20,7 +23,7 @@ class OpportunityController extends Controller
 
     public function all()
     {
-        return Project::where('status', 1)->get();
+        return Project::with('owner', 'priority', 'contact', 'contact.customer')->where('status', 1)->get();
     }
 
     /**
@@ -53,31 +56,12 @@ class OpportunityController extends Controller
             'start_date' => $request->start_date,
             'status' => 1, // 1 = Opportunity
             'description' => $request->description,
-        ]);
+            'owner_id' => Auth::id(),
+            'priority_id' => $request->priority,
+            'contact_id' => $request->contact,
+        ])->load('owner', 'priority', 'contact', 'contact.customer');
 
         return $opportunity;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -89,7 +73,23 @@ class OpportunityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $q = Project::find($id);
+
+        if ($q->name != $request->name) {
+            $q->name = $request->name;
+        }
+
+        if ($q->description != $request->description) {
+            $q->description = $request->description;
+        }
+
+        if ($q->priority_id != $request->priority) {
+            $q->priority_id = $request->priority['id'];
+        }
+
+        $q->save();
+
+        return $q->load('owner', 'priority', 'contact', 'contact.customer');
     }
 
     /**
@@ -100,6 +100,26 @@ class OpportunityController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return Project::destroy($id);
     }
+
+    /**
+     * Get a list of oportunity priorities.
+     *
+     * @return \Illuminate\Http\Response
+     */
+     public function listPriorities()
+     {
+        return Priority::all();
+     }
+
+    /**
+     * Get a list of oportunity contacts.
+     *
+     * @return \Illuminate\Http\Response
+     */
+     public function listContacts()
+     {
+        return Contact::with('customer')->get();
+     }
 }

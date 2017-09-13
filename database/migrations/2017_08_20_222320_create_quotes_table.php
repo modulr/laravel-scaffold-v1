@@ -16,8 +16,11 @@ class CreateQuotesTable extends Migration
       Schema::create('quotes', function (Blueprint $table) {
           $table->increments('id');
           $table->string('name');
-          $table->integer('desginer_id')->unsigned();
-          $table->foreign('desginer_id')->references('id')->on('employees');
+          $table->string('description')->nullable();
+          $table->integer('owner_id')->unsigned();
+          $table->foreign('owner_id')->references('id')->on('users');
+          $table->integer('designer_id')->unsigned();
+          $table->foreign('designer_id')->references('id')->on('employees');
           $table->integer('seller_id')->unsigned();
           $table->foreign('seller_id')->references('id')->on('employees');
           $table->integer('project_id')->unsigned();
@@ -25,10 +28,12 @@ class CreateQuotesTable extends Migration
           $table->integer('customer_id')->unsigned();
           $table->foreign('customer_id')->references('id')->on('customers');
           $table->datetime('request_date');
-          $table->datetime('delivery_date');
-          $table->datetime('close_date');
+          $table->datetime('delivery_date')->nullable();
+          $table->datetime('close_date')->nullable();
           $table->float('ammount', 8, 4);
           $table->integer('status');
+          $table->timestamps();
+          $table->softDeletes();
       });
     }
 

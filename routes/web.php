@@ -28,6 +28,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', 'DashboardController@index');
     Route::get('/dashboard/markAsRead', 'DashboardController@markAsRead');
 
+
+    // Lists
+    Route::group(['namespace' => 'Lists'], function() {
+        Route::get('/list/gender', 'ListGenderController@all');
+        Route::get('/list/relationship', 'ListRelationshipController@all');
+    });
+
     // Notifications
     Route::get('/notifications', 'NotificationController@index');
 
@@ -40,8 +47,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/upload/avatar/temp', 'UserController@uploadAvatarTemp');
     Route::post('/user/upload/avatar/{id}', 'UserController@uploadAvatar');
 
-    // profile
-    Route::get('/profile/{id}', 'ProfileController@show');
+    // Profile
+    Route::group(['namespace' => 'Profile'], function() {
+        Route::get('/profile/{id}', 'ProfileController@information');
+        Route::get('/profile/notifications/{id}', 'ProfileController@notifications');
+        Route::get('/profile/work/{id}', 'ProfileController@work');
+        Route::put('/profile/personal/update/{id}', 'ProfileController@updatePersonal');
+    });
 
     // News
     Route::get('/news', 'NewsController@index');
@@ -75,6 +87,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/opportunities', 'OpportunityController@index');
     Route::get('/opportunities/all', 'OpportunityController@all');
     Route::post('/opportunities/store', 'OpportunityController@store');
+    Route::put('/opportunities/update/{id}', 'OpportunityController@update');
+    Route::delete('/opportunities/destroy/{id}', 'OpportunityController@destroy');
+    Route::get('/opportunities/list/priorities', 'OpportunityController@listPriorities');
+    Route::get('/opportunities/list/contacts', 'OpportunityController@listContacts');
+
+    //Employes
+    Route::get('/employees/sellers', 'EmployeeController@sellers');
+    Route::get('/employees/designers', 'EmployeeController@designers');
 
     //Quotes
     Route::get('/quote', 'QuoteController@index');

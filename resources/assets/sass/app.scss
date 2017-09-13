@@ -22,9 +22,11 @@
 @import "node_modules/bootswatch/paper/_bootswatch";
 
 // General
-@import 'auth';
 @import 'navbar';
 @import 'content';
+@import 'panel';
+
+@import 'auth';
 @import 'users';
 @import 'profile';
 @import 'dashboard';

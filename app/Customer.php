@@ -12,4 +12,9 @@ class Customer extends Model
     {
         return $this->hasOne(Quote::class);
     }
+
+    public function contact()
+    {
+        return $this->hasOne(Contact::class);
+    }
 }
