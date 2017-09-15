@@ -4,16 +4,19 @@ namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 use App\user;
 use App\Models\Profile\ProfilePersonal;
 use App\Models\Profile\ProfileContact;
 use App\Models\Profile\ProfileEducation;
 use App\Models\Profile\ProfileFamily;
 use App\Models\Profile\ProfilePlace;
+use App\Models\Profile\ProfileWork;
 
 class ProfileController extends Controller
 {
-    public function information(Request $request, $id)
+    public function profile(Request $request, $id)
     {
         $user = User::with(
             'profilePersonal.gender',
@@ -26,7 +29,7 @@ class ProfileController extends Controller
             'profileWork.position'
             )->find($id);
 
-        return view('profile.information', ['breadcrumb' => $request->path(), 'user' => $user]);
+        return view('profile.profile', ['breadcrumb' => $request->path(), 'user' => $user]);
     }
 
     public function work(Request $request, $id)
@@ -41,10 +44,21 @@ class ProfileController extends Controller
         return view('profile.work', ['breadcrumb' => $request->path(), 'user' => $user]);
     }
 
-    public function notifications(Request $request, $id)
+    public function profileEdit(Request $request, $id)
     {
-        $user = User::with('profileWork.position')->find($id);
-        return view('profile.notifications', ['breadcrumb' => $request->path(), 'user' => $user]);
+        $user = User::find($id);
+
+        return view('profile.edit.profile', ['breadcrumb' => $request->path(), 'user' => $user]);
+    }
+
+    public function personal(Request $request, $id)
+    {
+        $user = User::with(
+            'profilePersonal.gender',
+            'profilePersonal.relationship'
+            )->find($id);
+
+        return view('profile.edit.personal', ['breadcrumb' => $request->path(), 'user' => $user]);
     }
 
     public function updatePersonal(Request $request, $id)
@@ -59,7 +73,7 @@ class ProfileController extends Controller
             'nss' => 'alpha_num|nullable',
         ]);
 
-        $personal = ProfilePersonal::with('gender', 'relationship')->find($id);
+        $personal = ProfilePersonal::find($id);
         $personal->birthday = $request->birthday;
         $personal->place_of_birth = $request->place_of_birth;
         $personal->gender_id = $request->gender_id;
@@ -70,6 +84,15 @@ class ProfileController extends Controller
         $personal->save();
 
         return ProfilePersonal::with('gender', 'relationship')->find($id);
+    }
+
+    public function contact(Request $request, $id)
+    {
+        $user = User::with(
+            'profileContact'
+            )->find($id);
+
+        return view('profile.edit.contact', ['breadcrumb' => $request->path(), 'user' => $user]);
     }
 
     public function storeContact(Request $request)
@@ -90,6 +113,15 @@ class ProfileController extends Controller
     public function destroyContact($id)
     {
         return ProfileContact::destroy($id);
+    }
+
+    public function education(Request $request, $id)
+    {
+        $user = User::with(
+            'profileEducation'
+            )->find($id);
+
+        return view('profile.edit.education', ['breadcrumb' => $request->path(), 'user' => $user]);
     }
 
     public function storeEducation(Request $request)
@@ -114,6 +146,16 @@ class ProfileController extends Controller
     public function destroyEducation($id)
     {
         return ProfileEducation::destroy($id);
+    }
+
+    public function family(Request $request, $id)
+    {
+        $user = User::with(
+            'profileFamily.gender',
+            'profileFamily.relation'
+            )->find($id);
+
+        return view('profile.edit.family', ['breadcrumb' => $request->path(), 'user' => $user]);
     }
 
     public function storeFamily(Request $request)
@@ -142,6 +184,15 @@ class ProfileController extends Controller
         return ProfileFamily::destroy($id);
     }
 
+    public function place(Request $request, $id)
+    {
+        $user = User::with(
+            'profilePlace'
+            )->find($id);
+
+        return view('profile.edit.place', ['breadcrumb' => $request->path(), 'user' => $user]);
+    }
+
     public function storePlace(Request $request)
     {
         $this->validate($request, [
@@ -160,5 +211,45 @@ class ProfileController extends Controller
     public function destroyPlace($id)
     {
         return ProfilePlace::destroy($id);
+    }
+
+    public function workEdit(Request $request, $id)
+    {
+        $user = User::with(
+            'profileWork.profession',
+            'profileWork.position',
+            'profileWork.department',
+            'profileWork.boss'
+            )->find($id);
+
+        return view('profile.edit.work', ['breadcrumb' => $request->path(), 'user' => $user]);
+    }
+
+    public function updateWork(Request $request, $id)
+    {
+        $this->validate($request, [
+            'profession_id' => 'integer',
+            'position_id' => 'integer',
+            'department_id' => 'integer',
+            'boss_id' => 'integer',
+            'starting_from' => 'date',
+        ]);
+
+        $personal = ProfileWork::find($id);
+        $personal->profession_id = $request->profession_id;
+        $personal->position_id = $request->position_id;
+        $personal->department_id = $request->department_id;
+        $personal->boss_id = $request->boss_id;
+        $personal->starting_from = $request->starting_from;
+        $personal->save();
+
+        return ProfileWork::with('profession', 'position', 'department', 'boss')->find($id);
+    }
+
+    public function password(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        return view('profile.edit.password', ['breadcrumb' => $request->path(), 'user' => $user]);
     }
 }

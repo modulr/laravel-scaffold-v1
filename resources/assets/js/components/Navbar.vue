@@ -89,14 +89,24 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li class="dropdown-header">
+                                <span class="lead">{{user.name}}</span>
+                            </li>
+                            <li class="divider"></li>
                             <li>
                                 <a :href="'/profile/'+user.id">
-                                    Profile
+                                    <i class="fa fa-fw fa-user-circle-o"></i> Profile
                                 </a>
                             </li>
                             <li>
+                                <a :href="'/profile/'+user.id+'/edit'">
+                                    <i class="fa fa-fw fa-cog"></i> Settings
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
                                 <a href="#" @click.prevent="logout">
-                                    Logout
+                                    <i class="fa fa-fw fa-sign-out"></i> Sign out
                                 </a>
                             </li>
                         </ul>

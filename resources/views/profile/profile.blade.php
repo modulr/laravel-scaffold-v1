@@ -9,7 +9,7 @@
                         <profile-sidebar :user="{{$user}}"></profile-sidebar>
                     </div>
                     <div class="col-sm-9 profile-content">
-                        <profile-work :user="{{$user}}"></profile-work>
+                        <profile :user="{{$user}}"></profile>
                     </div>
                 </div>
             </div>

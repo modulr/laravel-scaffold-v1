@@ -1,0 +1,125 @@
+<template lang="html">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Work</h3>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal" @submit.prevent>
+                <div class="form-group" :class="{'has-error': error.profession_id}">
+                    <label class="col-sm-3 control-label">Profession</label>
+                    <div class="col-sm-9">
+                        <select class="form-control text-capitalize"
+                            v-model="user.profile_work.profession_id">
+                            <option v-for="option in list.professions" :value="option.id">
+                                {{ option.title }}
+                            </option>
+                        </select>
+                        <span class="help-block" v-if="error.profession_id">{{error.profession_id[0]}}</span>
+                    </div>
+                </div>
+                <div class="form-group" :class="{'has-error': error.position_id}">
+                    <label class="col-sm-3 control-label">Position</label>
+                    <div class="col-sm-9">
+                        <select class="form-control text-capitalize"
+                            v-model="user.profile_work.position_id">
+                            <option v-for="option in list.positions" :value="option.id">
+                                {{ option.title }}
+                            </option>
+                        </select>
+                        <span class="help-block" v-if="error.position_id">{{error.position_id[0]}}</span>
+                    </div>
+                </div>
+                <div class="form-group" :class="{'has-error': error.department_id}">
+                    <label class="col-sm-3 control-label">Department</label>
+                    <div class="col-sm-9">
+                        <select class="form-control text-capitalize"
+                            v-model="user.profile_work.department_id">
+                            <option v-for="option in list.departments" :value="option.id">
+                                {{ option.title }}
+                            </option>
+                        </select>
+                        <span class="help-block" v-if="error.department_id">{{error.department_id[0]}}</span>
+                    </div>
+                </div>
+                <div class="form-group" :class="{'has-error': error.boss_id}">
+                    <label class="col-sm-3 control-label">Boss</label>
+                    <div class="col-sm-9">
+                        <select class="form-control text-capitalize"
+                            v-model="user.profile_work.boss_id">
+                            <option v-for="option in list.bosses" :value="option.id">
+                                {{ option.name }}
+                            </option>
+                        </select>
+                        <span class="help-block" v-if="error.boss_id">{{error.boss_id[0]}}</span>
+                    </div>
+                </div>
+                <div class="form-group" :class="{'has-error': error.starting_from}">
+                    <label class="col-sm-3 control-label">Starting from</label>
+                    <div class="col-sm-9">
+                        <input type="date" class="form-control"
+                            v-model="user.profile_work.starting_from">
+                        <span class="help-block" v-if="error.starting_from">{{error.starting_from[0]}}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-9 col-md-offset-3">
+                        <button type="button" class="btn btn-primary" @click="updateWork">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            list: {
+                professions: [],
+                positions: [],
+                departments: [],
+                bosses: []
+            },
+            error: {}
+        }
+    },
+    props: ['user'],
+    mounted() {
+        axios.get('/list/profession')
+        .then(response => {
+            this.list.professions = response.data;
+        });
+
+        axios.get('/list/position')
+        .then(response => {
+            this.list.positions = response.data;
+        });
+
+        axios.get('/list/department')
+        .then(response => {
+            this.list.departments = response.data;
+        });
+
+        axios.get('/user/all')
+        .then(response => {
+            this.list.bosses = response.data;
+        });
+    },
+    methods: {
+        updateWork: function (e) {
+            var btn = $(e.target).button('loading')
+            axios.put('/profile/work/update/'+this.user.profile_work.id, this.user.profile_work)
+            .then(response => {
+                this.user.profile_work = response.data;
+                this.error = {};
+                var btn = $(e.target).button('reset')
+            })
+            .catch(error => {
+                this.error = error.response.data;
+                var btn = $(e.target).button('reset')
+            });
+        }
+    }
+}
+</script>

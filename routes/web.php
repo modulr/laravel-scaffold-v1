@@ -28,13 +28,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', 'DashboardController@index');
     Route::get('/dashboard/markAsRead', 'DashboardController@markAsRead');
 
-
     // Lists
-    Route::group(['namespace' => 'Lists'], function() {
-        Route::get('/list/gender', 'ListGenderController@all');
-        Route::get('/list/relationship', 'ListRelationshipController@all');
-        Route::get('/list/contact', 'ListContactController@all');
-        Route::get('/list/relation', 'ListRelationController@all');
+    Route::group(['namespace' => 'Lists', 'prefix' => 'list'], function() {
+        Route::get('/gender', 'ListGenderController@all');
+        Route::get('/relationship', 'ListRelationshipController@all');
+        Route::get('/contact', 'ListContactController@all');
+        Route::get('/relation', 'ListRelationController@all');
+        Route::get('/profession', 'ListProfessionController@all');
+        Route::get('/position', 'ListPositionController@all');
+        Route::get('/department', 'ListDepartmentController@all');
     });
 
     // Notifications
@@ -42,27 +44,47 @@ Route::middleware('auth')->group(function () {
 
     // Users
     Route::get('/users', 'UserController@index');
-    Route::get('/user/all', 'UserController@all');
-    Route::post('/user/store', 'UserController@store');
-    Route::put('/user/update/{id}', 'UserController@update');
-    Route::delete('/user/destroy/{id}', 'UserController@destroy');
-    Route::post('/user/upload/avatar/temp', 'UserController@uploadAvatarTemp');
-    Route::post('/user/upload/avatar/{id}', 'UserController@uploadAvatar');
+    
+    Route::group(['prefix' => 'user'], function() {
+        Route::get('/all', 'UserController@all');
+        Route::post('/store', 'UserController@store');
+        Route::put('/update/{id}', 'UserController@update');
+        Route::put('/updatePassword/{id}', 'UserController@updatePassword');
+        Route::delete('/destroy/{id}', 'UserController@destroy');
+        Route::post('/upload/avatar/temp', 'UserController@uploadAvatarTemp');
+        Route::post('/upload/avatar/{id}', 'UserController@uploadAvatar');
+    });
 
     // Profile
-    Route::group(['namespace' => 'Profile'], function() {
-        Route::get('/profile/{id}', 'ProfileController@information');
-        Route::get('/profile/notifications/{id}', 'ProfileController@notifications');
-        Route::get('/profile/work/{id}', 'ProfileController@work');
-        Route::put('/profile/personal/update/{id}', 'ProfileController@updatePersonal');
-        Route::post('/profile/contact/store', 'ProfileController@storeContact');
-        Route::delete('/profile/contact/destroy/{id}', 'ProfileController@destroyContact');
-        Route::post('/profile/education/store', 'ProfileController@storeEducation');
-        Route::delete('/profile/education/destroy/{id}', 'ProfileController@destroyEducation');
-        Route::post('/profile/family/store', 'ProfileController@storeFamily');
-        Route::delete('/profile/family/destroy/{id}', 'ProfileController@destroyFamily');
-        Route::post('/profile/place/store', 'ProfileController@storePlace');
-        Route::delete('/profile/place/destroy/{id}', 'ProfileController@destroyPlace');
+    Route::group(['namespace' => 'Profile', 'prefix' => 'profile'], function() {
+        Route::get('/{id}', 'ProfileController@profile');
+        Route::get('/{id}/work', 'ProfileController@work');
+
+        Route::get('/{id}/edit', 'ProfileController@profileEdit');
+
+        Route::get('/{id}/personal/edit', 'ProfileController@personal');
+        Route::put('/personal/update/{id}', 'ProfileController@updatePersonal');
+
+        Route::get('/{id}/contact/edit', 'ProfileController@contact');
+        Route::post('/contact/store', 'ProfileController@storeContact');
+        Route::delete('/contact/destroy/{id}', 'ProfileController@destroyContact');
+
+        Route::get('/{id}/education/edit', 'ProfileController@education');
+        Route::post('/education/store', 'ProfileController@storeEducation');
+        Route::delete('/education/destroy/{id}', 'ProfileController@destroyEducation');
+
+        Route::get('/{id}/family/edit', 'ProfileController@family');
+        Route::post('/family/store', 'ProfileController@storeFamily');
+        Route::delete('/family/destroy/{id}', 'ProfileController@destroyFamily');
+
+        Route::get('/{id}/place/edit', 'ProfileController@place');
+        Route::post('/place/store', 'ProfileController@storePlace');
+        Route::delete('/place/destroy/{id}', 'ProfileController@destroyPlace');
+
+        Route::get('/{id}/work/edit', 'ProfileController@workEdit');
+        Route::put('/work/update/{id}', 'ProfileController@updateWork');
+
+        Route::get('/{id}/password/edit', 'ProfileController@password');
     });
 
     // News
