@@ -22,10 +22,10 @@ Vue.component('navbar', require('./components/Navbar.vue'));
 Vue.component('notifications', require('./components/Notifications.vue'));
 // Users
 Vue.component('users', require('./components/users/Users.vue'));
-// Profile
-Vue.component('profileSidebar', require('./components/profile/Sidebar.vue'));
-Vue.component('profile', require('./components/profile/Profile.vue'));
-Vue.component('profileWork', require('./components/profile/Work.vue'));
+// Profile REad
+Vue.component('profileSidebar', require('./components/profile/read/Sidebar.vue'));
+Vue.component('profile', require('./components/profile/read/Profile.vue'));
+Vue.component('profileWork', require('./components/profile/read/Work.vue'));
 // Profile Edit
 Vue.component('profileSidebarEdit', require('./components/profile/edit/Sidebar.vue'));
 Vue.component('profileEdit', require('./components/profile/edit/Profile.vue'));

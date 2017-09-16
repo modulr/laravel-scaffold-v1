@@ -132,7 +132,7 @@
 </template>
 
 <script>
-import dateFormat from '../../filters/date-format'
+import dateFormat from '../../../filters/date-format'
 Vue.use(dateFormat)
 
 export default {

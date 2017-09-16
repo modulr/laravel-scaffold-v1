@@ -11,7 +11,7 @@
                 <div class="panel-body">
                     <form class="form-horizontal" @submit.prevent>
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-sm-7">
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">User ID</label>
                                     <div class="col-md-9">
@@ -40,7 +40,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-5 text-center">
+                            <div class="col-sm-5 text-center">
                                 <img :src="usr.avatar_url" class="img-circle"><br>
                                 <vue-core-image-upload
                                     class="btn btn-link"
@@ -54,16 +54,37 @@
                     </form>
                 </div>
             </div>
+            <!-- personal -->
+            <profile-personal-edit :user="user"></profile-personal-edit>
+            <!-- contact -->
+            <profile-contact-edit :user="user" id="contact"></profile-contact-edit>
+            <!-- education -->
+            <profile-education-edit :user="user" id="education"></profile-education-edit>
+            <!-- family -->
+            <profile-family-edit :user="user" id="family"></profile-family-edit>
+            <!-- places -->
+            <profile-place-edit :user="user" id="place"></profile-place-edit>
         </div>
+
     </div>
 </template>
 
 <script>
 import ProfileSidebarEdit from './Sidebar.vue';
+import ProfilePersonalEdit from './Personal.vue';
+import ProfileContactEdit from './Contact.vue';
+import ProfileEducationEdit from './Education.vue';
+import ProfileFamilyEdit from './Family.vue';
+import ProfilePlaceEdit from './Place.vue';
+
 import VueCoreImageUpload from 'vue-core-image-upload';
+
+import {Snotify} from 'vue-snotify';
+import {SnotifyService} from 'vue-snotify';
+Vue.use(Snotify)
+
 export default {
     components: {
-        'profile-sidebar-edit': ProfileSidebarEdit,
         'vue-core-image-upload': VueCoreImageUpload
     },
     data() {
@@ -92,6 +113,7 @@ export default {
                 }
                 this.error = {};
                 var btn = $(e.target).button('reset')
+                SnotifyService.success('The profile has been saved success!');
             })
             .catch(error => {
                 this.error = error.response.data;

@@ -15,31 +15,6 @@
                     <i class="fa fa-fw fa-lg fa-user-circle-o" aria-hidden="true"></i> Profile
                 </a>
             </li>
-            <li :class="{'active': activeLink == 'personal'}">
-                <a :href="'/profile/'+user.id+'/personal/edit'">
-                    <i class="fa fa-fw fa-lg fa-address-card" aria-hidden="true"></i> Personal
-                </a>
-            </li>
-            <li :class="{'active': activeLink == 'contact'}">
-                <a :href="'/profile/'+user.id+'/contact/edit'">
-                    <i class="fa fa-fw fa-lg fa-address-book" aria-hidden="true"></i> Contact
-                </a>
-            </li>
-            <li :class="{'active': activeLink == 'education'}">
-                <a :href="'/profile/'+user.id+'/education/edit'">
-                    <i class="fa fa-fw fa-lg fa-mortar-board" aria-hidden="true"></i> Education
-                </a>
-            </li>
-            <li :class="{'active': activeLink == 'family'}">
-                <a :href="'/profile/'+user.id+'/family/edit'">
-                    <i class="fa fa-fw fa-lg fa-users" aria-hidden="true"></i> Family
-                </a>
-            </li>
-            <li :class="{'active': activeLink == 'place'}">
-                <a :href="'/profile/'+user.id+'/place/edit'">
-                    <i class="fa fa-fw fa-lg fa-map-marker" aria-hidden="true"></i> Places
-                </a>
-            </li>
             <li :class="{'active': activeLink == 'work'}">
                 <a :href="'/profile/'+user.id+'/work/edit'">
                     <i class="fa fa-fw fa-lg fa-briefcase" aria-hidden="true"></i> Work

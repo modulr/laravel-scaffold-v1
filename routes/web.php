@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
 
     // Users
     Route::get('/users', 'UserController@index');
-    
+
     Route::group(['prefix' => 'user'], function() {
         Route::get('/all', 'UserController@all');
         Route::post('/store', 'UserController@store');
@@ -58,29 +58,23 @@ Route::middleware('auth')->group(function () {
     // Profile
     Route::group(['namespace' => 'Profile', 'prefix' => 'profile'], function() {
         Route::get('/{id}', 'ProfileController@profile');
-        Route::get('/{id}/work', 'ProfileController@work');
-
         Route::get('/{id}/edit', 'ProfileController@profileEdit');
 
-        Route::get('/{id}/personal/edit', 'ProfileController@personal');
         Route::put('/personal/update/{id}', 'ProfileController@updatePersonal');
 
-        Route::get('/{id}/contact/edit', 'ProfileController@contact');
         Route::post('/contact/store', 'ProfileController@storeContact');
         Route::delete('/contact/destroy/{id}', 'ProfileController@destroyContact');
 
-        Route::get('/{id}/education/edit', 'ProfileController@education');
         Route::post('/education/store', 'ProfileController@storeEducation');
         Route::delete('/education/destroy/{id}', 'ProfileController@destroyEducation');
 
-        Route::get('/{id}/family/edit', 'ProfileController@family');
         Route::post('/family/store', 'ProfileController@storeFamily');
         Route::delete('/family/destroy/{id}', 'ProfileController@destroyFamily');
 
-        Route::get('/{id}/place/edit', 'ProfileController@place');
         Route::post('/place/store', 'ProfileController@storePlace');
         Route::delete('/place/destroy/{id}', 'ProfileController@destroyPlace');
 
+        Route::get('/{id}/work', 'ProfileController@work');
         Route::get('/{id}/work/edit', 'ProfileController@workEdit');
         Route::put('/work/update/{id}', 'ProfileController@updateWork');
 

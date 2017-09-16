@@ -32,33 +32,20 @@ class ProfileController extends Controller
         return view('profile.profile', ['breadcrumb' => $request->path(), 'user' => $user]);
     }
 
-    public function work(Request $request, $id)
-    {
-        $user = User::with(
-            'profileWork.profession',
-            'profileWork.position',
-            'profileWork.department',
-            'profileWork.boss'
-            )->find($id);
-
-        return view('profile.work', ['breadcrumb' => $request->path(), 'user' => $user]);
-    }
-
     public function profileEdit(Request $request, $id)
-    {
-        $user = User::find($id);
-
-        return view('profile.edit.profile', ['breadcrumb' => $request->path(), 'user' => $user]);
-    }
-
-    public function personal(Request $request, $id)
     {
         $user = User::with(
             'profilePersonal.gender',
-            'profilePersonal.relationship'
+            'profilePersonal.relationship',
+            'profileContact',
+            'profileEducation',
+            'profileFamily.gender',
+            'profileFamily.relation',
+            'profilePlace',
+            'profileWork.position'
             )->find($id);
 
-        return view('profile.edit.personal', ['breadcrumb' => $request->path(), 'user' => $user]);
+        return view('profile.edit.profile', ['breadcrumb' => $request->path(), 'user' => $user]);
     }
 
     public function updatePersonal(Request $request, $id)
@@ -86,15 +73,6 @@ class ProfileController extends Controller
         return ProfilePersonal::with('gender', 'relationship')->find($id);
     }
 
-    public function contact(Request $request, $id)
-    {
-        $user = User::with(
-            'profileContact'
-            )->find($id);
-
-        return view('profile.edit.contact', ['breadcrumb' => $request->path(), 'user' => $user]);
-    }
-
     public function storeContact(Request $request)
     {
         $this->validate($request, [
@@ -113,15 +91,6 @@ class ProfileController extends Controller
     public function destroyContact($id)
     {
         return ProfileContact::destroy($id);
-    }
-
-    public function education(Request $request, $id)
-    {
-        $user = User::with(
-            'profileEducation'
-            )->find($id);
-
-        return view('profile.edit.education', ['breadcrumb' => $request->path(), 'user' => $user]);
     }
 
     public function storeEducation(Request $request)
@@ -146,16 +115,6 @@ class ProfileController extends Controller
     public function destroyEducation($id)
     {
         return ProfileEducation::destroy($id);
-    }
-
-    public function family(Request $request, $id)
-    {
-        $user = User::with(
-            'profileFamily.gender',
-            'profileFamily.relation'
-            )->find($id);
-
-        return view('profile.edit.family', ['breadcrumb' => $request->path(), 'user' => $user]);
     }
 
     public function storeFamily(Request $request)
@@ -184,15 +143,6 @@ class ProfileController extends Controller
         return ProfileFamily::destroy($id);
     }
 
-    public function place(Request $request, $id)
-    {
-        $user = User::with(
-            'profilePlace'
-            )->find($id);
-
-        return view('profile.edit.place', ['breadcrumb' => $request->path(), 'user' => $user]);
-    }
-
     public function storePlace(Request $request)
     {
         $this->validate($request, [
@@ -211,6 +161,18 @@ class ProfileController extends Controller
     public function destroyPlace($id)
     {
         return ProfilePlace::destroy($id);
+    }
+
+    public function work(Request $request, $id)
+    {
+        $user = User::with(
+            'profileWork.profession',
+            'profileWork.position',
+            'profileWork.department',
+            'profileWork.boss'
+            )->find($id);
+
+        return view('profile.work', ['breadcrumb' => $request->path(), 'user' => $user]);
     }
 
     public function workEdit(Request $request, $id)
