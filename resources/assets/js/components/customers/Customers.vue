@@ -87,6 +87,37 @@
                                             <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                         </div>
                                     </div>
+                                    <div class="form-group" v-if="list.contacts.length != 0">
+                                        <label class="col-sm-2 control-tabel">Contacts</label>
+                                        <div class="col-sm-10">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                        <th>Phone number</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="(item, index) in list.contacts">
+                                                        <td>
+                                                            {{item.id}}
+                                                        </td>
+                                                        <td>
+                                                            {{item.name}}
+                                                        </td>
+                                                        <td>
+                                                            {{item.email}}
+                                                        </td>
+                                                        <td>
+                                                            {{item.telephone}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -112,7 +143,10 @@ export default {
           loading: false,
           customers: [],
           customer: {},
-          error: {}
+          error: {},
+          list: {
+              contacts: []
+          }
       }
     },
     components: {

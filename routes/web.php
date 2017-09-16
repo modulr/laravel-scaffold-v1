@@ -110,4 +110,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/customers/store', 'CustomerController@store');
     Route::put('/customers/update/{id}', 'CustomerController@update');
     Route::delete('/customers/destroy/{id}', 'CustomerController@destroy');
+    Route::get('/customers/list/contacts/{id}', 'CustomerController@listContacts');
 });
