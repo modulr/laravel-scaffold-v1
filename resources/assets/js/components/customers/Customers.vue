@@ -4,7 +4,7 @@
         <div class="wrapper" v-if="!loading">
             <div class="row">
                 <div class="col-xs-12 text-right">
-                    <a href="#" class="btn btn-primary">
+                    <a href="#" class="btn btn-primary" @click.prevent="add">
                         <i class="mdi mdi-person-add mdi-lg"></i> Add Customer
                     </a>
                 </div>
@@ -43,6 +43,62 @@
                     </table>
                 </div>
             </div>
+            <!-- Create customer -->
+            <div class="modal fade" id="modalAdd">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Add customer</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group" :class="{'has-error': error.name}">
+                                    <label class="col-sm-2 control-label">Name *</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control input-lg" placeholder="Name" required v-model="customer.name">
+                                        <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-success" @click="store">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Edit customer -->
+            <div class="modal fade" id="modalEdit">
+                <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Edit customer</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-horizontal">
+                                    <div class="form-group" :class="{'has-error': error.name}">
+                                        <label class="col-sm-2 control-label">Name</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control input-lg" :placeholder="customer.name" required v-model="customer.name">
+                                            <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" @click="destroy()">
+                                    <i class="mdi mdi-delete mdi-lg"></i> Delete
+                                </button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" @click="update">Save</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -78,6 +134,78 @@ export default {
                     this.customers = response.data;
                     this.loading = false;
                 });
+        },
+        add: function() {
+            this.customer = {
+                name: '',
+            };
+            this.error = {};
+            $('#modalAdd').modal('show');
+        },
+        store: function(e) {
+            var btn = $(e.target).button('loading')
+            axios.post('/customers/store', this.customer)
+                .then(response => {
+                    this.customers.push(response.data);
+                    this.customer = {};
+                    this.error = {};
+                    var btn = $(e.target).button('reset')
+                    $('#modalAdd').modal('hide');
+                })
+                .catch(error => {
+                    this.error = error.response.data;
+                    var btn = $(e.target).button('reset')
+                });
+        },
+        edit: function (customer, index) {
+            this.customer = _.clone(customer);
+            this.customer.index = index;
+            $('#modalEdit').modal('show');
+        },
+        update: function (e) {
+            var btn = $(e.target).button('loading')
+            axios.put('/customers/update/'+this.customer.id, this.customer)
+            .then(response => {
+                this.customers[this.customer.index] = response.data;
+                this.customer = {};
+                this.error = {};
+                var btn = $(e.target).button('reset')
+                $('#modalEdit').modal('hide');
+            })
+            .catch(error => {
+                this.error = error.response.data;
+                var btn = $(e.target).button('reset')
+            });
+        },
+        destroy: function () {
+            var self = this;
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this customer!",
+                type: "warning",
+                showLoaderOnConfirm: true,
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: false
+            },
+            function(){
+                axios.delete('/customers/destroy/' + self.customer.id)
+                .then(response => {
+                    self.customers.splice(self.customer.index, 1);
+                    swal({
+                        title: "Deleted!",
+                        text: "The customer has been deleted.",
+                        type: "success",
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    self.error = {};
+                    $('#modalEdit').modal('hide');
+                })
+                .catch(error => {
+                    self.error = error.response.data;
+                });
+            });
         },
     }
 }

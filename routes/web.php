@@ -107,4 +107,7 @@ Route::middleware('auth')->group(function () {
     // Customers
     Route::get('/customers', 'CustomerController@index');
     Route::get('/customers/all', 'CustomerController@all');
+    Route::post('/customers/store', 'CustomerController@store');
+    Route::put('/customers/update/{id}', 'CustomerController@update');
+    Route::delete('/customers/destroy/{id}', 'CustomerController@destroy');
 });
