@@ -11,34 +11,34 @@
                         <ul class="dropdown-menu" role="menu">
                             <div class="menu-content">
                                 <div class="row text-center">
-                                    <li class="col-sm-3" v-tooltip:bottom="'Dashboard'">
+                                    <li class="col-sm-3" v-tooltip:bottom="'Dashboard'" :class="{'active': activeLink == 'dashboard'}">
                                         <a href="/dashboard">
                                             <i class="mdi mdi-dashboard mdi-3x"></i>
                                         </a>
                                     </li>
-                                    <li class="col-sm-3" v-tooltip:bottom="'News'">
+                                    <li class="col-sm-3" v-tooltip:bottom="'News'" :class="{'active': activeLink == 'news'}">
                                         <a href="/news">
                                             <i class="mdi mdi-poll mdi-3x"></i>
                                         </a>
                                     </li>
-                                    <li class="col-sm-3" v-tooltip:bottom="'Tasks'">
+                                    <li class="col-sm-3" v-tooltip:bottom="'Tasks'" :class="{'active': activeLink == 'tasks'}">
                                         <a href="/tasks">
                                             <i class="mdi mdi-assignment mdi-3x"></i>
                                         </a>
                                     </li>
-                                    <li class="col-sm-3" v-tooltip:bottom="'Files'">
+                                    <li class="col-sm-3" v-tooltip:bottom="'Files'" :class="{'active': activeLink == 'files'}">
                                         <a href="/files">
                                             <i class="mdi mdi-folder mdi-3x"></i>
                                         </a>
                                     </li>
                                 </div>
                                 <div class="row text-center">
-                                    <li class="col-sm-3" v-tooltip:bottom="'Contacts'">
+                                    <li class="col-sm-3" v-tooltip:bottom="'Contacts'" :class="{'active': activeLink == 'contacts'}">
                                         <a href="/contacts">
                                             <i class="mdi mdi-contacts mdi-3x"></i>
                                         </a>
                                     </li>
-                                    <li class="col-sm-3" v-tooltip:bottom="'Users'">
+                                    <li class="col-sm-3" v-tooltip:bottom="'Users'" :class="{'active': activeLink == 'users'}">
                                         <a href="/users">
                                             <i class="mdi mdi-people mdi-3x"></i>
                                         </a>
@@ -157,6 +157,7 @@
     export default {
         data() {
             return {
+                activeLink: '',
                 user: Laravel.user,
                 notifications: Laravel.notifications,
                 unReadNotifications: Laravel.unReadNotifications,
@@ -166,6 +167,13 @@
             Tooltip
         },
         mounted() {
+            var str = window.location.pathname;
+            var res = str.split("/");
+
+            if (res.length == 2) {
+             this.activeLink = res[1];
+             }
+
             Notification.requestPermission();
 
             Echo.private('App.User.' + this.user.id)

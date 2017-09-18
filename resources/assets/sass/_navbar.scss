@@ -21,6 +21,11 @@
                 }
                 .row {
                     padding: 20px 0px;
+                    li.active{
+                        .mdi {
+                            color: $brand-primary;
+                        }
+                    }
                     .mdi {
                         color: $brand-grayer;
                         &:hover {
