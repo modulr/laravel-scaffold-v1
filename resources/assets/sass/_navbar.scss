@@ -11,6 +11,45 @@
             color: inherit;
 
         }
+        .dropdown-menu {
+            width: 300px;
+            height: 300px;
+            .menu-content {
+                height: 250px;
+                .tooltip-custom {
+                    z-index: 9999;
+                }
+                .row {
+                    padding: 20px 0px;
+                    li.active{
+                        .mdi {
+                            color: $brand-primary;
+                        }
+                    }
+                    .mdi {
+                        color: $brand-grayer;
+                        &:hover {
+                            color: $brand-gray;
+                        }
+                    }
+                }
+            }
+            .menu-bottom {
+                height: 50px;
+                .divider {
+                    margin: 0px 10%;
+                }
+                .row {
+                    padding: 10px 100px;
+                    .mdi {
+                        color: $brand-grayer;
+                        &:hover {
+                            color: $brand-gray;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     svg {
@@ -37,7 +76,6 @@
             color: inherit;
         }
         .dropdown-menu {
-            width: 250px;
             .panel-body {
                 max-height: 400px;
                 overflow: scroll;

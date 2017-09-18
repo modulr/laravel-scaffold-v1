@@ -10,13 +10,62 @@
                                 <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="/dashboard"><i class="fa fa-fw fa-home"></i> Dashboard</a></li>
-                                <li><a href="/news"><i class="fa fa-fw fa-bullhorn"></i> News</a></li>
-                                <li><a href="/tasks"><i class="fa fa-fw fa-tasks"></i> Tasks</a></li>
-                                <li><a href="/files"><i class="fa fa-fw fa-folder-o"></i> Files</a></li>
-                                <li><a href="/contacts"><i class="fa fa-fw fa-address-book-o"></i> Contacts</a></li>
-                                <li class="divider"></li>
-                                <li><a href="/users"><i class="fa fa-fw fa-users"></i> Users</a></li>
+                                <div class="menu-content">
+                                    <div class="row text-center">
+                                        <li class="col-sm-3" v-tooltip:bottom="'Dashboard'" :class="{'active': activeLink == 'dashboard'}">
+                                            <a href="/dashboard">
+                                                <i class="mdi mdi-dashboard mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                        <li class="col-sm-3" v-tooltip:bottom="'News'" :class="{'active': activeLink == 'news'}">
+                                            <a href="/news">
+                                                <i class="mdi mdi-poll mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                        <li class="col-sm-3" v-tooltip:bottom="'Tasks'" :class="{'active': activeLink == 'tasks'}">
+                                            <a href="/tasks">
+                                                <i class="mdi mdi-assignment mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                        <li class="col-sm-3" v-tooltip:bottom="'Files'" :class="{'active': activeLink == 'files'}">
+                                            <a href="/files">
+                                                <i class="mdi mdi-folder mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                    </div>
+                                    <div class="row text-center">
+                                        <li class="col-sm-3" v-tooltip:bottom="'Contacts'" :class="{'active': activeLink == 'contacts'}">
+                                            <a href="/contacts">
+                                                <i class="mdi mdi-contacts mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                        <li class="col-sm-3" v-tooltip:bottom="'Opportunities'" :class="{'active': activeLink == 'opportunities'}">
+                                            <a href="/opportunities">
+                                                <i class="mdi mdi-turned-in mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                        <li class="col-sm-3" v-tooltip:bottom="'Quotes'" :class="{'active': activeLink == 'quotes'}">
+                                            <a href="/quotes">
+                                                <i class="mdi mdi-receipt mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                        <li class="col-sm-3" v-tooltip:bottom="'Users'" :class="{'active': activeLink == 'users'}">
+                                            <a href="/users">
+                                                <i class="mdi mdi-people mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                    </div>
+                                </div>
+                                <div class="menu-bottom">
+                                    <div class="divider"></div>
+                                    <div class="row text-center">
+                                        <li class="col-sm-12" v-tooltip:bottom="'Log out'">
+                                            <a href="#" @click.prevent="logout">
+                                                <i class="mdi mdi-exit-to-app mdi-2x"></i>
+                                            </a>
+                                        </li>
+                                    </div>
+                                </div>
                             </ul>
                         </div>
                         <a href="/dashboard">
@@ -121,15 +170,33 @@
 </template>
 
 <script>
+    Vue.directive('tooltip', function(el, binding){
+    $(el).tooltip({
+             title: binding.value,
+             placement: binding.arg,
+             trigger: 'hover'
+         })
+    })
     export default {
         data() {
             return {
+                activeLink: '',
                 user: Laravel.user,
                 notifications: Laravel.notifications,
                 unReadNotifications: Laravel.unReadNotifications,
             }
         },
+        components() {
+            Tooltip
+        },
         mounted() {
+            var str = window.location.pathname;
+            var res = str.split("/");
+
+            if (res.length == 2) {
+             this.activeLink = res[1];
+             }
+
             Notification.requestPermission();
 
             Echo.private('App.User.' + this.user.id)
