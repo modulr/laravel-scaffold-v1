@@ -22,10 +22,20 @@ Vue.component('navbar', require('./components/Navbar.vue'));
 Vue.component('notifications', require('./components/Notifications.vue'));
 // Users
 Vue.component('users', require('./components/users/Users.vue'));
-// Profile
-Vue.component('ProfileSidebar', require('./components/profile/ProfileSidebar.vue'));
-Vue.component('ProfileInformation', require('./components/profile/ProfileInformation.vue'));
-Vue.component('ProfileWork', require('./components/profile/ProfileWork.vue'));
+// Profile REad
+Vue.component('profileSidebar', require('./components/profile/read/Sidebar.vue'));
+Vue.component('profile', require('./components/profile/read/Profile.vue'));
+Vue.component('profileWork', require('./components/profile/read/Work.vue'));
+// Profile Edit
+Vue.component('profileSidebarEdit', require('./components/profile/edit/Sidebar.vue'));
+Vue.component('profileEdit', require('./components/profile/edit/Profile.vue'));
+Vue.component('profilePersonalEdit', require('./components/profile/edit/Personal.vue'));
+Vue.component('profileContactEdit', require('./components/profile/edit/Contact.vue'));
+Vue.component('profileEducationEdit', require('./components/profile/edit/Education.vue'));
+Vue.component('profileFamilyEdit', require('./components/profile/edit/Family.vue'));
+Vue.component('profilePlaceEdit', require('./components/profile/edit/Place.vue'));
+Vue.component('profileWorkEdit', require('./components/profile/edit/Work.vue'));
+Vue.component('profilePasswordEdit', require('./components/profile/edit/Password.vue'));
 // News
 //Vue.component('news', require('./components/News.vue'));
 Vue.component('newsPublish', require('./components/news/NewsPublish.vue'));
