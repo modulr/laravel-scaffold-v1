@@ -14,12 +14,12 @@
             background-color: lighten($brand-danger, 20%);
         }
         .priority-Medium {
-            color: $brand-warning;
-            background-color: lighten($brand-warning, 20%);
-        }
-        .priority-Low {
             color: $brand-success;
             background-color: lighten($brand-success, 20%);
+        }
+        .priority-Low {
+            color: $brand-gray;
+            background-color: lighten($brand-gray, 20%);
         }
         tr:hover td:last-child i {
             opacity: 1;
