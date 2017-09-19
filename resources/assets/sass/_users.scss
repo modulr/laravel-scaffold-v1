@@ -6,10 +6,13 @@
             width: 35px;
             margin-right: 10px;
         }
-        td:last-child i {
+        p {
+            margin-bottom: -6px;
+        }
+        td:last-child .btn-group {
             opacity: 0;
         }
-        tr:hover td:last-child i {
+        tr:hover td:last-child .btn-group {
             opacity: 1;
         }
     }
