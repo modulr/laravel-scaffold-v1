@@ -22,6 +22,7 @@ Vue.component('navbar', require('./components/Navbar.vue'));
 Vue.component('notifications', require('./components/Notifications.vue'));
 // Users
 Vue.component('users', require('./components/users/Users.vue'));
+Vue.component('roles', require('./components/users/Roles.vue'));
 // Profile REad
 Vue.component('profileSidebar', require('./components/profile/read/Sidebar.vue'));
 Vue.component('profile', require('./components/profile/read/Profile.vue'));

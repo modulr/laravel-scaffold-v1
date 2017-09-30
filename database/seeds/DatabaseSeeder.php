@@ -19,20 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ListPositionTableSeeder::class);
         $this->call(ListDepartmentTableSeeder::class);
 
-        DB::table('roles')->insert([
-            [
-                'id' => '1',
-                'name' => 'Admin'
-            ],
-            [
-                'id' => '2',
-                'name' => 'User'
-            ],
-            [
-                'id' => '3',
-                'name' => 'Guest'
-            ]
-        ]);
+        $this->call(RolesTableSeeder::class);
 
         factory(App\User::class, 10)
             ->create()

@@ -2,7 +2,7 @@ const dateFormat = {}
 
 dateFormat.install = function (Vue) {
     Vue.filter('date-format', (date) => {
-        return moment(date).format('LL');
+        return moment(date).format('LL')
     })
 }
 

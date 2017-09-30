@@ -1,21 +1,4 @@
 .users {
-    .table {
-        img {
-            border-radius: 50%;
-            height: 35px;
-            width: 35px;
-            margin-right: 10px;
-        }
-        p {
-            margin-bottom: -6px;
-        }
-        td:last-child .btn-group {
-            opacity: 0;
-        }
-        tr:hover td:last-child .btn-group {
-            opacity: 1;
-        }
-    }
     .modal {
         .modal-body {
             img {

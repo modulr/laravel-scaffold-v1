@@ -43,16 +43,27 @@ Route::middleware('auth')->group(function () {
     Route::get('/notifications', 'NotificationController@index');
 
     // Users
-    Route::get('/users', 'UserController@index');
+    Route::group(['namespace' => 'Users'], function() {
+        Route::get('/users', 'UserController@index');
 
-    Route::group(['prefix' => 'user'], function() {
-        Route::get('/all', 'UserController@all');
-        Route::post('/store', 'UserController@store');
-        Route::put('/update/{id}', 'UserController@update');
-        Route::put('/updatePassword/{id}', 'UserController@updatePassword');
-        Route::delete('/destroy/{id}', 'UserController@destroy');
-        Route::post('/upload/avatar/temp', 'UserController@uploadAvatarTemp');
-        Route::post('/upload/avatar/{id}', 'UserController@uploadAvatar');
+        Route::group(['prefix' => 'user'], function() {
+            Route::get('/all', 'UserController@all');
+            Route::post('/store', 'UserController@store');
+            Route::put('/update/{id}', 'UserController@update');
+            Route::put('/updatePassword/{id}', 'UserController@updatePassword');
+            Route::delete('/destroy/{id}', 'UserController@destroy');
+            Route::post('/upload/avatar/temp', 'UserController@uploadAvatarTemp');
+            Route::post('/upload/avatar/{id}', 'UserController@uploadAvatar');
+        });
+    });
+
+    // Roles
+    Route::group(['namespace' => 'Users', 'prefix' => 'roles'], function() {
+        Route::get('/', 'RoleController@index');
+        Route::get('/all', 'RoleController@all');
+        Route::post('/store', 'RoleController@store');
+        Route::put('/update/{id}', 'RoleController@update');
+        Route::delete('/destroy/{id}', 'RoleController@destroy');
     });
 
     // Profile
