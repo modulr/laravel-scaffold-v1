@@ -87,31 +87,43 @@
                                             <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                         </div>
                                     </div>
-                                    <div class="form-group" v-if="list.contacts.length != 0">
-                                        <label class="col-sm-2 control-tabel">Contacts</label>
-                                        <div class="col-sm-10">
-                                            <table class="table table-hover">
+                                    <div class="form-group" v-if="customer.contact">
+                                        <label class="col-sm-2 control-label">Contacts</label>
+                                        <div class="col-sm-12">
+                                            <div v-if="customer.contact.length == 0">
+                                                <div class="col-md-12">
+                                                    <h6>No contacts found.</h6>
+                                                </div>
+                                            </div>
+                                            <table class="table table-hover" v-if="customer.contact.length != 0">
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
                                                         <th>Name</th>
                                                         <th>Email</th>
                                                         <th>Phone number</th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr v-for="(item, index) in list.contacts">
+                                                    <tr v-for="(item, index) in customer.contact">
                                                         <td>
                                                             {{item.id}}
                                                         </td>
                                                         <td>
-                                                            {{item.name}}
+                                                            <input class="col-sm-12" type="text" :placeholder="item.name" v-model="item.name" :disabled="disabledElement !== 'el'+index">
                                                         </td>
                                                         <td>
-                                                            {{item.email}}
+                                                            <input class="col-sm-12" type="text" :placeholder="item.email" v-model="item.email" :disabled="disabledElement !== 'el'+index">
                                                         </td>
                                                         <td>
-                                                            {{item.telephone}}
+                                                            <input class="col-sm-12" type="text" :placeholder="item.telephone" v-model="item.telephone" :disabled="disabledElement !== 'el'+index">
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <a href="#" class="btn btn-link" @click.prevent="editContact(index)" ><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+                                                        </td>
+                                                        <td class="text-right"  >
+                                                            <a href="#" class="btn btn-link" @click.prevent="saveContact(index)" ><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i></a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -146,7 +158,8 @@ export default {
           error: {},
           list: {
               contacts: []
-          }
+          },
+          disabledElement: '',
       }
     },
     components: {
@@ -241,6 +254,14 @@ export default {
                 });
             });
         },
+        editContact: function (index) {
+          this.disabledElement = 'el'+index;
+        },
+        saveContact: function (index) {
+          if (this.disabledElement == 'el'+index) {
+            this.disabledElement = '';
+          }
+        }
     }
 }
 </script>
