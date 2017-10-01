@@ -160,8 +160,8 @@
                               </div>
                               <div class="form-group" :class="{'has-error': error.priority}">
                                   <label class="col-sm-2 control-label">Priority</label>
-                                  <div class="col-sm-10">
-                                      <select v-if="opportunity.priority" class="form-control" required v-model="opportunity.priority.id">
+                                  <div class="col-sm-10" v-if="list.priorities && opportunity.priority">
+                                      <select class="form-control" required v-model="opportunity.priority.id">
                                           <option v-for="option in list.priorities" :value="option.id">
                                               {{ option.name }}
                                           </option>
@@ -274,9 +274,9 @@ export default {
             axios.get('/opportunities/list/priorities')
             .then(response => {
                 this.list.priorities = response.data;
+                this.opportunity = _.clone(opportunity);
+                this.opportunity.index = index;
             });
-            this.opportunity = _.clone(opportunity);
-            this.opportunity.index = index;
             $('#modalEdit').modal('show');
         },
         update: function (e) {
