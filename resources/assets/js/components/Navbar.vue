@@ -44,8 +44,8 @@
                                                 <i class="mdi mdi-turned-in mdi-3x"></i>
                                             </a>
                                         </li>
-                                        <li class="col-sm-3" v-tooltip:bottom="'Quotes'" :class="{'active': activeLink == 'quotes'}">
-                                            <a href="/quotes">
+                                        <li class="col-sm-3" v-tooltip:bottom="'Quotes'" :class="{'active': activeLink == 'quote'}">
+                                            <a href="/quote">
                                                 <i class="mdi mdi-receipt mdi-3x"></i>
                                             </a>
                                         </li>
