@@ -59,7 +59,7 @@
                                 <div class="menu-bottom">
                                     <div class="divider"></div>
                                     <div class="row text-center">
-                                        <li class="col-sm-12" v-tooltip:bottom="'Log out'">
+                                        <li class="col-sm-12" v-tooltip:bottom="'Sign out'">
                                             <a href="#" @click.prevent="logout">
                                                 <i class="mdi mdi-exit-to-app mdi-2x"></i>
                                             </a>
