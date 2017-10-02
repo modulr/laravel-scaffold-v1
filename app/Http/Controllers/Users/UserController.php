@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Users;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Storage;
@@ -14,7 +15,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        return view('users', ['breadcrumb' => $request->path()]);
+        return view('users.users', ['breadcrumb' => $request->path()]);
     }
 
     public function all()

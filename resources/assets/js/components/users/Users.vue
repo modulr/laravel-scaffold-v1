@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="col-xs-6 text-right">
-                <a href="#" class="btn btn-primary" @click.prevent="add">
+                <a href="#" class="btn btn-success" @click.prevent="add">
                     <i class="mdi mdi-person-add mdi-lg"></i> Add User
                 </a>
             </div>
@@ -37,14 +37,21 @@
                                 {{item.id}}
                             </td>
                             <td @click="edit(item, index)">
-                                {{item.name}}<br>
+                                <p>{{item.name}}</p>
                                 <small class="text-muted">{{item.email}}</small>
                             </td>
                             <td class="text-center" @click="edit(item, index)">
                                 <i class="mdi mdi-2x" :class="{'mdi-mood text-success': item.active, 'mdi-mood-bad': !item.active}"></i>
                             </td>
-                            <td class="text-right" @click="edit(item, index)">
-                                <a href="#" class="btn btn-link" @click.prevent="edit(item, index)"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+                            <td class="text-right">
+                                <div class="btn-group">
+                                    <a href="#" class="btn btn-default btn-sm" @click.prevent="edit(item, index)" v-tooltip:top="'Edit'">
+                                        <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
+                                    </a>
+                                    <a :href="'/profile/'+item.id+'/edit'" class="btn btn-default btn-sm" v-tooltip:top="'Profile'">
+                                        <i class="fa fa-external-link fa-lg" aria-hidden="true"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -62,19 +69,18 @@
                     <div class="modal-body">
                         <form class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-xs-4 control-label">
+                                <label class="col-xs-12 text-center">
                                     <img :src="user.avatar_url" v-if="user.avatar_url">
                                     <i class="mdi mdi-account-circle mdi-5x" v-else></i>
-                                </label>
-                                <div class="col-xs-8">
+                                    <br>
                                     <vue-core-image-upload
-                                        class="btn btn-default"
+                                        class="btn btn-link"
                                         @imageuploaded="uploadAvatarTemp"
                                         extensions="png,jpeg,jpg"
                                         :headers=headers
                                         :url="'user/upload/avatar/temp'">
                                     </vue-core-image-upload>
-                                </div>
+                                </label>
                             </div>
                             <div class="form-group" :class="{'has-error': error.name}">
                                 <label class="col-sm-2 control-label">Name *</label>
@@ -131,24 +137,31 @@
                     <div class="modal-body">
                         <form class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">
+                                <label class="col-sm-12 text-center">
                                     <img :src="user.avatar_url">
-                                </label>
-                                <div class="col-sm-8">
+                                    <br>
                                     <vue-core-image-upload
-                                        class="btn btn-default"
+                                        class="btn btn-link"
                                         @imageuploaded="uploadAvatar"
                                         extensions="png,jpeg,jpg"
                                         :headers=headers
                                         :url="'user/upload/avatar/'+user.id">
                                     </vue-core-image-upload>
-                                </div>
+                                </label>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">ID</label>
                                 <div class="col-sm-10">
                                     <p class="form-control-static">
                                         <strong>{{user.id}}</strong>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Created</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">
+                                        <small class="text-mute">{{user.created_at | date}}</small>
                                     </p>
                                 </div>
                             </div>
@@ -173,14 +186,6 @@
                                             <input type="checkbox" v-model="user.active"> Active
                                         </label>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Created</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static">
-                                        <small class="text-mute">{{user.created_at | date}}</small>
-                                    </p>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -222,6 +227,13 @@
 import moment from 'moment';
 import swal from 'sweetalert';
 import VueCoreImageUpload from 'vue-core-image-upload';
+Vue.directive('tooltip', function(el, binding){
+    $(el).tooltip({
+        title: binding.value,
+        placement: binding.arg,
+        trigger: 'hover'
+    })
+})
 export default {
     data() {
         return {
@@ -236,7 +248,7 @@ export default {
         this.getAll();
     },
     components: {
-        'vue-core-image-upload': VueCoreImageUpload,
+        'vue-core-image-upload': VueCoreImageUpload
     },
     filters: {
         date(date) {

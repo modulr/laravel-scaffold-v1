@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\Users;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,10 +9,10 @@ class Role extends Model
 {
     use SoftDeletes;
 
-    public $timestamps = false;
+    protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'id', 'name',
+        'id', 'title', 'description', 'permissions', 'lock'
     ];
 
     public function user()
