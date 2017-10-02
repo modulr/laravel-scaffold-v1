@@ -33,6 +33,8 @@
     "vue-core-image-upload": "^2.3.5",
     "vue-infinite-loading": "^2.1.3",
     "vue-simple-spinner": "^1.2.5",
+    "vue-notification": "^1.3.4",
+    "vue-snotify": "^1.1.0",
     "vue2-dropzone": "^2.3.4",
     "vuedraggable": "^2.14.1",
     "yargs": "^8.0.2"

@@ -15,6 +15,9 @@
 // sweetalert
 @import "node_modules/sweetalert/dev/sweetalert";
 
+// vue-notify
+@import "~vue-snotify/styles/material";
+
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
@@ -25,6 +28,8 @@
 @import 'navbar';
 @import 'content';
 @import 'panel';
+@import 'tables';
+@import 'modals';
 
 @import 'auth';
 @import 'users';

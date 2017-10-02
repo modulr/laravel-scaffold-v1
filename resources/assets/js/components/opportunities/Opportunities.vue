@@ -62,8 +62,15 @@
                                       {{item.priority.name}}
                                   </span>
                               </td>
-                              <td class="text-right" @click="edit(item, index)">
-                                  <a href="#" class="btn btn-link" @click.prevent="edit(item, index)"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+                              <td class="text-right col-sm-2">
+                                  <div class="btn-group">
+                                      <a href="#" class="btn btn-default btn-sm" @click.prevent="edit(item, index)" v-tooltip:top="'Edit'">
+                                          <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
+                                      </a>
+                                      <a href="#" class="btn btn-default btn-sm" v-tooltip:top="'Make project'">
+                                          <i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>
+                                      </a>
+                                  </div>
                               </td>
                           </tr>
                       </tbody>
