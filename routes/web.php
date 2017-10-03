@@ -119,12 +119,17 @@ Route::middleware('auth')->group(function () {
     Route::put('/file/update/{id}', 'FileController@update');
     Route::delete('/file/destroy/{id}', 'FileController@destroy');
     Route::get('/files/{folderId?}', 'FileController@view');
-    
-    // Projects and Opportunities
+
+    // Projects
+    Route::get('/projects', 'ProjectController@index');
+    Route::get('/projects/all', 'ProjectController@all');
+
+    // Opportunities
     Route::get('/opportunities', 'OpportunityController@index');
     Route::get('/opportunities/all', 'OpportunityController@all');
     Route::post('/opportunities/store', 'OpportunityController@store');
     Route::put('/opportunities/update/{id}', 'OpportunityController@update');
+    Route::put('/opportunities/update/{id}/make_project', 'OpportunityController@makeProject');
     Route::delete('/opportunities/destroy/{id}', 'OpportunityController@destroy');
     Route::get('/opportunities/list/priorities', 'OpportunityController@listPriorities');
     Route::get('/opportunities/list/contacts', 'OpportunityController@listContacts');

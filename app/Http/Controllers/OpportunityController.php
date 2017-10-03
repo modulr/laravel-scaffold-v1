@@ -122,4 +122,14 @@ class OpportunityController extends Controller
      {
         return Contact::with('customer')->get();
      }
+
+     public function makeProject($id)
+    {
+        $q = Project::find($id);
+        $q->status = 2;
+
+        $q->save();
+
+        return $q;
+    }
 }

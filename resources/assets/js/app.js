@@ -48,6 +48,7 @@ Vue.component('contacts', require('./components/Contacts.vue'));
 // Files
 Vue.component('files', require('./components/files/Files.vue'));
 // Projects & Opportunities
+Vue.component('projects', require('./components/projects/Projects.vue'));
 Vue.component('opportunities', require('./components/opportunities/Opportunities.vue'));
 //Quotes
 Vue.component('quotes', require('./components/Quotes.vue'));
