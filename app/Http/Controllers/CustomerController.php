@@ -72,6 +72,21 @@ class CustomerController extends Controller
     public function listContacts($id)
     {
         return Contact::where('customer_id', $id)->get();
-        return Contact::where('customer_id', $id)->get();
+    }
+
+    public function storeContact(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string',
+        ]);
+
+        $contact = Contact::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'telephone' => $request->phone,
+            'customer_id' => $request->customer,
+        ]);
+
+        return $request;
     }
 }

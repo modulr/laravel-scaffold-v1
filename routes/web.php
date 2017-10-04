@@ -111,4 +111,5 @@ Route::middleware('auth')->group(function () {
     Route::put('/customers/update/{id}', 'CustomerController@update');
     Route::delete('/customers/destroy/{id}', 'CustomerController@destroy');
     Route::get('/customers/list/contacts/{id}', 'CustomerController@listContacts');
+    Route::post('/customers/storeContact', 'CustomerController@storeContact');
 });

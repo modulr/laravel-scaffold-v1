@@ -4,8 +4,11 @@
         <div class="wrapper" v-if="!loading">
             <div class="row">
                 <div class="col-xs-12 text-right">
-                    <a href="#" class="btn btn-primary" @click.prevent="add">
+                    <a href="#" class="btn btn-primary" @click.prevent="add('customer')">
                         <i class="mdi mdi-person-add mdi-lg"></i> Add Customer
+                    </a>
+                    <a href="#" class="btn btn-primary" @click.prevent="add('contact')">
+                        <i class="mdi mdi-person-add mdi-lg"></i> Add Contact
                     </a>
                 </div>
             </div>
@@ -44,7 +47,7 @@
                 </div>
             </div>
             <!-- Create customer -->
-            <div class="modal fade" id="modalAdd">
+            <div class="modal fade" id="modalAddCustomer">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -65,7 +68,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-success" @click="store">Add</button>
+                            <button type="button" class="btn btn-success" @click="store('customer', $event)">Add</button>
                         </div>
                     </div>
                 </div>
@@ -102,7 +105,6 @@
                                                         <th>Name</th>
                                                         <th>Email</th>
                                                         <th>Phone number</th>
-                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -111,19 +113,13 @@
                                                             {{item.id}}
                                                         </td>
                                                         <td>
-                                                            <input class="col-sm-12" type="text" :placeholder="item.name" v-model="item.name" :disabled="disabledElement !== 'el'+index">
+                                                            {{item.name}}
                                                         </td>
                                                         <td>
-                                                            <input class="col-sm-12" type="text" :placeholder="item.email" v-model="item.email" :disabled="disabledElement !== 'el'+index">
+                                                            {{item.email}}
                                                         </td>
                                                         <td>
-                                                            <input class="col-sm-12" type="text" :placeholder="item.telephone" v-model="item.telephone" :disabled="disabledElement !== 'el'+index">
-                                                        </td>
-                                                        <td class="text-right">
-                                                            <a href="#" class="btn btn-link" @click.prevent="editContact(index)" ><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
-                                                        </td>
-                                                        <td class="text-right"  >
-                                                            <a href="#" class="btn btn-link" @click.prevent="saveContact(index)" ><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i></a>
+                                                            {{item.telephone}}
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -142,6 +138,57 @@
                         </div>
                 </div>
             </div>
+            <!-- Create contact -->
+            <div class="modal fade" id="modalAddContact">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Add contact</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group" :class="{'has-error': error.name}">
+                                    <label class="col-sm-2 control-label">Name *</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control input-lg" placeholder="Name" required v-model="contact.name">
+                                        <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
+                                    </div>
+                                </div>
+                                <div class="form-group" :class="{'has-error': error.email}">
+                                    <label class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control input-lg" placeholder="Email" v-model="contact.email">
+                                        <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
+                                    </div>
+                                </div>
+                                <div class="form-group" :class="{'has-error': error.phone}">
+                                    <label class="col-sm-2 control-label">Phone Number</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control input-lg" placeholder="Phone Number" v-model="contact.phone">
+                                        <span class="help-block" v-if="error.phone">{{error.phone[0]}}</span>
+                                    </div>
+                                </div>
+                                <div class="form-group" :class="{'has-error': error.customer}">
+                                    <label class="col-sm-2 control-label">Customer</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" required v-model="contact.customer">
+                                            <option v-for="option in list.customers" :value="option.id">
+                                                {{ option.name }}
+                                            </option>
+                                        </select>
+                                        <span class="help-block" v-if="error.customer">{{error.customer[0]}}</span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-success" @click="store('contact', $event)">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -156,10 +203,10 @@ export default {
           customers: [],
           customer: {},
           error: {},
+          contact: {},
           list: {
-              contacts: []
-          },
-          disabledElement: '',
+              customers: [],
+          }
       }
     },
     components: {
@@ -182,14 +229,31 @@ export default {
                     this.loading = false;
                 });
         },
-        add: function() {
-            this.customer = {
-                name: '',
-            };
-            this.error = {};
-            $('#modalAdd').modal('show');
+        add: function(el) {
+            if (el == 'customer') {
+              this.customer = {
+                  name: '',
+              };
+              this.error = {};
+              $('#modalAddCustomer').modal('show');
+            }
+            if (el == 'contact') {
+              axios.get('/customers/all')
+              .then(response => {
+                  this.list.customers = response.data;
+              });
+              this.contact = {
+                  name: '',
+                  email: '',
+                  phone: '',
+                  customer: '',
+              };
+              this.error = {};
+              $('#modalAddContact').modal('show');
+            }
         },
-        store: function(e) {
+        store: function(el, e) {
+          if (el == 'customer') {
             var btn = $(e.target).button('loading')
             axios.post('/customers/store', this.customer)
                 .then(response => {
@@ -197,12 +261,28 @@ export default {
                     this.customer = {};
                     this.error = {};
                     var btn = $(e.target).button('reset')
-                    $('#modalAdd').modal('hide');
+                    $('#modalAddCustomer').modal('hide');
                 })
                 .catch(error => {
                     this.error = error.response.data;
                     var btn = $(e.target).button('reset')
                 });
+          }
+          if (el == 'contact') {
+            var btn = $(e.target).button('loading')
+            axios.post('/customers/storeContact', this.contact)
+                .then(response => {
+                    this.contact = {};
+                    this.error = {};
+                    var btn = $(e.target).button('reset')
+                    $('#modalAddContact').modal('hide');
+                    this.getAll();
+                })
+                .catch(error => {
+                    this.error = error.response.data;
+                    var btn = $(e.target).button('reset')
+                });
+          }
         },
         edit: function (customer, index) {
             this.customer = _.clone(customer);
@@ -254,14 +334,6 @@ export default {
                 });
             });
         },
-        editContact: function (index) {
-          this.disabledElement = 'el'+index;
-        },
-        saveContact: function (index) {
-          if (this.disabledElement == 'el'+index) {
-            this.disabledElement = '';
-          }
-        }
     }
 }
 </script>
