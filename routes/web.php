@@ -72,6 +72,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/files/{folderId?}', 'FileController@view');
 
     //Employes
+    Route::get('/employees', 'EmployeeController@index');
+    Route::get('/employees/all', 'EmployeeController@all');
+    Route::post('/employees/store', 'EmployeeController@store');
+    Route::put('/employees/update/{id}', 'EmployeeController@update');
+    Route::delete('/employees/destroy/{id}', 'EmployeeController@destroy');
     Route::get('/employees/sellers', 'EmployeeController@sellers');
     Route::get('/employees/designers', 'EmployeeController@designers');
 
@@ -82,4 +87,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/quote/store', 'QuoteController@store');
     Route::put('/quote/update/{id}', 'QuoteController@update');
     Route::delete('/quote/destroy/{id}', 'QuoteController@destroy');
+
 });

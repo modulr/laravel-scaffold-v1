@@ -36,6 +36,8 @@ Vue.component('contacts', require('./components/Contacts.vue'));
 Vue.component('files', require('./components/files/Files.vue'));
 //Quotes
 Vue.component('quotes', require('./components/Quotes.vue'));
+//employees
+Vue.component('employees', require('./components/employees/Employees.vue'));
 
 const app = new Vue({
     el: '#app',
