@@ -8,6 +8,8 @@ class Customer extends Model
 {
     protected $fillable = ['name'];
 
+    public $timestamps = false;
+
     public function quote()
     {
         return $this->hasOne(Quote::class);
@@ -15,6 +17,6 @@ class Customer extends Model
 
     public function contact()
     {
-        return $this->hasOne(Contact::class);
+        return $this->hasMany(Contact::class);
     }
 }

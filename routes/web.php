@@ -119,7 +119,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/file/update/{id}', 'FileController@update');
     Route::delete('/file/destroy/{id}', 'FileController@destroy');
     Route::get('/files/{folderId?}', 'FileController@view');
-    
+
     // Projects and Opportunities
     Route::get('/opportunities', 'OpportunityController@index');
     Route::get('/opportunities/all', 'OpportunityController@all');
@@ -141,4 +141,12 @@ Route::middleware('auth')->group(function () {
     Route::put('/quote/update/{id}', 'QuoteController@update');
     Route::delete('/quote/destroy/{id}', 'QuoteController@destroy');
 
+    // Customers
+    Route::get('/customers', 'CustomerController@index');
+    Route::get('/customers/all', 'CustomerController@all');
+    Route::post('/customers/store', 'CustomerController@store');
+    Route::put('/customers/update/{id}', 'CustomerController@update');
+    Route::delete('/customers/destroy/{id}', 'CustomerController@destroy');
+    Route::get('/customers/list/contacts/{id}', 'CustomerController@listContacts');
+    Route::post('/customers/storeContact', 'CustomerController@storeContact');
 });

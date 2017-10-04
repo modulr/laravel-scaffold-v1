@@ -9,7 +9,9 @@ class Contact extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'email'];
+    public $timestamps = false;
+
+    protected $fillable = ['name', 'email', 'telephone', 'customer_id'];
 
     public function customer()
     {
