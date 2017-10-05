@@ -26,7 +26,7 @@
                 <th>Name</th>
                 <th>Project</th>
                 <th>Designer</th>
-                <th>Seller</th>
+                <th>Salesman</th>
                 <th>Ammount</th>
                 <th>Request Date</th>
                 <th>Delivery Date</th>
@@ -47,6 +47,7 @@
                 <td> {{ quote.status }} </td>
                 <td class="text-right">
                     <a href="#" class="btn btn-link" @click.prevent="edit(quote, index)"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+                    <a href="#" class="btn btn-link" @click.prevent="uploadFile(quote)"><i class="mdi mdi-note-add mdi-lg"></i></a>
                 </td>
               </tr>
             </tbody>
@@ -94,9 +95,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Seller *</label>
+                        <label class="col-sm-2 control-label">Salesman *</label>
                         <div class="col-sm-10">
-                            <select type="text" class="form-control input-lg" placeholder="Seller" required v-model="quote.seller_id">
+                            <select type="text" class="form-control input-lg" placeholder="Salesman" required v-model="quote.seller_id">
                               <option v-for="seller in list.sellers" :value="seller.id"> {{ seller.name }} </option>
                             </select>
                         </div>
@@ -180,9 +181,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Seller *</label>
+                        <label class="col-sm-2 control-label">Salesman *</label>
                         <div class="col-sm-10">
-                            <select type="text" class="form-control input-lg" placeholder="Seller" required v-model="quote.seller_id">
+                            <select type="text" class="form-control input-lg" placeholder="Salesman" required v-model="quote.seller_id">
                               <option v-for="seller in list.sellers" :value="seller.id"> {{ seller.name }} </option>
                             </select>
                         </div>
@@ -205,7 +206,7 @@
                         <label class="col-sm-2 control-label">Request Date </label>
                         <div class="col-sm-10">
                           <p class="form-control-static">
-                            <small class="text-mute">{{quote.request_date}}</small>
+                            <small class="text-mute">{{quote.request_date | date}}</small>
                           </p>
                         </div>
                     </div>
@@ -230,6 +231,27 @@
             </div>
         </div>
     </div>
+    <!-- Modal File -->
+    <div class="modal fade" id="myModalFile">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Upload Files</h4>
+                </div>
+                <div class="modal-body">
+                    <dropzone id="myVueDropzone" ref="myVueDropzone"
+                        url="/attachments/store" :use-font-awesome=true
+                        :use-custom-dropzone-options=true :dropzoneOptions="dzOptions"
+                        v-on:vdropzone-success="uploadSuccess">
+                        <input type="hidden" name="quote_id" v-model="quote.id">
+                    </dropzone>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -237,6 +259,7 @@
 import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
+import Dropzone from 'vue2-dropzone';
 export default {
   data () {
     return {
@@ -251,11 +274,16 @@ export default {
         sellers: [],
         customers: [ { name: 'First customer', id: '1' }, { name: 'Second customer', id: '2' } ],
         projects: [ { name: 'First project', id: '1' }, { name: 'Second project', id: '2' } ],
+      },
+      dzOptions: {
+          acceptedFileTypes: '.jpg,.jpeg,.png,.pdf',
+          headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
       }
     }
   },
   components: {
-    Spinner
+    Spinner,
+    Dropzone
   },
   filters: {
       date (date) {
@@ -270,16 +298,16 @@ export default {
       this.loading = true;
       axios.get('/quote/all')
         .then(response => {
-          this.quotes = response.data;
-          this.loading = false;
+          this.quotes = response.data
+          this.loading = false
         });
       axios.get('/employees/sellers')
         .then(response => {
-          this.list.sellers = response.data;
+          this.list.sellers = response.data
         });
       axios.get('/employees/designers')
         .then(response => {
-          this.list.designers = response.data;
+          this.list.designers = response.data
         });
     },
     add () {
@@ -290,7 +318,7 @@ export default {
       this.quote = {}
       $('#modalAdd').modal('show');
     },
-    store (e) {      
+    store (e) {
       var btn = $(e.target).button('loading')
       axios.post('/quote/store', this.quote)
         .then(response => {
@@ -314,11 +342,11 @@ export default {
       console.log(this.quote)
       axios.put('/quote/update/'+this.quote.id, this.quote)
         .then(response => {
-          this.quotes[this.quote.index] = response.data;
-          this.quote = {};
-          this.error = {};
+          this.quotes[this.quote.index] = response.data
+          this.quote = {}
+          this.error = {}
           var btn = $(e.target).button('reset')
-          $('#modalEdit').modal('hide');
+          $('#modalEdit').modal('hide')
         })
         .catch(error => {
           this.error = error.response.data;
@@ -348,12 +376,21 @@ export default {
               showConfirmButton: false
           });
           self.error = {};
-          $('#modalEdit').modal('hide');
+          $('#modalEdit').modal('hide')
         })
         .catch(error => {
-            self.error = error.response.data;
+            self.error = error.response.data
         });
       });
+    },
+    uploadFile (quote) {
+      this.quote = _.clone(quote)
+      $('#myModalFile').modal('show')
+    },
+    uploadSuccess: function (file, response) {
+        console.log(file)
+        console.log(response)
+        $('#myModalFile').modal('hide');
     }
   }
 }

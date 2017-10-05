@@ -88,4 +88,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/quote/update/{id}', 'QuoteController@update');
     Route::delete('/quote/destroy/{id}', 'QuoteController@destroy');
 
+    //Attachments
+    Route::post('/attachments/store', 'AttachmentController@store');
+
 });
