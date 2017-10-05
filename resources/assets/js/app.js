@@ -53,6 +53,8 @@ Vue.component('opportunities', require('./components/opportunities/Opportunities
 Vue.component('quotes', require('./components/Quotes.vue'));
 // Customers
 Vue.component('customers', require('./components/customers/Customers.vue'));
+// Employees
+Vue.component('employees', require('./components/employees/Employees.vue'));
 
 const app = new Vue({
     el: '#app',

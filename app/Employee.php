@@ -3,13 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Lists\ListTypeEmployee;
 class Employee extends Model
-{    
-    protected $fillable = ['name', 'role'];
+{
+    protected $fillable = ['name', 'role_id'];
 
     public function quote()
     {
         return $this->hasOne(Quote::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(ListTypeEmployee::class);
     }
 }

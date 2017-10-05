@@ -18,8 +18,10 @@ class DatabaseSeeder extends Seeder
         $this->call(ListProfessionTableSeeder::class);
         $this->call(ListPositionTableSeeder::class);
         $this->call(ListDepartmentTableSeeder::class);
+        $this->call(ListTypeEmployeesSeeder::class);
         $this->call(RolesSeeder::class);
         $this->call(PrioritiesSeeder::class);
+
 
         factory(App\User::class, 10)
             ->create()

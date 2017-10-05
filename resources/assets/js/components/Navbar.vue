@@ -56,6 +56,11 @@
                                         </li>
                                     </div>
                                     <div class="row text-center">
+                                        <li class="col-sm-3" v-tooltip:bottom="'Employees'" :class="{'active': activeLink == 'employees'}">
+                                            <a href="/employees">
+                                                <i class="mdi mdi-group-add mdi-3x"></i>
+                                            </a>
+                                        </li>
                                         <li class="col-sm-3" v-tooltip:bottom="'Users'" :class="{'active': activeLink == 'users'}">
                                             <a href="/users">
                                                 <i class="mdi mdi-people mdi-3x"></i>
