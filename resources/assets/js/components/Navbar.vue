@@ -67,13 +67,6 @@
                                             </a>
                                         </li>
                                     </div>
-                                    <div class="row text-center">
-                                        <li class="col-sm-3" v-tooltip:bottom="'Employees'" :class="{'active': activeLink == 'users'}">
-                                            <a href="/employees">
-                                                <i class="mdi mdi-people mdi-3x"></i>
-                                            </a>
-                                        </li>
-                                    </div>
                                 </div>
                                 <div class="menu-bottom">
                                     <div class="divider"></div>
