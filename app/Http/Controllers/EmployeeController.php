@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Employee;
+
 class EmployeeController extends Controller
 {
 
@@ -19,16 +20,19 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
-        return Employee::create([
+        $employee = Employee::create([
           'name' => $request->name,
-          'role' => $request->role
+          'role_id' => $request->role
         ])->load('role');
+
+        return $employee;
     }
 
     public function update($id, Request $request)
     {
         $q = Employee::find($id);
         $q->name = $request->name;
+        $q->role = $request->role;
         $q->save();
         return $q;
     }

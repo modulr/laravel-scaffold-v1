@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Lists\ListTypeEmployee;
 class Employee extends Model
 {
-    protected $fillable = ['name', 'role'];
+    protected $fillable = ['name', 'role_id'];
 
     public function quote()
     {
@@ -15,6 +15,6 @@ class Employee extends Model
 
     public function role()
     {
-        return $this->belongsTo(ListTypeEmployee::class, 'role');
+        return $this->belongsTo(ListTypeEmployee::class);
     }
 }

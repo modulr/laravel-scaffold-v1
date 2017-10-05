@@ -36,7 +36,7 @@
                                 <td>
                                     {{item.name}}<br>
                                 </td>
-                                <td>
+                                <td v-if="item.role">
                                     {{ item.role.title }}
                                 </td>
                                 <td class="text-right" @click="edit(item, index)">
@@ -68,7 +68,7 @@
                                     <label class="col-sm-2 control-label">Type *</label>
                                     <div class="col-sm-10">
                                         <select class="form-control" name="role" v-model="employee.role">
-                                          <option value="1">Customer</option>
+                                          <option value="1">Designer</option>
                                           <option value="2">Seller</option>
                                         </select>
                                         <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
@@ -206,7 +206,7 @@ export default {
             var self = this;
             swal({
                 title: "Are you sure?",
-                text: "You will not be able to recover this customer!",
+                text: "You will not be able to recover this employee!",
                 type: "warning",
                 showLoaderOnConfirm: true,
                 showCancelButton: true,
@@ -219,7 +219,7 @@ export default {
                     self.employees.splice(self.employee.index, 1);
                     swal({
                         title: "Deleted!",
-                        text: "The customer has been deleted.",
+                        text: "The employee has been deleted.",
                         type: "success",
                         timer: 1000,
                         showConfirmButton: false

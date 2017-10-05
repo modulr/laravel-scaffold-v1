@@ -9,8 +9,8 @@ class ListTypeEmployee extends Model
 {
     protected $fillable = ['title'];
 
-    public function role()
+    public function employee()
     {
-        return $this->hasMany(Employee::class, 'id');
+        return $this->hasOne(Employee::class);
     }
 }
