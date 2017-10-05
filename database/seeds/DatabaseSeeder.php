@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
+        $this->call(ListTypeEmployeesSeeder::class);
+
         DB::table('roles')->insert([
             [
                 'id' => '1',
@@ -26,7 +28,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Guest'
             ]
         ]);
-        
+
         factory(App\User::class, 10)
             ->create()
             ->each(function ($u) {
