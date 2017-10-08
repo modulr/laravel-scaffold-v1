@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ListTypeEmployeesSeeder::class);
         $this->call(RolesSeeder::class);
         $this->call(PrioritiesSeeder::class);
-
+        $this->call(ListStatusQuoteSeeder::class);
 
         factory(App\User::class, 10)
             ->create()

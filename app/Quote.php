@@ -8,7 +8,7 @@ class Quote extends Model
 {
 
     protected $fillable = ['name', 'description', 'owner_id', 'designer_id', 'seller_id', 'project_id', 'customer_id',
-                          'request_date','delivery_date','close_date','ammount','status_id'];
+                          'request_date','delivery_date','close_date','amount','status_id'];
 
     public function designer()
     {
