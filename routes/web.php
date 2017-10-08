@@ -146,6 +146,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/quote/update/{id}', 'QuoteController@update');
     Route::delete('/quote/destroy/{id}', 'QuoteController@destroy');
 
+    //Attachments
+    Route::post('/attachments/store', 'AttachmentController@store');
+
     // Customers
     Route::get('/customers', 'CustomerController@index');
     Route::get('/customers/all', 'CustomerController@all');

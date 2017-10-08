@@ -39,12 +39,12 @@ class EmployeeController extends Controller
 
     public function sellers()
     {
-      return Employee::where('role', "2")->get();
+      return Employee::where('role_id', "2")->get();
     }
 
     public function designers()
     {
-      return Employee::where('role', "1")->get();
+      return Employee::where('role_id', "1")->get();
     }
 
     public function destroy($id)

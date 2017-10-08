@@ -5,9 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Attachment extends Model
-{
-    //
-    $fillable = ['quote_id', 'ruta'];
+{  
+    protected $fillable = ['quote_id', 'ruta'];
 
     public function quote()
     {

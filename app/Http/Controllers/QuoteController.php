@@ -16,7 +16,7 @@ class QuoteController extends Controller
 
   public function all(Request $request)
   {
-      return Quote::with('designer', 'seller', 'customer', 'project')->get();
+      return Quote::with('designer', 'seller', 'customer', 'project', 'status')->get();
   }
 
   public function show($id)
@@ -41,8 +41,8 @@ class QuoteController extends Controller
         'request_date' => $request->request_date,
         'delivery_date' => $request->delivery_date,
         'close_date' => $request->close_date,
-        'ammount' => $request->ammount,
-        'status' => 1])->load('designer', 'seller', 'customer', 'owner', 'project');
+        'amount' => $request->amount,
+        'status_id' => 1])->load('designer', 'seller', 'customer', 'owner', 'project', 'status');
       return $quote;
   }
 
@@ -57,12 +57,13 @@ class QuoteController extends Controller
       $q->project_id = $request->project_id;
       $q->customer_id = $request->customer_id;
       $q->delivery_date = $request->delivery_date;
-      $q->ammount = $request->ammount;
+      $q->amount = $request->amount;
+      $q->status_id = $request->status_id;
       $q->save();
       // $data = $request->all();
 
       // return response()->json($data);
-      return $q->load('designer', 'seller', 'customer', 'owner', 'project');
+      return $q->load('designer', 'seller', 'customer', 'owner', 'project', 'status');
   }
 
   public function destroy($id)

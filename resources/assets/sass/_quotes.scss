@@ -1,0 +1,32 @@
+.quotes {
+    .table {
+        .status-Refuse {
+            color: $brand-danger;
+            background-color: lighten($brand-danger, 20%);
+        }
+        .status-Approve {
+            color: $brand-success;
+            background-color: lighten($brand-success, 20%);
+        }
+        .status-Sent {
+            color: $brand-gray;
+            background-color: lighten($brand-gray, 20%);
+        }
+    }
+    .modal {
+        .modal-body {
+            img {
+                height: 100px;
+                width: 100px;
+                border-radius: 50%;
+                -webkit-box-shadow: 0 0 1px 6px #e8e8e8;
+                box-shadow: 0 0 1px 6px #e8e8e8;
+            }
+            i {
+                border-radius: 50%;
+                -webkit-box-shadow: 0 0 1px 6px #e8e8e8;
+                box-shadow: 0 0 1px 6px #e8e8e8;
+            }
+        }
+    }
+}

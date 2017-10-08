@@ -69,7 +69,7 @@
                                     <div class="col-sm-10">
                                         <select class="form-control" name="role" v-model="employee.role">
                                           <option value="1">Designer</option>
-                                          <option value="2">Seller</option>
+                                          <option value="2">Salesman</option>
                                         </select>
                                         <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                     </div>
