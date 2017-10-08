@@ -27,7 +27,7 @@
                 <th>Project</th>
                 <th>Designer</th>
                 <th>Salesman</th>
-                <th>Ammount</th>
+                <th>Amount</th>
                 <th>Request Date</th>
                 <th>Delivery Date</th>
                 <th>Status</th>
@@ -41,13 +41,38 @@
                 <td> {{ quote.project }} </td>
                 <td> {{ quote.designer.name }} </td>
                 <td> {{ quote.seller.name }} </td>
-                <td> {{ quote.ammount }} </td>
+                <td> {{ quote.amount }} </td>
                 <td> {{ quote.request_date | date }} </td>
                 <td> {{ quote.delivery_date | date }} </td>
-                <td> {{ quote.status }} </td>
+                <td>
+                  <span class="chip" :class="'status-'+quote.status.title">
+                      {{quote.status.title}}
+                  </span>
+                </td>
                 <td class="text-right">
-                    <a href="#" class="btn btn-link" @click.prevent="edit(quote, index)"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
-                    <a href="#" class="btn btn-link" @click.prevent="uploadFile(quote)"><i class="mdi mdi-note-add mdi-lg"></i></a>
+                    <!-- <a href="#" class="btn btn-link" @click.prevent="edit(quote, index)"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+                    <a href="#" class="btn btn-link" @click.prevent="uploadFile(quote)"><i class="mdi mdi-note-add mdi-lg"></i></a> -->
+                    <div class="dropdown">
+                        <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="#" @click.prevent="edit(quote, index)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                  Edit
+                                </a>
+                                <a href="#" @click.prevent="uploadFile(quote)"><i class="fa fa-file-pdf-o"></i>
+                                  Upload PDF
+                                </a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                              <a href="#" @click.prevent="changeStatus(quote, index, 2)"><i class="fa fa-envelope-o"></i> Sent</a>
+                              <a href="#" @click.prevent="changeStatus(quote, index, 3)"><i class="fa fa-thumbs-o-up"></i> Approve</a>
+                              <a href="#" @click.prevent="changeStatus(quote, index, 4)"><i class="fa fa-thumbs-o-down"></i> Refuse</a>
+                            </li>
+                        </ul>
+                    </div>
                 </td>
               </tr>
             </tbody>
@@ -111,9 +136,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Ammout *</label>
+                        <label class="col-sm-2 control-label">Amount </label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control input-lg" placeholder="Ammout" required v-model="quote.ammount">
+                            <input type="text" class="form-control input-lg" placeholder="Amount" required v-model="quote.amount">
                         </div>
                     </div>
                     <div class="form-group">
@@ -197,9 +222,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Ammout *</label>
+                        <label class="col-sm-2 control-label">Amount</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control input-lg" placeholder="Ammout" required v-model="quote.ammount">
+                            <input type="text" class="form-control input-lg" placeholder="Amount" required v-model="quote.amount">
                         </div>
                     </div>
                     <div class="form-group">
@@ -287,7 +312,7 @@ export default {
   },
   filters: {
       date (date) {
-          return moment(date).format('LLL');
+          return date ? moment(date).format('LLL'): '';
       }
   },
   mounted () {
@@ -339,7 +364,6 @@ export default {
     },
     update (e) {
       var btn = $(e.target).button('loading')
-      console.log(this.quote)
       axios.put('/quote/update/'+this.quote.id, this.quote)
         .then(response => {
           this.quotes[this.quote.index] = response.data
@@ -391,6 +415,20 @@ export default {
         console.log(file)
         console.log(response)
         $('#myModalFile').modal('hide');
+    },
+    changeStatus (quote, index, status) {
+      this.quote = _.clone(quote)
+      this.quote.status_id = status
+      this.quote.index = index
+      axios.put('/quote/update/'+this.quote.id, this.quote)
+        .then(response => {
+          this.quotes[this.quote.index] = response.data
+          this.quote = {}
+          this.error = {}
+        })
+        .catch(error => {
+          this.error = error.response.data;
+        });
     }
   }
 }

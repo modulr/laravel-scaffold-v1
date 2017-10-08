@@ -30,8 +30,8 @@ class CreateQuotesTable extends Migration
           $table->datetime('request_date');
           $table->datetime('delivery_date')->nullable();
           $table->datetime('close_date')->nullable();
-          $table->float('ammount', 8, 4);
-          $table->integer('status');
+          $table->double('amount', 15, 8)->nullable();
+          $table->integer('status_id');
           $table->timestamps();
           $table->softDeletes();
       });

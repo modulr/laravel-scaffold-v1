@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateListTypeEmployeesTable extends Migration
+class CreateListStatusQuotesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateListTypeEmployeesTable extends Migration
      */
     public function up()
     {
-        Schema::create('list_type_employees', function (Blueprint $table) {
+        Schema::create('list_status_quotes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
             $table->softDeletes();
@@ -27,6 +27,6 @@ class CreateListTypeEmployeesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('list_type_employees');
+        Schema::dropIfExists('list_status_quotes');
     }
 }
