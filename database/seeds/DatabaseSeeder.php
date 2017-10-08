@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call(ListTypeEmployeesSeeder::class);
+        $this->call(ListStatusQuoteSeeder::class);
 
         DB::table('roles')->insert([
             [
