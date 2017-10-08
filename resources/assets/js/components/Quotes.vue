@@ -296,7 +296,7 @@ export default {
       list: {
         designers: [],
         sellers: [],
-        customers: [ { name: 'First customer', id: '1' }, { name: 'Second customer', id: '2' } ],
+        customers: [],
         projects: [],
       },
       dzOptions: {
@@ -336,6 +336,10 @@ export default {
       axios.get('/opportunities/all')
         .then(response => {
           this.list.projects = response.data;
+        });
+      axios.get('/customers/all')
+        .then(response => {
+            this.list.customers = response.data;
         });
     },
     add () {
