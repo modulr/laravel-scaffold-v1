@@ -21,7 +21,6 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th></th>
                             <th>ID</th>
                             <th>Name/Email</th>
                             <th class="text-center">Active</th>
@@ -31,14 +30,16 @@
                     <tbody>
                         <tr v-for="(item, index) in filteredUsers">
                             <td @click="edit(item, index)">
-                                <img :src="item.avatar_url">
-                            </td>
-                            <td @click="edit(item, index)">
                                 {{item.id}}
                             </td>
                             <td @click="edit(item, index)">
-                                <p>{{item.name}}</p>
-                                <small class="text-muted">{{item.email}}</small>
+                                <div class="col-sm-1">
+                                    <img :src="item.avatar_url">
+                                </div>
+                                <div class="col-sm-11">
+                                    <p style="color: #FEAE3B">{{item.name}}</p>
+                                    <small class="text-muted">{{item.email}}</small>
+                                </div>
                             </td>
                             <td class="text-center" @click="edit(item, index)">
                                 <i class="mdi mdi-2x" :class="{'mdi-mood text-success': item.active, 'mdi-mood-bad': !item.active}"></i>

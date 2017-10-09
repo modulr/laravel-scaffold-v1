@@ -30,7 +30,7 @@
                               <th>Owner</th>
                               <th>Contact</th>
                               <th>Customer</th>
-                              <th>Piority</th>
+                              <th>Priority</th>
                               <th></th>
                           </tr>
                       </thead>
@@ -40,7 +40,7 @@
                                   {{item.id}}
                               </td>
                               <td>
-                                  {{item.name}}<br>
+                                  <strong>{{item.name}}</strong>
                               </td>
                               <td>
                                   {{item.start_date | date}}<br>
