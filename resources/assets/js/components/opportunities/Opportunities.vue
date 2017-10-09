@@ -40,7 +40,9 @@
                                   {{item.id}}
                               </td>
                               <td>
-                                  <strong>{{item.name}}</strong>
+                                  <a :href="'/opportunities/'+item.id+'/get'">
+                                      <strong>{{item.name}}</strong>
+                                  </a>
                               </td>
                               <td>
                                   {{item.start_date | date}}<br>

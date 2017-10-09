@@ -41,7 +41,7 @@
                 <td> {{ quote.project.name }} </td>
                 <td> {{ quote.designer.name }} </td>
                 <td> {{ quote.seller.name }} </td>
-                <td> {{ quote.amount }} </td>
+                <td> {{ quote.amount | currency }} </td>
                 <td> {{ quote.request_date | date }} </td>
                 <td> {{ quote.delivery_date | date }} </td>
                 <td>
@@ -285,6 +285,7 @@ import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
 import Dropzone from 'vue2-dropzone';
+import Vue2Filters from 'vue2-filters';
 export default {
   data () {
     return {

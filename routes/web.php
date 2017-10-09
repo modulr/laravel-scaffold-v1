@@ -122,6 +122,7 @@ Route::middleware('auth')->group(function () {
 
     // Projects and Opportunities
     Route::get('/opportunities', 'OpportunityController@index');
+    Route::get('/opportunities/{id}/get', 'OpportunityController@show');
     Route::get('/opportunities/all', 'OpportunityController@all');
     Route::post('/opportunities/store', 'OpportunityController@store');
     Route::put('/opportunities/update/{id}', 'OpportunityController@update');

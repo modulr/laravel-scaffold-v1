@@ -1,0 +1,135 @@
+<template lang="html">
+    <div class="opportunity">
+        <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
+        <!-- Actions Buttons -->
+        <div class="opportunity-content">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{opportunity.name}}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <dl>
+                                <dd>Description</dd>
+                                <dt>{{opportunity.description}}</dt>
+                            </dl>
+                            <dl>
+                                <dd>Registered Date</dd>
+                                <dt>{{opportunity.start_date}}</dt>
+                            </dl>
+                        </div>
+                        <div class="col-md-4">
+                            <dl>
+                                <dd>Priority</dd>
+                                <dt>{{opportunity.priority.name}}</dt>
+                            </dl>
+                            <dl>
+                                <dd>Owner</dd>
+                                <dt><a :href="'/profile/'+opportunity.owner.id">{{opportunity.owner.name}}</a>
+                                </dt>
+                            </dl>
+                        </div>
+                        <div class="col-md-4">
+                            <dl>
+                                <dd>Customer</dd>
+                                <dt>{{opportunity.contact.customer.name}}</dt>
+                            </dl>
+                            <dl>
+                                <dd>Contact</dd>
+                                <dt>{{opportunity.contact.name}}</dt>
+                            </dl>
+                        </div>
+                        <div class="col-md-4">
+                            <dl>
+                                <dd>Quotes</dd>
+                                <dt>{{opportunity.quote.length}}</dt>
+                            </dl>
+                            <dl>
+                                <dd>Total</dd>
+
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h3>Quotes</h3>
+                <div class="col-md-12">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Request Date</th>
+                                <th>Designer</th>
+                                <th>Salesman</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, index) in opportunity.quote">
+                                <td>
+                                    {{item.id}}
+                                </td>
+                                <td>
+                                    {{item.name}}
+                                </td>
+                                <td>
+                                    {{item.description}}
+                                </td>
+                                <td>
+                                    {{item.amount | currency}}
+                                </td>
+                                <td>
+                                    {{item.request_date | date}}
+                                </td>
+                                <td v-if="item.designer">
+                                    {{item.designer.name}}
+                                </td>
+                                <td v-if="item.seller">
+                                    {{item.seller.name}}
+                                </td>
+                                <td>
+                                    {{item.status.title}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import moment from 'moment';
+import swal from 'sweetalert';
+import Spinner from 'vue-simple-spinner';
+import Vue2Filters from 'vue2-filters';
+export default {
+    data() {
+        return {
+            loading: false,
+            error: {},
+        }
+    },
+    props: ['opportunity'],
+    components: {
+      Spinner
+    },
+    mounted() {
+
+    },
+    filters: {
+        date(date) {
+            return moment(date).format('LLL');
+        }
+    },
+    methods: {
+
+    }
+}
+</script>
