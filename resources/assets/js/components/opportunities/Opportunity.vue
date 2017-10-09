@@ -45,15 +45,16 @@
                                 <dd>Quotes</dd>
                                 <dt>{{opportunity.quote.length}}</dt>
                             </dl>
-                            <dl>
-                                <dd>Total</dd>
-
-                            </dl>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" v-if="opportunity.quote.length == 0">
+              <div class="col-md-12">
+                <h3>No quotes found.</h3>
+              </div>
+            </div>
+            <div class="row" v-if="opportunity.quote.length != 0">
                 <h3>Quotes</h3>
                 <div class="col-md-12">
                     <table class="table table-hover">
