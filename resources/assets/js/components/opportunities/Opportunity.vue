@@ -16,7 +16,7 @@
                             </dl>
                             <dl>
                                 <dd>Registered Date</dd>
-                                <dt>{{opportunity.start_date}}</dt>
+                                <dt>{{opportunity.start_date | date}}</dt>
                             </dl>
                         </div>
                         <div class="col-md-4">
