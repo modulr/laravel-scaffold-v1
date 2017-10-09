@@ -55,6 +55,10 @@ Vue.component('quotes', require('./components/Quotes.vue'));
 Vue.component('customers', require('./components/customers/Customers.vue'));
 // Employees
 Vue.component('employees', require('./components/employees/Employees.vue'));
+// Widgets
+Vue.component('opportunitiesWidget', require('./components/widgets/OpportunitiesWidget.vue'));
+Vue.component('quotesWidget', require('./components/widgets/QuotesWidget.vue'));
+Vue.component('projectsWidget', require('./components/widgets/ProjectsWidget.vue'));
 
 const app = new Vue({
     el: '#app',

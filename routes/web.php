@@ -157,4 +157,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/customers/destroy/{id}', 'CustomerController@destroy');
     Route::get('/customers/list/contacts/{id}', 'CustomerController@listContacts');
     Route::post('/customers/storeContact', 'CustomerController@storeContact');
+
+    // Widgets
+    Route::get('/widget/getMonthOpportunities', 'WidgetController@getMonthOpportunities');
 });
