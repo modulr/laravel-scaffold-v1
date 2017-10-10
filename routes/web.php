@@ -55,15 +55,15 @@ Route::middleware('auth')->group(function () {
             Route::post('/upload/avatar/temp', 'UserController@uploadAvatarTemp');
             Route::post('/upload/avatar/{id}', 'UserController@uploadAvatar');
         });
-    });
 
-    // Roles
-    Route::group(['namespace' => 'Users', 'prefix' => 'roles'], function() {
-        Route::get('/', 'RoleController@index');
-        Route::get('/all', 'RoleController@all');
-        Route::post('/store', 'RoleController@store');
-        Route::put('/update/{id}', 'RoleController@update');
-        Route::delete('/destroy/{id}', 'RoleController@destroy');
+        Route::get('groups', 'GroupController@index');
+        // Roles
+        Route::group(['prefix' => 'group'], function() {
+            Route::get('/all', 'GroupController@all');
+            Route::post('/store', 'GroupController@store');
+            Route::put('/update/{id}', 'GroupController@update');
+            Route::delete('/destroy/{id}', 'GroupController@destroy');
+        });
     });
 
     // Profile

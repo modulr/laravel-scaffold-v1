@@ -5,18 +5,18 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Users\Role;
+use App\Models\Users\Group;
 
-class RoleController extends Controller
+class GroupController extends Controller
 {
     public function index(Request $request)
     {
-        return view('users.roles', ['breadcrumb' => $request->path()]);
+        return view('users.groups', ['breadcrumb' => $request->path()]);
     }
 
     public function all()
     {
-        return Role::get();
+        return Group::get();
     }
 
     public function store(Request $request)
@@ -26,7 +26,7 @@ class RoleController extends Controller
             'description' => 'nullable|string'
         ]);
 
-        $q = Role::create([
+        $q = Group::create([
             'title' => $request->title,
             'description' => $request->description
         ]);
@@ -41,7 +41,7 @@ class RoleController extends Controller
             'description' => 'nullable|string'
         ]);
 
-        $q = Role::find($id);
+        $q = Group::find($id);
         $q->title = $request->title;
         $q->description = $request->description;
         $q->save();
@@ -51,11 +51,11 @@ class RoleController extends Controller
 
     public function destroy($id)
     {
-        $q = Role::find($id);
+        $q = Group::find($id);
 
         if ($q->lock)
-            return response()->json(['The role is locked cannot delete'], 401);
+            return response()->json(['The group is locked cannot delete'], 401);
 
-        return Role::destroy($id);
+        return Group::destroy($id);
     }
 }

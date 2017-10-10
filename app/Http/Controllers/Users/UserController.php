@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function all()
     {
-        return User::with('role')->get();
+        return User::with('group')->get();
     }
 
     public function store(Request $request)
@@ -38,7 +38,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'avatar' => $request->avatar,
             'active' => $request->active,
-            'role_id' => 2,
+            'group_id' => 2,
         ]);
 
         if ($request->avatar_url) {

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class RolesTableSeeder extends Seeder
+class GroupsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +11,7 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('roles')->insert([
+        DB::table('user_groups')->insert([
             ['title' => 'Admin', 'description' => 'All access', 'lock' => true],
             ['title' => 'User', 'description' => 'Basic access', 'lock' => true],
             ['title' => 'Guest', 'description' => 'Read access', 'lock' => true]

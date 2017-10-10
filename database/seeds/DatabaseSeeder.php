@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ListPositionTableSeeder::class);
         $this->call(ListDepartmentTableSeeder::class);
 
-        $this->call(RolesTableSeeder::class);
+        $this->call(GroupsTableSeeder::class);
 
         factory(App\User::class, 10)
             ->create()

@@ -1,33 +1,24 @@
 <template lang="html">
     <div>
-        <!-- Tabs -->
-        <div class="row">
-            <div class="col-xs-12">
+        <div class="row toolbar">
+            <!-- Tabs -->
+            <div class="col-xs-6">
                 <ul class="nav nav-tabs">
                     <li><a href="/users">Users</a></li>
-                    <li class="active"><a href="#">Roles</a></li>
+                    <li class="active"><a href="">Groups</a></li>
                 </ul>
             </div>
-        </div>
-        <br>
-        <!-- Actions Buttons -->
-        <div class="row">
-            <div class="col-xs-6">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                    </span>
+            <!-- Actions Buttons -->
+            <div class="col-xs-6 text-right">
+                <form class="form-inline">
                     <input type="text" class="form-control" placeholder="Search"
                         v-model="search">
-                </div>
-            </div>
-            <div class="col-xs-6 text-right">
-                <a href="#" class="btn btn-success" @click.prevent="add">
-                    <i class="mdi mdi-person-add mdi-lg"></i> Add Role
-                </a>
+                    <a href="#" class="btn btn-success" @click.prevent="add">
+                        Add Group
+                    </a>
+                </form>
             </div>
         </div>
-        <br>
         <!-- List -->
         <div class="row">
             <div class="col-md-12">
@@ -35,13 +26,13 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Role</th>
+                            <th>Group</th>
                             <th>Users</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in filteredRoles">
+                        <tr v-for="(item, index) in filteredGroups">
                             <td @click="edit(item, index)">
                                 {{item.id}}
                             </td>
@@ -50,7 +41,7 @@
                                 <small class="text-muted">{{item.description}}</small>
                             </td>
                             <td @click="edit(item, index)">
-                                list users used this role
+                                list users used this group
                             </td>
                             <td class="text-right">
                                 <div class="btn-group">
@@ -65,7 +56,7 @@
                 </table>
             </div>
         </div>
-        <!-- Add role -->
+        <!-- Add group -->
         <div class="modal right fade" id="modalAdd">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -73,19 +64,19 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Add Role</h4>
+                        <h4 class="modal-title">Add Group</h4>
                     </div>
                     <div class="modal-body">
                         <form>
                             <div class="form-group" :class="{'has-error': error.title}">
-                                <label>Role *</label>
+                                <label>Group *</label>
                                 <input type="text" class="form-control input-lg" required
-                                    v-model="role.title">
+                                    v-model="group.title">
                                 <span class="help-block" v-if="error.title">{{error.title[0]}}</span>
                             </div>
                             <div class="form-group" :class="{'has-error': error.description}">
                                 <label>Description</label>
-                                <textarea class="form-control" rows="3" v-model="role.description"></textarea>
+                                <textarea class="form-control" rows="3" v-model="group.description"></textarea>
                                 <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                             </div>
                         </form>
@@ -97,7 +88,7 @@
                 </div>
             </div>
         </div>
-        <!-- Edit role -->
+        <!-- Edit group -->
         <div class="modal right fade" data-backdrop="false" id="modalEdit">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -105,19 +96,19 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Edit Role</h4>
+                        <h4 class="modal-title">Edit Group</h4>
                     </div>
                     <div class="modal-body">
                         <form>
                             <div class="form-group" :class="{'has-error': error.title}">
-                                <label>Role *</label>
+                                <label>Group *</label>
                                 <input type="text" class="form-control input-lg" required
-                                    v-model="role.title">
+                                    v-model="group.title">
                                 <span class="help-block" v-if="error.title">{{error.title[0]}}</span>
                             </div>
                             <div class="form-group" :class="{'has-error': error.description}">
                                 <label>Description</label>
-                                <textarea class="form-control" rows="3" v-model="role.description"></textarea>
+                                <textarea class="form-control" rows="3" v-model="group.description"></textarea>
                                 <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                             </div>
                         </form>
@@ -146,8 +137,8 @@ Vue.directive('tooltip', function(el, binding){
 export default {
     data() {
         return {
-            roles: [],
-            role: {},
+            groups: [],
+            group: {},
             search: '',
             error: {}
         }
@@ -156,8 +147,8 @@ export default {
         this.getAll();
     },
     computed: {
-        filteredRoles: function () {
-            var filteredArray = this.roles,
+        filteredGroups: function () {
+            var filteredArray = this.groups,
                 search = this.search;
 
             if(!search){
@@ -177,13 +168,13 @@ export default {
     },
     methods: {
         getAll: function () {
-            axios.get('/roles/all')
+            axios.get('/group/all')
             .then(response => {
-                this.roles = response.data;
+                this.groups = response.data;
             });
         },
         add: function () {
-            this.role = {
+            this.group = {
                 title: '',
                 description: ''
             };
@@ -192,10 +183,10 @@ export default {
         },
         store: function (e) {
             var btn = $(e.target).button('loading')
-            axios.post('/roles/store', this.role)
+            axios.post('/group/store', this.group)
             .then(response => {
-                this.roles.push(response.data);
-                this.role = {};
+                this.groups.push(response.data);
+                this.group = {};
                 this.error = {};
                 var btn = $(e.target).button('reset')
                 $('#modalAdd').modal('hide');
@@ -205,17 +196,17 @@ export default {
                 var btn = $(e.target).button('reset')
             });
         },
-        edit: function (role, index) {
-            this.role = _.clone(role);
-            this.role.index = index;
+        edit: function (group, index) {
+            this.group = _.clone(group);
+            this.group.index = index;
             $('#modalEdit').modal('show');
         },
         update: function (e) {
             var btn = $(e.target).button('loading')
-            axios.put('/roles/update/'+this.role.id, this.role)
+            axios.put('/group/update/'+this.group.id, this.group)
             .then(response => {
-                this.roles[this.role.index] = response.data;
-                this.role = {};
+                this.groups[this.group.index] = response.data;
+                this.group = {};
                 this.error = {};
                 var btn = $(e.target).button('reset')
                 $('#modalEdit').modal('hide');
@@ -229,7 +220,7 @@ export default {
             var self = this;
             swal({
                 title: "Are you sure?",
-                text: "You will not be able to recover this role!",
+                text: "You will not be able to recover this group!",
                 type: "warning",
                 showLoaderOnConfirm: true,
                 showCancelButton: true,
@@ -237,12 +228,12 @@ export default {
                 closeOnConfirm: false
             },
             function(){
-                axios.delete('/roles/destroy/' + self.role.id)
+                axios.delete('/group/destroy/' + self.group.id)
                 .then(response => {
-                    self.roles.splice(self.role.index, 1);
+                    self.groups.splice(self.group.index, 1);
                     swal({
                         title: "Deleted!",
-                        text: "The role has been deleted.",
+                        text: "The group has been deleted.",
                         type: "success",
                         timer: 1000,
                         showConfirmButton: false

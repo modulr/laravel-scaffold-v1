@@ -5,11 +5,13 @@ namespace App\Models\Users;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Role extends Model
+class Group extends Model
 {
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+
+    protected $table = 'user_groups';
 
     protected $fillable = [
         'id', 'title', 'description', 'permissions', 'lock'

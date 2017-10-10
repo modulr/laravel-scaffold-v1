@@ -24,13 +24,16 @@
 // Bootswatch Paper
 @import "node_modules/bootswatch/paper/_bootswatch";
 
-// General
+// Bootstrap
 @import 'navbar';
+@import 'bootstrap/navs';
+@import 'bootstrap/breadcrumb';
 @import 'content';
 @import 'panel';
 @import 'tables';
 @import 'modals';
 
+// Modules
 @import 'auth';
 @import 'users';
 @import 'profile';
@@ -39,3 +42,6 @@
 @import 'contacts';
 @import 'files';
 @import 'tasks';
+
+// Components
+@import 'components/toolbar';

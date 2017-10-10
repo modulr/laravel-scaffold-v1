@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar', 'active', 'role_id',
+        'name', 'email', 'password', 'avatar', 'active', 'group_id',
     ];
 
     /**
@@ -80,8 +80,8 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
-    public function role()
+    public function group()
     {
-        return $this->belongsTo(\App\Models\Users\Role::class);
+        return $this->belongsTo(\App\Models\Users\Group::class);
     }
 }
