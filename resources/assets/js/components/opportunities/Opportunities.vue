@@ -118,7 +118,7 @@
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.priority}">
-                                  <label class="col-sm-2 control-label">Priority</label>
+                                  <label class="col-sm-2 control-label">Priority *</label>
                                   <div class="col-sm-10">
                                       <select class="form-control" required v-model="opportunity.priority">
                                           <option v-for="option in list.priorities" :value="option.id">
@@ -129,7 +129,7 @@
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.area}">
-                                  <label class="col-sm-2 control-label">Area</label>
+                                  <label class="col-sm-2 control-label">Area *</label>
                                   <div class="col-sm-10">
                                       <select class="form-control" required v-model="opportunity.area">
                                           <option v-for="option in list.areas" :value="option.id">
@@ -140,7 +140,7 @@
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.contact}">
-                                  <label class="col-sm-2 control-label">Contact</label>
+                                  <label class="col-sm-2 control-label">Contact *</label>
                                   <div class="col-sm-10">
                                       <select class="form-control" required v-model="opportunity.contact">
                                           <option v-for="option in list.contacts" :value="option.id">

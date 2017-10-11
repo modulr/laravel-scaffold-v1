@@ -27,9 +27,14 @@ class QuoteController extends Controller
 
   public function store(Request $request)
   {
-      // $this->validate($request, [
-      //     'name' => 'required|string',
-      // ]);
+      $this->validate($request, [
+          'name' => 'required|string',
+          'project' => 'required',
+          'designer' => 'required',
+          'salesman' => 'required',
+          'customer' => 'required',
+          'request_date' => 'required|date',
+      ]);
       $quote = Quote::create([
         'name' => $request->name,
         'description' => $request->description,

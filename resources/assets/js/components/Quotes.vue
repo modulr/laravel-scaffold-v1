@@ -90,49 +90,55 @@
                 </div>
                 <div class="modal-body">
                   <form class="form-horizontal" action="index.html" method="post">
-                    <div class="form-group">
+                    <div class="form-group" :class="{'has-error': error.name}">
                         <label class="col-sm-2 control-label">Name *</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control input-lg" placeholder="Name" required v-model="quote.name">
+                             <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" :class="{'has-error': error.description}">
                         <label class="col-sm-2 control-label">Description</label>
                         <div class="col-sm-10">
                             <textarea name="description" class="form-control input-lg" placeholder="Description" required v-model="quote.description">
                             </textarea>
+                            <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" :class="{'has-error': error.project}">
                         <label class="col-sm-2 control-label">Project *</label>
                         <div class="col-sm-10">
                             <select type="text" class="form-control input-lg" placeholder="Customer" required v-model="quote.project_id">
                               <option v-for="project in list.projects" :value="project.id"> {{ project.name }} </option>
                             </select>
+                            <span class="help-block" v-if="error.project">{{error.project[0]}}</span>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" :class="{'has-error': error.designer}">
                         <label class="col-sm-2 control-label">Designer *</label>
                         <div class="col-sm-10">
                             <select type="text" class="form-control input-lg" placeholder="Designer" required required v-model="quote.designer_id">
                               <option v-for="designer in list.designers" :value="designer.id"> {{ designer.name }} </option>
                             </select>
+                            <span class="help-block" v-if="error.designer">{{error.designer[0]}}</span>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" :class="{'has-error': error.salesman}">
                         <label class="col-sm-2 control-label">Salesman *</label>
                         <div class="col-sm-10">
                             <select type="text" class="form-control input-lg" placeholder="Salesman" required v-model="quote.seller_id">
                               <option v-for="seller in list.sellers" :value="seller.id"> {{ seller.name }} </option>
                             </select>
+                            <span class="help-block" v-if="error.salesman">{{error.salesman[0]}}</span>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" :class="{'has-error': error.customer}">
                         <label class="col-sm-2 control-label">Customer *</label>
                         <div class="col-sm-10">
                             <select type="text" class="form-control input-lg" placeholder="Customer" required v-model="quote.customer_id">
                               <option v-for="customer in list.customers" :value="customer.id"> {{ customer.name }} </option>
                             </select>
+                            <span class="help-block" v-if="error.customer">{{error.customer[0]}}</span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -141,13 +147,14 @@
                             <input type="text" class="form-control input-lg" placeholder="Amount" required v-model="quote.amount">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" :class="{'has-error': error.request_date}">
                         <label class="col-sm-2 control-label">Request Date *</label>
                         <div class='input-group date'>
                             <input type='datetime-local' class="form-control" v-model="quote.request_date"/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
+                            <span class="help-block" v-if="error.request_date">{{error.request_date[0]}}</span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -300,6 +307,7 @@ export default {
         customers: [],
         projects: [],
       },
+      error: {},
       dzOptions: {
           acceptedFileTypes: '.jpg,.jpeg,.png,.pdf',
           headers: {'X-CSRF-TOKEN': Laravel.csrfToken},

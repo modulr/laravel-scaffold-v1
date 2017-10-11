@@ -64,14 +64,14 @@
                                         <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                     </div>
                                 </div>
-                                <div class="form-group" :class="{'has-error': error.name}">
+                                <div class="form-group" :class="{'has-error': error.type}">
                                     <label class="col-sm-2 control-label">Type *</label>
                                     <div class="col-sm-10">
                                         <select class="form-control" name="role" v-model="employee.role">
                                           <option value="1">Designer</option>
                                           <option value="2">Salesman</option>
                                         </select>
-                                        <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
+                                        <span class="help-block" v-if="error.type">{{error.type[0]}}</span>
                                     </div>
                                 </div>
                             </form>
