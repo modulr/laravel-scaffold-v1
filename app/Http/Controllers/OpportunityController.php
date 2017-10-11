@@ -56,6 +56,9 @@ class OpportunityController extends Controller
             'name' => 'required|string',
             'quotes' => 'numeric',
             'start_date' => 'required|date',
+            'priority' => 'required',
+            'area' => 'required',
+            'contact' => 'required',
         ]);
 
         $opportunity = Project::create([

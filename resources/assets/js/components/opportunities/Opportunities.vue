@@ -114,7 +114,7 @@
                                   <div class="col-sm-10">
                                       <textarea type="text" class="form-control" placeholder="Description" required v-model="opportunity.description">
                                       </textarea>
-                                      <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
+                                      <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.priority}">
@@ -125,7 +125,7 @@
                                               {{ option.name }}
                                           </option>
                                       </select>
-                                      <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
+                                      <span class="help-block" v-if="error.priority">{{error.priority[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.area}">
@@ -136,7 +136,7 @@
                                               {{ option.title }}
                                           </option>
                                       </select>
-                                      <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
+                                      <span class="help-block" v-if="error.area">{{error.area[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.contact}">
@@ -147,7 +147,7 @@
                                               {{option.name}}, {{option.customer.name}}
                                           </option>
                                       </select>
-                                      <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
+                                      <span class="help-block" v-if="error.contact">{{error.contact[0]}}</span>
                                   </div>
                               </div>
                           </form>
@@ -192,16 +192,18 @@
                                               {{ option.name }}
                                           </option>
                                       </select>
+                                       <span class="help-block" v-if="error.priority">{{error.priority[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.area}">
                                   <label class="col-sm-2 control-label">Area</label>
-                                  <div class="col-sm-10" v-if="list.areas && (opportunity.area || opportunity.area == 'null')">
+                                  <div class="col-sm-10" v-if="list.areas && opportunity.area">
                                       <select class="form-control" required v-model="opportunity.area.id">
                                           <option v-for="option in list.areas" :value="option.id">
                                               {{ option.title }}
                                           </option>
                                       </select>
+                                       <span class="help-block" v-if="error.area">{{error.area[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group">
@@ -245,7 +247,9 @@ export default {
         return {
             loading: false,
             opportunities: [],
-            opportunity: {},
+            opportunity: {
+                area: {},
+            },
             search: '',
             error: {},
             list: {
@@ -308,6 +312,7 @@ export default {
                 })
                 .catch(error => {
                     this.error = error.response.data;
+                    console.log(error.response.data);
                     var btn = $(e.target).button('reset')
                 });
         },
