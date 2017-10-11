@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar', 'active', 'role_id',
+        'name', 'email', 'password', 'avatar', 'active', 'group_id',
     ];
 
     /**
@@ -40,6 +40,36 @@ class User extends Authenticatable
         return Storage::url('avatars/'.$this->id.'/'.$this->avatar);
     }
 
+    public function profilePersonal()
+    {
+        return $this->hasOne(\App\Models\Profile\ProfilePersonal::class);
+    }
+
+    public function profileContact()
+    {
+        return $this->hasMany(\App\Models\Profile\ProfileContact::class);
+    }
+
+    public function profileEducation()
+    {
+        return $this->hasMany(\App\Models\Profile\ProfileEducation::class);
+    }
+
+    public function profileFamily()
+    {
+        return $this->hasMany(\App\Models\Profile\ProfileFamily::class);
+    }
+
+    public function profilePlace()
+    {
+        return $this->hasMany(\App\Models\Profile\ProfilePlace::class);
+    }
+
+    public function profileWork()
+    {
+        return $this->hasOne(\App\Models\Profile\ProfileWork::class);
+    }
+
     public function news()
     {
         return $this->hasMany(News::class);
@@ -50,8 +80,8 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
-    public function role()
+    public function group()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(\App\Models\Users\Group::class);
     }
 }

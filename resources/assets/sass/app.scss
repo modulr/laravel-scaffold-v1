@@ -15,20 +15,33 @@
 // sweetalert
 @import "node_modules/sweetalert/dev/sweetalert";
 
+// vue-notify
+@import "~vue-snotify/styles/material";
+
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 // Bootswatch Paper
 @import "node_modules/bootswatch/paper/_bootswatch";
 
-// General
-@import 'auth';
-@import 'navbar';
-@import 'content';
-@import 'users';
-@import 'profile';
-@import 'dashboard';
-@import 'news';
-@import 'contacts';
-@import 'files';
-@import 'tasks';
+// Bootstrap
+@import 'bootstrap/navbar';
+@import 'bootstrap/navs';
+@import 'bootstrap/breadcrumb';
+@import 'bootstrap/content';
+@import 'bootstrap/panel';
+@import 'bootstrap/tables';
+@import 'bootstrap/modals';
+
+// Modules
+@import 'modules/auth';
+@import 'modules/users';
+@import 'modules/profile';
+@import 'modules/dashboard';
+@import 'modules/news';
+@import 'modules/contacts';
+@import 'modules/files';
+@import 'modules/tasks';
+
+// Components
+@import 'components/toolbar';

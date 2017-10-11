@@ -1,0 +1,9 @@
+.breadcrumb {
+    background-color: transparent;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding: 8px;
+    .active {
+        color: $text-color;
+    }
+}

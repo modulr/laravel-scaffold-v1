@@ -1,0 +1,17 @@
+.dashboard {
+    .panel-dashboard {
+        > .panel-heading {
+            background-color: #fff;
+            padding-top: 15px;
+            p {
+                display: inline-block;
+                border-left: 2px solid $brand-orange;
+                padding-left: 14px;
+                margin-bottom: 0;
+            }
+            a {
+                color: $brand-orange !important;
+            }
+        }
+    }
+}
