@@ -30,6 +30,7 @@
                               <th>Owner</th>
                               <th>Contact</th>
                               <th>Customer</th>
+                              <th>Area</th>
                               <th>Priority</th>
                               <th></th>
                           </tr>
@@ -58,6 +59,9 @@
                               </td>
                               <td>
                                   {{item.contact.customer.name}}
+                              </td>
+                              <td>
+                                  {{item.area.title}}
                               </td>
                               <td>
                                   <span class="chip" :class="'priority-'+item.priority.name">
@@ -122,6 +126,17 @@
                                       <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
                                   </div>
                               </div>
+                              <div class="form-group" :class="{'has-error': error.area}">
+                                  <label class="col-sm-2 control-label">Area</label>
+                                  <div class="col-sm-10">
+                                      <select class="form-control" required v-model="opportunity.area">
+                                          <option v-for="option in list.areas" :value="option.id">
+                                              {{ option.title }}
+                                          </option>
+                                      </select>
+                                      <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
+                                  </div>
+                              </div>
                               <div class="form-group" :class="{'has-error': error.contact}">
                                   <label class="col-sm-2 control-label">Contact</label>
                                   <div class="col-sm-10">
@@ -177,6 +192,16 @@
                                       </select>
                                   </div>
                               </div>
+                              <div class="form-group" :class="{'has-error': error.area}">
+                                  <label class="col-sm-2 control-label">Area</label>
+                                  <div class="col-sm-10" v-if="list.priorities && opportunity.area">
+                                      <select class="form-control" required v-model="opportunity.area.id">
+                                          <option v-for="option in list.areas" :value="option.id">
+                                              {{ option.title }}
+                                          </option>
+                                      </select>
+                                  </div>
+                              </div>
                               <div class="form-group">
                                   <label class="col-sm-2 control-label">Owner</label>
                                   <div class="col-sm-10">
@@ -224,6 +249,7 @@ export default {
             list: {
                 priorities: [],
                 contacts: [],
+                areas: []
             }
         }
     },
@@ -255,6 +281,10 @@ export default {
             axios.get('/opportunities/list/contacts')
             .then(response => {
                 this.list.contacts = response.data;
+            });
+            axios.get('/opportunities/list/areas')
+            .then(response => {
+                this.list.areas = response.data;
             });
             this.opportunity = {
                 name: '',
