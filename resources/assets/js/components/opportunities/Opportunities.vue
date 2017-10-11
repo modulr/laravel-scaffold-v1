@@ -60,8 +60,10 @@
                               <td>
                                   {{item.contact.customer.name}}
                               </td>
-                              <td v-if="item.area">
-                                  {{item.area.title}}
+                              <td>
+                                  <span v-if="item.area">
+                                      {{item.area.title}}
+                                  </span>
                               </td>
                               <td>
                                   <span class="chip" :class="'priority-'+item.priority.name">

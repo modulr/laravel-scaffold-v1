@@ -35,7 +35,7 @@
                             </dl>
                             <dl>
                                 <dd>Area</dd>
-                                <dt>{{opportunity.area.title}}</dt>
+                                <dt v-if="opportunity.area">{{opportunity.area.title}}</dt>
                             </dl>
                         </div>
                         <div class="col-md-4">
