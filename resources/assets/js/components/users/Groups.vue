@@ -14,7 +14,7 @@
                     <input type="text" class="form-control" placeholder="Search"
                         v-model="search">
                     <a href="#" class="btn btn-success" @click.prevent="add">
-                        Add Group
+                        New Group
                     </a>
                 </form>
             </div>
@@ -22,41 +22,37 @@
         <!-- List -->
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Group</th>
-                            <th>Users</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(item, index) in filteredGroups">
-                            <td @click="edit(item, index)">
-                                {{item.id}}
-                            </td>
-                            <td @click="edit(item, index)">
-                                <p>{{item.title}}</p>
-                                <small class="text-muted">{{item.description}}</small>
-                            </td>
-                            <td @click="edit(item, index)">
-                                list users used this group
-                            </td>
-                            <td class="text-right">
-                                <div class="btn-group">
-                                    <a href="#" class="btn btn-default btn-sm" v-tooltip:top="'Edit'"
-                                        @click.prevent="edit(item, index)">
-                                        <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Group</th>
+                                <th>Description</th>
+                                <th>Users</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, index) in filteredGroups">
+                                <td @click="edit(item, index)">
+                                    {{item.id}}
+                                </td>
+                                <td @click="edit(item, index)">
+                                    {{item.title}}
+                                </td>
+                                <td @click="edit(item, index)">
+                                    {{item.description}}
+                                </td>
+                                <td @click="edit(item, index)">
+                                    list users used this group
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-        <!-- Add group -->
+        <!-- New group -->
         <div class="modal right fade" id="modalAdd">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -64,7 +60,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Add Group</h4>
+                        <h4 class="modal-title">New Group</h4>
                     </div>
                     <div class="modal-body">
                         <form>
@@ -82,8 +78,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-success" @click="store">Add</button>
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-success" @click="store">Create</button>
                     </div>
                 </div>
             </div>
@@ -114,8 +110,9 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" @click="destroy()">
-                            <i class="mdi mdi-delete mdi-lg"></i> Delete
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-link" @click="destroy()">
+                            <i class="fa fa-trash-o fa-lg"></i>
                         </button>
                         <button type="button" class="btn btn-primary" @click="update">Save</button>
                     </div>

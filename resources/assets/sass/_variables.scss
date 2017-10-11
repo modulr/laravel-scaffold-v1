@@ -1,5 +1,5 @@
 // Body
-$body-bg: #F7F7F7;
+$body-bg: #FAFAFA;
 
 // Brands
 $brand-primary: #FEAE3B;
@@ -13,7 +13,12 @@ $brand-grayer: #CECECE;
 $inactive: #DDDADA;
 
 
-$text-color: $brand-gray;
+$text-color: darken($brand-gray, 50%);
+
+// mdi icons
+.mdi-10x, .mdi-size-10x {
+    font-size: 10em;
+}
 
 // Typography
 // $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";

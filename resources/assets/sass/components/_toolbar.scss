@@ -1,10 +1,14 @@
 .toolbar {
-
+    border-top: 1px solid lighten($brand-gray, 30%);
     border-bottom: 1px solid lighten($brand-gray, 30%);
     margin-bottom: 20px;
 
     .nav-tabs {
         font-size: 16px;
+
+        > li > a {
+            padding: 12px 15px;
+        }
 
         > li:not(.active) > a,
         > li:not(.active) > a:focus {
@@ -15,5 +19,6 @@
 
     .form-inline > * {
         margin-left: 10px;
+        margin-top: 7px;
     }
 }

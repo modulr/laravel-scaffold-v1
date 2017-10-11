@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-lg-10 col-lg-offset-1">
+                <ol class="breadcrumb">
+                    <li class="active">Users</li>
+                </ol>
                 <users></users>
             </div>
         </div>

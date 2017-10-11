@@ -25,23 +25,23 @@
 @import "node_modules/bootswatch/paper/_bootswatch";
 
 // Bootstrap
-@import 'navbar';
+@import 'bootstrap/navbar';
 @import 'bootstrap/navs';
 @import 'bootstrap/breadcrumb';
-@import 'content';
-@import 'panel';
-@import 'tables';
-@import 'modals';
+@import 'bootstrap/content';
+@import 'bootstrap/panel';
+@import 'bootstrap/tables';
+@import 'bootstrap/modals';
 
 // Modules
-@import 'auth';
-@import 'users';
-@import 'profile';
-@import 'dashboard';
-@import 'news';
-@import 'contacts';
-@import 'files';
-@import 'tasks';
+@import 'modules/auth';
+@import 'modules/users';
+@import 'modules/profile';
+@import 'modules/dashboard';
+@import 'modules/news';
+@import 'modules/contacts';
+@import 'modules/files';
+@import 'modules/tasks';
 
 // Components
 @import 'components/toolbar';

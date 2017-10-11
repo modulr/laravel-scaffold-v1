@@ -1,3 +1,6 @@
+.modal-open {
+    overflow: inherit;
+}
 .modal.left .modal-dialog,
 .modal.right .modal-dialog {
     position: fixed;
