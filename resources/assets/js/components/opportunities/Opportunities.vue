@@ -196,7 +196,7 @@
                               </div>
                               <div class="form-group" :class="{'has-error': error.area}">
                                   <label class="col-sm-2 control-label">Area</label>
-                                  <div class="col-sm-10" v-if="list.priorities && opportunity.area">
+                                  <div class="col-sm-10" v-if="list.areas">
                                       <select class="form-control" required v-model="opportunity.area.id">
                                           <option v-for="option in list.areas" :value="option.id">
                                               {{ option.title }}
