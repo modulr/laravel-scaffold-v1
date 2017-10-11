@@ -269,23 +269,23 @@ export default {
             this.loading = true;
             axios.get('/opportunities/all')
                 .then(response => {
+                    axios.get('/opportunities/list/priorities')
+                    .then(response => {
+                        this.list.priorities = response.data;
+                    });
+                    axios.get('/opportunities/list/contacts')
+                    .then(response => {
+                        this.list.contacts = response.data;
+                    });
+                    axios.get('/opportunities/list/areas')
+                    .then(response => {
+                        this.list.areas = response.data;
+                    });
                     this.opportunities = response.data;
                     this.loading = false;
                 });
         },
         add: function() {
-            axios.get('/opportunities/list/priorities')
-            .then(response => {
-                this.list.priorities = response.data;
-            });
-            axios.get('/opportunities/list/contacts')
-            .then(response => {
-                this.list.contacts = response.data;
-            });
-            axios.get('/opportunities/list/areas')
-            .then(response => {
-                this.list.areas = response.data;
-            });
             this.opportunity = {
                 name: '',
                 start_date: '',
@@ -310,12 +310,8 @@ export default {
                 });
         },
         edit: function (opportunity, index) {
-            axios.get('/opportunities/list/priorities')
-            .then(response => {
-                this.list.priorities = response.data;
-                this.opportunity = _.clone(opportunity);
-                this.opportunity.index = index;
-            });
+            this.opportunity = _.clone(opportunity);
+            this.opportunity.index = index;
             $('#modalEdit').modal('show');
         },
         update: function (e) {
