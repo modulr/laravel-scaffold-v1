@@ -60,7 +60,7 @@
                               <td>
                                   {{item.contact.customer.name}}
                               </td>
-                              <td>
+                              <td v-if="item.area">
                                   {{item.area.title}}
                               </td>
                               <td>

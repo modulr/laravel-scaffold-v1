@@ -102,7 +102,7 @@ class OpportunityController extends Controller
 
         $q->save();
 
-        return $q->load('owner', 'priority', 'contact', 'contact.customer');
+        return $q->load('owner', 'priority', 'contact', 'contact.customer', 'area');
     }
 
     /**
