@@ -78,6 +78,7 @@ class CustomerController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string',
+            'customer' => 'required',
         ]);
 
         $contact = Contact::create([

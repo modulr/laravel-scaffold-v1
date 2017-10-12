@@ -184,6 +184,7 @@ export default {
         },
         store: function(e) {
           var btn = $(e.target).button('loading')
+          console.log(this.employee)
           axios.post('/employees/store', this.employee)
               .then(response => {
                   this.employees.push(response.data);

@@ -18,6 +18,10 @@
                                 <dd>Registered Date</dd>
                                 <dt>{{opportunity.start_date | date}}</dt>
                             </dl>
+                            <dl>
+                                <dd>Quotes</dd>
+                                <dt>{{opportunity.quote.length}}</dt>
+                            </dl>
                         </div>
                         <div class="col-md-4">
                             <dl>
@@ -29,6 +33,10 @@
                                 <dt><a :href="'/profile/'+opportunity.owner.id">{{opportunity.owner.name}}</a>
                                 </dt>
                             </dl>
+                            <dl>
+                                <dd>Area</dd>
+                                <dt v-if="opportunity.area">{{opportunity.area.title}}</dt>
+                            </dl>
                         </div>
                         <div class="col-md-4">
                             <dl>
@@ -38,12 +46,6 @@
                             <dl>
                                 <dd>Contact</dd>
                                 <dt>{{opportunity.contact.name}}</dt>
-                            </dl>
-                        </div>
-                        <div class="col-md-4">
-                            <dl>
-                                <dd>Quotes</dd>
-                                <dt>{{opportunity.quote.length}}</dt>
                             </dl>
                         </div>
                     </div>

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ListPositionTableSeeder::class);
         $this->call(ListDepartmentTableSeeder::class);
         $this->call(ListTypeEmployeesSeeder::class);
+        $this->call(ListAreasTableSeeder::class);
         $this->call(RolesSeeder::class);
         $this->call(PrioritiesSeeder::class);
         $this->call(ListStatusQuoteSeeder::class);

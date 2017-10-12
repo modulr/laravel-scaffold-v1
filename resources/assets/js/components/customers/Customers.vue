@@ -155,22 +155,20 @@
                                         <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                     </div>
                                 </div>
-                                <div class="form-group" :class="{'has-error': error.email}">
+                                <div class="form-group">
                                     <label class="col-sm-2 control-label">Email</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control input-lg" placeholder="Email" v-model="contact.email">
-                                        <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
                                     </div>
                                 </div>
-                                <div class="form-group" :class="{'has-error': error.phone}">
+                                <div class="form-group">
                                     <label class="col-sm-2 control-label">Phone Number</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control input-lg" placeholder="Phone Number" v-model="contact.phone">
-                                        <span class="help-block" v-if="error.phone">{{error.phone[0]}}</span>
                                     </div>
                                 </div>
                                 <div class="form-group" :class="{'has-error': error.customer}">
-                                    <label class="col-sm-2 control-label">Customer</label>
+                                    <label class="col-sm-2 control-label">Customer *</label>
                                     <div class="col-sm-10">
                                         <select class="form-control" required v-model="contact.customer">
                                             <option v-for="option in list.customers" :value="option.id">

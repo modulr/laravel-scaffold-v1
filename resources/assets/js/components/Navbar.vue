@@ -12,56 +12,56 @@
                             <ul class="dropdown-menu" role="menu">
                                 <div class="menu-content">
                                     <div class="row text-center">
-                                        <li class="col-sm-3" v-tooltip:bottom="'Dashboard'" :class="{'active': activeLink == 'dashboard'}">
+                                        <li class="col-xs-3" v-tooltip:bottom="'Dashboard'" :class="{'active': activeLink == 'dashboard'}">
                                             <a href="/dashboard">
                                                 <i class="mdi mdi-dashboard mdi-3x"></i>
                                             </a>
                                         </li>
-                                        <li class="col-sm-3" v-tooltip:bottom="'News'" :class="{'active': activeLink == 'news'}">
+                                        <li class="col-xs-3" v-tooltip:bottom="'News'" :class="{'active': activeLink == 'news'}">
                                             <a href="/news">
                                                 <i class="mdi mdi-poll mdi-3x"></i>
                                             </a>
                                         </li>
-                                        <li class="col-sm-3" v-tooltip:bottom="'Tasks'" :class="{'active': activeLink == 'tasks'}">
+                                        <li class="col-xs-3" v-tooltip:bottom="'Tasks'" :class="{'active': activeLink == 'tasks'}">
                                             <a href="/tasks">
                                                 <i class="mdi mdi-assignment mdi-3x"></i>
                                             </a>
                                         </li>
-                                        <li class="col-sm-3" v-tooltip:bottom="'Files'" :class="{'active': activeLink == 'files'}">
+                                        <li class="col-xs-3" v-tooltip:bottom="'Files'" :class="{'active': activeLink == 'files'}">
                                             <a href="/files">
                                                 <i class="mdi mdi-folder mdi-3x"></i>
                                             </a>
                                         </li>
                                     </div>
                                     <div class="row text-center">
-                                        <li class="col-sm-3" v-tooltip:bottom="'Contacts'" :class="{'active': activeLink == 'contacts'}">
+                                        <li class="col-xs-3" v-tooltip:bottom="'Contacts'" :class="{'active': activeLink == 'contacts'}">
                                             <a href="/contacts">
                                                 <i class="mdi mdi-contacts mdi-3x"></i>
                                             </a>
                                         </li>
-                                        <li class="col-sm-3" v-tooltip:bottom="'Opportunities'" :class="{'active': activeLink == 'opportunities'}">
+                                        <li class="col-xs-3" v-tooltip:bottom="'Opportunities'" :class="{'active': activeLink == 'opportunities'}">
                                             <a href="/opportunities">
                                                 <i class="mdi mdi-turned-in mdi-3x"></i>
                                             </a>
                                         </li>
-                                        <li class="col-sm-3" v-tooltip:bottom="'Quotes'" :class="{'active': activeLink == 'quote'}">
+                                        <li class="col-xs-3" v-tooltip:bottom="'Quotes'" :class="{'active': activeLink == 'quote'}">
                                             <a href="/quote">
                                                 <i class="mdi mdi-receipt mdi-3x"></i>
                                             </a>
                                         </li>
-                                        <li class="col-sm-3" v-tooltip:bottom="'Customers'" :class="{'active': activeLink == 'customers'}">
+                                        <li class="col-xs-3" v-tooltip:bottom="'Customers'" :class="{'active': activeLink == 'customers'}">
                                             <a href="/customers">
                                                 <i class="mdi mdi-call mdi-3x"></i>
                                             </a>
                                         </li>
                                     </div>
                                     <div class="row text-center">
-                                        <li class="col-sm-3" v-tooltip:bottom="'Employees'" :class="{'active': activeLink == 'employees'}">
+                                        <li class="col-xs-3" v-tooltip:bottom="'Employees'" :class="{'active': activeLink == 'employees'}">
                                             <a href="/employees">
                                                 <i class="mdi mdi-group-add mdi-3x"></i>
                                             </a>
                                         </li>
-                                        <li class="col-sm-3" v-tooltip:bottom="'Users'" :class="{'active': activeLink == 'users'}">
+                                        <li class="col-xs-3" v-tooltip:bottom="'Users'" :class="{'active': activeLink == 'users'}">
                                             <a href="/users">
                                                 <i class="mdi mdi-people mdi-3x"></i>
                                             </a>
@@ -71,7 +71,7 @@
                                 <div class="menu-bottom">
                                     <div class="divider"></div>
                                     <div class="row text-center">
-                                        <li class="col-sm-12" v-tooltip:bottom="'Sign out'">
+                                        <li class="col-xs-12" v-tooltip:bottom="'Sign out'">
                                             <a href="#" @click.prevent="logout">
                                                 <i class="mdi mdi-exit-to-app mdi-2x"></i>
                                             </a>
