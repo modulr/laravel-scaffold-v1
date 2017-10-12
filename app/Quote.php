@@ -4,11 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Lists\ListStatusQuote;
+use App\Models\Lists\ListTypeService;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Quote extends Model
 {
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
 
     protected $fillable = ['name', 'description', 'owner_id', 'designer_id', 'seller_id', 'project_id', 'customer_id',
-                          'request_date','delivery_date','close_date','amount','status_id'];
+                          'request_date','delivery_date','close_date','amount','status_id', 'service_id'];
 
     public function designer()
     {
@@ -38,6 +43,11 @@ class Quote extends Model
     public function status()
     {
         return $this->belongsTo(ListStatusQuote::class);
+    }
+
+    public function service()
+    {
+        return $this->belongsTo(ListTypeService::class);
     }
 
 }

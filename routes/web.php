@@ -91,4 +91,7 @@ Route::middleware('auth')->group(function () {
     //Attachments
     Route::post('/attachments/store', 'AttachmentController@store');
 
+    //Serivces
+    Route::get('/services/all', 'ListTypeServiceController@all');
+
 });

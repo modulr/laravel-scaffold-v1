@@ -15,15 +15,16 @@ class EmployeeController extends Controller
 
     public function all(Request $request)
     {
-        return Employee::with('role')->get();
+        return Employee::all();
     }
 
     public function store(Request $request)
     {
         $employee = Employee::create([
           'name' => $request->name,
-          'role_id' => $request->role
-        ])->load('role');
+          'email' => $request->email,
+          'phone' => $request->phone,
+        ]);
 
         return $employee;
     }
@@ -32,19 +33,10 @@ class EmployeeController extends Controller
     {
         $q = Employee::find($id);
         $q->name = $request->name;
-        $q->role = $request->role;
+        $q->email = $request->email;
+        $q->phone = $request->phone;
         $q->save();
         return $q;
-    }
-
-    public function sellers()
-    {
-      return Employee::where('role_id', "2")->get();
-    }
-
-    public function designers()
-    {
-      return Employee::where('role_id', "1")->get();
     }
 
     public function destroy($id)
