@@ -27,9 +27,11 @@ class CreateQuotesTable extends Migration
           $table->foreign('project_id')->references('id')->on('projects');
           $table->integer('customer_id')->unsigned();
           $table->foreign('customer_id')->references('id')->on('customers');
-          $table->datetime('request_date');
-          $table->datetime('delivery_date')->nullable();
-          $table->datetime('close_date')->nullable();
+          $table->integer('service_id')->unsigned();
+          $table->foreign('service_id')->references('id')->on('list_type_services');
+          $table->date('request_date');
+          $table->date('delivery_date')->nullable();
+          $table->date('close_date')->nullable();
           $table->double('amount', 15, 8)->nullable();
           $table->integer('status_id');
           $table->timestamps();

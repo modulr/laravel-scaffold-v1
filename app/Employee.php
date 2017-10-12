@@ -3,18 +3,19 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Lists\ListTypeEmployee;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Employee extends Model
 {
-    protected $fillable = ['name', 'role_id'];
+
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
+
+    protected $fillable = ['name', 'email', 'phone'];
 
     public function quote()
     {
         return $this->hasOne(Quote::class);
     }
-
-    public function role()
-    {
-        return $this->belongsTo(ListTypeEmployee::class);
-    }
+    
 }

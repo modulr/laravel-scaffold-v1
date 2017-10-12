@@ -24,7 +24,8 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Type</th>
+                                <th>Email</th>
+                                <th>Phone</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -36,8 +37,11 @@
                                 <td>
                                     {{item.name}}<br>
                                 </td>
-                                <td v-if="item.role">
-                                    {{ item.role.title }}
+                                <td>
+                                    {{ item.email }}
+                                </td>
+                                <td>
+                                    {{ item.phone }}
                                 </td>
                                 <td class="text-right" @click="edit(item, index)">
                                     <a href="#" class="btn btn-link" @click.prevent="edit(item, index)"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
@@ -64,14 +68,18 @@
                                         <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                     </div>
                                 </div>
-                                <div class="form-group" :class="{'has-error': error.name}">
-                                    <label class="col-sm-2 control-label">Type *</label>
+                                <div class="form-group" :class="{'has-error': error.email}">
+                                    <label class="col-sm-2 control-label">Email *</label>
                                     <div class="col-sm-10">
-                                        <select class="form-control" name="role" v-model="employee.role">
-                                          <option value="1">Designer</option>
-                                          <option value="2">Salesman</option>
-                                        </select>
-                                        <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
+                                        <input type="text" class="form-control input-lg" placeholder="Email" required v-model="employee.email">
+                                        <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
+                                    </div>
+                                </div>
+                                <div class="form-group" :class="{'has-error': error.phone}">
+                                    <label class="col-sm-2 control-label">Phone *</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control input-lg" placeholder="Phone" required v-model="employee.phone">
+                                        <span class="help-block" v-if="error.phone">{{error.phone[0]}}</span>
                                     </div>
                                 </div>
                             </form>
@@ -100,11 +108,18 @@
                                             <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                         </div>
                                     </div>
-                                    <div class="form-group" :class="{'has-error': error.name}">
-                                        <label class="col-sm-2 control-label">Type </label>
+                                    <div class="form-group" :class="{'has-error': error.email}">
+                                        <label class="col-sm-2 control-label">Email</label>
                                         <div class="col-sm-10">
-                                          <span v-if="employee.role">{{ employee.role.title }}</span>
-                                          <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
+                                            <input type="text" class="form-control input-lg" :placeholder="employee.email" required v-model="employee.email">
+                                            <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" :class="{'has-error': error.phone}">
+                                        <label class="col-sm-2 control-label">Phone</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control input-lg" :placeholder="employee.phone" required v-model="employee.phone">
+                                            <span class="help-block" v-if="error.phone">{{error.phone[0]}}</span>
                                         </div>
                                     </div>
                                 </form>

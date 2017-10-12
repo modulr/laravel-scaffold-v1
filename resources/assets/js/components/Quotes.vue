@@ -136,6 +136,14 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">Service *</label>
+                        <div class="col-sm-10">
+                            <select type="text" class="form-control input-lg" placeholder="Service" required v-model="quote.service_id">
+                              <option v-for="service in list.services" :value="service.id"> {{ service.title }} </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">Amount </label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control input-lg" placeholder="Amount" required v-model="quote.amount">
@@ -144,7 +152,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Request Date *</label>
                         <div class='input-group date'>
-                            <input type='datetime-local' class="form-control" v-model="quote.request_date"/>
+                            <input type='date' class="form-control" v-model="quote.request_date"/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -153,7 +161,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Delivery Date</label>
                         <div class='input-group date'>
-                            <input type='datetime-local' class="form-control" v-model="quote.delivery_date"/>
+                            <input type='date' class="form-control" v-model="quote.delivery_date"/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -222,6 +230,14 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">Service *</label>
+                        <div class="col-sm-10">
+                            <select type="text" class="form-control input-lg" placeholder="Service" required v-model="quote.service_id">
+                              <option v-for="service in list.services" :value="service.id"> {{ service.title }} </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">Amount</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control input-lg" placeholder="Amount" required v-model="quote.amount">
@@ -238,7 +254,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Delivery Date </label>
                         <div class='input-group date'>
-                            <input type='datetime-local' class="form-control" v-model="quote.delivery_date"/>
+                            <input type='date' class="form-control" v-model="quote.delivery_date"/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -291,14 +307,13 @@ export default {
     return {
       loading: false,
       quotes: [],
-      quote: {
-        close_date: "2017-08-05"
-      },
+      quote: {},
       list: {
         designers: [],
         sellers: [],
         customers: [],
         projects: [],
+        services: []
       },
       dzOptions: {
           acceptedFileTypes: '.jpg,.jpeg,.png,.pdf',
@@ -312,7 +327,7 @@ export default {
   },
   filters: {
       date (date) {
-          return date ? moment(date).format('LLL'): '';
+          return date ? moment(date).format('LL'): '';
       }
   },
   mounted () {
@@ -321,17 +336,18 @@ export default {
   methods: {
     getAll () {
       this.loading = true;
+      axios.get('/services/all')
+        .then(response => {
+          this.list.services = response.data
+        });
       axios.get('/quote/all')
         .then(response => {
           this.quotes = response.data
           this.loading = false
         });
-      axios.get('/employees/sellers')
+      axios.get('/employees/all')
         .then(response => {
           this.list.sellers = response.data
-        });
-      axios.get('/employees/designers')
-        .then(response => {
           this.list.designers = response.data
         });
       axios.get('/opportunities/all')
@@ -348,6 +364,7 @@ export default {
       $('#modalAdd').modal('show');
     },
     store (e) {
+      console.log(this.quote)
       var btn = $(e.target).button('loading')
       axios.post('/quote/store', this.quote)
         .then(response => {
