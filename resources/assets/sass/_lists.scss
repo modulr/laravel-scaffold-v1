@@ -1,17 +1,5 @@
 .list-group {
-    .filters {
-        position: relative;
-        overflow: hidden;
-        padding: 20px 0px;
-        .sort {
-
-        }
-        .search {
-            i {
-                vertical-align: text-top;
-            }
-        }
-    }
+    overflow: hidden;
     .list-item {
         height: 90px;
         transition: .2s all ease;

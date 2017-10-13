@@ -22,9 +22,9 @@ class CreateProjectsTable extends Migration
             $table->foreign('client_id')->references('id')->on('clients');
             $table->integer('area_id')->unsigned();
             $table->foreign('area_id')->references('id')->on('list_areas');
-            $table->datetime('start_date');
-            $table->datetime('delivery_date')->nullable();
-            $table->datetime('estimated_delivery_date')->nullable();
+            $table->date('start_date');
+            $table->date('delivery_date')->nullable();
+            $table->date('estimated_delivery_date')->nullable();
             $table->text('description')->nullable();
             $table->boolean('status');
             $table->timestamps();

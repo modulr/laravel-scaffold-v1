@@ -121,10 +121,10 @@
                                             </option>
                                         </select>
                                         <span class="help-block" v-if="error.customer">{{error.customer[0]}}</span>
-                                        <span>Or <a href="#" @click.prevent="newCustomer = true">create a new customer.</a></span>
+                                        <span>Or <a href="#" @click.prevent="newCustomer()">create a new customer.</a></span>
                                     </div>
                                 </div>
-                                <div class="form-group" :class="{'has-error': error['customer.name']}" v-if="newCustomer || list.customers.length === 0">
+                                <div class="form-group" :class="{'has-error': error['customer.name']}" v-if="addingCustomer || list.customers.length === 0">
                                     <label class="col-sm-2 control-label">Add Customer *</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control input-lg" placeholder="Customer Name" v-model="customer.name">
@@ -188,8 +188,8 @@
                                     <div class="form-group" :class="{'has-error': error.client}" v-if="list.customers.length !== 0">
                                         <label class="col-sm-2 control-label">Customer *</label>
                                         <div class="col-sm-10">
-                                            <select class="form-control" required v-model="client.customer.name">
-                                                <option v-for="option in list.customers" :value="client.customer.name">
+                                            <select class="form-control" required v-model="client.customer">
+                                                <option v-for="option in list.customers" :value="option.id">
                                                     {{ option.name }}
                                                 </option>
                                             </select>
@@ -219,7 +219,7 @@ export default {
     data() {
       return {
           loading: false,
-          newCustomer: false,
+          addingCustomer: false,
           clients: [],
           client: {
               customer: {},
@@ -363,6 +363,10 @@ export default {
                 });
             });
         },
+        newCustomer: function () {
+            this.addingCustomer = true;
+            this.client.customer = {};
+        }
     }
 }
 </script>

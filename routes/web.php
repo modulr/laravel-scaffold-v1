@@ -129,6 +129,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/opportunities/destroy/{id}', 'OpportunityController@destroy');
     Route::get('/opportunities/list/priorities', 'OpportunityController@listPriorities');
     Route::get('/opportunities/list/clients', 'OpportunityController@listClients');
+    Route::get('/opportunities/list/customers', 'OpportunityController@listCustomers');
     Route::get('/opportunities/list/areas', 'OpportunityController@listAreas');
 
     //Employes

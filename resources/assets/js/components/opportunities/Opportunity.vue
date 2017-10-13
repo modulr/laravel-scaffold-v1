@@ -41,11 +41,11 @@
                         <div class="col-md-4">
                             <dl>
                                 <dd>Customer</dd>
-                                <dt>{{opportunity.contact.customer.name}}</dt>
+                                <dt><a :href="'/clients'">{{opportunity.client.customer.name}}</a></dt>
                             </dl>
                             <dl>
-                                <dd>Contact</dd>
-                                <dt>{{opportunity.contact.name}}</dt>
+                                <dd>Client</dd>
+                                <dt><a :href="'/clients'">{{opportunity.client.name}}</a></dt>
                             </dl>
                         </div>
                     </div>
@@ -128,7 +128,7 @@ export default {
     },
     filters: {
         date(date) {
-            return moment(date).format('LLL');
+            return moment(date).format('LL');
         }
     },
     methods: {

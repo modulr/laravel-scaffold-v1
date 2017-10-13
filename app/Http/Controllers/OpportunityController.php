@@ -8,6 +8,7 @@ use Validator;
 use App\Project;
 use App\Priority;
 use App\Client;
+use App\Customer;
 use App\Models\Lists\ListArea;
 
 class OpportunityController extends Controller
@@ -120,7 +121,7 @@ class OpportunityController extends Controller
     }
 
     /**
-     * Get a list of oportunity priorities.
+     * Get a list of opportunity priorities.
      *
      * @return \Illuminate\Http\Response
      */
@@ -130,7 +131,7 @@ class OpportunityController extends Controller
      }
 
     /**
-     * Get a list of oportunity clients.
+     * Get a list of opportunity clients.
      *
      * @return \Illuminate\Http\Response
      */
@@ -139,6 +140,21 @@ class OpportunityController extends Controller
         return Client::with('customer')->get();
      }
 
+     /**
+      * Get a list of opportunity customers.
+      *
+      * @return \Illuminate\Http\Response
+      */
+     public function listCustomers()
+     {
+        return Customer::with('client')->get();
+     }
+
+     /**
+      * Get a list of opportunity areas.
+      *
+      * @return \Illuminate\Http\Response
+      */
      public function listAreas()
      {
          return ListArea::all();

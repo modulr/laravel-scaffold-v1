@@ -20,6 +20,25 @@
           <!-- List -->
           <div class="row" v-if="opportunities.length != 0">
               <div class="col-md-12">
+                  <div class="filters">
+                      <div class="sort col-xs-2">
+                          <select class="form-control" required v-model="sort">
+                              <option value="" disabled selected>Sort By</option>
+                              <option v-for="option in list.customers" :value="option.id">
+                                  {{ option.name }}
+                              </option>
+                              <option value="">None</option>
+                          </select>
+                      </div>
+                      <div class="search col-xs-6">
+                          <div class="col-xs-1">
+                              <i class="mdi mdi-search mdi-2x"></i>
+                          </div>
+                          <div class="col-xs-8">
+                              <input type="text" class="form-control" placeholder="Search" v-model="search">
+                          </div>
+                      </div>
+                  </div>
                   <table class="table table-hover">
                       <thead>
                           <tr>
@@ -36,7 +55,7 @@
                           </tr>
                       </thead>
                       <tbody>
-                          <tr v-for="(item, index) in opportunities">
+                          <tr v-for="(item, index) in filteredOpportunities">
                               <td>
                                   {{item.id}}
                               </td>
@@ -105,7 +124,7 @@
                               <div class="form-group" :class="{'has-error': error.start_date}">
                                   <label class="col-sm-2 control-label">Start Date *</label>
                                   <div class="col-sm-10">
-                                      <input type="datetime-local" class="form-control" v-bind:placeholder="opportunity.start_date" required v-model="opportunity.start_date">
+                                      <input type="date" class="form-control" v-bind:placeholder="opportunity.start_date" required v-model="opportunity.start_date">
                                       <span class="help-block" v-if="error.start_date">{{error.start_date[0]}}</span>
                                   </div>
                               </div>
@@ -148,11 +167,8 @@
                                           </option>
                                       </select>
                                       <span class="help-block" v-if="error.client">{{error.client[0]}}</span>
-                                      <span>Or <a href="#" @click.prevent="newCustomer = true">create a new client.</a></span>
+                                      <span>Or <a :href="'/clients'">create a new client.</a></span>
                                   </div>
-                              </div>
-                              <div class="form-group" v-if="newCustomer">
-                                 Add customers and clients
                               </div>
                           </form>
                       </div>
@@ -164,7 +180,7 @@
               </div>
           </div>
           <!-- Edit opportunity -->
-          <div class="modal fade" id="modalEdit">
+          <div class="modal right fade" id="modalEdit">
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                       <div class="modal-header">
@@ -256,12 +272,44 @@ export default {
                 area: {},
             },
             search: '',
+            sort: '',
             error: {},
             list: {
                 priorities: [],
                 clients: [],
+                customers: [],
                 areas: []
             }
+        }
+    },
+    computed: {
+        filteredOpportunities: function() {
+            var filteredArray = this.opportunities,
+                sort = this.sort,
+                search = this.search;
+
+            if(sort) {
+                filteredArray = filteredArray.filter(function (item) {
+                    if (item.client.customer_id === sort) {
+                        return item;
+                    }
+                });
+            }
+
+            if(search) {
+                search = search.trim().toLowerCase();
+
+                filteredArray = filteredArray.filter(function(item){
+                    console.log(item);
+                    return Object.keys(item).some(function (key) {
+                        return String(item[key]).toLowerCase().indexOf(search) !== -1
+                    })
+                })
+            }
+
+
+            return filteredArray;
+
         }
     },
     components: {
@@ -272,7 +320,7 @@ export default {
     },
     filters: {
         date(date) {
-            return moment(date).format('LLL');
+            return moment(date).format('LL');
         }
     },
     methods: {
@@ -287,6 +335,10 @@ export default {
                     axios.get('/opportunities/list/clients')
                     .then(response => {
                         this.list.clients = response.data;
+                    });
+                    axios.get('/opportunities/list/customers')
+                    .then(response => {
+                        this.list.customers = response.data;
                     });
                     axios.get('/opportunities/list/areas')
                     .then(response => {
