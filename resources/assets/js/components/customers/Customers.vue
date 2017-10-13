@@ -7,7 +7,7 @@
                     <a href="#" class="btn btn-primary" @click.prevent="add('customer')">
                         <i class="mdi mdi-person-add mdi-lg"></i> Add Customer
                     </a>
-                    <a href="#" class="btn btn-primary" @click.prevent="add('contact')">
+                    <a href="#" class="btn btn-primary" @click.prevent="add('client')">
                         <i class="mdi mdi-person-add mdi-lg"></i> Add Contact
                     </a>
                 </div>
@@ -74,7 +74,7 @@
                 </div>
             </div>
             <!-- Edit customer -->
-            <div class="modal fade" id="modalEdit">
+            <div class="modal right fade" id="modalEdit">
                 <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -90,15 +90,15 @@
                                             <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                         </div>
                                     </div>
-                                    <div class="form-group" v-if="customer.contact">
-                                        <label class="col-sm-2 control-label">Contacts</label>
+                                    <div class="form-group" v-if="customer.client">
+                                        <label class="col-sm-2 control-label">Clients</label>
                                         <div class="col-sm-12">
-                                            <div v-if="customer.contact.length == 0">
+                                            <div v-if="customer.client.length == 0">
                                                 <div class="col-md-12">
-                                                    <h6>No contacts found.</h6>
+                                                    <h6>No clients found.</h6>
                                                 </div>
                                             </div>
-                                            <table class="table table-hover" v-if="customer.contact.length != 0">
+                                            <table class="table table-hover" v-if="customer.client.length != 0">
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
@@ -108,7 +108,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr v-for="(item, index) in customer.contact">
+                                                    <tr v-for="(item, index) in customer.client">
                                                         <td>
                                                             {{item.id}}
                                                         </td>
@@ -138,55 +138,6 @@
                         </div>
                 </div>
             </div>
-            <!-- Create contact -->
-            <div class="modal fade" id="modalAddContact">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Add contact</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form class="form-horizontal">
-                                <div class="form-group" :class="{'has-error': error.name}">
-                                    <label class="col-sm-2 control-label">Name *</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control input-lg" placeholder="Name" required v-model="contact.name">
-                                        <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Email</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control input-lg" placeholder="Email" v-model="contact.email">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Phone Number</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control input-lg" placeholder="Phone Number" v-model="contact.phone">
-                                    </div>
-                                </div>
-                                <div class="form-group" :class="{'has-error': error.customer}">
-                                    <label class="col-sm-2 control-label">Customer *</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control" required v-model="contact.customer">
-                                            <option v-for="option in list.customers" :value="option.id">
-                                                {{ option.name }}
-                                            </option>
-                                        </select>
-                                        <span class="help-block" v-if="error.customer">{{error.customer[0]}}</span>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-success" @click="store('contact', $event)">Add</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </template>
@@ -201,7 +152,7 @@ export default {
           customers: [],
           customer: {},
           error: {},
-          contact: {},
+          client: {},
           list: {
               customers: [],
           }
@@ -235,12 +186,12 @@ export default {
               this.error = {};
               $('#modalAddCustomer').modal('show');
             }
-            if (el == 'contact') {
+            if (el == 'client') {
               axios.get('/customers/all')
               .then(response => {
                   this.list.customers = response.data;
               });
-              this.contact = {
+              this.client = {
                   name: '',
                   email: '',
                   phone: '',
@@ -266,11 +217,11 @@ export default {
                     var btn = $(e.target).button('reset')
                 });
           }
-          if (el == 'contact') {
+          if (el == 'client') {
             var btn = $(e.target).button('loading')
-            axios.post('/customers/storeContact', this.contact)
+            axios.post('/customers/storeContact', this.client)
                 .then(response => {
-                    this.contact = {};
+                    this.client = {};
                     this.error = {};
                     var btn = $(e.target).button('reset')
                     $('#modalAddContact').modal('hide');

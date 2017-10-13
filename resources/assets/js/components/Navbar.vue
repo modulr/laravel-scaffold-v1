@@ -49,8 +49,8 @@
                                                 <i class="mdi mdi-receipt mdi-3x"></i>
                                             </a>
                                         </li>
-                                        <li class="col-xs-3" v-tooltip:bottom="'Customers'" :class="{'active': activeLink == 'customers'}">
-                                            <a href="/customers">
+                                        <li class="col-xs-3" v-tooltip:bottom="'Clients'" :class="{'active': activeLink == 'clients'}">
+                                            <a href="/clients">
                                                 <i class="mdi mdi-call mdi-3x"></i>
                                             </a>
                                         </li>

@@ -54,6 +54,7 @@ Vue.component('opportunity', require('./components/opportunities/Opportunity.vue
 Vue.component('quotes', require('./components/Quotes.vue'));
 // Customers
 Vue.component('customers', require('./components/customers/Customers.vue'));
+Vue.component('clients', require('./components/customers/Clients.vue'));
 // Employees
 Vue.component('employees', require('./components/employees/Employees.vue'));
 // Widgets

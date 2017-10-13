@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Customer;
-use App\Contact;
+use App\Client;
 
 class CustomerController extends Controller
 {
@@ -16,7 +16,7 @@ class CustomerController extends Controller
 
     public function all()
     {
-        return Customer::with('contact')->get();
+        return Customer::with('client')->get();
     }
 
     /**
@@ -33,7 +33,7 @@ class CustomerController extends Controller
 
         $customer = Customer::create([
             'name' => $request->name,
-        ])->load('contact');
+        ])->load('client');
 
         return $customer;
     }
@@ -55,7 +55,7 @@ class CustomerController extends Controller
 
         $q->save();
 
-        return $q->load('contact');
+        return $q->load('client');
     }
 
     /**
@@ -69,19 +69,19 @@ class CustomerController extends Controller
         return Customer::destroy($id);
     }
 
-    public function listContacts($id)
+    public function listClients($id)
     {
-        return Contact::where('customer_id', $id)->get();
+        return Client::where('customer_id', $id)->get();
     }
 
-    public function storeContact(Request $request)
+    public function storeClient(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|string',
             'customer' => 'required',
         ]);
 
-        $contact = Contact::create([
+        $client = Client::create([
             'name' => $request->name,
             'email' => $request->email,
             'telephone' => $request->phone,

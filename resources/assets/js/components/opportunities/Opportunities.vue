@@ -86,7 +86,7 @@
               </div>
           </div>
           <!-- Create opportunity -->
-          <div class="modal fade" id="modalAdd">
+          <div class="modal right fade" id="modalAdd">
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                       <div class="modal-header">
@@ -148,7 +148,11 @@
                                           </option>
                                       </select>
                                       <span class="help-block" v-if="error.contact">{{error.contact[0]}}</span>
+                                      <span>Or <a href="#" @click.prevent="newCustomer = true">create a new contact.</a></span>
                                   </div>
+                              </div>
+                              <div class="form-group" v-if="newCustomer">
+                                 Add customers and contacts
                               </div>
                           </form>
                       </div>
@@ -246,6 +250,7 @@ export default {
     data() {
         return {
             loading: false,
+            newCustomer: false,
             opportunities: [],
             opportunity: {
                 area: {},

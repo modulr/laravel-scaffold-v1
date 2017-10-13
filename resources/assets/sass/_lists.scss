@@ -1,0 +1,42 @@
+.list-group {
+    .filters {
+        position: relative;
+        overflow: hidden;
+        padding: 20px 0px;
+        .sort {
+
+        }
+        .search {
+            i {
+                vertical-align: text-top;
+            }
+        }
+    }
+    .list-item {
+        height: 90px;
+        transition: .2s all ease;
+        background-color: white;
+        padding: 15px 30px;
+        border: 1px solid rgba(77,82,89,0.07);
+        p{
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            color: $brand-primary;
+            .text-muted {
+                font-size: 12px;
+            }
+        }
+        &:hover {
+            background-color: #f9fafb;
+        }
+        .actions {
+            margin-top: 12px;
+            .dropdown {
+                i {
+                    color: $brand-gray;
+                }
+            }
+        }
+    }
+}

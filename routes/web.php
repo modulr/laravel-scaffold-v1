@@ -163,6 +163,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/customers/list/contacts/{id}', 'CustomerController@listContacts');
     Route::post('/customers/storeContact', 'CustomerController@storeContact');
 
+    // Clients
+    Route::get('/clients', 'ClientController@index');
+    Route::get('/clients/all', 'ClientController@all');
+    Route::post('/clients/store', 'ClientController@store');
+    Route::put('/clients/update/{id}', 'ClientController@update');
+    Route::delete('/clients/destroy/{id}', 'ClientController@destroy');
+
     // Widgets
     Route::get('/widget/getMonthOpportunities', 'WidgetController@getMonthOpportunities');
 });

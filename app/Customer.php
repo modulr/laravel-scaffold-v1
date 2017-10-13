@@ -15,8 +15,8 @@ class Customer extends Model
         return $this->hasOne(Quote::class);
     }
 
-    public function contact()
+    public function client()
     {
-        return $this->hasMany(Contact::class);
+        return $this->hasMany(Client::class);
     }
 }
