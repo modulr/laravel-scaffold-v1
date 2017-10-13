@@ -17,8 +17,12 @@ class CreateAttachmentsTable extends Migration
           $table->increments('id');
           $table->integer('quote_id')->unsigned();
           $table->foreign('quote_id')->references('id')->on('quotes');
-          $table->text('route');
+          $table->integer('user_id')->unsigned();
+          $table->foreign('user_id')->references('id')->on('users');
+          $table->text('name');
+          $table->text('basename');
           $table->timestamps();
+          $table->softDeletes();
       });
     }
 

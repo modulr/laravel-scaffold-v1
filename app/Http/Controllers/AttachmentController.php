@@ -24,7 +24,9 @@ class AttachmentController extends Controller
 
       $file = Attachment::create([
           'quote_id' => $request->quote_id,
-          'route' => $request->basename
+          'user_id' => Auth::id(),
+          'name' => $request->name,
+          'basename' => $request->basename
       ]);
 
       return $file;
@@ -35,7 +37,7 @@ class AttachmentController extends Controller
       $path = $file->store('files/'.Auth::id().'/'.$quote_id);
 
       $infoFile = pathinfo($path);
-      Storage::put('files/'.Auth::id().'/'.$quote_id.'/'.$infoFile['basename'], $file);
+      Storage::put('files/'.Auth::id().'/'.$infoFile['basename'], $file);
 
       return $infoFile;
   }

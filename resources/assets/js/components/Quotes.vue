@@ -296,6 +296,28 @@
                         v-on:vdropzone-success="uploadSuccess">
                         <input type="hidden" name="quote_id" v-model="quote.id">
                     </dropzone>
+                    <div class="col-md-12" v-if="quote.attachment">
+                      <table class="table table-hover">
+                        <thead>
+                          <th>Id</th>
+                          <th>Name</th>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(a,index) in quote.attachment">
+                            <td>{{ index + 1}}</td>
+                            <td>
+                              <a :href="a.url" target="_blank">
+                                  <i class="fa fa-fw fa-file-o fa-2x"></i>
+                                  {{a.name}}
+                              </a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
@@ -441,9 +463,13 @@ export default {
       $('#myModalFile').modal('show')
     },
     uploadSuccess: function (file, response) {
-        console.log(file)
-        console.log(response)
-        $('#myModalFile').modal('hide');
+        if(this.quote.attachment){
+          this.quote.attachment.push(response)
+        }
+        else{
+          this.$set(this.quote, 'attachment', [response])
+        }
+        // $('#myModalFile').modal('hide');
     },
     changeStatus (quote, index, status) {
       this.quote = _.clone(quote)
