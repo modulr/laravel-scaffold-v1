@@ -13,19 +13,19 @@ class ListStatusQuoteSeeder extends Seeder
     {
       DB::table('list_status_quotes')->insert([
           [
-            'id' => '1'
+            'id' => '1',
             'title' => 'Pending'
           ],
           [
-            'id' => '2'
+            'id' => '2',
             'title' => 'Sent'
           ],
           [
-            'id' => '3'
+            'id' => '3',
             'title' => 'Approve'
           ],
           [
-            'id' => '4'
+            'id' => '4',
             'title' => 'Refuse'
           ],
       ]);

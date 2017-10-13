@@ -16,7 +16,7 @@ class QuoteController extends Controller
 
   public function all(Request $request)
   {
-      return Quote::with('designer', 'seller', 'customer', 'status', 'service')->get();
+      return Quote::with('designer', 'seller', 'customer', 'status', 'service', 'attachment')->get();
   }
 
   public function show($id)

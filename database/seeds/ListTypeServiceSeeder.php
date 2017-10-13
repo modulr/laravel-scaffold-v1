@@ -11,7 +11,7 @@ class ListTypeServiceSeeder extends Seeder
      */
     public function run()
     {
-      DB::table('list_type_service')->insert([
+      DB::table('list_type_services')->insert([
           ['title' => 'Redes'],
           ['title' => 'Cableado'],
           ['title' => 'Seguridad y Acceso'],
