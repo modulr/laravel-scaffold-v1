@@ -12,7 +12,7 @@ class Project extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name', 'start_date', 'status', 'description', 'owner_id', 'priority_id', 'contact_id', 'area_id'];
+    protected $fillable = ['name', 'start_date', 'status', 'description', 'owner_id', 'priority_id', 'client_id', 'area_id'];
 
     public function owner()
     {
@@ -24,9 +24,9 @@ class Project extends Model
         return $this->belongsTo(Priority::class);
     }
 
-    public function contact()
+    public function client()
     {
-        return $this->belongsTo(Contact::class);
+        return $this->belongsTo(Client::class);
     }
 
     public function quote()

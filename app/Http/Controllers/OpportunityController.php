@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Project;
 use App\Priority;
-use App\Contact;
+use App\Client;
 use App\Models\Lists\ListArea;
 
 class OpportunityController extends Controller
@@ -24,14 +24,14 @@ class OpportunityController extends Controller
 
     public function show(Request $request, $id)
     {
-        $opportunity = Project::with('owner', 'priority', 'contact', 'contact.customer', 'quote', 'quote.designer', 'quote.seller', 'quote.status', 'area')->where('status', 1)->find($id);
+        $opportunity = Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'quote.designer', 'quote.seller', 'quote.status', 'area')->where('status', 1)->find($id);
 
         return view('opportunities.opportunity', ['breadcrumb' => $request->path(), 'opportunity' => $opportunity]);
     }
 
     public function all()
     {
-        return Project::with('owner', 'priority', 'contact', 'contact.customer', 'quote', 'area')->where('status', 1)->get();
+        return Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'area')->where('status', 1)->get();
     }
 
     /**
@@ -58,7 +58,7 @@ class OpportunityController extends Controller
             'start_date' => 'required|date',
             'priority' => 'required',
             'area' => 'required',
-            'contact' => 'required',
+            'client' => 'required',
         ]);
 
         $opportunity = Project::create([
@@ -69,9 +69,9 @@ class OpportunityController extends Controller
             'description' => $request->description,
             'owner_id' => Auth::id(),
             'priority_id' => $request->priority,
-            'contact_id' => $request->contact,
+            'client_id' => $request->client,
             'area_id' => $request->area,
-        ])->load('owner', 'priority', 'contact', 'contact.customer', 'area');
+        ])->load('owner', 'priority', 'client', 'client.customer', 'area');
 
         return $opportunity;
     }
@@ -105,7 +105,7 @@ class OpportunityController extends Controller
 
         $q->save();
 
-        return $q->load('owner', 'priority', 'contact', 'contact.customer', 'area');
+        return $q->load('owner', 'priority', 'client', 'client.customer', 'area');
     }
 
     /**
@@ -130,13 +130,13 @@ class OpportunityController extends Controller
      }
 
     /**
-     * Get a list of oportunity contacts.
+     * Get a list of oportunity clients.
      *
      * @return \Illuminate\Http\Response
      */
-     public function listContacts()
+     public function listClients()
      {
-        return Contact::with('customer')->get();
+        return Client::with('customer')->get();
      }
 
      public function listAreas()

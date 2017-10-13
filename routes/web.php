@@ -128,7 +128,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/opportunities/update/{id}', 'OpportunityController@update');
     Route::delete('/opportunities/destroy/{id}', 'OpportunityController@destroy');
     Route::get('/opportunities/list/priorities', 'OpportunityController@listPriorities');
-    Route::get('/opportunities/list/contacts', 'OpportunityController@listContacts');
+    Route::get('/opportunities/list/clients', 'OpportunityController@listClients');
     Route::get('/opportunities/list/areas', 'OpportunityController@listAreas');
 
     //Employes
@@ -160,8 +160,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/customers/store', 'CustomerController@store');
     Route::put('/customers/update/{id}', 'CustomerController@update');
     Route::delete('/customers/destroy/{id}', 'CustomerController@destroy');
-    Route::get('/customers/list/contacts/{id}', 'CustomerController@listContacts');
-    Route::post('/customers/storeContact', 'CustomerController@storeContact');
+    Route::get('/customers/list/clients/{id}', 'CustomerController@listClients');
 
     // Clients
     Route::get('/clients', 'ClientController@index');

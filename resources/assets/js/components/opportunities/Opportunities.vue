@@ -28,7 +28,7 @@
                               <th>Registered Date</th>
                               <th>Description</th>
                               <th>Owner</th>
-                              <th>Contact</th>
+                              <th>Client</th>
                               <th>Customer</th>
                               <th>Area</th>
                               <th>Priority</th>
@@ -55,10 +55,10 @@
                                   <a v-bind:href="'/profile/'+item.owner.id">{{item.owner.name}}</a>
                               </td>
                               <td>
-                                  {{item.contact.name}}
+                                  {{item.client.name}}
                               </td>
                               <td>
-                                  {{item.contact.customer.name}}
+                                  {{item.client.customer.name}}
                               </td>
                               <td>
                                   <span v-if="item.area">
@@ -139,20 +139,20 @@
                                       <span class="help-block" v-if="error.area">{{error.area[0]}}</span>
                                   </div>
                               </div>
-                              <div class="form-group" :class="{'has-error': error.contact}">
-                                  <label class="col-sm-2 control-label">Contact *</label>
+                              <div class="form-group" :class="{'has-error': error.client}">
+                                  <label class="col-sm-2 control-label">Client *</label>
                                   <div class="col-sm-10">
-                                      <select class="form-control" required v-model="opportunity.contact">
-                                          <option v-for="option in list.contacts" :value="option.id">
+                                      <select class="form-control" required v-model="opportunity.client">
+                                          <option v-for="option in list.clients" :value="option.id">
                                               {{option.name}}, {{option.customer.name}}
                                           </option>
                                       </select>
-                                      <span class="help-block" v-if="error.contact">{{error.contact[0]}}</span>
-                                      <span>Or <a href="#" @click.prevent="newCustomer = true">create a new contact.</a></span>
+                                      <span class="help-block" v-if="error.client">{{error.client[0]}}</span>
+                                      <span>Or <a href="#" @click.prevent="newCustomer = true">create a new client.</a></span>
                                   </div>
                               </div>
                               <div class="form-group" v-if="newCustomer">
-                                 Add customers and contacts
+                                 Add customers and clients
                               </div>
                           </form>
                       </div>
@@ -259,7 +259,7 @@ export default {
             error: {},
             list: {
                 priorities: [],
-                contacts: [],
+                clients: [],
                 areas: []
             }
         }
@@ -284,9 +284,9 @@ export default {
                     .then(response => {
                         this.list.priorities = response.data;
                     });
-                    axios.get('/opportunities/list/contacts')
+                    axios.get('/opportunities/list/clients')
                     .then(response => {
-                        this.list.contacts = response.data;
+                        this.list.clients = response.data;
                     });
                     axios.get('/opportunities/list/areas')
                     .then(response => {
