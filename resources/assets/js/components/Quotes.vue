@@ -126,7 +126,7 @@
                     <div class="form-group" :class="{'has-error': error.salesman}">
                         <label class="col-sm-2 control-label">Salesman *</label>
                         <div class="col-sm-10">
-                            <select type="text" class="form-control input-lg" placeholder="Salesman" required v-model="quote.seller_id">
+                            <select type="text" class="form-control input-lg" placeholder="Salesman" required v-model="quote.salesman_id">
                               <option v-for="seller in list.sellers" :value="seller.id"> {{ seller.name }} </option>
                             </select>
                             <span class="help-block" v-if="error.salesman">{{error.salesman[0]}}</span>

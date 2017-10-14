@@ -9,13 +9,13 @@
                 <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
                 <div v-if="!loading">
                     <div class="info-block">
-                        <h3>{{'$1,499,445'}}</h3>
+                        <h3>{{quotes.totalAmount | currency}}</h3>
                         <p><strong>Total amount quoted</strong> (this year).</p>
                         <!-- TODO: GRAFICA DE COLUMNAS DE 12 MESES CON CANTIDADES $ COTIZADAS MENSUALMENTE -->
-                        <column-chart
+                        <!-- <column-chart
                             :data="chartData"
                             :colors="['#FEAE3B']"
-                            height="270px"></column-chart>
+                            height="270px"></column-chart> -->
                     </div>
                 </div>
             </div>
@@ -27,6 +27,7 @@ import moment from 'moment';
 import Spinner from 'vue-simple-spinner';
 import Chartkick from 'chartkick';
 import VueChartkick from 'vue-chartkick';
+import Vue2Filters from 'vue2-filters';
 import Chart from 'chart.js';
 Vue.use(VueChartkick, { Chartkick })
 
@@ -34,7 +35,12 @@ export default {
     data() {
         return {
             loading: false,
-            opportunities: [],
+            quotes: {
+                totalAmount: '',
+                active: [],
+                rejected: [],
+                all: [],
+            },
             opportunity: {},
             search: '',
             error: {},
@@ -43,18 +49,23 @@ export default {
         }
     },
     mounted() {
-        this.delay();
+        this.getQuoteInsights();
     },
     components: {
         VueChartkick, Chartkick
     },
     methods: {
-        delay: function() {
+        getQuoteInsights: function() {
             this.loading = true;
-            setTimeout(() => {
-                this.loading = false;
-            }, 2000);
-        }
+            axios.get('/widget/getQuoteInsights')
+                .then(response => {
+                    this.quotes.active = response.data.active;
+                    this.quotes.all = response.data.all;
+                    this.quotes.rejected = response.data.rejected;
+                    this.quotes.totalAmount = response.data.totalAmount;
+                    this.loading = false;
+                });
+        },
     }
 }
 </script>

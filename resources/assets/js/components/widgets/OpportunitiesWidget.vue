@@ -10,22 +10,22 @@
                 <div v-if="!loading">
                     <div class="info-block">
                         <div class="col-md-4">
-                            <h3>34</h3>
-                            <p><strong>Registered opportunities</strong> (this year).</p>
+                            <h3>{{opportunities.active.length}}</h3>
+                            <p><strong>Active opportunities</strong> (this year).</p>
                         </div>
                         <div class="col-md-4">
                             <h3>{{total}}</h3>
                             <p><strong>Registered opportunities</strong> (this month).</p>
                         </div>
                         <div class="col-md-4">
-                            <h3>22</h3>
+                            <h3>{{opportunities.all.length}}</h3>
                             <p><strong>Opportunities</strong> (this year).</p>
                         </div>
                         <!-- TODO: GRAFICA DE COLUMNAS DE 12 MESES CON OPORTUNIDADES REGISTRADAS MENSUALMENTE -->
-                        <column-chart
+                        <!-- <column-chart
                             :data="chartData"
                             :colors="['#FEAE3B']"
-                            height="270px"></column-chart>
+                            height="270px"></column-chart> -->
                     </div>
                 </div>
             </div>
@@ -44,27 +44,32 @@ export default {
     data() {
         return {
             loading: false,
-            opportunities: [],
+            opportunities: {
+                active: [],
+                all: [],
+            },
             opportunity: {},
             search: '',
             error: {},
             total: '',
-            chartData: [['jan', 6], ['feb', 3], ['mar', 5], ['apr', 7], ['may', 2], ['jun', 5], ['jul', 1], ['aug', 3], ['sep', 2], ['oct', 1], ['nov', 0], ['dec', 0]],
+            chartData: '',
         }
     },
     mounted() {
-        this.getAll();
+        this.getOpportunityInsights();
         this.getMonthOpportunities();
     },
     components: {
         VueChartkick, Chartkick
     },
     methods: {
-        getAll: function() {
+        getOpportunityInsights: function() {
             this.loading = true;
-            axios.get('/opportunities/all')
+            axios.get('/widget/getOpportunityInsights')
                 .then(response => {
-                    this.opportunities = response.data;
+                    this.opportunities.active = response.data.active;
+                    this.opportunities.all = response.data.all;
+                    this.opportunities.rejected = response.data.rejected;
                     this.loading = false;
                 });
         },

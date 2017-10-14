@@ -172,4 +172,7 @@ Route::middleware('auth')->group(function () {
 
     // Widgets
     Route::get('/widget/getMonthOpportunities', 'WidgetController@getMonthOpportunities');
+    Route::get('/widget/getOpportunityInsights', 'WidgetController@getOpportunityInsights');
+    Route::get('/widget/getMonthQuotes', 'WidgetController@getMonthQuotes');
+    Route::get('/widget/getQuoteInsights', 'WidgetController@getQuoteInsights');
 });

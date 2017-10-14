@@ -29,10 +29,10 @@ class QuoteController extends Controller
   {
       $this->validate($request, [
           'name' => 'required|string',
-          'project' => 'required',
-          'designer' => 'required',
-          'salesman' => 'required',
-          'customer' => 'required',
+          'project_id' => 'required',
+          'designer_id' => 'required',
+          'salesman_id' => 'required',
+          'customer_id' => 'required',
           'request_date' => 'required|date',
       ]);
       $quote = Quote::create([
@@ -40,7 +40,7 @@ class QuoteController extends Controller
         'description' => $request->description,
         'owner_id' => Auth::id(),
         'designer_id' => $request->designer_id,
-        'seller_id' => $request->seller_id,
+        'seller_id' => $request->salesman_id,
         'project_id' => $request->project_id,
         'customer_id' => $request->customer_id,
         'request_date' => $request->request_date,
