@@ -17,7 +17,7 @@ class ListTypeServiceSeeder extends Seeder
           ['title' => 'Seguridad y Acceso'],
           ['title' => 'Videoconferencia'],
           ['title' => 'Energía y Enfriamiento'],
-          ['title' => 'Sesitemas AV'],
+          ['title' => 'Sistemas AV'],
           ['title' => 'Tecnologías  de Información'],
       ]);
     }

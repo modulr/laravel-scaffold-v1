@@ -296,28 +296,43 @@
                         v-on:vdropzone-success="uploadSuccess">
                         <input type="hidden" name="quote_id" v-model="quote.id">
                     </dropzone>
-                    <div class="col-md-12" v-if="quote.attachment">
-                      <table class="table table-hover">
-                        <thead>
-                          <th>Id</th>
-                          <th>Name</th>
-                        </thead>
-                        <tbody>
-                          <tr v-for="(a,index) in quote.attachment">
-                            <td>{{ index + 1}}</td>
-                            <td>
-                              <a :href="a.url" target="_blank">
-                                  <i class="fa fa-fw fa-file-o fa-2x"></i>
-                                  {{a.name}}
-                              </a>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                    <div class="row" v-if="!quote.attachment">
+                      <div class="col-md-12">
+                        <h3>No attachments found.</h3>
+                      </div>
+                    </div>
+                    <div class="row" v-if="quote.attachment">
+                        <div class="col-xs-12">
+                            <div class="list-group">
+                                <div class="list-item clickable" v-for="(file, index) in quote.attachment">
+                                    <div class="col-xs-11">
+                                        <p>{{file.name}}</p>
+                                        <small class="text-muted">
+                                            <span><strong>Created at: </strong>{{file.created_at | date}}</span>
+                                            <span><strong>- Last update: </strong>{{file.updated_at | date}}</span>
+                                        </small>
+                                    </div>
+                                    <div class="col-xs-1 actions">
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <i class="mdi mdi-more-vert mdi-2x"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li>
+                                                    <a href="#" @click.prevent="edit(item, index)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                      Edit
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
                 </div>
             </div>
         </div>
@@ -358,6 +373,9 @@ export default {
   filters: {
       date (date) {
           return date ? moment(date).format('LL'): '';
+      },
+      datetime (date) {
+          return date ? moment(date).format('LLL'): '';
       }
   },
   mounted () {
