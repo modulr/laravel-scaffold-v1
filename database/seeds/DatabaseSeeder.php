@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ListTypeEmployeesSeeder::class);
         $this->call(ListStatusQuoteSeeder::class);
         $this->call(ListTypeServiceSeeder::class);
+        $this->call(ListTypeCurrencySeeder::class);
 
         DB::table('roles')->insert([
             [

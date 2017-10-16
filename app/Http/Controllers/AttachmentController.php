@@ -32,6 +32,11 @@ class AttachmentController extends Controller
       return $file;
   }
 
+  public function destroy($id)
+  {
+      return Attachment::destroy($id);
+  }
+
   private function upload($file, $quote_id)
   {
       $path = $file->store('files/'.Auth::id().'/'.$quote_id);

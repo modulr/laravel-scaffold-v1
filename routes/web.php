@@ -90,6 +90,7 @@ Route::middleware('auth')->group(function () {
 
     //Attachments
     Route::post('/attachments/store', 'AttachmentController@store');
+    Route::delete('/attachments/destroy/{id}', 'AttachmentController@destroy');
 
     //Serivces
     Route::get('/services/all', 'ListTypeServiceController@all');

@@ -16,34 +16,41 @@ class QuoteController extends Controller
 
   public function all(Request $request)
   {
-      return Quote::with('designer', 'seller', 'customer', 'status', 'service', 'attachment')->get();
+      return Quote::with('designer', 'salesman', 'customer', 'status', 'service', 'attachment', 'currency')->get();
   }
 
   public function show($id)
   {
-      $q = Quote::with('designer', 'seller')->find($id);
+      $q = Quote::with('designer', 'salesman')->find($id);
       return $q;
   }
 
   public function store(Request $request)
   {
-      // $this->validate($request, [
-      //     'name' => 'required|string',
-      // ]);
+      $this->validate($request, [
+          'name' => 'required',
+          'designer' => 'required',
+          'salesman' => 'required',
+          'project' => 'required',
+          'customer' => 'required',
+          'service' => 'required',
+          'request_date' => 'required|date'
+      ]);
       $quote = Quote::create([
         'name' => $request->name,
         'description' => $request->description,
         'owner_id' => Auth::id(),
-        'designer_id' => $request->designer_id,
-        'seller_id' => $request->seller_id,
-        'project_id' => $request->project_id,
-        'customer_id' => $request->customer_id,
+        'designer_id' => $request->designer,
+        'salesman_id' => $request->salesman,
+        'project_id' => $request->project,
+        'customer_id' => $request->customer,
         'request_date' => $request->request_date,
         'delivery_date' => $request->delivery_date,
         'close_date' => $request->close_date,
         'amount' => $request->amount,
         'status_id' => 1,
-        'service_id'=> $request->service_id])->load('designer', 'seller', 'customer', 'owner', 'status', 'service');
+        'service_id'=> $request->service,
+        'currency_id' => $request->currency])->load('designer', 'salesman', 'customer', 'owner', 'status', 'service', 'currency');
       return $quote;
   }
 
@@ -54,17 +61,19 @@ class QuoteController extends Controller
       $q->name = $request->name;
       $q->description = $request->description;
       $q->designer_id = $request->designer_id;
-      $q->seller_id = $request->seller_id;
+      $q->salesman_id = $request->salesman_id;
       $q->project_id = $request->project_id;
       $q->customer_id = $request->customer_id;
       $q->delivery_date = $request->delivery_date;
       $q->amount = $request->amount;
       $q->status_id = $request->status_id;
+      $q->service_id = $request->service_id;
+      $q->currency_id = $request->currency_id;
       $q->save();
       // $data = $request->all();
 
       // return response()->json($data);
-      return $q->load('designer', 'seller', 'customer', 'owner', 'status');
+      return $q->load('designer', 'salesman', 'customer', 'owner', 'status', 'currency');
   }
 
   public function destroy($id)
