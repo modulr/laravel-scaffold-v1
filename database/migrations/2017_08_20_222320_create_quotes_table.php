@@ -21,14 +21,16 @@ class CreateQuotesTable extends Migration
           $table->foreign('owner_id')->references('id')->on('users');
           $table->integer('designer_id')->unsigned();
           $table->foreign('designer_id')->references('id')->on('employees');
-          $table->integer('seller_id')->unsigned();
-          $table->foreign('seller_id')->references('id')->on('employees');
+          $table->integer('salesman_id')->unsigned();
+          $table->foreign('salesman_id')->references('id')->on('employees');
           $table->integer('project_id')->unsigned();
           $table->foreign('project_id')->references('id')->on('projects');
           $table->integer('customer_id')->unsigned();
           $table->foreign('customer_id')->references('id')->on('customers');
           $table->integer('service_id')->unsigned();
           $table->foreign('service_id')->references('id')->on('list_type_services');
+          $table->integer('currency_id')->unsigned();
+          $table->foreign('currency_id')->references('id')->on('list_type_currencies');
           $table->date('request_date');
           $table->date('delivery_date')->nullable();
           $table->date('close_date')->nullable();

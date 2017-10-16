@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PrioritiesSeeder::class);
         $this->call(ListStatusQuoteSeeder::class);
         $this->call(ListTypeServiceSeeder::class);
+        $this->call(ListTypeCurrencySeeder::class);
 
         factory(App\User::class, 10)
             ->create()

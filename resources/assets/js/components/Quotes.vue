@@ -28,6 +28,7 @@
                 <th>Designer</th>
                 <th>Salesman</th>
                 <th>Amount</th>
+                <th>Currency</th>
                 <th>Request Date</th>
                 <th>Delivery Date</th>
                 <th>Status</th>
@@ -40,8 +41,9 @@
                 <td> {{ quote.name }} </td>
                 <td> {{ quote.project.name }} </td>
                 <td> {{ quote.designer.name }} </td>
-                <td> {{ quote.seller.name }} </td>
+                <td> {{ quote.salesman.name }} </td>
                 <td> {{ quote.amount | currency }} </td>
+                <td> {{ quote.currency.title }} </td>
                 <td> {{ quote.request_date | date }} </td>
                 <td> {{ quote.delivery_date | date }} </td>
                 <td>
@@ -94,7 +96,7 @@
                         <label class="col-sm-2 control-label">Name *</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control input-lg" placeholder="Name" required v-model="quote.name">
-                             <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
+                            <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                         </div>
                     </div>
                     <div class="form-group" :class="{'has-error': error.description}">
@@ -108,7 +110,7 @@
                     <div class="form-group" :class="{'has-error': error.project}">
                         <label class="col-sm-2 control-label">Project *</label>
                         <div class="col-sm-10">
-                            <select type="text" class="form-control input-lg" placeholder="Customer" required v-model="quote.project_id">
+                            <select type="text" class="form-control input-lg" placeholder="Customer" required v-model="quote.project">
                               <option v-for="project in list.projects" :value="project.id"> {{ project.name }} </option>
                             </select>
                             <span class="help-block" v-if="error.project">{{error.project[0]}}</span>
@@ -117,7 +119,7 @@
                     <div class="form-group" :class="{'has-error': error.designer}">
                         <label class="col-sm-2 control-label">Designer *</label>
                         <div class="col-sm-10">
-                            <select type="text" class="form-control input-lg" placeholder="Designer" required required v-model="quote.designer_id">
+                            <select type="text" class="form-control input-lg" placeholder="Designer" required required v-model="quote.designer">
                               <option v-for="designer in list.designers" :value="designer.id"> {{ designer.name }} </option>
                             </select>
                             <span class="help-block" v-if="error.designer">{{error.designer[0]}}</span>
@@ -126,7 +128,7 @@
                     <div class="form-group" :class="{'has-error': error.salesman}">
                         <label class="col-sm-2 control-label">Salesman *</label>
                         <div class="col-sm-10">
-                            <select type="text" class="form-control input-lg" placeholder="Salesman" required v-model="quote.salesman_id">
+                            <select type="text" class="form-control input-lg" placeholder="Salesman" required v-model="quote.salesman">
                               <option v-for="seller in list.sellers" :value="seller.id"> {{ seller.name }} </option>
                             </select>
                             <span class="help-block" v-if="error.salesman">{{error.salesman[0]}}</span>
@@ -135,24 +137,31 @@
                     <div class="form-group" :class="{'has-error': error.customer}">
                         <label class="col-sm-2 control-label">Customer *</label>
                         <div class="col-sm-10">
-                            <select type="text" class="form-control input-lg" placeholder="Customer" required v-model="quote.customer_id">
+                            <select type="text" class="form-control input-lg" placeholder="Customer" required v-model="quote.customer">
                               <option v-for="customer in list.customers" :value="customer.id"> {{ customer.name }} </option>
                             </select>
                             <span class="help-block" v-if="error.customer">{{error.customer[0]}}</span>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" :class="{'has-error': error.service}">
                         <label class="col-sm-2 control-label">Service *</label>
                         <div class="col-sm-10">
-                            <select type="text" class="form-control input-lg" placeholder="Service" required v-model="quote.service_id">
+                            <select type="text" class="form-control input-lg" placeholder="Service" required v-model="quote.service">
                               <option v-for="service in list.services" :value="service.id"> {{ service.title }} </option>
                             </select>
+                            <span class="help-block" v-if="error.service">{{error.service[0]}}</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Amount </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-6">
                             <input type="text" class="form-control input-lg" placeholder="Amount" required v-model="quote.amount">
+                        </div>
+                        <label class="col-sm-2 control-label">Currency </label>
+                        <div class="col-sm-2">
+                          <select type="text" class="form-control input-lg" placeholder="Currency" required v-model="quote.currency">
+                            <option v-for="currency in list.currencies" :value="currency.id"> {{ currency.title }} </option>
+                          </select>
                         </div>
                     </div>
                     <div class="form-group" :class="{'has-error': error.request_date}">
@@ -163,7 +172,7 @@
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                             <span class="help-block" v-if="error.request_date">{{error.request_date[0]}}</span>
-                        </div>
+                        </div>                        
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Delivery Date</label>
@@ -223,7 +232,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Salesman *</label>
                         <div class="col-sm-10">
-                            <select type="text" class="form-control input-lg" placeholder="Salesman" required v-model="quote.seller_id">
+                            <select type="text" class="form-control input-lg" placeholder="Salesman" required v-model="quote.salesman_id">
                               <option v-for="seller in list.sellers" :value="seller.id"> {{ seller.name }} </option>
                             </select>
                         </div>
@@ -245,9 +254,15 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Amount</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-2 control-label">Amount </label>
+                        <div class="col-sm-6">
                             <input type="text" class="form-control input-lg" placeholder="Amount" required v-model="quote.amount">
+                        </div>
+                        <label class="col-sm-2 control-label">Currency </label>
+                        <div class="col-sm-2">
+                          <select type="text" class="form-control input-lg" placeholder="Currency" required v-model="quote.currency_id">
+                            <option v-for="currency in list.currencies" :value="currency.id"> {{ currency.title }} </option>
+                          </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -301,34 +316,30 @@
                         <h3>No attachments found.</h3>
                       </div>
                     </div>
-                    <div class="row" v-if="quote.attachment">
-                        <div class="col-xs-12">
-                            <div class="list-group">
-                                <div class="list-item clickable" v-for="(file, index) in quote.attachment">
-                                    <div class="col-xs-11">
-                                        <p>{{file.name}}</p>
-                                        <small class="text-muted">
-                                            <span><strong>Created at: </strong>{{file.created_at | date}}</span>
-                                            <span><strong>- Last update: </strong>{{file.updated_at | date}}</span>
-                                        </small>
-                                    </div>
-                                    <div class="col-xs-1 actions">
-                                        <div class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                <i class="mdi mdi-more-vert mdi-2x"></i>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                <li>
-                                                    <a href="#" @click.prevent="edit(item, index)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                      Edit
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-md-12" v-if="quote.attachment">
+                      <table class="table table-hover">
+                        <thead>
+                          <th>Id</th>
+                          <th>Name</th>
+                          <th></th>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(a,index) in quote.attachment">
+                            <td>{{ index + 1}}</td>
+                            <td>
+                              <a :href="a.url" target="_blank">
+                                  <i class="fa fa-fw fa-file-o fa-2x"></i>
+                                  {{a.name}}
+                              </a>
+                            </td>
+                            <td>
+                              <a href="#">
+                                <i class="fa fa-trash-o" aria-hidden="true" @click.prevent="deleteAttachment(quote, a, index)"></i>
+                              </a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -357,7 +368,17 @@ export default {
         sellers: [],
         customers: [],
         projects: [],
-        services: []
+        services: [],
+        currencies: [
+          {
+            id: 1,
+            title: 'MXN'
+          },
+          {
+            id: 2,
+            title: 'USD'
+          }
+        ]
       },
       error: {},
       dzOptions: {
@@ -408,11 +429,17 @@ export default {
         });
     },
     add () {
-      this.quote = {}
+      this.quote = {
+        project: '',
+        designer: '',
+        salesman: '',
+        customer: '',
+        service: '',
+        currency: '1'
+      }
       $('#modalAdd').modal('show');
     },
     store (e) {
-      console.log(this.quote)
       var btn = $(e.target).button('loading')
       axios.post('/quote/store', this.quote)
         .then(response => {
@@ -502,6 +529,37 @@ export default {
         .catch(error => {
           this.error = error.response.data;
         });
+    },
+    deleteAttachment (quote, attachment, index) {
+      console.log(quote)
+      var self = this;
+      swal({
+        title: "Are you sure?",
+        text: "You will not be able to recover this Attachment!",
+        type: "warning",
+        showLoaderOnConfirm: true,
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        closeOnConfirm: false
+      },
+      function(){
+        axios.delete('/attachments/destroy/' + attachment.id)
+        .then(response => {
+          quote.attachment.splice(index, 1);
+          swal({
+              title: "Deleted!",
+              text: "The Attachment has been deleted.",
+              type: "success",
+              timer: 1000,
+              showConfirmButton: false
+          });
+          self.error = {};
+          $('#modalEdit').modal('hide')
+        })
+        .catch(error => {
+            self.error = error.response.data
+        });
+      });
     }
   }
 }
