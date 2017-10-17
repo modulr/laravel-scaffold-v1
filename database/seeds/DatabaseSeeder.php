@@ -20,11 +20,11 @@ class DatabaseSeeder extends Seeder
         $this->call(ListDepartmentTableSeeder::class);
         $this->call(ListTypeEmployeesSeeder::class);
         $this->call(ListAreasTableSeeder::class);
-        $this->call(RolesSeeder::class);
-        $this->call(PrioritiesSeeder::class);
         $this->call(ListStatusQuoteSeeder::class);
         $this->call(ListTypeServiceSeeder::class);
         $this->call(ListTypeCurrencySeeder::class);
+        $this->call(GroupsTableSeeder::class);
+        $this->call(PrioritiesSeeder::class);
 
         factory(App\User::class, 10)
             ->create()

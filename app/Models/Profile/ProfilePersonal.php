@@ -9,13 +9,15 @@ class ProfilePersonal extends Model
 {
     use SoftDeletes;
 
+    protected $dates = ['deleted_at'];
+
     protected $fillable = [
         'user_id', 'birthday', 'place_of_birth', 'gender_id', 'relationship_id', 'rfc', 'curp', 'nss',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\User::class);
     }
 
     public function gender()

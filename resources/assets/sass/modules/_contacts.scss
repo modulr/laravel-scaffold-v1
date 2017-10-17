@@ -1,0 +1,28 @@
+.contacts {
+    .list {
+        .table {
+            > tbody > tr:first-child > td {
+                border-top-color: transparent;
+            }
+            p {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .grid {
+        .panel-body {
+            text-align: center;
+            .avatar-md {
+                margin-bottom: 20px;
+            }
+        }
+    }
+}
+
+.modal-contacts {
+    .contact-header {
+        text-align: center;
+        padding: 40px 0;
+    }
+}

@@ -1,0 +1,21 @@
+.news {
+    .news-publish {
+        margin-top: 20px;
+    }
+    .panel-default {
+        .panel-heading {
+            background: transparent;
+            .img-avatar-sm {
+                margin-right: 10px;
+            }
+        }
+        .panel-footer {
+            background-color: transparent;
+            border-top: 1px solid lighten($brand-gray, 30%);
+            > a {
+                margin-right: 15px;
+                color: inherit;
+            }
+        }
+    }
+}

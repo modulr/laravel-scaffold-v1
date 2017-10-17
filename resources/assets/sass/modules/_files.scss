@@ -1,0 +1,39 @@
+.files {
+    .table {
+        .media-left {
+            a {
+                color: inherit;
+            }
+            img {
+                width: 35px;
+                height: 35px;
+                margin-right: 10px;
+            }
+            i {
+                margin-right: 10px;
+            }
+        }
+        .media-body {
+            width: auto;
+        }
+    }
+
+    .thumbnail {
+        text-align: center;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .dropzone {
+        background-color: transparent;
+        padding: 10px;
+        min-height: 0;
+        .dz-message {
+            margin: 0;
+            .material-icons {
+                font-size: 2em
+            }
+        }
+    }
+
+}

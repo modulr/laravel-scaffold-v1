@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 use App\user;
 use App\Models\Profile\ProfilePersonal;
 use App\Models\Profile\ProfileContact;

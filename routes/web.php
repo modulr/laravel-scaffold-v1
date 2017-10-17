@@ -44,8 +44,8 @@ Route::middleware('auth')->group(function () {
 
     // Users
     Route::group(['namespace' => 'Users'], function() {
+        // Users
         Route::get('/users', 'UserController@index');
-
         Route::group(['prefix' => 'user'], function() {
             Route::get('/all', 'UserController@all');
             Route::post('/store', 'UserController@store');
@@ -55,15 +55,14 @@ Route::middleware('auth')->group(function () {
             Route::post('/upload/avatar/temp', 'UserController@uploadAvatarTemp');
             Route::post('/upload/avatar/{id}', 'UserController@uploadAvatar');
         });
-    });
-
-    // Roles
-    Route::group(['namespace' => 'Users', 'prefix' => 'roles'], function() {
-        Route::get('/', 'RoleController@index');
-        Route::get('/all', 'RoleController@all');
-        Route::post('/store', 'RoleController@store');
-        Route::put('/update/{id}', 'RoleController@update');
-        Route::delete('/destroy/{id}', 'RoleController@destroy');
+        // Groups
+        Route::get('groups', 'GroupController@index');
+        Route::group(['prefix' => 'group'], function() {
+            Route::get('/all', 'GroupController@all');
+            Route::post('/store', 'GroupController@store');
+            Route::put('/update/{id}', 'GroupController@update');
+            Route::delete('/destroy/{id}', 'GroupController@destroy');
+        });
     });
 
     // Profile
@@ -93,12 +92,14 @@ Route::middleware('auth')->group(function () {
     });
 
     // News
-    Route::get('/news', 'NewsController@index');
-    Route::get('/news/all', 'NewsController@all');
-    Route::post('/news/store', 'NewsController@store');
-    Route::delete('/news/destroy/{id}', 'NewsController@destroy');
-    Route::post('/news/like/{id}', 'NewsController@like');
-    Route::post('/news/upload/temp', 'NewsController@uploadTemp');
+    Route::group(['namespace' => 'News', 'prefix' => 'news'], function() {
+        Route::get('/', 'NewsController@index');
+        Route::get('/all', 'NewsController@all');
+        Route::post('/store', 'NewsController@store');
+        Route::delete('/destroy/{id}', 'NewsController@destroy');
+        Route::post('/like/{id}', 'NewsController@like');
+        Route::post('/upload/temp', 'NewsController@uploadTemp');
+    });
 
     //Tasks
     Route::get('/tasks', 'TaskController@view');
@@ -110,15 +111,22 @@ Route::middleware('auth')->group(function () {
     Route::put('/task/editTask/{id}', 'TaskController@editTask');
 
     // Contacts
-    Route::get('/contacts', 'ContactsController@index');
-    Route::get('/contacts/all', 'ContactsController@all');
+    Route::group(['namespace' => 'Contacts', 'prefix' => 'contacts'], function() {
+        Route::get('/', 'ContactsController@index');
+        Route::get('/all', 'ContactsController@all');
+        Route::get('/{id}', 'ContactsController@show');
+    });
 
     // Files
-    Route::get('/file/byUser/{parentId?}', 'FileController@byUser');
-    Route::post('/file/store', 'FileController@store');
-    Route::put('/file/update/{id}', 'FileController@update');
-    Route::delete('/file/destroy/{id}', 'FileController@destroy');
-    Route::get('/files/{folderId?}', 'FileController@view');
+    Route::group(['namespace' => 'Files'], function() {
+        Route::get('files/{folderId?}', 'FileController@view');
+        Route::group(['prefix' => 'file'], function() {
+            Route::get('/byUser/{parentId?}', 'FileController@byUser');
+            Route::post('/store', 'FileController@store');
+            Route::put('/update/{id}', 'FileController@update');
+            Route::delete('/destroy/{id}', 'FileController@destroy');
+        });
+    });
 
     // Projects and Opportunities
     Route::get('/opportunities', 'OpportunityController@index');

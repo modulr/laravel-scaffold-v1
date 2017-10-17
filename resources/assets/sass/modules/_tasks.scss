@@ -1,0 +1,37 @@
+.tasks {
+    padding-top: 20px;
+    .list-group {
+        .btn-default{
+            color: #fff;
+        }
+        .btn-default {
+            background-color: $brand-orange;
+        }
+        .list-group-item {
+            border: none;
+            .my-handle {
+                cursor: move;
+            }
+            a, .my-handle i {
+                color: $brand-orange;
+            }
+            .task-done {
+                text-decoration: line-through;
+            }
+            .close, .my-handle {
+                opacity: 0;
+                transition: opacity .2 ease;
+            }
+            &:hover .close, &:hover .my-handle{
+                opacity: 1;
+            }
+            .fa {
+                vertical-align: middle !important;
+            }
+            &:hover {
+                background-color: $hovered;
+            }
+        }
+
+    }
+}

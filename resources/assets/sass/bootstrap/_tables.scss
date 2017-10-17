@@ -1,0 +1,8 @@
+.table {
+    td:last-child .btn-group {
+        opacity: 0;
+    }
+    tr:hover td:last-child .btn-group {
+        opacity: 1;
+    }
+}

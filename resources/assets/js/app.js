@@ -18,12 +18,12 @@ window.Vue = require('vue');
 // Auth
 Vue.component('carousel', require('./components/auth/Carousel.vue'));
 // Layout
-Vue.component('navbar', require('./components/Navbar.vue'));
-Vue.component('notifications', require('./components/Notifications.vue'));
+Vue.component('navbar', require('./components/layout/Navbar.vue'));
+Vue.component('notifications', require('./components/layout/Notifications.vue'));
 // Users
 Vue.component('users', require('./components/users/Users.vue'));
-Vue.component('roles', require('./components/users/Roles.vue'));
-// Profile REad
+Vue.component('groups', require('./components/users/Groups.vue'));
+// Profile Read
 Vue.component('profileSidebar', require('./components/profile/read/Sidebar.vue'));
 Vue.component('profile', require('./components/profile/read/Profile.vue'));
 Vue.component('profileWork', require('./components/profile/read/Work.vue'));
@@ -44,14 +44,14 @@ Vue.component('newsList', require('./components/news/NewsList.vue'));
 // Tasks
 Vue.component('tasks', require('./components/Tasks.vue'));
 // Contacts
-Vue.component('contacts', require('./components/Contacts.vue'));
+Vue.component('contacts', require('./components/contacts/Contacts.vue'));
 // Files
 Vue.component('files', require('./components/files/Files.vue'));
 // Projects & Opportunities
 Vue.component('opportunities', require('./components/opportunities/Opportunities.vue'));
 Vue.component('opportunity', require('./components/opportunities/Opportunity.vue'));
 //Quotes
-Vue.component('quotes', require('./components/Quotes.vue'));
+Vue.component('quotes', require('./components/quotes/Quotes.vue'));
 // Customers
 Vue.component('customers', require('./components/customers/Customers.vue'));
 Vue.component('clients', require('./components/customers/Clients.vue'));

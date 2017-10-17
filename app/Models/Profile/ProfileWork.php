@@ -9,13 +9,15 @@ class ProfileWork extends Model
 {
     use SoftDeletes;
 
+    protected $dates = ['deleted_at'];
+
     protected $fillable = [
         'user_id', 'profession_id', 'position_id', 'department_id', 'boss_id', 'starting_from',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\User::class);
     }
 
     public function profession()

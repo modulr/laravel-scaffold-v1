@@ -24,25 +24,29 @@
 // Bootswatch Paper
 @import "node_modules/bootswatch/paper/_bootswatch";
 
-// General
-@import 'navbar';
-@import 'content';
-@import 'panel';
-@import 'tables';
-@import 'lists';
-@import 'filters';
-@import 'modals';
-@import 'widgets';
+// Bootstrap
+@import 'bootstrap/breadcrumb';
+@import 'bootstrap/content';
+@import 'bootstrap/lists';
+@import 'bootstrap/modals';
+@import 'bootstrap/navbar';
+@import 'bootstrap/tables';
 
-@import 'auth';
-@import 'users';
-@import 'profile';
-@import 'dashboard';
-@import 'news';
-@import 'contacts';
-@import 'files';
-@import 'tasks';
-@import 'projects';
-@import 'opportunities';
-@import 'customers';
-@import 'quotes'
+// Modules
+@import 'modules/auth';
+@import 'modules/contacts';
+@import 'modules/customers';
+@import 'modules/dashboard';
+@import 'modules/files';
+@import 'modules/news';
+@import 'modules/opportunities';
+@import 'modules/profile';
+@import 'modules/projects';
+@import 'modules/quotes';
+@import 'modules/tasks';
+
+// Components
+@import 'components/header';
+@import 'components/actionbar';
+@import 'components/filters';
+@import 'components/widgets';

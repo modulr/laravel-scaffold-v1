@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <div class="list-item col-xs-12" v-for="(item, index) in filteredClients">
-                            <div class="col-xs-11 clickable" @click="edit(item, index)">
+                            <div class="col-xs-11 details" @click="edit(item, index)">
                                 <p>{{item.name}} <small class="text-muted">{{item.customer.name}}</small></p>
                                 <small class="text-muted">
                                     <span v-if="item.email">{{item.email}}</span>

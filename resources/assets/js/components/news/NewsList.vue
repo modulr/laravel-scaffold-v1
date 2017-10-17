@@ -1,12 +1,10 @@
 <template>
-    <div class="news">
+    <div>
         <!-- List -->
         <div class="panel panel-default" v-for="(item, index) in news">
             <div class="panel-heading">
-                <img :src="item.user.avatar_url" alt="">
-                <span class="username">{{item.user.name}}</span>
-                <span><small>{{item.created_at | ago}}</small></span>
-
+                <img class="avatar-sm" :src="item.user.avatar_url" alt="">
+                {{item.user.name}}
                 <div class="dropdown pull-right" v-if="user.id == item.user.id">
                     <a href="#" class="btn btn-link" data-toggle="dropdown">
                         <i class="fa fa-ellipsis-v fa-lg" aria-hidden="true"></i>
@@ -35,17 +33,16 @@
                 <a href="#">
                     <i class="fa fa-comment-o fa-lg" aria-hidden="true"></i>
                 </a>
-                <span v-show="item.likes_counter > 0">{{item.likes_counter}} Likes</span>
+                <span class="text-muted" v-show="item.likes_counter > 0">{{item.likes_counter}} Likes</span>
+                <small class="text-muted pull-right">{{item.created_at | ago}}</small>
             </div>
         </div>
 
         <!-- Init Message  -->
-        <div class="panel panel-default" v-if="news.length == 0">
-            <div class="panel-body text-center">
-                <br>
-                <i class="fa fa-bullhorn fa-5x text-muted" aria-hidden="true"></i>
-                <p class="lead text-muted">Publish the first news!!</p>
-            </div>
+        <div class="text-center" v-if="news.length == 0">
+            <br>
+            <i class="fa fa-bullhorn fa-5x text-muted" aria-hidden="true"></i>
+            <p class="lead text-muted">Publish the first news!!</p>
         </div>
 
         <!-- Loading -->
