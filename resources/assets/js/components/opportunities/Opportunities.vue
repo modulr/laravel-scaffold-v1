@@ -64,6 +64,7 @@
                               <th>Name</th>
                               <th>Registered Date</th>
                               <th>Description</th>
+                              <th>Total Amount</th>
                               <th>Owner</th>
                               <th>Client</th>
                               <th>Customer</th>
@@ -87,6 +88,9 @@
                               </td>
                               <td>
                                   {{item.description}}<br>
+                              </td>
+                              <td>
+                                {{ totalQuotes(item.quote) | currency }}
                               </td>
                               <td>
                                   <a v-bind:href="'/profile/'+item.owner.id">{{item.owner.name}}</a>
@@ -287,6 +291,7 @@
 import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
+import Vue2Filters from 'vue2-filters';
 export default {
     data() {
         return {
@@ -470,6 +475,14 @@ export default {
                 });
             });
         },
+        totalQuotes (quotes) {
+          let total = 0.00
+          if(quotes.length > 0)
+            quotes.forEach(function (item) {
+              total += item.amount
+            })
+          return total
+        }
     }
 }
 </script>

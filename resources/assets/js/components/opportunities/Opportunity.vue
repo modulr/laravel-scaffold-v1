@@ -92,8 +92,8 @@
                                 <td v-if="item.designer">
                                     {{item.designer.name}}
                                 </td>
-                                <td v-if="item.seller">
-                                    {{item.seller.name}}
+                                <td v-if="item.salesman">
+                                    {{item.salesman.name}}
                                 </td>
                                 <td>
                                     {{item.status.title}}
