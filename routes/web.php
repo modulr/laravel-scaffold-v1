@@ -133,7 +133,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/opportunities/list/owners', 'OpportunityController@listOwners');
     Route::get('/opportunities/list/areas', 'OpportunityController@listAreas');
 
-    //Employes
+    // Employes
     Route::get('/employees', 'EmployeeController@index');
     Route::get('/employees/all', 'EmployeeController@all');
     Route::post('/employees/store', 'EmployeeController@store');
@@ -142,7 +142,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/employees/sellers', 'EmployeeController@sellers');
     Route::get('/employees/designers', 'EmployeeController@designers');
 
-    //Quotes
+    // Quotes
     Route::get('/quote', 'QuoteController@index');
     Route::get('/quote/all', 'QuoteController@all');
     Route::get('/quote/{id}', 'QuoteController@show');
@@ -150,11 +150,11 @@ Route::middleware('auth')->group(function () {
     Route::put('/quote/update/{id}', 'QuoteController@update');
     Route::delete('/quote/destroy/{id}', 'QuoteController@destroy');
 
-    //Attachments
+    // Attachments
     Route::post('/attachments/store', 'AttachmentController@store');
     Route::delete('/attachments/destroy/{id}', 'AttachmentController@destroy');
 
-    //Serivces
+    // Services
     Route::get('/services/all', 'ListTypeServiceController@all');
 
     // Customers

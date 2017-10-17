@@ -479,8 +479,12 @@ export default {
         totalQuotes (quotes) {
           let total = 0.00
           if(quotes.length > 0)
-            quotes.forEach(function (item) {
-              total += item.amount
+            quotes.forEach(function (item, index) {
+              if (item.currency_id == 2) {
+                  total += item.amount*17.5;
+              } else {
+                  total += item.amount
+              }
             })
           return total
         }
