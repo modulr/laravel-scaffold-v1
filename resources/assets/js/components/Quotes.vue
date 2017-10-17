@@ -83,7 +83,7 @@
       </div>
     </div>
     <!-- Add quote -->
-    <div class="modal fade" id="modalAdd">
+    <div class="modal right fade" id="modalAdd">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -93,23 +93,23 @@
                 <div class="modal-body">
                   <form class="form-horizontal" action="index.html" method="post">
                     <div class="form-group" :class="{'has-error': error.name}">
-                        <label class="col-sm-2 control-label">Name *</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label required">Name</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control input-lg" placeholder="Name" required v-model="quote.name">
                             <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                         </div>
                     </div>
                     <div class="form-group" :class="{'has-error': error.description}">
-                        <label class="col-sm-2 control-label">Description</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label">Description</label>
+                        <div class="col-sm-9">
                             <textarea name="description" class="form-control input-lg" placeholder="Description" required v-model="quote.description">
                             </textarea>
                             <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                         </div>
                     </div>
                     <div class="form-group" :class="{'has-error': error.project}">
-                        <label class="col-sm-2 control-label">Project *</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label required">Project</label>
+                        <div class="col-sm-9">
                             <select type="text" class="form-control input-lg" placeholder="Customer" required v-model="quote.project">
                               <option v-for="project in list.projects" :value="project.id"> {{ project.name }} </option>
                             </select>
@@ -117,8 +117,8 @@
                         </div>
                     </div>
                     <div class="form-group" :class="{'has-error': error.designer}">
-                        <label class="col-sm-2 control-label">Designer *</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label required">Designer</label>
+                        <div class="col-sm-9">
                             <select type="text" class="form-control input-lg" placeholder="Designer" required required v-model="quote.designer">
                               <option v-for="designer in list.designers" :value="designer.id"> {{ designer.name }} </option>
                             </select>
@@ -126,8 +126,8 @@
                         </div>
                     </div>
                     <div class="form-group" :class="{'has-error': error.salesman}">
-                        <label class="col-sm-2 control-label">Salesman *</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label required">Salesman</label>
+                        <div class="col-sm-9">
                             <select type="text" class="form-control input-lg" placeholder="Salesman" required v-model="quote.salesman">
                               <option v-for="seller in list.sellers" :value="seller.id"> {{ seller.name }} </option>
                             </select>
@@ -135,8 +135,8 @@
                         </div>
                     </div>
                     <div class="form-group" :class="{'has-error': error.customer}">
-                        <label class="col-sm-2 control-label">Customer *</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label required">Customer</label>
+                        <div class="col-sm-9">
                             <select type="text" class="form-control input-lg" placeholder="Customer" required v-model="quote.customer">
                               <option v-for="customer in list.customers" :value="customer.id"> {{ customer.name }} </option>
                             </select>
@@ -144,8 +144,8 @@
                         </div>
                     </div>
                     <div class="form-group" :class="{'has-error': error.service}">
-                        <label class="col-sm-2 control-label">Service *</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label required">Service</label>
+                        <div class="col-sm-9">
                             <select type="text" class="form-control input-lg" placeholder="Service" required v-model="quote.service">
                               <option v-for="service in list.services" :value="service.id"> {{ service.title }} </option>
                             </select>
@@ -153,30 +153,30 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Amount </label>
-                        <div class="col-sm-6">
+                        <label class="col-sm-3 control-label">Amount </label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control input-lg" placeholder="Amount" required v-model="quote.amount">
                         </div>
-                        <label class="col-sm-2 control-label">Currency </label>
-                        <div class="col-sm-2">
+                        <label class="col-sm-3 control-label">Currency </label>
+                        <div class="col-sm-9">
                           <select type="text" class="form-control input-lg" placeholder="Currency" required v-model="quote.currency">
                             <option v-for="currency in list.currencies" :value="currency.id"> {{ currency.title }} </option>
                           </select>
                         </div>
                     </div>
                     <div class="form-group" :class="{'has-error': error.request_date}">
-                        <label class="col-sm-2 control-label">Request Date *</label>
-                        <div class='input-group date'>
+                        <label class="col-sm-3 control-label required">Date</label>
+                        <div class='col-sm-9 date'>
                             <input type='date' class="form-control" v-model="quote.request_date"/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                             <span class="help-block" v-if="error.request_date">{{error.request_date[0]}}</span>
-                        </div>                        
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Delivery Date</label>
-                        <div class='input-group date'>
+                        <label class="col-sm-3 control-label">Delivery Date</label>
+                        <div class='col-sm-9 date'>
                             <input type='date' class="form-control" v-model="quote.delivery_date"/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
@@ -187,7 +187,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success" @click="store">Add</button>
+                    <button type="button" class="btn btn-primary" @click="store">Add</button>
                 </div>
             </div>
         </div>
@@ -203,79 +203,79 @@
                 <div class="modal-body">
                   <form class="form-horizontal" action="index.html" method="post">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Name *</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label required">Name</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control input-lg" placeholder="Name" required v-model="quote.name">
                         </div>
                     </div>
-                    <label class="col-sm-2 control-label">Description</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-3 control-label">Description</label>
+                    <div class="col-sm-9">
                         <textarea name="description" class="form-control input-lg" placeholder="Description" required v-model="quote.description">
                         </textarea>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Project *</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label required">Project</label>
+                        <div class="col-sm-9">
                           <p class="form-control-static" v-if="quote.project">
                             <small class="text-mute">{{quote.project.name}}</small>
                           </p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Designer *</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label required">Designer</label>
+                        <div class="col-sm-9">
                             <select type="text" class="form-control input-lg" placeholder="Designer" required required v-model="quote.designer_id">
                               <option v-for="designer in list.designers" :value="designer.id"> {{ designer.name }} </option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Salesman *</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label required">Salesman</label>
+                        <div class="col-sm-9">
                             <select type="text" class="form-control input-lg" placeholder="Salesman" required v-model="quote.salesman_id">
                               <option v-for="seller in list.sellers" :value="seller.id"> {{ seller.name }} </option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Customer *</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label required">Customer</label>
+                        <div class="col-sm-9">
                             <select type="text" class="form-control input-lg" placeholder="Customer" required v-model="quote.customer_id">
                               <option v-for="customer in list.customers" :value="customer.id"> {{ customer.name }} </option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Service *</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label required">Service</label>
+                        <div class="col-sm-9">
                             <select type="text" class="form-control input-lg" placeholder="Service" required v-model="quote.service_id">
                               <option v-for="service in list.services" :value="service.id"> {{ service.title }} </option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Amount </label>
-                        <div class="col-sm-6">
+                        <label class="col-sm-3 control-label">Amount </label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control input-lg" placeholder="Amount" required v-model="quote.amount">
                         </div>
-                        <label class="col-sm-2 control-label">Currency </label>
-                        <div class="col-sm-2">
+                        <label class="col-sm-3 control-label">Currency </label>
+                        <div class="col-sm-9">
                           <select type="text" class="form-control input-lg" placeholder="Currency" required v-model="quote.currency_id">
                             <option v-for="currency in list.currencies" :value="currency.id"> {{ currency.title }} </option>
                           </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Request Date </label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 control-label">Request Date </label>
+                        <div class="col-sm-9">
                           <p class="form-control-static">
                             <small class="text-mute">{{quote.request_date | date}}</small>
                           </p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Delivery Date </label>
-                        <div class='input-group date'>
+                        <label class="col-sm-3 control-label">Delivery Date </label>
+                        <div class='col-sm-9 date'>
                             <input type='date' class="form-control" v-model="quote.delivery_date"/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>

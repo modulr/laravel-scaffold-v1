@@ -10,6 +10,7 @@ use App\Priority;
 use App\Client;
 use App\Customer;
 use App\Models\Lists\ListArea;
+use DB;
 
 class OpportunityController extends Controller
 {
@@ -148,6 +149,20 @@ class OpportunityController extends Controller
      public function listCustomers()
      {
         return Customer::with('client')->get();
+     }
+
+     /**
+      * Get a list of owners.
+      *
+      * @return \Illuminate\Http\Response
+      */
+     public function listOwners()
+     {
+        return DB::table('projects')
+                    ->join('users', 'projects.owner_id', '=', 'users.id')
+                    ->select('users.name')
+                    ->distinct()
+                    ->get();
      }
 
      /**

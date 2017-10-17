@@ -1,22 +1,7 @@
 .table {
-    .filters {
-        position: relative;
-        overflow: hidden;
-        padding: 20px 0px;
-        .sort {
-
-        }
-        .search {
-            i {
-                vertical-align: text-top;
-            }
-        }
-    }
+    border: none!important;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     background-color: #FFFFFF!important;
-    thead {
-        background-color: #F3F7F9;
-    }
     img {
         border-radius: 50%;
         height: 35px;

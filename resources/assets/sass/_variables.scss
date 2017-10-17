@@ -31,10 +31,21 @@ p,h1,h2,h3,h4,h5,h6,span {
     color: $brand-gray;
 }
 
-.navbar, .panel {
+.navbar, .panel, .modal-content {
     box-shadow: 0px 3px 6px rgba(0,0,0,.16)!important;
 }
 
 .clickable {
     cursor: pointer;
+}
+
+.modal-backdrop.in {
+    opacity: 0!important;
+}
+
+label.required::after {
+    content: '*';
+    color: #f96868;
+    font-weight: 500;
+    margin-left: 8px;
 }

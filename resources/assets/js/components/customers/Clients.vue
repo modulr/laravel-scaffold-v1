@@ -78,43 +78,43 @@
                         <div class="modal-body">
                             <form class="form-horizontal">
                                 <div class="form-group" :class="{'has-error': error['client.name']}">
-                                    <label class="col-sm-2 control-label">Name *</label>
-                                    <div class="col-sm-10">
+                                    <label class="col-sm-3 control-label required">Name</label>
+                                    <div class="col-sm-9">
                                         <input type="text" class="form-control input-lg" placeholder="Name" required v-model="client.name">
                                         <span class="help-block" v-if="error['client.name']">{{error['client.name'][0]}}</span>
                                     </div>
                                 </div>
                                 <div class="form-group" :class="{'has-error': error.email}">
-                                    <label class="col-sm-2 control-label">Email *</label>
-                                    <div class="col-sm-10">
+                                    <label class="col-sm-3 control-label required">Email</label>
+                                    <div class="col-sm-9">
                                         <input type="text" class="form-control input-lg" placeholder="Email" required v-model="client.email">
                                         <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
                                     </div>
                                 </div>
                                 <div class="form-group" :class="{'has-error': error.phone_number_1}">
-                                    <label class="col-sm-2 control-label">Phone Number 1 *</label>
-                                    <div class="col-sm-10">
+                                    <label class="col-sm-3 control-label required">Phone Number 1</label>
+                                    <div class="col-sm-9">
                                         <input type="text" class="form-control input-lg" placeholder="Phone Number 1" required v-model="client.phone_number_1">
                                         <span class="help-block" v-if="error.phone_number_1">{{error.phone_number_1[0]}}</span>
                                     </div>
                                 </div>
                                 <div class="form-group" :class="{'has-error': error.phone_number_2}">
-                                    <label class="col-sm-2 control-label">Phone Number 2</label>
-                                    <div class="col-sm-10">
+                                    <label class="col-sm-3 control-label">Phone Number 2</label>
+                                    <div class="col-sm-9">
                                         <input type="text" class="form-control input-lg" placeholder="Phone Number 2" required v-model="client.phone_number_2">
                                         <span class="help-block" v-if="error.phone_number_2">{{error.phone_number_2[0]}}</span>
                                     </div>
                                 </div>
                                 <div class="form-group" :class="{'has-error': error.phone_number_3}">
-                                    <label class="col-sm-2 control-label">Phone Number 3</label>
-                                    <div class="col-sm-10">
+                                    <label class="col-sm-3 control-label">Phone Number 3</label>
+                                    <div class="col-sm-9">
                                         <input type="text" class="form-control input-lg" placeholder="Phone Number 3" required v-model="client.phone_number_3">
                                         <span class="help-block" v-if="error.phone_number_3">{{error.phone_number_3[0]}}</span>
                                     </div>
                                 </div>
                                 <div class="form-group" :class="{'has-error': error.client}" v-if="list.customers.length !== 0">
-                                    <label class="col-sm-2 control-label">Customer *</label>
-                                    <div class="col-sm-10">
+                                    <label class="col-sm-3 control-label required">Customer</label>
+                                    <div class="col-sm-9">
                                         <select class="form-control" required v-model="client.customer">
                                             <option v-for="option in list.customers" :value="option.id">
                                                 {{ option.name }}
@@ -125,8 +125,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group" :class="{'has-error': error['customer.name']}" v-if="addingCustomer || list.customers.length === 0">
-                                    <label class="col-sm-2 control-label">Add Customer *</label>
-                                    <div class="col-sm-10">
+                                    <label class="col-sm-3 control-label required">Add Customer</label>
+                                    <div class="col-sm-9">
                                         <input type="text" class="form-control input-lg" placeholder="Customer Name" v-model="customer.name">
                                         <span class="help-block" v-if="error['customer.name']">{{error['customer.name'][0]}}</span>
                                     </div>
@@ -151,43 +151,43 @@
                             <div class="modal-body">
                                 <form class="form-horizontal">
                                     <div class="form-group" :class="{'has-error': error.name}">
-                                        <label class="col-sm-2 control-label">Name</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-3 control-label required">Name</label>
+                                        <div class="col-sm-9">
                                             <input type="text" class="form-control input-lg" :placeholder="client.name" required v-model="client.name">
                                             <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                         </div>
                                     </div>
                                     <div class="form-group" :class="{'has-error': error.email}">
-                                        <label class="col-sm-2 control-label">Email *</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-3 control-label">Email *</label>
+                                        <div class="col-sm-9">
                                             <input type="text" class="form-control input-lg" placeholder="Email" required v-model="client.email">
                                             <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
                                         </div>
                                     </div>
                                     <div class="form-group" :class="{'has-error': error.phone_number_1}">
-                                        <label class="col-sm-2 control-label">Phone Number 1 *</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-3 control-label">Phone Number 1 *</label>
+                                        <div class="col-sm-9">
                                             <input type="text" class="form-control input-lg" placeholder="Phone Number 1" required v-model="client.phone_number_1">
                                             <span class="help-block" v-if="error.phone_number_1">{{error.phone_number_1[0]}}</span>
                                         </div>
                                     </div>
                                     <div class="form-group" :class="{'has-error': error.phone_number_2}">
-                                        <label class="col-sm-2 control-label">Phone Number 2</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-3 control-label">Phone Number 2</label>
+                                        <div class="col-sm-9">
                                             <input type="text" class="form-control input-lg" placeholder="Phone Number 2" required v-model="client.phone_number_2">
                                             <span class="help-block" v-if="error.phone_number_2">{{error.phone_number_2[0]}}</span>
                                         </div>
                                     </div>
                                     <div class="form-group" :class="{'has-error': error.phone_number_3}">
-                                        <label class="col-sm-2 control-label">Phone Number 3</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-3 control-label">Phone Number 3</label>
+                                        <div class="col-sm-9">
                                             <input type="text" class="form-control input-lg" placeholder="Phone Number 3" required v-model="client.phone_number_3">
                                             <span class="help-block" v-if="error.phone_number_3">{{error.phone_number_3[0]}}</span>
                                         </div>
                                     </div>
                                     <div class="form-group" :class="{'has-error': error.client}" v-if="list.customers.length !== 0">
-                                        <label class="col-sm-2 control-label">Customer *</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-3 control-label">Customer *</label>
+                                        <div class="col-sm-9">
                                             <select class="form-control" required v-model="client.customer">
                                                 <option v-for="option in list.customers" :value="option.id">
                                                     {{ option.name }}

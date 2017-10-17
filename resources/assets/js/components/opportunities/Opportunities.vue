@@ -22,10 +22,28 @@
               <div class="col-md-12">
                   <div class="filters">
                       <div class="sort col-xs-2">
-                          <select class="form-control" required v-model="sort">
-                              <option value="" disabled selected>Sort By</option>
+                          <select class="form-control" required v-model="sort.customers">
+                              <option value="" disabled selected>Customer</option>
                               <option v-for="option in list.customers" :value="option.id">
                                   {{ option.name }}
+                              </option>
+                              <option value="">None</option>
+                          </select>
+                      </div>
+                      <div class="sort col-xs-2">
+                          <select class="form-control" required v-model="sort.client">
+                              <option value="" disabled selected>Client</option>
+                              <option v-for="option in list.clients" :value="option.id">
+                                  {{ option.name }}
+                              </option>
+                              <option value="">None</option>
+                          </select>
+                      </div>
+                      <div class="sort col-xs-2">
+                          <select class="form-control" required v-model="sort.area">
+                              <option value="" disabled selected>Region</option>
+                              <option v-for="option in list.areas" :value="option.id">
+                                  {{ option.title }}
                               </option>
                               <option value="">None</option>
                           </select>
@@ -89,14 +107,21 @@
                                       {{item.priority.name}}
                                   </span>
                               </td>
-                              <td class="text-right col-sm-2">
-                                  <div class="btn-group">
-                                      <a href="#" class="btn btn-default btn-sm" @click.prevent="edit(item, index)" v-tooltip:top="'Edit'">
-                                          <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
+                              <td class="text-right">
+                                  <div class="dropdown">
+                                      <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                          <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                       </a>
-                                      <a href="#" class="btn btn-default btn-sm" v-tooltip:top="'Make project'">
-                                          <i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>
-                                      </a>
+                                      <ul class="dropdown-menu dropdown-menu-right">
+                                          <li>
+                                              <a href="#" @click.prevent="edit(item, index)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                Edit
+                                              </a>
+                                              <!-- <a href="#"><i class="fa fa-file-pdf-o"></i>
+                                                Create Quote
+                                              </a> -->
+                                          </li>
+                                      </ul>
                                   </div>
                               </td>
                           </tr>
@@ -115,30 +140,30 @@
                       <div class="modal-body">
                           <form class="form-horizontal">
                               <div class="form-group" :class="{'has-error': error.name}">
-                                  <label class="col-sm-2 control-label">Name *</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label required">Name</label>
+                                  <div class="col-sm-9">
                                       <input type="text" class="form-control input-lg" placeholder="Name" required v-model="opportunity.name">
                                       <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.start_date}">
-                                  <label class="col-sm-2 control-label">Start Date *</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label required">Start Date</label>
+                                  <div class="col-sm-9">
                                       <input type="date" class="form-control" v-bind:placeholder="opportunity.start_date" required v-model="opportunity.start_date">
                                       <span class="help-block" v-if="error.start_date">{{error.start_date[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.description}">
-                                  <label class="col-sm-2 control-label">Description</label>
-                                  <div class="col-sm-10">
-                                      <textarea type="text" class="form-control" placeholder="Description" required v-model="opportunity.description">
+                                  <label class="col-sm-3 control-label">Description</label>
+                                  <div class="col-sm-9">
+                                      <textarea type="text" class="form-control" placeholder="Description" v-model="opportunity.description">
                                       </textarea>
                                       <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.priority}">
-                                  <label class="col-sm-2 control-label">Priority *</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label required">Priority</label>
+                                  <div class="col-sm-9">
                                       <select class="form-control" required v-model="opportunity.priority">
                                           <option v-for="option in list.priorities" :value="option.id">
                                               {{ option.name }}
@@ -148,8 +173,8 @@
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.area}">
-                                  <label class="col-sm-2 control-label">Area *</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label required">Area</label>
+                                  <div class="col-sm-9">
                                       <select class="form-control" required v-model="opportunity.area">
                                           <option v-for="option in list.areas" :value="option.id">
                                               {{ option.title }}
@@ -159,8 +184,8 @@
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.client}">
-                                  <label class="col-sm-2 control-label">Client *</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label required">Client</label>
+                                  <div class="col-sm-9">
                                       <select class="form-control" required v-model="opportunity.client">
                                           <option v-for="option in list.clients" :value="option.id">
                                               {{option.name}}, {{option.customer.name}}
@@ -174,7 +199,7 @@
                       </div>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                          <button type="button" class="btn btn-success" @click="store">Add</button>
+                          <button type="button" class="btn btn-primary" @click="store">Add</button>
                       </div>
                   </div>
               </div>
@@ -190,23 +215,23 @@
                       <div class="modal-body">
                           <form class="form-horizontal">
                               <div class="form-group" :class="{'has-error': error.name}">
-                                  <label class="col-sm-2 control-label">Name</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label required">Name</label>
+                                  <div class="col-sm-9">
                                       <input type="text" class="form-control input-lg" placeholder="Name" required v-model="opportunity.name">
                                         <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.description}">
-                                  <label class="col-sm-2 control-label">Description</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label">Description</label>
+                                  <div class="col-sm-9">
                                       <textarea type="text" class="form-control input-lg" placeholder="Description" required v-model="opportunity.description">
                                       </textarea>
                                       <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.priority}">
-                                  <label class="col-sm-2 control-label">Priority</label>
-                                  <div class="col-sm-10" v-if="list.priorities && opportunity.priority">
+                                  <label class="col-sm-3 control-label required">Priority</label>
+                                  <div class="col-sm-9" v-if="list.priorities && opportunity.priority">
                                       <select class="form-control" required v-model="opportunity.priority.id">
                                           <option v-for="option in list.priorities" :value="option.id">
                                               {{ option.name }}
@@ -216,8 +241,8 @@
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.area}">
-                                  <label class="col-sm-2 control-label">Area</label>
-                                  <div class="col-sm-10" v-if="list.areas && opportunity.area">
+                                  <label class="col-sm-3 control-label required">Area</label>
+                                  <div class="col-sm-9" v-if="list.areas && opportunity.area">
                                       <select class="form-control" required v-model="opportunity.area.id">
                                           <option v-for="option in list.areas" :value="option.id">
                                               {{ option.title }}
@@ -227,16 +252,16 @@
                                   </div>
                               </div>
                               <div class="form-group">
-                                  <label class="col-sm-2 control-label">Owner</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label required">Owner</label>
+                                  <div class="col-sm-9">
                                       <p class="form-control-static">
                                           <small class="text-mute" v-if="opportunity.owner">{{opportunity.owner.name}}</small>
                                       </p>
                                   </div>
                               </div>
                               <div class="form-group">
-                                  <label class="col-sm-2 control-label">Registered</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label required">Registered</label>
+                                  <div class="col-sm-9">
                                       <p class="form-control-static">
                                           <small class="text-mute">{{opportunity.start_date | date}}</small>
                                       </p>
@@ -272,7 +297,11 @@ export default {
                 area: {},
             },
             search: '',
-            sort: '',
+            sort: {
+                customers: '',
+                client: '',
+                area: '',
+            },
             error: {},
             list: {
                 priorities: [],
@@ -285,12 +314,30 @@ export default {
     computed: {
         filteredOpportunities: function() {
             var filteredArray = this.opportunities,
-                sort = this.sort,
+                sort_customers = this.sort.customers,
+                sort_client = this.sort.client,
+                sort_area = this.sort.area,
                 search = this.search;
 
-            if(sort) {
+            if(sort_customers) {
                 filteredArray = filteredArray.filter(function (item) {
-                    if (item.client.customer_id === sort) {
+                    if (item.client.customer_id === sort_customers) {
+                        return item;
+                    }
+                });
+            }
+
+            if(sort_client) {
+                filteredArray = filteredArray.filter(function (item) {
+                    if (item.client.id === sort_client) {
+                        return item;
+                    }
+                });
+            }
+
+            if(sort_area) {
+                filteredArray = filteredArray.filter(function (item) {
+                    if (item.area.id === sort_area) {
                         return item;
                     }
                 });
