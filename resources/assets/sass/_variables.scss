@@ -12,30 +12,30 @@ $brand-gray: #95989A;
 $brand-grayer: #CECECE;
 $inactive: #DDDADA;
 
-
-$text-color: darken($brand-gray, 50%);
+// Typography
+$text-color: darken($brand-gray, 20%);
 
 // mdi icons
 .mdi-10x, .mdi-size-10x {
     font-size: 10em;
 }
 
-// Typography
-// $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
-// $font-family-sans-serif: "Helvetica Neue", "Raleway", sans-serif;
-// $font-size-base: 14px;
-// $line-height-base: 1.6;
-// $text-color: #636b6f;
+// Avatars
+.avatar-md {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
 
-// ** Bootstrap Overwrites
-// .btn-warning, .btn-success, .btn-primary, .btn-danger{
-//   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16)!important;
-// }
+.avatar-sm {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
 
-// p,h1,h2,h3,h4,h5,h6,span{
-//     color: $brand-gray !important;
-// }
-
-// .navbar, .panel{
-//     box-shadow: 0px 3px 6px rgba(0,0,0,.16)!important;
-// }
+// Dropzone
+.dropzone {
+    .material-icons {
+        font-size: 5em
+    }
+}

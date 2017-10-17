@@ -1,6 +1,6 @@
 <template>
-    <div class="news">
-        <div class="panel panel-default">
+    <div>
+        <div class="panel panel-default news-publish">
             <div class="panel-body">
                 <div class="form-group" :class="{'has-error': error.title}">
                     <textarea rows="2" class="form-control" placeholder="What are you thinking?"
@@ -9,7 +9,7 @@
                 </div>
                 <div class="form-group" :class="{'has-error': error.images}">
                     <dropzone id="myVueDropzone" ref="myVueDropzone" v-show="newsItem.type == 2"
-                        url="/news/upload/temp" :use-font-awesome=true
+                        url="/news/upload/temp"
                         :use-custom-dropzone-options=true :dropzoneOptions="dzOptions"
                         v-on:vdropzone-success="uploadSuccess">
                     </dropzone>
@@ -55,7 +55,7 @@
                 error: {},
                 dzOptions: {
                     headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                    acceptedFileTypes: '.jpg,.jpeg,.png'
+                    acceptedFileTypes: '.jpg,.jpeg,.png',
                 },
             }
         },
@@ -63,7 +63,6 @@
             Dropzone,
         },
         methods: {
-            // crud
             store: function (e) {
                 var btn = $(e.target).button('loading')
                 axios.post('/news/store', this.newsItem)
@@ -88,7 +87,6 @@
 
                 this.newsItem.images.push(response);
             },
-            // Others
             toogleType: function (type) {
                 if (this.newsItem.type != type) {
                     this.newsItem.type = type;

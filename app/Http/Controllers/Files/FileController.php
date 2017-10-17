@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Files;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Storage;
 use Image;
-
-use App\File;
+use App\Models\Files\File;
 use App\FileShare;
 
 class FileController extends Controller
 {
     public function view(Request $request)
     {
-        return view('files', ['breadcrumb' => $request->path()]);
+        return view('files.files');
     }
 
     public function byUser(Request $request, $folderId = null)

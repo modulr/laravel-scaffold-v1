@@ -1,40 +1,21 @@
 .news {
+    .news-publish {
+        margin-top: 20px;
+    }
     .panel-default {
-        .fa-cloud-upload {
-            font-size: 3em
-        }
-        a {
-            color: #636b6f;
-        }
         .panel-heading {
             background: transparent;
-            .username{
-                font-size: 20px;
-            }
-            img {
-                border-radius: 50%;
-                height: 30px;
-                width: 30px;
-                margin-right: 8px;
-            }
-        }
-        .panel-body{
-            font-size: 14px;
-        }
-        .panel-footer {
-            background-color: #fff;
-            > a {
+            .img-avatar-sm {
                 margin-right: 10px;
             }
         }
-    }
-}
-
-.dashboard .news {
-    .panel-body {
-        padding: 0 10px !important;
-        p {
-            margin-bottom: 0;
+        .panel-footer {
+            background-color: transparent;
+            border-top: 1px solid lighten($brand-gray, 30%);
+            > a {
+                margin-right: 15px;
+                color: inherit;
+            }
         }
     }
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\News;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -10,8 +11,8 @@ use Validator;
 use Storage;
 use Image;
 use App\User;
-use App\News;
-use App\NewsImage;
+use App\Models\News\News;
+use App\Models\News\NewsImage;
 use App\Notifications\NewsCreated;
 use App\Notifications\NewsLiked;
 use App\Events\StatusLiked;
@@ -20,7 +21,7 @@ class NewsController extends Controller
 {
     public function index(Request $request)
     {
-        return view('news', ['breadcrumb' => $request->path()]);
+        return view('news.news');
     }
 
     public function all()

@@ -18,8 +18,8 @@ window.Vue = require('vue');
 // Auth
 Vue.component('carousel', require('./components/auth/Carousel.vue'));
 // Layout
-Vue.component('navbar', require('./components/Navbar.vue'));
-Vue.component('notifications', require('./components/Notifications.vue'));
+Vue.component('navbar', require('./components/layout/Navbar.vue'));
+Vue.component('notifications', require('./components/layout/Notifications.vue'));
 // Users
 Vue.component('users', require('./components/users/Users.vue'));
 Vue.component('groups', require('./components/users/Groups.vue'));
@@ -44,7 +44,7 @@ Vue.component('newsList', require('./components/news/NewsList.vue'));
 // Tasks
 Vue.component('tasks', require('./components/Tasks.vue'));
 // Contacts
-Vue.component('contacts', require('./components/Contacts.vue'));
+Vue.component('contacts', require('./components/contacts/Contacts.vue'));
 // Files
 Vue.component('files', require('./components/files/Files.vue'));
 

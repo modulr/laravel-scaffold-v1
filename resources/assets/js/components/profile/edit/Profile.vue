@@ -41,7 +41,8 @@
                                 </div>
                             </div>
                             <div class="col-sm-5 text-center">
-                                <img :src="usr.avatar_url" class="img-circle"><br>
+                                <img class="avatar-md" :src="usr.avatar_url">
+                                <br>
                                 <vue-core-image-upload
                                     class="btn btn-link"
                                     @imageuploaded="uploadAvatar"

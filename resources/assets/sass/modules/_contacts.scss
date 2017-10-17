@@ -1,60 +1,28 @@
 .contacts {
-    .button-group {
-        .active {
-            color: $brand-primary;
+    .list {
+        .table {
+            > tbody > tr:first-child > td {
+                border-top-color: transparent;
+            }
+            p {
+                margin-bottom: 0;
+            }
         }
     }
-    .table {
-        > tbody > tr:first-child > td {
-            border-top-color: transparent;
-        }
-        img {
-            border-radius: 50%;
-            height: 35px;
-            width: 35px;
-            margin-right: 10px;
+
+    .grid {
+        .panel-body {
+            text-align: center;
+            .avatar-md {
+                margin-bottom: 20px;
+            }
         }
     }
-    .panel-body {
+}
+
+.modal-contacts {
+    .contact-header {
         text-align: center;
-        img {
-            border-radius: 50%;
-            height: 77px;
-            width: 77px;
-            margin: 20px;
-        }
-        .contact-name {
-            color: $brand-grayer;
-            font-size: 16px;
-            font-weight: 300;
-        }
-        .contact-mail {
-            color: $brand-grayer;
-        }
-    }
-    .modal {
-        .modal-header {
-            img {
-                border-radius: 50%;
-                height: 100px;
-                width: 100px;
-                margin-left: 15px;
-                margin-right: 15px;
-                -webkit-box-shadow: 0 0 1px 6px #e8e8e8;
-                box-shadow: 0 0 1px 6px #e8e8e8;
-            }
-        }
-        .modal-body {
-            padding: 30px;
-            ul {
-                margin: 25px;
-                li {
-                    margin-bottom: 15px;
-                    i {
-                        margin-right: 30px;
-                    }
-                }
-            }
-        }
+        padding: 40px 0;
     }
 }

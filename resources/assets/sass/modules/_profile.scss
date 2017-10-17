@@ -1,8 +1,8 @@
+.profile, .profile-edit {
+    padding-top: 20px;
+}
+
 .profile-sidebar {
-    img {
-        width: 120px;
-        height: 120px;
-    }
     p {
         margin-top: 10px;
         margin-bottom: 0;
@@ -25,9 +25,10 @@
 
 }
 .profile-content {
-    img {
-        width: 120px;
-        height: 120px;
+    .panel-default {
+        .panel-heading {
+            background-color: transparent;
+        }
     }
     dl {
         margin-bottom: 15px;

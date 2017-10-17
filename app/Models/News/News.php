@@ -1,10 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models\News;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 use Illuminate\Support\Facades\Auth;
 
 class News extends Model
@@ -36,7 +35,7 @@ class News extends Model
 
     public function user()
     {
-      return $this->belongsTo(User::class);
+      return $this->belongsTo(\App\User::class);
     }
 
     public function images()

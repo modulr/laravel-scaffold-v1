@@ -5,7 +5,7 @@
                 <div class="row">
                     <!-- Logo -->
                     <div class="col-xs-6">
-                        <div class="dropdown menu">
+                        <!-- <div class="dropdown menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
                             </a>
@@ -43,56 +43,62 @@
                               </g>
                             </svg>
                         </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <div class="menu-content">
-                                <div class="row text-center">
-                                    <li class="col-sm-3" v-tooltip:bottom="'Dashboard'" :class="{'active': activeLink == 'dashboard'}">
-                                        <a href="/dashboard">
-                                            <i class="mdi mdi-dashboard mdi-3x"></i>
-                                        </a>
-                                    </li>
-                                    <li class="col-sm-3" v-tooltip:bottom="'News'" :class="{'active': activeLink == 'news'}">
-                                        <a href="/news">
-                                            <i class="mdi mdi-poll mdi-3x"></i>
-                                        </a>
-                                    </li>
-                                    <li class="col-sm-3" v-tooltip:bottom="'Tasks'" :class="{'active': activeLink == 'tasks'}">
-                                        <a href="/tasks">
-                                            <i class="mdi mdi-assignment mdi-3x"></i>
-                                        </a>
-                                    </li>
-                                    <li class="col-sm-3" v-tooltip:bottom="'Files'" :class="{'active': activeLink == 'files'}">
-                                        <a href="/files">
-                                            <i class="mdi mdi-folder mdi-3x"></i>
-                                        </a>
-                                    </li>
-                                </div>
-                                <div class="row text-center">
-                                    <li class="col-sm-3" v-tooltip:bottom="'Contacts'" :class="{'active': activeLink == 'contacts'}">
-                                        <a href="/contacts">
-                                            <i class="mdi mdi-contacts mdi-3x"></i>
-                                        </a>
-                                    </li>
-                                    <li class="col-sm-3" v-tooltip:bottom="'Users'" :class="{'active': activeLink == 'users'}">
-                                        <a href="/users">
-                                            <i class="mdi mdi-people mdi-3x"></i>
-                                        </a>
-                                    </li>
-                                </div>
-                            </div>
-                            <div class="menu-bottom">
-                                <div class="divider"></div>
-                                <div class="row text-center">
-                                    <li class="col-sm-12" v-tooltip:bottom="'Log out'">
-                                        <a href="#" @click.prevent="logout">
-                                            <i class="mdi mdi-exit-to-app mdi-2x"></i>
-                                        </a>
-                                    </li>
-                                </div>
-                            </div>
-                        </ul>
                     </div>
                     <div class="col-xs-6 text-right">
+                        <!-- Menu -->
+                        <div class="dropdown menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <i class="fa fa-th fa-lg" aria-hidden="true"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <div class="menu-content">
+                                    <div class="row text-center">
+                                        <li class="col-sm-3" v-tooltip:bottom="'Dashboard'" :class="{'active': activeLink == 'dashboard'}">
+                                            <a href="/dashboard">
+                                                <i class="mdi mdi-dashboard mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                        <li class="col-sm-3" v-tooltip:bottom="'News'" :class="{'active': activeLink == 'news'}">
+                                            <a href="/news">
+                                                <i class="mdi mdi-poll mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                        <li class="col-sm-3" v-tooltip:bottom="'Tasks'" :class="{'active': activeLink == 'tasks'}">
+                                            <a href="/tasks">
+                                                <i class="mdi mdi-assignment mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                        <li class="col-sm-3" v-tooltip:bottom="'Files'" :class="{'active': activeLink == 'files'}">
+                                            <a href="/files">
+                                                <i class="mdi mdi-folder mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                    </div>
+                                    <div class="row text-center">
+                                        <li class="col-sm-3" v-tooltip:bottom="'Contacts'" :class="{'active': activeLink == 'contacts'}">
+                                            <a href="/contacts">
+                                                <i class="mdi mdi-contacts mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                        <li class="col-sm-3" v-tooltip:bottom="'Users'" :class="{'active': activeLink == 'users'}">
+                                            <a href="/users">
+                                                <i class="mdi mdi-people mdi-3x"></i>
+                                            </a>
+                                        </li>
+                                    </div>
+                                </div>
+                                <div class="menu-bottom">
+                                    <div class="divider"></div>
+                                    <div class="row text-center">
+                                        <li class="col-sm-12" v-tooltip:bottom="'Log out'">
+                                            <a href="#" @click.prevent="logout">
+                                                <i class="mdi mdi-exit-to-app mdi-2x"></i>
+                                            </a>
+                                        </li>
+                                    </div>
+                                </div>
+                            </ul>
+                        </div>
                         <!-- Notifications -->
                         <div class="dropdown notifications">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" @click="markAsRead">

@@ -1,54 +1,76 @@
 <template lang="html">
     <div>
-        <div class="row toolbar">
-            <!-- Tabs -->
-            <div class="col-xs-6">
-                <ul class="nav nav-tabs">
-                    <li><a href="/users">Users</a></li>
-                    <li class="active"><a href="">Groups</a></li>
-                </ul>
-            </div>
-            <!-- Actions Buttons -->
-            <div class="col-xs-6 text-right">
-                <form class="form-inline">
-                    <input type="text" class="form-control" placeholder="Search"
-                        v-model="search">
+        <!-- Header -->
+        <div class="container-fluid header">
+            <div class="row">
+                <div class="col-xs-6 header-title">
+                    <h1>Users / Groups</h1>
+                </div>
+                <div class="col-xs-6 header-buttons">
                     <a href="#" class="btn btn-success" @click.prevent="add">
-                        New Group
+                        <i class="mdi mdi-group-add mdi-lg"></i> New Group
                     </a>
-                </form>
+                </div>
+                <div class="col-xs-12">
+                    <ul class="nav nav-tabs header-tabs">
+                        <li><a href="/users">Users</a></li>
+                        <li class="active"><a href="">Groups</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <!-- List -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Group</th>
-                                <th>Description</th>
-                                <th>Users</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(item, index) in filteredGroups">
-                                <td @click="edit(item, index)">
-                                    {{item.id}}
-                                </td>
-                                <td @click="edit(item, index)">
-                                    {{item.title}}
-                                </td>
-                                <td @click="edit(item, index)">
-                                    {{item.description}}
-                                </td>
-                                <td @click="edit(item, index)">
-                                    list users used this group
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <!-- Container -->
+        <div class="container-fluid groups">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <!-- Actionbar -->
+                    <div class="actionbar">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" placeholder="Search" v-model="search">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- List -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Group</th>
+                                                    <th>Description</th>
+                                                    <th>Users</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(item, index) in filteredGroups">
+                                                    <td @click="edit(item, index)">
+                                                        {{item.id}}
+                                                    </td>
+                                                    <td @click="edit(item, index)">
+                                                        {{item.title}}
+                                                    </td>
+                                                    <td @click="edit(item, index)">
+                                                        {{item.description}}
+                                                    </td>
+                                                    <td @click="edit(item, index)">
+                                                        list users used this group
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

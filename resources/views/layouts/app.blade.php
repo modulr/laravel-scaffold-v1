@@ -45,7 +45,7 @@
 <body>
     <div id="app">
         @if (!Auth::guest())
-            <navbar breadcrumb="{{ $breadcrumb }}"></navbar>
+            <navbar></navbar>
         @endif
         <div class="content">
             @yield('content')

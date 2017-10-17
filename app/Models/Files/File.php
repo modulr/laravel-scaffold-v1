@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\Files;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,12 +18,12 @@ class File extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\User::class);
     }
 
     public function shares()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(\App\User::class);
     }
 
     public function getUrlAttribute()

@@ -1,70 +1,92 @@
 <template lang="html">
-    <div class="users">
-        <div class="row toolbar">
-            <!-- Tabs -->
-            <div class="col-sm-6">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="">Users</a></li>
-                    <li><a href="/groups">Groups</a></li>
-                </ul>
-            </div>
-            <!-- Actions Buttons -->
-            <div class="col-sm-6 text-right">
-                <form class="form-inline">
-                    <input type="text" class="form-control" placeholder="Search"
-                        v-model="search">
+    <div>
+        <!-- Header -->
+        <div class="container-fluid header">
+            <div class="row">
+                <div class="col-xs-6 header-title">
+                    <h1>Users</h1>
+                </div>
+                <div class="col-xs-6 header-buttons">
                     <a href="#" class="btn btn-success" @click.prevent="add">
-                        New User
+                        <i class="mdi mdi-person-add mdi-lg"></i> New User
                     </a>
-                </form>
+                </div>
+                <div class="col-xs-12">
+                    <ul class="nav nav-tabs header-tabs">
+                        <li class="active"><a href="">Users</a></li>
+                        <li><a href="/groups">Groups</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <!-- List -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th></th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Group</th>
-                                <th class="text-center">Active</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(item, index) in filteredUsers">
-                                <td @click="edit(item, index)">
-                                    {{item.id}}
-                                </td>
-                                <td @click="edit(item, index)">
-                                    <img :src="item.avatar_url">
-                                </td>
-                                <td @click="edit(item, index)">
-                                    {{item.name}}
-                                </td>
-                                <td @click="edit(item, index)">
-                                    {{item.email}}
-                                </td>
-                                <td @click="edit(item, index)">
-                                    group user
-                                </td>
-                                <td class="text-center" @click="edit(item, index)">
-                                    <i class="mdi mdi-2x" :class="{'mdi-mood text-success': item.active, 'mdi-mood-bad': !item.active}"></i>
-                                </td>
-                                <td class="text-right">
-                                    <div class="btn-group">
-                                        <a :href="'/profile/'+item.id+'/edit'" class="btn btn-default btn-sm" v-tooltip:top="'Profile'">
-                                            <i class="fa fa-external-link fa-lg" aria-hidden="true"></i>
-                                        </a>
+        <!-- Container users-->
+        <div class="container-fluid users">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <!-- Actionbar -->
+                    <div class="actionbar">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" placeholder="Search" v-model="search">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Users List -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th></th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Group</th>
+                                                    <th class="text-center">Active</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(item, index) in filteredUsers">
+                                                    <td @click="edit(item, index)">
+                                                        {{item.id}}
+                                                    </td>
+                                                    <td @click="edit(item, index)">
+                                                        <img class="avatar-sm" :src="item.avatar_url">
+                                                    </td>
+                                                    <td @click="edit(item, index)">
+                                                        {{item.name}}
+                                                    </td>
+                                                    <td @click="edit(item, index)">
+                                                        {{item.email}}
+                                                    </td>
+                                                    <td @click="edit(item, index)">
+                                                        group user
+                                                    </td>
+                                                    <td class="text-center" @click="edit(item, index)">
+                                                        <i class="mdi mdi-2x" :class="{'mdi-mood text-success': item.active, 'mdi-mood-bad': !item.active}"></i>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <div class="btn-group">
+                                                            <a :href="'/profile/'+item.id+'/edit'" class="btn btn-default btn-sm" v-tooltip:top="'Profile'">
+                                                                <i class="fa fa-external-link fa-lg" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -82,7 +104,7 @@
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-sm-6 text-center">
-                                    <img :src="user.avatar_url" v-if="user.avatar_url">
+                                    <img class="avatar-md" :src="user.avatar_url" v-if="user.avatar_url">
                                     <i class="mdi mdi-account-circle mdi-10x" v-else></i>
                                     <br>
                                     <vue-core-image-upload
@@ -148,7 +170,7 @@
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-sm-6 text-center">
-                                    <img :src="user.avatar_url">
+                                    <img class="avatar-md" :src="user.avatar_url">
                                     <br>
                                     <vue-core-image-upload
                                         class="btn btn-link"

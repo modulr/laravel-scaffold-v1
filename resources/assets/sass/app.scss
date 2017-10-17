@@ -26,16 +26,13 @@
 
 // Bootstrap
 @import 'bootstrap/navbar';
-@import 'bootstrap/navs';
 @import 'bootstrap/breadcrumb';
 @import 'bootstrap/content';
-@import 'bootstrap/panel';
 @import 'bootstrap/tables';
 @import 'bootstrap/modals';
 
 // Modules
 @import 'modules/auth';
-@import 'modules/users';
 @import 'modules/profile';
 @import 'modules/dashboard';
 @import 'modules/news';
@@ -44,4 +41,5 @@
 @import 'modules/tasks';
 
 // Components
-@import 'components/toolbar';
+@import 'components/header';
+@import 'components/actionbar';
