@@ -25,11 +25,12 @@
 @import "node_modules/bootswatch/paper/_bootswatch";
 
 // Bootstrap
-@import 'bootstrap/navbar';
 @import 'bootstrap/breadcrumb';
 @import 'bootstrap/content';
-@import 'bootstrap/tables';
+@import 'bootstrap/lists';
 @import 'bootstrap/modals';
+@import 'bootstrap/navbar';
+@import 'bootstrap/tables';
 
 // Modules
 @import 'modules/auth';
@@ -41,10 +42,7 @@
 @import 'modules/tasks';
 
 // Components
-@import 'components/header';
 @import 'components/actionbar';
+@import 'components/header';
 @import 'components/filters';
-@import 'components/lists';
-@import 'components/modals';
-@import 'components/tables';
 @import 'components/widgets';
