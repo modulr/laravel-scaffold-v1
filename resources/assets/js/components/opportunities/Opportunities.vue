@@ -306,6 +306,7 @@ export default {
                 customers: '',
                 client: '',
                 area: '',
+                total: '',
             },
             error: {},
             list: {

@@ -9,8 +9,11 @@
                 <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
                 <div v-if="!loading">
                     <div class="info-block">
-                        <h3>{{quotes.totalAmount | currency}}</h3>
-                        <p><strong>Total amount quoted</strong> (this year).</p>
+                        <div class="col-md-4">
+                            <h3>{{quotes.totalAmountMXN | currency}}<small>MXN</small></h3>
+                            <h3>{{quotes.totalAmountUSD | currency}}<small>USD</small></h3>
+                            <p><strong>Total amount quoted</strong> (this year).</p>
+                        </div>
                         <!-- TODO: GRAFICA DE COLUMNAS DE 12 MESES CON CANTIDADES $ COTIZADAS MENSUALMENTE -->
                         <!-- <column-chart
                             :data="chartData"
@@ -36,7 +39,8 @@ export default {
         return {
             loading: false,
             quotes: {
-                totalAmount: '',
+                totalAmountMXN: '',
+                totalAmountUSD: '',
                 active: [],
                 rejected: [],
                 all: [],
@@ -62,7 +66,8 @@ export default {
                     this.quotes.active = response.data.active;
                     this.quotes.all = response.data.all;
                     this.quotes.rejected = response.data.rejected;
-                    this.quotes.totalAmount = response.data.totalAmount;
+                    this.quotes.totalAmountMXN = response.data.totalMXN;
+                    this.quotes.totalAmountUSD = response.data.totalUSD;
                     this.loading = false;
                 });
         },

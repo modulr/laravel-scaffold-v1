@@ -44,11 +44,13 @@ class WidgetController extends Controller
     {
         $activeQuotes = Quote::where('status_id', 1)->get();
         $rejectedQuotes = Quote::where('status_id', 0)->get();
-        $getTotalAmountQuoted = Quote::sum('amount');
+        $getTotalMXN = Quote::where('currency_id', 1)->sum('amount');
+        $getTotalUSD = Quote::where('currency_id', 2)->sum('amount');
         $allQuotes = Quote::all();
 
         return response()->json([
-            'totalAmount' => $getTotalAmountQuoted,
+            'totalMXN' => $getTotalMXN,
+            'totalUSD' => $getTotalUSD,
             'active' => $activeQuotes,
             'rejected' => $rejectedQuotes,
             'all' => $allQuotes,
