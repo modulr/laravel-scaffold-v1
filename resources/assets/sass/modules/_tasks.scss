@@ -8,23 +8,28 @@
             background-color: $brand-orange;
         }
         .list-group-item {
+            border: none;
             .my-handle {
                 cursor: move;
             }
-            a {
+            a, .my-handle i {
                 color: $brand-orange;
             }
             .task-done {
                 text-decoration: line-through;
             }
-            .close {
-                display: none;
+            .close, .my-handle {
+                opacity: 0;
+                transition: opacity .2 ease;
             }
-            &:hover .close{
-                display: block;
+            &:hover .close, &:hover .my-handle{
+                opacity: 1;
             }
             .fa {
                 vertical-align: middle !important;
+            }
+            &:hover {
+                background-color: $hovered;
             }
         }
 
