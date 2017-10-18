@@ -3,7 +3,7 @@
 @section('content')
 <div class="auth">
     <div class="left-pane">
-        <carousel></carousel>
+        <!-- <carousel></carousel> -->
     </div>
     <div class="right-pane">
         <ul class="nav nav-tabs nav-justified">

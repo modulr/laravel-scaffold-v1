@@ -3,7 +3,7 @@
 @section('content')
 <div class="auth">
     <div class="left-pane">
-        <carousel></carousel>
+        <!-- <carousel></carousel> -->
     </div>
     <div class="right-pane">
         <ul class="nav nav-tabs nav-justified">
@@ -33,7 +33,7 @@
 
             <div class="form-group">
                 <div class="checkbox">
-                    <label>  
+                    <label>
                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
                     </label>
                 </div>
