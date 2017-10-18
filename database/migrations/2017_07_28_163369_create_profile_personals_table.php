@@ -19,9 +19,9 @@ class CreateProfilePersonalsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->date('birthday')->nullable();
             $table->string('place_of_birth')->nullable();
-            $table->integer('gender_id')->unsigned();
+            $table->integer('gender_id')->unsigned()->nullable();
             $table->foreign('gender_id')->references('id')->on('list_genders');
-            $table->integer('relationship_id')->unsigned();
+            $table->integer('relationship_id')->unsigned()->nullable();
             $table->foreign('relationship_id')->references('id')->on('list_relationships');
             $table->string('rfc')->nullable();
             $table->string('curp')->nullable();

@@ -32,16 +32,16 @@
             > li > a:focus {
                 @include box-shadow(inset 0 -1px 0 #ddd);
                 &:hover {
-                    @include box-shadow(inset 0 -2px 0 $brand-orange);
-                    color: $brand-orange;
+                    @include box-shadow(inset 0 -2px 0 $orange);
+                    color: $orange;
                 }
             }
             & > li.active > a,
             & > li.active > a:focus {
-                @include box-shadow(inset 0 -2px 0 $brand-orange);
-                color: $brand-orange;
+                @include box-shadow(inset 0 -2px 0 -orange);
+                color: $orange;
                 &:hover {
-                    color: $brand-orange;
+                    color: $orange;
                 }
             }
         }
