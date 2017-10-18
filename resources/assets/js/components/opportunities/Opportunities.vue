@@ -480,8 +480,8 @@ export default {
           let total = 0.00
           if(quotes.length > 0)
             quotes.forEach(function (item, index) {
-              if (item.currency_id == 2) {
-                  total += item.amount*17.5;
+              if (item.currency.id == 2) {
+                  total += item.amount * item.currency.exchange_rate;
               } else {
                   total += item.amount
               }

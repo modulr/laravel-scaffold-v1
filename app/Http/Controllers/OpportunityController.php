@@ -26,14 +26,14 @@ class OpportunityController extends Controller
 
     public function show(Request $request, $id)
     {
-        $opportunity = Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'quote.designer', 'quote.salesman', 'quote.status', 'area')->where('status', 1)->find($id);
+        $opportunity = Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'quote.designer', 'quote.salesman', 'quote.status', 'quote.currency', 'area')->where('status', 1)->find($id);
 
         return view('opportunities.opportunity', ['breadcrumb' => $request->path(), 'opportunity' => $opportunity]);
     }
 
     public function all()
     {
-        return Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'area')->where('status', 1)->get();
+        return Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'area', 'quote.currency')->where('status', 1)->get();
     }
 
     /**
