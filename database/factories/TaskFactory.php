@@ -12,7 +12,7 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Task::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Tasks\Task::class, function (Faker\Generator $faker) {
 
     return [
         'title' => $faker->text,

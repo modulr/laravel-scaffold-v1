@@ -19,6 +19,6 @@ class Group extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->hasOne(\App\User::class);
     }
 }

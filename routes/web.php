@@ -101,14 +101,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/upload/temp', 'NewsController@uploadTemp');
     });
 
-    //Tasks
-    Route::get('/tasks', 'TaskController@view');
-    Route::get('/task/byUser', 'TaskController@byUser');
-    Route::post('/task/store', 'TaskController@store');
-    Route::delete('/task/destroy/{id}', 'TaskController@destroy');
-    Route::put('/task/markDone/{id}', 'TaskController@markDone');
-    Route::put('/task/updateOrder', 'TaskController@updateOrder');
-    Route::put('/task/editTask/{id}', 'TaskController@editTask');
+    // Tasks
+    Route::group(['namespace' => 'Tasks'], function() {
+        Route::get('/tasks', 'TaskController@view');
+        Route::group(['prefix' => 'task'], function() {
+            Route::get('/byUser', 'TaskController@byUser');
+            Route::post('/store', 'TaskController@store');
+            Route::delete('/destroy/{id}', 'TaskController@destroy');
+            Route::put('/markDone/{id}', 'TaskController@markDone');
+            Route::put('/updateOrder', 'TaskController@updateOrder');
+            Route::put('/editTask/{id}', 'TaskController@editTask');
+        });
+    });
 
     // Contacts
     Route::group(['namespace' => 'Contacts', 'prefix' => 'contacts'], function() {

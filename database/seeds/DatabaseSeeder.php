@@ -41,9 +41,9 @@ class DatabaseSeeder extends Seeder
 
                 $u->profileWork()->save(factory(App\Models\Profile\ProfileWork::class)->make());
 
-                $u->news()->saveMany(factory(App\News::class, 3)->make());
+                $u->news()->saveMany(factory(App\Models\News\News::class, 3)->make());
 
-                $u->tasks()->saveMany(factory(App\Task::class, 3)->make());
+                $u->tasks()->saveMany(factory(App\Models\Tasks\Task::class, 3)->make());
             });
     }
 }
