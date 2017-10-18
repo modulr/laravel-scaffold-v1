@@ -38,7 +38,7 @@
             }
             & > li.active > a,
             & > li.active > a:focus {
-                @include box-shadow(inset 0 -2px 0 -orange);
+                @include box-shadow(inset 0 -2px 0 $orange);
                 color: $orange;
                 &:hover {
                     color: $orange;
