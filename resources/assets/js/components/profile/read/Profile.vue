@@ -22,11 +22,15 @@
                     <div class="col-md-4">
                         <dl>
                             <dd>Gender</dd>
-                            <dt class="text-capitalize">{{user.profile_personal.gender.title}}</dt>
+                            <dt v-if="user.profile_personal.gender" class="text-capitalize">
+                                {{user.profile_personal.gender.title}}
+                            </dt>
                         </dl>
                         <dl>
                             <dd>Relationship</dd>
-                            <dt class="text-capitalize">{{user.profile_personal.relationship.title}}</dt>
+                            <dt v-if="user.profile_personal.relationship" class="text-capitalize">
+                                {{user.profile_personal.relationship.title}}
+                            </dt>
                         </dl>
                     </div>
                 </div>

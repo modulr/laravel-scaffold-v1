@@ -17,13 +17,13 @@ class CreateProfileWorksTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('profession_id')->unsigned();
+            $table->integer('profession_id')->unsigned()->nullable();
             $table->foreign('profession_id')->references('id')->on('list_professions');
-            $table->integer('position_id')->unsigned();
+            $table->integer('position_id')->unsigned()->nullable();
             $table->foreign('position_id')->references('id')->on('list_positions');
-            $table->integer('department_id')->unsigned();
+            $table->integer('department_id')->unsigned()->nullable();
             $table->foreign('department_id')->references('id')->on('list_departments');
-            $table->integer('boss_id')->unsigned();
+            $table->integer('boss_id')->unsigned()->nullable();
             $table->foreign('boss_id')->references('id')->on('users');
             $table->date('starting_from')->nullable();
             $table->timestamps();
