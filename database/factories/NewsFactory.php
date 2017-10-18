@@ -12,7 +12,7 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\News::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\News\News::class, function (Faker\Generator $faker) {
 
     return [
         'title' => $faker->text,

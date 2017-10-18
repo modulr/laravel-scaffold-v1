@@ -72,12 +72,12 @@ class User extends Authenticatable
 
     public function news()
     {
-        return $this->hasMany(News::class);
+        return $this->hasMany(\App\Models\News\News::class);
     }
 
     public function tasks()
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(\App\Models\Tasks\Task::class);
     }
 
     public function group()
