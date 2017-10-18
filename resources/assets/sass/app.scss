@@ -27,6 +27,7 @@
 // Bootstrap
 @import 'bootstrap/breadcrumb';
 @import 'bootstrap/content';
+@import 'bootstrap/forms';
 @import 'bootstrap/lists';
 @import 'bootstrap/modals';
 @import 'bootstrap/navbar';
@@ -46,7 +47,7 @@
 @import 'modules/tasks';
 
 // Components
-@import 'components/header';
 @import 'components/actionbar';
+@import 'components/header';
 @import 'components/filters';
 @import 'components/widgets';
