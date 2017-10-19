@@ -22,6 +22,13 @@
                             <h3>{{quotes.rejected.length}}</h3>
                             <p><strong>Rejected quotes</strong> (this year).</p>
                         </div>
+                        <chartjs-bar
+                        :data="chartData"
+                        :height="100"
+                        :bordercolor="'#FEAE3B'"
+                        :backgroundcolor="'#f4d4a6'"
+                        v-if="chartData.length > 0"
+                        ></chartjs-bar>
                     </div>
                 </div>
             </div>
@@ -31,11 +38,11 @@
 <script>
 import moment from 'moment';
 import Spinner from 'vue-simple-spinner';
-import Chartkick from 'chartkick';
-import VueChartkick from 'vue-chartkick';
-import Vue2Filters from 'vue2-filters';
-import Chart from 'chart.js';
-Vue.use(VueChartkick, { Chartkick })
+// chartjs package
+require('chart.js');
+// vue-charts package
+require('hchs-vue-charts');
+Vue.use(VueCharts);
 
 export default {
     data() {
@@ -57,9 +64,6 @@ export default {
     },
     mounted() {
         this.getQuoteInsights();
-    },
-    components: {
-        VueChartkick, Chartkick
     },
     methods: {
         getQuoteInsights: function() {

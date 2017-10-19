@@ -55,7 +55,7 @@ class WidgetController extends Controller
         return array(
             'activeCharts' => $activeCharts,
             'rejectedCharts' => $rejectedCharts,
-            'title' => 'Active Quotes',
+            'title' => 'Active Opportunities',
         );
     }
 
