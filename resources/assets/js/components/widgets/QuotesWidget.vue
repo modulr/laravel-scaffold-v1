@@ -14,11 +14,19 @@
                             <h3>{{quotes.totalAmountUSD | currency}}<small>USD</small></h3>
                             <p><strong>Total amount quoted</strong> (this year).</p>
                         </div>
+                        <div class="col-md-4">
+                            <h3>{{quotes.active.length}}</h3>
+                            <p><strong>Active quotes</strong> (this year).</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h3>{{quotes.rejected.length}}</h3>
+                            <p><strong>Rejected quotes</strong> (this year).</p>
+                        </div>
                         <!-- TODO: GRAFICA DE COLUMNAS DE 12 MESES CON CANTIDADES $ COTIZADAS MENSUALMENTE -->
-                        <!-- <column-chart
-                            :data="chartData"
+                        <column-chart
+                            data="/quote/all"
                             :colors="['#FEAE3B']"
-                            height="270px"></column-chart> -->
+                            height="270px"></column-chart>
                     </div>
                 </div>
             </div>

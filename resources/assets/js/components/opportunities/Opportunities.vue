@@ -90,7 +90,9 @@
                                   {{item.description}}<br>
                               </td>
                               <td>
-                                {{ totalQuotes(item.quote) | currency }}
+                                  <span>
+                                      {{ totalQuotes(item.quote) | currency }}
+                                  </span>
                               </td>
                               <td>
                                   <a v-bind:href="'/profile/'+item.owner.id">{{item.owner.name}}</a>
@@ -478,14 +480,16 @@ export default {
         },
         totalQuotes (quotes) {
           let total = 0.00
-          if(quotes.length > 0)
-            quotes.forEach(function (item, index) {
-              if (item.currency.id == 2) {
-                  total += item.amount * item.currency.exchange_rate;
-              } else {
-                  total += item.amount
-              }
-            })
+          if (quotes) {
+              if(quotes.length > 0)
+                quotes.forEach(function (item, index) {
+                  if (item.currency.id == 2) {
+                      total += item.amount * item.currency.exchange_rate;
+                  } else {
+                      total += item.amount
+                  }
+                })
+          }
           return total
         }
     }

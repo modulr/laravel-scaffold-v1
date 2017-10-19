@@ -303,6 +303,7 @@ export default {
         axios.post('/clients/store', {'client': this.client, 'customer': this.customer})
             .then(response => {
                 this.clients.push(response.data);
+                this.list.customers.push(response.data.customer);
                 this.client = {};
                 this.error = {};
                 var btn = $(e.target).button('reset')
