@@ -21,11 +21,15 @@
                             <h3>{{opportunities.all.length}}</h3>
                             <p><strong>Opportunities</strong> (this year).</p>
                         </div>
-                        <!-- TODO: GRAFICA DE COLUMNAS DE 12 MESES CON OPORTUNIDADES REGISTRADAS MENSUALMENTE -->
-                        <!-- <column-chart
+                        <chartjs-bar
+                            :datalabel="chartTitle"
+                            :labels="chartLabels"
                             :data="chartData"
-                            :colors="['#FEAE3B']"
-                            height="270px"></column-chart> -->
+                            :height="100"
+                            :bordercolor="'#FEAE3B'"
+                            :backgroundcolor="'#f4d4a6'"
+                            v-if="chartData.length > 0 && chartTitle"
+                            ></chartjs-bar>
                     </div>
                 </div>
             </div>
@@ -35,10 +39,11 @@
 <script>
 import moment from 'moment';
 import Spinner from 'vue-simple-spinner';
-import Chartkick from 'chartkick';
-import VueChartkick from 'vue-chartkick';
-import Chart from 'chart.js';
-Vue.use(VueChartkick, { Chartkick })
+// chartjs package
+require('chart.js');
+// vue-charts package
+require('hchs-vue-charts');
+Vue.use(VueCharts);
 
 export default {
     data() {
@@ -52,15 +57,15 @@ export default {
             search: '',
             error: {},
             total: '',
-            chartData: '',
+            chartData: [],
+            chartLabels: [],
+            chartTitle: ''
         }
     },
     mounted() {
         this.getOpportunityInsights();
         this.getMonthOpportunities();
-    },
-    components: {
-        VueChartkick, Chartkick
+        this.getCharts();
     },
     methods: {
         getOpportunityInsights: function() {
@@ -79,6 +84,14 @@ export default {
                 .then(response => {
                     this.total = response.data;
                     this.loading = false;
+                })
+        },
+        getCharts: function() {
+            axios.get('/widget/opportunity/charts')
+                .then(response => {
+                    this.chartTitle = response.data.title;
+                    this.chartLabels = response.data.activeCharts.map(chart => chart.date);
+                    this.chartData = response.data.activeCharts.map(chart => chart.projects);
                 })
         }
     }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Project;
 use App\Quote;
+use DB;
+use Carbon\Carbon;
 
 class WidgetController extends Controller
 {
@@ -34,6 +36,29 @@ class WidgetController extends Controller
         ]);
     }
 
+    public function opportunityCharts()
+    {
+        $activeCharts = DB::table('projects')
+                    ->where('status', 1)
+                    ->select(DB::raw('MONTHNAME(start_date) as date'), DB::raw('count(*) as projects'))
+                    ->groupBy('date')
+                    ->orderBy('date', 'DESC')
+                    ->get();
+
+        $rejectedCharts = DB::table('projects')
+                    ->where('status', 0)
+                    ->select(DB::raw('MONTHNAME(start_date) as date'), DB::raw('count(*) as projects'))
+                    ->groupBy('date')
+                    ->orderBy('date', 'DESC')
+                    ->get();
+
+        return array(
+            'activeCharts' => $activeCharts,
+            'rejectedCharts' => $rejectedCharts,
+            'title' => 'Active Quotes',
+        );
+    }
+
     public function getMonthQuotes()
     {
         $currentMonth = date('m');
@@ -43,7 +68,7 @@ class WidgetController extends Controller
     public function getQuoteInsights()
     {
         $activeQuotes = Quote::where('status_id', 1)->get();
-        $rejectedQuotes = Quote::where('status_id', 0)->get();
+        $rejectedQuotes = Quote::where('status_id', 4)->get();
         $getTotalMXN = Quote::where('currency_id', 1)->sum('amount');
         $getTotalUSD = Quote::where('currency_id', 2)->sum('amount');
         $allQuotes = Quote::all();

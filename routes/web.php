@@ -189,4 +189,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/widget/getOpportunityInsights', 'WidgetController@getOpportunityInsights');
     Route::get('/widget/getMonthQuotes', 'WidgetController@getMonthQuotes');
     Route::get('/widget/getQuoteInsights', 'WidgetController@getQuoteInsights');
+    Route::get('/widget/opportunity/charts', 'WidgetController@opportunityCharts');
 });
