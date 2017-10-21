@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="news">
         <!-- List -->
         <div class="panel panel-default" v-for="(item, index) in news">
             <div class="panel-heading">

@@ -12,7 +12,7 @@ class TaskController extends Controller
 
     public function view(Request $request)
     {
-        return view('tasks', ['breadcrumb' => $request->path()]);
+        return view('tasks.tasks', ['breadcrumb' => $request->path()]);
     }
 
     public function byUser()

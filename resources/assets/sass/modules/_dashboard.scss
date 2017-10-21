@@ -2,15 +2,8 @@
     padding-top: 20px;
     .panel-dashboard {
         > .panel-heading {
-            background-color: #fff;
-            padding-top: 15px;
-            p {
-                display: inline-block;
-
-                
-                margin-bottom: 0;
-            }
             a {
+                font-size: 14px;
                 color: $orange !important;
             }
         }

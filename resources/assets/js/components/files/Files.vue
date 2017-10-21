@@ -422,6 +422,7 @@ export default {
         },
         uploadSuccess: function (file, response) {
             this.files.push(response);
+            this.$refs.myVueDropzone.removeAllFiles();
             $('#myModalFile').modal('hide');
         },
         toggleLayout: function (layout) {

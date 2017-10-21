@@ -42,11 +42,13 @@ Vue.component('profilePasswordEdit', require('./components/profile/edit/Password
 Vue.component('newsPublish', require('./components/news/NewsPublish.vue'));
 Vue.component('newsList', require('./components/news/NewsList.vue'));
 // Tasks
-Vue.component('tasks', require('./components/Tasks.vue'));
+Vue.component('tasks', require('./components/tasks/Tasks.vue'));
 // Contacts
 Vue.component('contacts', require('./components/contacts/Contacts.vue'));
+Vue.component('contacts-widget', require('./components/contacts/ContactsWidget.vue'));
 // Files
 Vue.component('files', require('./components/files/Files.vue'));
+Vue.component('files-widget', require('./components/files/FilesWidget.vue'));
 
 
 const app = new Vue({
