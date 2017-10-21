@@ -7,7 +7,7 @@ Modulr is open source software, made to be easy to use, develop and implement, i
 
 See the [documentation](http://docs.modulr.io) for more details or visit the [project website](https://modulr.io).
 
-You can also try our live demo, just sign up and enjoy the experience of modulr [here](http://app.modulr.io)
+You can also try our live [demo](http://app.modulr.io), just sign up and enjoy the experience of modulr [here](http://app.modulr.io)
 
 ## Modules
 
