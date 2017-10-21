@@ -68,7 +68,7 @@ class WidgetController extends Controller
 
     public function getQuoteInsights()
     {
-        $activeQuotes = Quote::where('status_id', 1)->get();
+        $activeQuotes = Quote::whereIn('status_id', [1, 2, 3])->get();
         $rejectedQuotes = Quote::where('status_id', 4)->get();
         $getTotalMXN = Quote::where('currency_id', 1)->sum('amount');
         $getTotalUSD = Quote::where('currency_id', 2)->sum('amount');
@@ -88,7 +88,7 @@ class WidgetController extends Controller
         $activeArray = array();
 
         for ($i=1; $i <= 12; $i++) {
-            $activeData = Quote::where('status_id', 1)->whereRaw('MONTH(request_date) = ?' , $i)->get();
+            $activeData = Quote::whereIn('status_id', [1, 2, 3])->whereRaw('MONTH(request_date) = ?' , $i)->get();
             if ($activeData->count() != 0) {
                 $activeArray[$i] = $activeData->count();
             } else {

@@ -23,6 +23,7 @@
                         </div>
                         <canvas id="opportunityCanvas" count="2"></canvas>
                         <chartjs-bar
+                            :scalesdisplay="false"
                             target="opportunityCanvas"
                             :datalabel="activeOpportunities.chartTitle"
                             :labels="chartLabels"
@@ -33,6 +34,7 @@
                             :backgroundcolor="'#f4d4a6'"
                             ></chartjs-bar>
                         <chartjs-bar
+                            :scalesdisplay="false"
                             target="opportunityCanvas"
                             :datalabel="rejectedOpportunities.chartTitle"
                             :labels="chartLabels"

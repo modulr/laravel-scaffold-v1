@@ -24,6 +24,7 @@
                         </div>
                         <canvas id="quoteCanvas" count="2"></canvas>
                         <chartjs-bar
+                            :scalesdisplay="false"
                             target="quoteCanvas"
                             :datalabel="activeQuotes.chartTitle"
                             :labels="chartLabels"
@@ -34,6 +35,7 @@
                             :backgroundcolor="'#f4d4a6'"
                             ></chartjs-bar>
                         <chartjs-bar
+                            :scalesdisplay="false"
                             target="quoteCanvas"
                             :datalabel="rejectedQuotes.chartTitle"
                             :labels="chartLabels"
