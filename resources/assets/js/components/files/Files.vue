@@ -319,7 +319,7 @@ export default {
             editFile: {},
             error: {},
             search: '',
-            layout: 'grid',
+            layout: 'list',
             dzOptions: {
                 acceptedFileTypes: '.jpg,.jpeg,.png,.pdf',
                 headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
