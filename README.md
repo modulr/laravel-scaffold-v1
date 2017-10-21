@@ -1,4 +1,5 @@
-# Modulr Laravel
+# Modulr <small>v2</small>
+v2 - Laravel, Vuejs & MySQL
 
 ### The base for developing awesome projects
 
@@ -20,15 +21,6 @@ You have all these modules at your disposal, set your system in your own way and
 - Files
 - Tasks
 - Contacts
-
-
-## Technologies
-
-Designed with the newest and innovative technologies.
-
-- Laravel
-- Vuejs
-- MySQL
 
 
 ## Community
