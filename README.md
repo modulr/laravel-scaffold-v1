@@ -2,16 +2,34 @@
 
 ### The base for developing awesome projects
 
+## What is it
+Modulr is open source software, made to be easy to use, develop and implement, is a real time application, scalable, adaptable and safety.
 
-[Web page ](https://modulr.io)
+See the [documentation](http://docs.modulr.io) for more details or visit the [project website](https://modulr.io).
 
-## Demo
+You can also try our live demo, just sign up and enjoy the experience of modulr [here](http://app.modulr.io)
 
-You can also try our live demo, just sign up and enjoy the experience of modulr [here](https://app.modulr.io)
+## Modules
 
-## Documentation
+You have all these modules at your disposal, set your system in your own way and your needs.
 
-[http://docs.modulr.io](http://docs.modulr.io)
+- Authentication
+- Access & Users
+- Profile
+- News
+- Files
+- Tasks
+- Contacts
+
+
+## Technologies
+
+Designed with the newest and innovative technologies.
+
+- Laravel
+- Vuejs
+- MySQL
+
 
 ## Community
 
@@ -22,6 +40,7 @@ You can also try our live demo, just sign up and enjoy the experience of modulr 
 ## Credits
 
 * [@alfredobarron](https://github.com/alfredobarron)
+* [@mostrosonido](https://github.com/mostrosonido)
 * [@deleonn](https://github.com/deleonn)
 * [@EduardoDArellano](https://github.com/EduardoDArellano)
 
