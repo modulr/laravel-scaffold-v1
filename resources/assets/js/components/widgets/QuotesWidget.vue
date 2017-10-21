@@ -10,8 +10,8 @@
                 <div v-if="!loading">
                     <div class="info-block">
                         <div class="col-md-4">
-                            <h3>{{quotes.totalAmountMXN | currency}}<small>MXN</small></h3>
-                            <h3>{{quotes.totalAmountUSD | currency}}<small>USD</small></h3>
+                            <h5>{{quotes.totalAmountMXN | currency}}<small>MXN</small></h5>
+                            <h5>{{quotes.totalAmountUSD | currency}}<small>USD</small></h5>
                             <p><strong>Total amount quoted</strong> (this year).</p>
                         </div>
                         <div class="col-md-4">
@@ -22,13 +22,27 @@
                             <h3>{{quotes.rejected.length}}</h3>
                             <p><strong>Rejected quotes</strong> (this year).</p>
                         </div>
+                        <canvas id="quoteCanvas" count="2"></canvas>
                         <chartjs-bar
-                        :data="chartData"
-                        :height="100"
-                        :bordercolor="'#FEAE3B'"
-                        :backgroundcolor="'#f4d4a6'"
-                        v-if="chartData.length > 0"
-                        ></chartjs-bar>
+                            target="quoteCanvas"
+                            :datalabel="activeQuotes.chartTitle"
+                            :labels="chartLabels"
+                            :data="activeQuotes.chartData"
+                            v-if="activeQuotes.chartData.length > 0"
+                            :height="100"
+                            :bordercolor="'#FEAE3B'"
+                            :backgroundcolor="'#f4d4a6'"
+                            ></chartjs-bar>
+                        <chartjs-bar
+                            target="quoteCanvas"
+                            :datalabel="rejectedQuotes.chartTitle"
+                            :labels="chartLabels"
+                            :data="rejectedQuotes.chartData"
+                            v-if="rejectedQuotes.chartData.length > 0"
+                            :height="100"
+                            :bordercolor="'#FEAE3B'"
+                            :backgroundcolor="'#b4a898'"
+                            ></chartjs-bar>
                     </div>
                 </div>
             </div>
@@ -59,11 +73,20 @@ export default {
             search: '',
             error: {},
             total: '',
-            chartData: [['jan', 145200], ['feb', 50900], ['mar', 60980], ['apr', 89065], ['may', 140000], ['jun', 356700], ['jul', 23600], ['aug', 70000], ['sep', 320000], ['oct', 243000], ['nov', 0], ['dec', 0]],
+            chartLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dec'],
+            activeQuotes: {
+                chartData: [],
+                chartTitle: 'Active'
+            },
+            rejectedQuotes: {
+                chartData: [],
+                chartTitle: 'Rejected'
+            },
         }
     },
     mounted() {
         this.getQuoteInsights();
+        this.getCharts();
     },
     methods: {
         getQuoteInsights: function() {
@@ -78,6 +101,13 @@ export default {
                     this.loading = false;
                 });
         },
+        getCharts: function() {
+            axios.get('/widget/quote/charts')
+                .then(response => {
+                    this.activeQuotes.chartData = Object.values(response.data.active);
+                    this.rejectedQuotes.chartData = Object.values(response.data.rejected);
+                })
+        }
     }
 }
 </script>

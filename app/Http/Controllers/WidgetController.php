@@ -38,26 +38,27 @@ class WidgetController extends Controller
 
     public function opportunityCharts()
     {
-        $activeCharts = DB::table('projects')
-                    ->where('status', 1)
-                    ->select(DB::raw('MONTHNAME(start_date) as date'), DB::raw('count(*) as projects'))
-                    ->groupBy('date')
-                    ->orderBy('date', 'DESC')
-                    ->get();
+        $activeArray = array();
 
-        $rejectedCharts = DB::table('projects')
-                    ->where('status', 0)
-                    ->select(DB::raw('MONTHNAME(start_date) as date'), DB::raw('count(*) as projects'))
-                    ->groupBy('date')
-                    ->orderBy('date', 'DESC')
-                    ->get();
+        for ($i=1; $i <= 12; $i++) {
+            $activeData = Project::where('status', 1)->whereRaw('MONTH(start_date) = ?' , $i)->get();
+            $activeArray[$i] = $activeData->count();
+        }
+
+        $rejectedArray = array();
+
+        for ($i=1; $i <= 12; $i++) {
+            $rejectedData = Project::where('status', 0)->whereRaw('MONTH(start_date) = ?' , $i)->get();
+            $rejectedArray[$i] = $rejectedData->count();
+        }
 
         return array(
-            'activeCharts' => $activeCharts,
-            'rejectedCharts' => $rejectedCharts,
-            'title' => 'Active Opportunities',
+            'active' => $activeArray,
+            'rejected' => $rejectedArray,
         );
     }
+
+
 
     public function getMonthQuotes()
     {
@@ -80,5 +81,35 @@ class WidgetController extends Controller
             'rejected' => $rejectedQuotes,
             'all' => $allQuotes,
         ]);
+    }
+
+    public function quoteCharts()
+    {
+        $activeArray = array();
+
+        for ($i=1; $i <= 12; $i++) {
+            $activeData = Quote::where('status_id', 1)->whereRaw('MONTH(request_date) = ?' , $i)->get();
+            if ($activeData->count() != 0) {
+                $activeArray[$i] = $activeData->count();
+            } else {
+                $activeArray[$i] = 0;
+            }
+        }
+
+        $rejectedArray = array();
+
+        for ($i=1; $i <= 12; $i++) {
+            $rejectedData = Quote::where('status_id', 4)->whereRaw('MONTH(request_date) = ?' , $i)->get();
+            if ($rejectedData->count() != 0) {
+                $rejectedArray[$i] = $rejectedData->count();
+            } else {
+                $rejectedArray[$i] = 0;
+            }
+        }
+
+        return array(
+            'active' => $activeArray,
+            'rejected' => $rejectedArray,
+        );
     }
 }

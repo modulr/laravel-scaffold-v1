@@ -21,14 +21,26 @@
                             <h3>{{opportunities.all.length}}</h3>
                             <p><strong>Opportunities</strong> (this year).</p>
                         </div>
+                        <canvas id="opportunityCanvas" count="2"></canvas>
                         <chartjs-bar
-                            :datalabel="chartTitle"
+                            target="opportunityCanvas"
+                            :datalabel="activeOpportunities.chartTitle"
                             :labels="chartLabels"
-                            :data="chartData"
+                            :data="activeOpportunities.chartData"
+                            v-if="activeOpportunities.chartData.length > 0"
                             :height="100"
                             :bordercolor="'#FEAE3B'"
                             :backgroundcolor="'#f4d4a6'"
-                            v-if="chartData.length > 0 && chartTitle"
+                            ></chartjs-bar>
+                        <chartjs-bar
+                            target="opportunityCanvas"
+                            :datalabel="rejectedOpportunities.chartTitle"
+                            :labels="chartLabels"
+                            :data="rejectedOpportunities.chartData"
+                            v-if="rejectedOpportunities.chartData.length > 0"
+                            :height="100"
+                            :bordercolor="'#FEAE3B'"
+                            :backgroundcolor="'#b4a898'"
                             ></chartjs-bar>
                     </div>
                 </div>
@@ -57,9 +69,15 @@ export default {
             search: '',
             error: {},
             total: '',
-            chartData: [],
-            chartLabels: [],
-            chartTitle: ''
+            chartLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dec'],
+            activeOpportunities: {
+                chartData: [],
+                chartTitle: 'Active'
+            },
+            rejectedOpportunities: {
+                chartData: [],
+                chartTitle: 'Rejected'
+            },
         }
     },
     mounted() {
@@ -89,9 +107,8 @@ export default {
         getCharts: function() {
             axios.get('/widget/opportunity/charts')
                 .then(response => {
-                    this.chartTitle = response.data.title;
-                    this.chartLabels = response.data.activeCharts.map(chart => chart.date);
-                    this.chartData = response.data.activeCharts.map(chart => chart.projects);
+                    this.activeOpportunities.chartData = Object.values(response.data.active);
+                    this.rejectedOpportunities.chartData = Object.values(response.data.rejected);
                 })
         }
     }
