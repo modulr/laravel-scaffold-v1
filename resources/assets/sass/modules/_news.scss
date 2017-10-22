@@ -9,6 +9,13 @@
                 margin-right: 10px;
             }
         }
+        .panel-body {
+            .swiper-slide {
+                img {
+                    max-width: 500px;
+                }
+            }
+        }
         .panel-footer {
             background-color: transparent;
             border-top: 1px solid lighten($brand-gray, 30%);

@@ -18,7 +18,7 @@
                 <p :class="{'lead': item.title.length <= 50}" v-if="item.title">{{item.title}}</p>
                 <swiper :options="swiperOption" v-if="item.type == 2">
                     <swiper-slide v-for="image in item.images" :key="image.id">
-                        <img class="img-responsive" :src="image.url">
+                        <img class="img-responsive center-block" :src="image.url">
                     </swiper-slide>
                     <div class="swiper-pagination" slot="pagination"></div>
                 </swiper>
