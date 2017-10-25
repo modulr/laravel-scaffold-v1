@@ -85,30 +85,30 @@
                                     </div>
                                 </div>
                                 <div class="form-group" :class="{'has-error': error.email}">
-                                    <label class="col-sm-3 control-label required">Email</label>
+                                    <label class="col-sm-3 control-label">Email</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control input-lg" placeholder="Email" required v-model="client.email">
+                                        <input type="text" class="form-control input-lg" placeholder="Email" v-model="client.email">
                                         <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
                                     </div>
                                 </div>
                                 <div class="form-group" :class="{'has-error': error.phone_number_1}">
-                                    <label class="col-sm-3 control-label required">Phone Number 1</label>
+                                    <label class="col-sm-3 control-label">Mobile Number</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control input-lg" placeholder="Phone Number 1" required v-model="client.phone_number_1">
+                                        <input type="text" class="form-control input-lg" placeholder="Mobile Number" v-model="client.phone_number_1">
                                         <span class="help-block" v-if="error.phone_number_1">{{error.phone_number_1[0]}}</span>
                                     </div>
                                 </div>
                                 <div class="form-group" :class="{'has-error': error.phone_number_2}">
-                                    <label class="col-sm-3 control-label">Phone Number 2</label>
+                                    <label class="col-sm-3 control-label">Number</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control input-lg" placeholder="Phone Number 2" required v-model="client.phone_number_2">
+                                        <input type="text" class="form-control input-lg" placeholder="Number" v-model="client.phone_number_2">
                                         <span class="help-block" v-if="error.phone_number_2">{{error.phone_number_2[0]}}</span>
                                     </div>
                                 </div>
                                 <div class="form-group" :class="{'has-error': error.phone_number_3}">
-                                    <label class="col-sm-3 control-label">Phone Number 3</label>
+                                    <label class="col-sm-3 control-label">Other</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control input-lg" placeholder="Phone Number 3" required v-model="client.phone_number_3">
+                                        <input type="text" class="form-control input-lg" placeholder="Other" v-model="client.phone_number_3">
                                         <span class="help-block" v-if="error.phone_number_3">{{error.phone_number_3[0]}}</span>
                                     </div>
                                 </div>
@@ -158,37 +158,37 @@
                                         </div>
                                     </div>
                                     <div class="form-group" :class="{'has-error': error.email}">
-                                        <label class="col-sm-3 control-label">Email *</label>
+                                        <label class="col-sm-3 control-label">Email</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control input-lg" placeholder="Email" required v-model="client.email">
+                                            <input type="text" class="form-control input-lg" placeholder="Email" v-model="client.email">
                                             <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
                                         </div>
                                     </div>
                                     <div class="form-group" :class="{'has-error': error.phone_number_1}">
-                                        <label class="col-sm-3 control-label">Phone Number 1 *</label>
+                                        <label class="col-sm-3 control-label">Mobile Number</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control input-lg" placeholder="Phone Number 1" required v-model="client.phone_number_1">
+                                            <input type="text" class="form-control input-lg" placeholder="Mobile Number" v-model="client.phone_number_1">
                                             <span class="help-block" v-if="error.phone_number_1">{{error.phone_number_1[0]}}</span>
                                         </div>
                                     </div>
                                     <div class="form-group" :class="{'has-error': error.phone_number_2}">
-                                        <label class="col-sm-3 control-label">Phone Number 2</label>
+                                        <label class="col-sm-3 control-label">Number</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control input-lg" placeholder="Phone Number 2" required v-model="client.phone_number_2">
+                                            <input type="text" class="form-control input-lg" placeholder="Number" required v-model="client.phone_number_2">
                                             <span class="help-block" v-if="error.phone_number_2">{{error.phone_number_2[0]}}</span>
                                         </div>
                                     </div>
                                     <div class="form-group" :class="{'has-error': error.phone_number_3}">
-                                        <label class="col-sm-3 control-label">Phone Number 3</label>
+                                        <label class="col-sm-3 control-label">Other</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control input-lg" placeholder="Phone Number 3" required v-model="client.phone_number_3">
+                                            <input type="text" class="form-control input-lg" placeholder="Other" v-model="client.phone_number_3">
                                             <span class="help-block" v-if="error.phone_number_3">{{error.phone_number_3[0]}}</span>
                                         </div>
                                     </div>
                                     <div class="form-group" :class="{'has-error': error.client}" v-if="list.customers.length !== 0">
-                                        <label class="col-sm-3 control-label">Customer *</label>
+                                        <label class="col-sm-3 control-label">Customer</label>
                                         <div class="col-sm-9">
-                                            <select class="form-control" required v-model="client.customer">
+                                            <select class="form-control" v-model="client.customer">
                                                 <option v-for="option in list.customers" :value="option.id">
                                                     {{ option.name }}
                                                 </option>
