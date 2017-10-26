@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Illuminate\Support\Facades\DB;
 use App\Quote;
 class QuoteController extends Controller
 {
@@ -73,7 +74,7 @@ class QuoteController extends Controller
       // $data = $request->all();
 
       // return response()->json($data);
-      return $q->load('designer', 'salesman', 'customer', 'owner', 'status', 'currency');
+      return $q->load('designer', 'salesman', 'customer', 'owner', 'status', 'currency', 'attachment');
   }
 
   public function destroy($id)

@@ -11,7 +11,7 @@ class Attachment extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = ['quote_id', 'basename', 'name', 'user_id'];
+    protected $fillable = ['quote_id', 'basename', 'name', 'user_id', 'type'];
 
     protected $appends = ['url'];
 
