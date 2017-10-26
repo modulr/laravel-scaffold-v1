@@ -42,7 +42,7 @@
                   <select class="form-control" required v-model="sort.status">
                       <option value="" disabled selected>Status</option>
                       <option v-for="option in list.status" :value="option.id">
-                          {{ option.name }}
+                          {{ option.title }}
                       </option>
                       <option value="">None</option>
                   </select>
@@ -116,6 +116,18 @@
               </tr>
             </tbody>
           </table>
+          <paginate
+            :page-count="pagination.last_page"
+            :margin-pages="2"
+            :page-range="2"
+            :initial-page="pagination.current_page"
+            :container-class="'ui pagination menu'"
+            :page-link-class="'item'"
+            :prev-link-class="'item'"
+            :next-link-class="'item'"
+            :no-li-surround="true"
+            :click-handler="clickCallback">
+          </paginate>
         </div>
       </div>
     </div>
@@ -416,6 +428,7 @@ import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
 import Dropzone from 'vue2-dropzone';
 import Vue2Filters from 'vue2-filters';
+import Paginate from 'vuejs-paginate';
 export default {
   data () {
     return {
@@ -441,20 +454,7 @@ export default {
             title: 'USD'
           }
         ],
-        status: [
-          {
-            id: 2,
-            name: 'Sent'
-          },
-          {
-            id: 3,
-            name: 'Approve'
-          },
-          {
-            id: 4,
-            name: 'Refuse'
-          }
-        ]
+        status: []
       },
       error: {},
       dzOptions: {
@@ -467,12 +467,17 @@ export default {
         customer: '',
         status: '',
         project: ''
+      },
+      pagination : {
+        current_page: 0,
+        last_page: 1
       }
     }
   },
   components: {
     Spinner,
-    Dropzone
+    Dropzone,
+    Paginate
   },
   filters: {
       date (date) {
@@ -481,6 +486,7 @@ export default {
   },
   mounted () {
     this.getAll()
+    this.getQuotes()
   },
   computed : {
     filteredQuotes () {
@@ -522,21 +528,33 @@ export default {
     }
   },
   methods: {
+    clickCallback (page) {
+      this.pagination.current_page = page
+      this.getQuotes()
+    },
     getAll () {
       this.loading = true;
       axios.get('/services/all')
         .then(response => {
           this.list.services = response.data
         });
-      axios.get('/quote/all')
-        .then(response => {
-          this.quotes = response.data
-          this.loading = false
-        });
       axios.get('/employees/all')
         .then(response => {
           this.list.sellers = response.data
           this.list.designers = response.data
+        });
+      axios.get('/quote/status/all')
+        .then(response => {
+          this.list.status = response.data
+        });
+    },
+    getQuotes () {
+      var page = Number(this.pagination.current_page);
+      axios.get('/quote/all?page=' + page)
+        .then(response => {
+          this.quotes = response.data.data
+          this.pagination.last_page = response.data.last_page
+          this.loading = false
         });
     },
     add () {
