@@ -12,8 +12,8 @@
 */
 
 Route::get('/', function () {
-    //return view('welcome');
-    return redirect('login');
+    return view('welcome');
+    //return redirect('login');
 });
 Route::get('/home', function () {
     return redirect('dashboard');
@@ -123,12 +123,23 @@ Route::middleware('auth')->group(function () {
 
     // Files
     Route::group(['namespace' => 'Files'], function() {
-        Route::get('files/{folderId?}', 'FileController@view');
+        Route::get('/files/{folderId?}', 'FileController@view');
         Route::group(['prefix' => 'file'], function() {
             Route::get('/byUser/{parentId?}', 'FileController@byUser');
             Route::post('/store', 'FileController@store');
             Route::put('/update/{id}', 'FileController@update');
             Route::delete('/destroy/{id}', 'FileController@destroy');
+        });
+    });
+
+    // Events
+    Route::group(['namespace' => 'Events'], function() {
+        Route::get('/events', 'EventController@index');
+        Route::group(['prefix' => 'event'], function() {
+            Route::get('/all', 'EventController@all');
+            Route::post('/store', 'EventController@store');
+            Route::put('/update/{id}', 'EventController@update');
+            Route::delete('/destroy/{id}', 'EventController@destroy');
         });
     });
 

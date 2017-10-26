@@ -92,7 +92,14 @@
                                 <a href="/users">
                                     <i class="mdi mdi-people mdi-3x"></i>
                                     <br>
-                                    <span>users</span>
+                                    <span>Users</span>
+                                </a>
+                            </li>
+                            <li :class="{'active': activeLink == 'events'}">
+                                <a href="/events">
+                                    <i class="mdi mdi-event mdi-3x"></i>
+                                    <br>
+                                    <span>Events</span>
                                 </a>
                             </li>
                         </ul>

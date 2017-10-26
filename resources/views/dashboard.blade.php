@@ -19,11 +19,10 @@
             <div class="col-md-5">
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
-                        <he class="panel-title">
+                        <h3 class="panel-title">
                             Tasks
                             <a href="/tasks" class="pull-right">View all</a>
-                        </he>
-
+                        </h3>
                     </div>
                     <div class="panel-body" style="height:400px; overflow-y:scroll;">
                         <tasks></tasks>

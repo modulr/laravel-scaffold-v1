@@ -45,9 +45,11 @@
 @import 'modules/contacts';
 @import 'modules/files';
 @import 'modules/tasks';
+@import 'modules/events';
 
 // Components
 @import 'components/actionbar';
+@import 'components/init-message';
 @import 'components/header';
 @import 'components/filters';
 @import 'components/widgets';
