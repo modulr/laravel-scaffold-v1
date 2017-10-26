@@ -26,7 +26,8 @@ class AttachmentController extends Controller
           'quote_id' => $request->quote_id,
           'user_id' => Auth::id(),
           'name' => $request->name,
-          'basename' => $request->basename
+          'basename' => $request->basename,
+          'type' => $request->type
       ]);
 
       return $file;
