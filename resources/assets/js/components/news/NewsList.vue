@@ -39,10 +39,9 @@
         </div>
 
         <!-- Init Message  -->
-        <div class="text-center" v-if="news.length == 0">
-            <br>
-            <i class="fa fa-bullhorn fa-5x text-muted" aria-hidden="true"></i>
-            <p class="lead text-muted">Publish the first news!!</p>
+        <div class="init-message" v-if="news.length == 0">
+            <i class="mdi mdi-whatshot" aria-hidden="true"></i>
+            <p class="lead">Publish the first news!!</p>
         </div>
 
         <!-- Loading -->

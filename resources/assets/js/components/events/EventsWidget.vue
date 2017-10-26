@@ -1,51 +1,26 @@
 <template>
     <div class="events">
-        <!-- Header -->
-        <div class="container-fluid header">
-            <div class="row">
-                <div class="col-xs-6 header-title">
-                    <h1>Events</h1>
-                </div>
-                <div class="col-xs-6 header-buttons">
-                    <a href="#" class="btn btn-success"  data-toggle="modal" data-target="#modalNewEvent">
-                        <i class="fa fa-calendar-plus-o"></i> New Event
-                    </a>
-                </div>
-            </div>
-        </div>
         <!-- Container -->
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-10 col-lg-offset-1">
                     <!-- List -->
-                    <div class="panel panel-default" v-if="events.length">
-                        <div class="panel-body">
-                            <table class="table table-hover">
-                                <tbody>
-                                    <tr v-for="(item, index) in events" >
-                                        <td @click="editEvent(item, index)">
-                                            <div class="media">
-                                                <div class="media-left">
-                                                    <i class="fa fa-calendar fa-4x"></i>
-                                                </div>
-                                                <div class="media-body">
-                                                    <h4 class="media-heading">{{item.title}}</h4>
-                                                    <span class="text-muted">{{item.description}}</span>
-                                                    <div class="event-info">
-                                                        <span v-show="item.place"><small class="text-muted">Place. </small>{{item.place}}</span>
-                                                        <br>
-                                                        <span v-show="item.date">{{item.date | date-format}}.</span>
-                                                        <span v-show="item.start_time"><small class="text-muted">From </small>{{item.start_time | time-format}}</span>
-                                                        <span v-show="item.end_time"><small class="text-muted">to </small>{{item.end_time | time-format}}</span>
-                                                    </div>
-                                                </div>
+                    <table class="table table-hover" v-if="events.length">
+                        <tbody>
+                            <tr v-for="(item, index) in events" >
+                                <td @click="editEvent(item, index)">
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <p>{{item.title}}</p>
+                                            <div class="event-info">
+                                                <small v-show="item.date">{{item.date | date-format}}.</small>
                                             </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <!-- Init Message -->
                     <div class="init-message" v-else>
                         <i class="mdi mdi-event" aria-hidden="true"></i>

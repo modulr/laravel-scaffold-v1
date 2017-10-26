@@ -193,10 +193,9 @@
             </div>
         </div>
         <!-- Init Message  -->
-        <div class="text-center" v-if="files.length == 0">
-            <br>
-            <i class="fa fa-folder-o fa-5x text-muted" aria-hidden="true"></i>
-            <p class="lead text-muted">Upload or create your first file/folder!!</p>
+        <div class="init-message" v-if="files.length == 0">
+            <i class="mdi mdi-folder" aria-hidden="true"></i>
+            <p class="lead">Upload or create your first file/folder!!</p>
         </div>
         <!-- Modal Folder -->
         <div class="modal fade" id="myModalFolder">

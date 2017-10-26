@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid dashboard">
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-4">
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
                         <h3 class="panel-title">
@@ -11,12 +11,25 @@
                             <a href="/news" class="pull-right">View all</a>
                         </h3>
                     </div>
-                    <div style="height:875px; overflow-y:scroll;">
+                    <div style="height:400px; overflow-y:scroll;">
                         <news-list></news-list>
                     </div>
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
+                <div class="panel panel-default panel-dashboard">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Events
+                            <a href="/events" class="pull-right">View all</a>
+                        </h3>
+                    </div>
+                    <div style="height:400px; overflow-y:scroll;">
+                        <events-widget></events-widget>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
                         <h3 class="panel-title">
@@ -42,7 +55,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-7">
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
                         <h3 class="panel-title">
@@ -50,7 +63,7 @@
                             <a href="/files" class="pull-right">View all</a>
                         </h3>
                     </div>
-                    <div class="panel-body" style="height:300px; overflow-y:scroll;">
+                    <div class="panel-body" style="height:400px; overflow-y:scroll;">
                         <files-widget></files-widget>
                     </div>
                 </div>

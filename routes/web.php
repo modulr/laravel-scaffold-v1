@@ -12,8 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
-    //return redirect('login');
+    //return view('welcome');
+    return redirect('login');
 });
 Route::get('/home', function () {
     return redirect('dashboard');

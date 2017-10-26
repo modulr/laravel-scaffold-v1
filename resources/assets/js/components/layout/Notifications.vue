@@ -18,12 +18,9 @@
         </a>
 
         <!-- Init Message  -->
-        <div class="panel panel-default" v-if="notifications.length == 0">
-            <div class="panel-body text-center">
-                <br>
-                <i class="fa fa-bell fa-5x text-muted" aria-hidden="true"></i>
-                <p class="lead text-muted">Don't have notifications</p>
-            </div>
+        <div class="init-message" v-if="notifications.length == 0">
+            <i class="fa fa-bell" aria-hidden="true"></i>
+            <p class="lead">Don't have notifications</p>
         </div>
     </div>
 </template>
