@@ -49,6 +49,17 @@
                             </tr>
                         </tbody>
                     </table>
+                    <paginate
+                      :page-count="pagination.last_page"
+                      :margin-pages="2"
+                      :page-range="2"
+                      :initial-page="pagination.current_page"
+                      :container-class="'ui pagination menu'"
+                      :page-link-class="'item'"
+                      :prev-link-class="'item'"
+                      :next-link-class="'item'"
+                      :click-handler="clickCallback">
+                    </paginate>
                 </div>
             </div>
             <!-- Create employees -->
@@ -141,6 +152,7 @@
 import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
+import Paginate from 'vuejs-paginate';
 export default {
     data() {
       return {
@@ -151,11 +163,16 @@ export default {
           contact: {},
           list: {
               employees: [],
+          },
+          pagination : {
+            current_page: 0,
+            last_page: 1
           }
       }
     },
     components: {
-      Spinner
+      Spinner,
+      Paginate
     },
     mounted() {
         this.getAll();
@@ -166,56 +183,62 @@ export default {
         }
     },
     methods: {
+        clickCallback (page) {
+          this.pagination.current_page = page
+          this.getAll()
+        },
         getAll: function() {
-            this.loading = true;
-            axios.get('/employees/all')
-                .then(response => {
-                    this.employees = response.data;
-                    this.loading = false;
-                });
+          var page = Number(this.pagination.current_page);
+          this.loading = true;
+          axios.get('/employees/all?page=' + page)
+            .then(response => {
+                this.employees = response.data.data;
+                this.pagination.last_page = response.data.last_page
+                this.loading = false
+            });
         },
         add: function() {
-            this.employee = {
-                name: '',
-                role: ''
-            };
-            this.error = {};
-            $('#modalAddEmployee').modal('show');
+          this.employee = {
+              name: '',
+              role: ''
+          };
+          this.error = {};
+          $('#modalAddEmployee').modal('show');
         },
         store: function(e) {
           var btn = $(e.target).button('loading')
           axios.post('/employees/store', this.employee)
-              .then(response => {
-                  this.employees.push(response.data);
-                  this.employee = {};
-                  this.error = {};
-                  var btn = $(e.target).button('reset')
-                  $('#modalAddEmployee').modal('hide');
-              })
-              .catch(error => {
-                  this.error = error.response.data;
-                  var btn = $(e.target).button('reset')
-              });
+            .then(response => {
+              this.employees.push(response.data);
+              this.employee = {};
+              this.error = {};
+              var btn = $(e.target).button('reset')
+              $('#modalAddEmployee').modal('hide');
+          })
+          .catch(error => {
+              this.error = error.response.data;
+              var btn = $(e.target).button('reset')
+          });
         },
         edit: function (employee, index) {
-            this.employee = _.clone(employee);
-            this.employee.index = index;
-            $('#modalEditEmployee').modal('show');
+          this.employee = _.clone(employee);
+          this.employee.index = index;
+          $('#modalEditEmployee').modal('show');
         },
         update: function (e) {
-            var btn = $(e.target).button('loading')
-            axios.put('/employees/update/'+this.employee.id, this.employee)
-            .then(response => {
-                this.employees[this.employee.index] = response.data;
-                this.employee = {};
-                this.error = {};
-                var btn = $(e.target).button('reset')
-                $('#modalEditEmployee').modal('hide');
-            })
-            .catch(error => {
-                this.error = error.response.data;
-                var btn = $(e.target).button('reset')
-            });
+          var btn = $(e.target).button('loading')
+          axios.put('/employees/update/'+this.employee.id, this.employee)
+          .then(response => {
+              this.employees[this.employee.index] = response.data;
+              this.employee = {};
+              this.error = {};
+              var btn = $(e.target).button('reset')
+              $('#modalEditEmployee').modal('hide');
+          })
+          .catch(error => {
+              this.error = error.response.data;
+              var btn = $(e.target).button('reset')
+          });
         },
         destroy: function () {
             var self = this;

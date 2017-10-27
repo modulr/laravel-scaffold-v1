@@ -77,8 +77,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/employees/store', 'EmployeeController@store');
     Route::put('/employees/update/{id}', 'EmployeeController@update');
     Route::delete('/employees/destroy/{id}', 'EmployeeController@destroy');
-    Route::get('/employees/sellers', 'EmployeeController@sellers');
-    Route::get('/employees/designers', 'EmployeeController@designers');
+    Route::get('/employees/quotes', 'EmployeeController@employees');    
 
     //Quotes
     Route::get('/quote', 'QuoteController@index');
