@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Illuminate\Support\Facades\DB;
 use App\Quote;
+use App\Models\Lists\ListStatusQuote;
 class QuoteController extends Controller
 {
 
@@ -16,7 +18,7 @@ class QuoteController extends Controller
 
   public function all(Request $request)
   {
-      return Quote::with('designer', 'salesman', 'customer', 'project', 'status', 'service', 'attachment', 'currency')->get();
+      return Quote::with('designer', 'salesman', 'customer', 'project', 'status', 'service', 'attachment', 'currency')->paginate(10);
   }
 
   public function show($id)
@@ -73,12 +75,17 @@ class QuoteController extends Controller
       // $data = $request->all();
 
       // return response()->json($data);
-      return $q->load('designer', 'salesman', 'customer', 'owner', 'project', 'status', 'currency');
+      return $q->load('designer', 'salesman', 'customer', 'owner', 'project', 'status', 'currency', 'attachment');
   }
 
   public function destroy($id)
   {
       return Quote::destroy($id);
+  }
+
+  public function getStatus()
+  {
+      return ListStatusQuote::all();
   }
 
 }

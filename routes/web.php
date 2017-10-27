@@ -151,8 +151,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/employees/store', 'EmployeeController@store');
     Route::put('/employees/update/{id}', 'EmployeeController@update');
     Route::delete('/employees/destroy/{id}', 'EmployeeController@destroy');
-    Route::get('/employees/sellers', 'EmployeeController@sellers');
-    Route::get('/employees/designers', 'EmployeeController@designers');
+    Route::get('/employees/quotes', 'EmployeeController@employees');    
 
     // Quotes
     Route::get('/quote', 'QuoteController@index');
@@ -161,6 +160,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/quote/store', 'QuoteController@store');
     Route::put('/quote/update/{id}', 'QuoteController@update');
     Route::delete('/quote/destroy/{id}', 'QuoteController@destroy');
+    Route::get('/quote/status/all', 'QuoteController@getStatus');
 
     // Attachments
     Route::post('/attachments/store', 'AttachmentController@store');

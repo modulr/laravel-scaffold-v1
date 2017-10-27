@@ -19,6 +19,43 @@
       <!-- List -->
       <div class="row" v-if="quotes.length != 0">
         <div class="col-md-12">
+          <div class="filters">
+              <div class="sort col-xs-2">
+                  <select class="form-control" required v-model="sort.customer">
+                      <option value="" disabled selected>Customer</option>
+                      <option v-for="option in list.customers" :value="option.id">
+                          {{ option.name }}
+                      </option>
+                      <option value="">None</option>
+                  </select>
+              </div>
+              <div class="sort col-xs-2">
+                  <select class="form-control" required v-model="sort.project">
+                      <option value="" disabled selected>Project</option>
+                      <option v-for="option in list.projects" :value="option.id">
+                          {{ option.name }}
+                      </option>
+                      <option value="">None</option>
+                  </select>
+              </div>
+              <div class="sort col-xs-2">
+                  <select class="form-control" required v-model="sort.status">
+                      <option value="" disabled selected>Status</option>
+                      <option v-for="option in list.status" :value="option.id">
+                          {{ option.title }}
+                      </option>
+                      <option value="">None</option>
+                  </select>
+              </div>
+              <div class="search col-xs-6">
+                  <div class="col-xs-1">
+                      <i class="mdi mdi-search mdi-2x"></i>
+                  </div>
+                  <div class="col-xs-8">
+                      <input type="text" class="form-control" placeholder="Search" v-model="search">
+                  </div>
+              </div>
+          </div>
           <table class="table table-hover">
             <thead>
               <tr>
@@ -36,7 +73,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(quote, index) in quotes">
+              <tr v-for="(quote, index) in filteredQuotes">
                 <td> {{ quote.id }} </td>
                 <td> {{ quote.name }} </td>
                 <td> {{ quote.project.name }} </td>
@@ -79,6 +116,17 @@
               </tr>
             </tbody>
           </table>
+          <paginate
+            :page-count="pagination.last_page"
+            :margin-pages="2"
+            :page-range="2"
+            :initial-page="pagination.current_page"
+            :container-class="'ui pagination menu'"
+            :page-link-class="'item'"
+            :prev-link-class="'item'"
+            :next-link-class="'item'"
+            :click-handler="clickCallback">
+          </paginate>
         </div>
       </div>
     </div>
@@ -310,36 +358,58 @@
                         :use-custom-dropzone-options=true :dropzoneOptions="dzOptions"
                         v-on:vdropzone-success="uploadSuccess">
                         <input type="hidden" name="quote_id" v-model="quote.id">
+                        <input type="hidden" name="type" v-model="type">
                     </dropzone>
-                    <div class="row" v-if="!quote.attachment">
-                      <div class="col-md-12">
-                        <h3>No attachments found.</h3>
+                    <div class="col-md-12">
+                      <p v-if="!quote.oc && type === 1">
+                        It is necessary to upload a file to validate the authorization
+                      </p>
+                      <div v-if="quote.oc">
+                        <p>Authorization Attachment</p>
+                        <table class="table table-hover">
+                          <thead>
+                            <th>Id</th>
+                            <th>Name</th>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>1</td>
+                              <td>
+                                <a :href="this.quote.oc.url" target="_blank">
+                                    <i class="fa fa-fw fa-file-o fa-2x"></i>
+                                    {{this.quote.oc.name}}
+                                </a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
-                    </div>
-                    <div class="col-md-12" v-if="quote.attachment">
-                      <table class="table table-hover">
-                        <thead>
-                          <th>Id</th>
-                          <th>Name</th>
-                          <th></th>
-                        </thead>
-                        <tbody>
-                          <tr v-for="(a,index) in quote.attachment">
-                            <td>{{ index + 1}}</td>
-                            <td>
-                              <a :href="a.url" target="_blank">
-                                  <i class="fa fa-fw fa-file-o fa-2x"></i>
-                                  {{a.name}}
-                              </a>
-                            </td>
-                            <td>
-                              <a href="#">
-                                <i class="fa fa-trash-o" aria-hidden="true" @click.prevent="deleteAttachment(quote, a, index)"></i>
-                              </a>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <div v-if="quote.attachment && type !== 1">
+                        <p>PDF Attachments</p>
+                        <table class="table table-hover">
+                          <thead>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th></th>
+                          </thead>
+                          <tbody>
+                            <tr v-for="(a,index) in quote.attachment">
+                              <td>{{ index + 1}}</td>
+                              <td>
+                                <a :href="a.url" target="_blank">
+                                    <i class="fa fa-fw fa-file-o fa-2x"></i>
+                                    {{a.name}}
+                                </a>
+                              </td>
+                              <td>
+                                <a href="#">
+                                  <i class="fa fa-trash-o" aria-hidden="true" @click.prevent="deleteAttachment(quote, a, index)"></i>
+                                </a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -357,6 +427,7 @@ import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
 import Dropzone from 'vue2-dropzone';
 import Vue2Filters from 'vue2-filters';
+import Paginate from 'vuejs-paginate';
 export default {
   data () {
     return {
@@ -378,18 +449,31 @@ export default {
             id: 2,
             title: 'USD'
           }
-        ]
+        ],
+        status: []
       },
       error: {},
       dzOptions: {
           acceptedFileTypes: '.jpg,.jpeg,.png,.pdf',
           headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
+      },
+      type: '2',
+      search: '',
+      sort: {
+        customer: '',
+        status: '',
+        project: ''
+      },
+      pagination : {
+        current_page: 0,
+        last_page: 1
       }
     }
   },
   components: {
     Spinner,
-    Dropzone
+    Dropzone,
+    Paginate
   },
   filters: {
       date (date) {
@@ -401,31 +485,83 @@ export default {
   },
   mounted () {
     this.getAll()
+    this.getQuotes()
+  },
+  computed : {
+    filteredQuotes () {
+      var filteredArray = this.quotes,
+          sort_customer = this.sort.customer,
+          sort_project = this.sort.project,
+          sort_status = this.sort.status,
+          search = this.search;
+      if(sort_customer) {
+          filteredArray = filteredArray.filter(function (item) {
+              if (item.customer_id == sort_customer) {
+                  return item;
+              }
+          });
+      }
+      if(sort_project) {
+          filteredArray = filteredArray.filter(function (item) {
+              if (item.project_id == sort_project) {
+                  return item;
+              }
+          });
+      }
+      if(sort_status) {
+          filteredArray = filteredArray.filter(function (item) {
+              if (item.status_id == sort_status) {
+                  return item;
+              }
+          });
+      }
+      if(search) {
+          search = search.trim().toLowerCase();
+          filteredArray = filteredArray.filter(function(item){
+              return Object.keys(item).some(function (key) {
+                  return String(item[key]).toLowerCase().indexOf(search) !== -1
+              })
+          })
+      }
+      return filteredArray;
+    }
   },
   methods: {
+    clickCallback (page) {
+      this.pagination.current_page = page
+      this.getQuotes()
+    },
     getAll () {
       this.loading = true;
       axios.get('/services/all')
         .then(response => {
           this.list.services = response.data
         });
-      axios.get('/quote/all')
-        .then(response => {
-          this.quotes = response.data
-          this.loading = false
-        });
-      axios.get('/employees/all')
+      axios.get('/employees/quotes')
         .then(response => {
           this.list.sellers = response.data
           this.list.designers = response.data
         });
       axios.get('/opportunities/all')
         .then(response => {
-          this.list.projects = response.data;
+          this.list.projects = response.data
         });
       axios.get('/customers/all')
         .then(response => {
-            this.list.customers = response.data;
+            this.list.customers = response.data
+        });
+      axios.get('/quote/status/all')
+        .then(response => {
+          this.list.status = response.data
+        });
+    },
+    getQuotes () {
+      var page = Number(this.pagination.current_page);
+      axios.get('/quote/all?page=' + page)
+        .then(response => {
+          this.quotes = response.data.data
+          this.pagination.last_page = response.data.last_page
+          this.loading = false
         });
     },
     add () {
@@ -504,31 +640,56 @@ export default {
       });
     },
     uploadFile (quote) {
+      this.type = 2
       this.quote = _.clone(quote)
+      let self = this
+      this.quote.attachment.forEach(function (item, index) {
+        if(item.type === '1'){
+          self.$set(self.quote, 'oc', item)
+          self.quote.attachment.splice(index,1)
+        }
+      })
       $('#myModalFile').modal('show')
     },
     uploadSuccess: function (file, response) {
-        if(this.quote.attachment){
-          this.quote.attachment.push(response)
+        if(this.type !== 1){
+          if(this.quote.attachment){
+            this.quote.attachment.push(response)
+          }
+          else{
+            this.$set(this.quote, 'attachment', [response])
+          }
+        }else {
+          this.$set(this.quote, 'oc', response)
+          this.type = 2
+          axios.put('/quote/update/'+this.quote.id, this.quote)
+            .then(response => {
+              this.quotes[this.quote.index] = response.data
+              this.error = {}
+            })
+            .catch(error => {
+              this.error = error.response.data;
+            });
         }
-        else{
-          this.$set(this.quote, 'attachment', [response])
-        }
-        // $('#myModalFile').modal('hide');
     },
     changeStatus (quote, index, status) {
       this.quote = _.clone(quote)
       this.quote.status_id = status
       this.quote.index = index
-      axios.put('/quote/update/'+this.quote.id, this.quote)
-        .then(response => {
-          this.quotes[this.quote.index] = response.data
-          this.quote = {}
-          this.error = {}
-        })
-        .catch(error => {
-          this.error = error.response.data;
-        });
+      if(status !== 3) {
+        axios.put('/quote/update/'+this.quote.id, this.quote)
+          .then(response => {
+            this.quotes[this.quote.index] = response.data
+            this.quote = {}
+            this.error = {}
+          })
+          .catch(error => {
+            this.error = error.response.data;
+          });
+      }else {
+        $('#myModalFile').modal('show')
+        this.type = 1
+      }
     },
     deleteAttachment (quote, attachment, index) {
       console.log(quote)
