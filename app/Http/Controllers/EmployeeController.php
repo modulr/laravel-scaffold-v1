@@ -15,6 +15,11 @@ class EmployeeController extends Controller
 
     public function all(Request $request)
     {
+        return Employee::paginate(10);
+    }
+
+    public function employees(Request $request)
+    {
         return Employee::all();
     }
 

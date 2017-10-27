@@ -125,7 +125,6 @@
             :page-link-class="'item'"
             :prev-link-class="'item'"
             :next-link-class="'item'"
-            :no-li-surround="true"
             :click-handler="clickCallback">
           </paginate>
         </div>
@@ -538,7 +537,7 @@ export default {
         .then(response => {
           this.list.services = response.data
         });
-      axios.get('/employees/all')
+      axios.get('/employees/quotes')
         .then(response => {
           this.list.sellers = response.data
           this.list.designers = response.data
