@@ -33,7 +33,7 @@
         <!-- Init Message -->
         <div class="init-message" v-else>
             <i class="mdi mdi-assignment" aria-hidden="true"></i>
-            <p class="lead">Don't exist Tasks... create one!!</p>
+            <p class="lead">You don't have any  Tasks... create one!!</p>
         </div>
     </div>
 </template>
