@@ -18,7 +18,7 @@
               </div>
           </div>
           <!-- List -->
-          <div class="row" v-if="opportunities.length > 0">
+          <div class="row" v-if="opportunities.length != 0">
               <div class="col-md-12">
                   <div class="filters">
                       <div class="sort col-xs-2">
@@ -98,10 +98,12 @@
                                   <a v-bind:href="'/profile/'+item.owner.id">{{item.owner.name}}</a>
                               </td>
                               <td>
-                                  {{item.client.name}}
+                                <span v-if="item.client != null">{{item.client.name}}</span>
                               </td>
                               <td>
-                                  {{item.client.customer.name}}
+                                  <span v-if="item.client != null">
+                                      {{item.client.customer.name}}
+                                  </span>
                               </td>
                               <td>
                                   <span v-if="item.area">
@@ -380,7 +382,7 @@ export default {
     },
     methods: {
         getAll: function() {
-            // this.loading = true;
+            this.loading = true;
             axios.get('/opportunities/all')
                 .then(response => {
                     axios.get('/opportunities/list/priorities')
