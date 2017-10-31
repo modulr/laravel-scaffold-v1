@@ -380,7 +380,7 @@ export default {
     },
     methods: {
         getAll: function() {
-            this.loading = true;
+            // this.loading = true;
             axios.get('/opportunities/all')
                 .then(response => {
                     axios.get('/opportunities/list/priorities')
