@@ -18,7 +18,7 @@
               </div>
           </div>
           <!-- List -->
-          <div class="row" v-if="opportunities.length != 0">
+          <div class="row" v-if="opportunities.length > 0">
               <div class="col-md-12">
                   <div class="filters">
                       <div class="sort col-xs-2">
