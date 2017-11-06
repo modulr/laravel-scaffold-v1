@@ -25,7 +25,7 @@
                 <!-- List Files -->
                 <div class="col-md-12">
                     <!-- Layout List -->
-                    <div class="row" v-if="layout == 'list'">
+                    <div class="row" v-show="layout == 'list'" v-if="files.length">
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-body">
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     <!-- Layout Grid -->
-                    <div class="row" v-if="layout == 'grid'">
+                    <div class="row" v-show="layout == 'grid'" v-if="files.length">
                         <div class="col-xs-6 col-sm-4 col-md-3" v-for="(file, index) in filteredFiles">
                             <div class="thumbnail">
                                 <a href="#" class="thumbnail-heading">
@@ -77,6 +77,11 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <!-- Init Message  -->
+                    <div class="init-message" v-if="files.length == 0">
+                        <i class="mdi mdi-folder" aria-hidden="true"></i>
+                        <p class="lead">Upload or create your first file/folder!!</p>
                     </div>
                 </div>
             </div>
