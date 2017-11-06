@@ -6,9 +6,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Storage;
+use Laratrust\Traits\LaratrustUserTrait;
 
 class User extends Authenticatable
 {
+    use LaratrustUserTrait;
     use Notifiable;
 
     use SoftDeletes;
@@ -33,16 +35,24 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected $appends = ['avatar_url'];
+    protected $appends = ['avatar_url', 'hasPermission'];
 
     public function getAvatarUrlAttribute()
     {
         return Storage::url('avatars/'.$this->id.'/'.$this->avatar);
     }
 
-    public function group()
+    public function getHasPermissionAttribute()
     {
-        return $this->belongsTo(\App\Models\Users\Group::class);
+        $permissions = [];
+        foreach (Permission::all() as $permission) {
+            if ($this->can($permission->name)) {
+                $permissions[$permission->name] = true;
+            } else {
+                $permissions[$permission->name] = false;
+            }
+        }
+        return $permissions;
     }
 
     public function profilePersonal()

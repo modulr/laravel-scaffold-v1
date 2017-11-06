@@ -1,0 +1,17 @@
+.vue-clip-btn {
+    display: inline;
+    div {
+        display: none;
+    }
+}
+
+.vue-clip-queue {
+    .media-object {
+        width: 50px;
+        height: 50px;
+    }
+    .media-heading {
+        font-size: 16px;
+        margin-bottom: 0px;
+    }
+}

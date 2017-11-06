@@ -7,7 +7,8 @@
                     <h1>Events</h1>
                 </div>
                 <div class="col-xs-6 header-buttons">
-                    <a href="#" class="btn btn-success"  data-toggle="modal" data-target="#modalNewEvent">
+                    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#modalNewEvent"
+                       v-if="user.hasPermission['create-events']">
                         <i class="fa fa-calendar-plus-o"></i> New Event
                     </a>
                 </div>
@@ -17,7 +18,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-10 col-lg-offset-1">
-                    <!-- List -->
+                    <!-- List Events -->
                     <div class="panel panel-default" v-if="events.length">
                         <div class="panel-body">
                             <table class="table table-hover">
@@ -34,9 +35,9 @@
                                                     <div class="event-info">
                                                         <span v-show="item.place"><small class="text-muted">Place. </small>{{item.place}}</span>
                                                         <br>
-                                                        <span v-show="item.date">{{item.date | date-format}}.</span>
-                                                        <span v-show="item.start_time"><small class="text-muted">From </small>{{item.start_time | time-format}}</span>
-                                                        <span v-show="item.end_time"><small class="text-muted">to </small>{{item.end_time | time-format}}</span>
+                                                        <span v-show="item.date">{{item.date | moment('LL')}}.</span>
+                                                        <span v-show="item.start_time"><small class="text-muted">From </small>{{item.date+' '+item.start_time | moment('h:mm a')}}</span>
+                                                        <span v-show="item.end_time"><small class="text-muted">to </small>{{item.date+' '+item.end_time | moment('h:mm a')}}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -67,7 +68,7 @@
                     <div class="modal-body">
                         <div class="form-group" :class="{'has-error': error.title}">
                             <label>Event *</label>
-                            <input type="text" class="form-control" v-model="newEvent.title">
+                            <input type="text" class="form-control input-lg" v-model="newEvent.title">
                             <span class="help-block" v-if="error.title">{{error.title[0]}}</span>
                         </div>
                         <div class="form-group" :class="{'has-error': error.description}">
@@ -103,8 +104,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" @click="storeEvent">Create</button>
+                        <button type="button" class="btn btn-success pull-left"
+                                v-if="user.hasPermission['create-events']"
+                                @click="storeEvent">Create</button>
+                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -122,7 +125,7 @@
                     <div class="modal-body">
                         <div class="form-group" :class="{'has-error': error.title}">
                             <label>Event *</label>
-                            <input type="text" class="form-control" v-model="Editevent.title">
+                            <input type="text" class="form-control input-lg" v-model="Editevent.title">
                             <span class="help-block" v-if="error.title">{{error.title[0]}}</span>
                         </div>
                         <div class="form-group" :class="{'has-error': error.description}">
@@ -158,11 +161,15 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default  pull-left" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-link" @click="destroyEvent()">
+                        <button type="button" class="btn btn-primary pull-left"
+                                v-if="user.hasPermission['update-events']"
+                                @click="updateEvent">Save</button>
+                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-default"
+                                v-if="user.hasPermission['delete-events']"
+                                @click="destroyEvent">
                             <i class="fa fa-trash-o fa-lg"></i>
                         </button>
-                        <button type="button" class="btn btn-primary" @click="updateEvent">Update</button>
                     </div>
                 </div>
             </div>
@@ -171,12 +178,10 @@
 </template>
 
 <script>
-    import dateFormat from '../../filters/date-format'
-    Vue.use(dateFormat)
-
     export default {
         data() {
             return {
+                user: Laravel.user,
                 error: {},
                 events: [],
                 newEvent: {},
@@ -188,14 +193,14 @@
         },
         methods: {
             getEvents: function () {
-                axios.get('/event/all')
+                axios.get('/events/all')
                 .then(response => {
                     this.events = response.data.data
                 });
             },
             storeEvent: function (e) {
                 var btn = $(e.target).button('loading')
-                axios.post('/event/store', this.newEvent)
+                axios.post('/events/store', this.newEvent)
                 .then(response => {
                     this.events.unshift(response.data);
                     this.newEvent = {};
@@ -215,7 +220,7 @@
             },
             updateEvent: function (e) {
                 var btn = $(e.target).button('loading')
-                axios.put('/event/update/'+this.Editevent.id, this.Editevent)
+                axios.put('/events/update/'+this.Editevent.id, this.Editevent)
                 .then(response => {
                     this.events[this.Editevent.index] = response.data;
                     this.Editevent = {};
@@ -240,7 +245,7 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    axios.delete('/event/destroy/' + self.Editevent.id)
+                    axios.delete('/events/destroy/' + self.Editevent.id)
                     .then(response => {
                         self.events.splice(self.Editevent.index, 1);
                         swal({

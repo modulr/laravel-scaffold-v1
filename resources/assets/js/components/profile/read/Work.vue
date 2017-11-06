@@ -34,7 +34,7 @@
                     </dl>
                     <dl>
                         <dd>Starting from</dd>
-                        <dt>{{user.profile_work.starting_from | date-format}}</dt>
+                        <dt>{{user.profile_work.starting_from | moment('from')}}</dt>
                     </dl>
                 </div>
             </div>
@@ -43,10 +43,7 @@
 </template>
 
 <script>
-import dateFormat from '../../../filters/date-format'
-Vue.use(dateFormat)
-
-export default {
-    props: ['user']
-}
+    export default {
+        props: ['user']
+    }
 </script>

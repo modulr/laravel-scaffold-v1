@@ -1,10 +1,14 @@
 .actionbar {
-    //border-bottom: 1px solid lighten($brand-gray, 30%);
-    padding: 15px 0;
+    margin-bottom: 20px;
 
     .button-group {
         .active {
             color: $brand-primary;
         }
+    }
+
+    .separator {
+        margin-left: 5px;
+        margin-right: 5px;
     }
 }

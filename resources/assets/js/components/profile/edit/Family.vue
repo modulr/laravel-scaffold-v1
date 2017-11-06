@@ -10,7 +10,7 @@
                 </a>
                 <dt>{{family.name}} - {{family.relation.title}}</dt>
                 <dd>
-                    {{family.gender.title}} - {{family.birthday | date-format}}
+                    {{family.gender.title}} - {{family.birthday | moment('from')}}
                     <span class="text-muted" v-show="family.description"> / {{family.description}}</span>
                 </dd>
             </dl>
@@ -69,75 +69,73 @@
 </template>
 
 <script>
-import dateFormat from '../../../filters/date-format'
-Vue.use(dateFormat)
-export default {
-    data() {
-        return {
-            list: {
-                genders: [],
-                relations: []
-            },
-            family: {},
-            error: {}
-        }
-    },
-    props: ['user'],
-    mounted() {
-        axios.get('/list/gender')
-        .then(response => {
-            this.list.genders = response.data;
-        });
-        axios.get('/list/relation')
-        .then(response => {
-            this.list.relations = response.data;
-        });
-    },
-    methods: {
-        storeFamily: function (e) {
-            var btn = $(e.target).button('loading')
-            this.family.user_id = this.user.id;
-            axios.post('/profile/family/store', this.family)
+    export default {
+        data() {
+            return {
+                list: {
+                    genders: [],
+                    relations: []
+                },
+                family: {},
+                error: {}
+            }
+        },
+        props: ['user'],
+        mounted() {
+            axios.get('/list/gender')
             .then(response => {
-                this.user.profile_family.push(response.data);
-                this.family = {};
-                this.error = {};
-                var btn = $(e.target).button('reset')
-            })
-            .catch(error => {
-                this.error = error.response.data;
-                var btn = $(e.target).button('reset')
+                this.list.genders = response.data;
+            });
+            axios.get('/list/relation')
+            .then(response => {
+                this.list.relations = response.data;
             });
         },
-        destroyFamily: function (familyId, index) {
-            var self = this;
-            swal({
-                title: "Are you sure?",
-                text: "You will not be able to recover this family!",
-                type: "warning",
-                showLoaderOnConfirm: true,
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-            },
-            function(){
-                axios.delete('/profile/family/destroy/' + familyId)
+        methods: {
+            storeFamily: function (e) {
+                var btn = $(e.target).button('loading')
+                this.family.user_id = this.user.id;
+                axios.post('/profile/family/store', this.family)
                 .then(response => {
-                    self.user.profile_family.splice(index, 1);
-                    swal({
-                        title: "Deleted!",
-                        text: "The family has been deleted.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
-                    });
-                    self.error = {};
+                    this.user.profile_family.push(response.data);
+                    this.family = {};
+                    this.error = {};
+                    var btn = $(e.target).button('reset')
                 })
                 .catch(error => {
-                    self.error = error.response.data;
+                    this.error = error.response.data;
+                    var btn = $(e.target).button('reset')
                 });
-            });
+            },
+            destroyFamily: function (familyId, index) {
+                var self = this;
+                swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this family!",
+                    type: "warning",
+                    showLoaderOnConfirm: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, delete it!",
+                    closeOnConfirm: false
+                },
+                function(){
+                    axios.delete('/profile/family/destroy/' + familyId)
+                    .then(response => {
+                        self.user.profile_family.splice(index, 1);
+                        swal({
+                            title: "Deleted!",
+                            text: "The family has been deleted.",
+                            type: "success",
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                        self.error = {};
+                    })
+                    .catch(error => {
+                        self.error = error.response.data;
+                    });
+                });
+            }
         }
     }
-}
 </script>

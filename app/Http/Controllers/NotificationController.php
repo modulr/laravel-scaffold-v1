@@ -8,6 +8,6 @@ class NotificationController extends Controller
 {
     public function index(Request $request)
     {
-        return view('notifications', ['breadcrumb' => $request->path()]);
+        return view('notifications');
     }
 }

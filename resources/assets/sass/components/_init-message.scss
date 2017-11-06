@@ -1,9 +1,10 @@
 .init-message {
     text-align: center;
     color: $text-muted;
+    padding-top: 60px;
+    padding-bottom: 60px;
     i {
         font-size: 8em;
-        margin-top: 60px;
         margin-bottom: 30px;
     }
 }

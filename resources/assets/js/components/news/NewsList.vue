@@ -1,16 +1,19 @@
 <template>
     <div class="news">
-        <!-- List -->
+        <!-- List Items -->
         <div class="panel panel-default" v-for="(item, index) in news">
             <div class="panel-heading">
                 <img class="avatar-sm" :src="item.user.avatar_url" alt="">
                 {{item.user.name}}
-                <div class="dropdown pull-right" v-if="user.id == item.user.id">
+                <div class="dropdown pull-right" v-if="user.id == item.user.id && user.hasPermission['delete-news']">
                     <a href="#" class="btn btn-link" data-toggle="dropdown">
                         <i class="fa fa-ellipsis-v fa-lg" aria-hidden="true"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#" @click.prevent="destroy(item.id, index)"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete</a></li>
+                        <li>
+                            <a href="#" @click.prevent="destroyNews(item.id, index)">
+                            <i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -27,25 +30,23 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <a href="#" @click.prevent="like(item)">
+                <a href="#" @click.prevent="likeNews(item)">
                     <i class="fa fa-lg" :class="[item.like ? 'fa-heart text-danger' : 'fa-heart-o']" aria-hidden="true"></i>
                 </a>
                 <a href="#">
                     <i class="fa fa-comment-o fa-lg" aria-hidden="true"></i>
                 </a>
                 <span class="text-muted" v-show="item.likes_counter > 0">{{item.likes_counter}} Likes</span>
-                <small class="text-muted pull-right">{{item.created_at | ago}}</small>
+                <small class="text-muted pull-right">{{item.created_at | moment('from')}}</small>
             </div>
         </div>
-
         <!-- Init Message  -->
         <div class="init-message" v-if="news.length == 0">
             <i class="mdi mdi-whatshot" aria-hidden="true"></i>
             <p class="lead">Publish the first news!!</p>
         </div>
-
         <!-- Loading -->
-        <infinite-loading :on-infinite="loadMore" ref="infiniteLoading">
+        <infinite-loading :on-infinite="loadNews" ref="infiniteLoading">
             <span slot="no-results"></span>
             <span slot="no-more"></span>
         </infinite-loading>
@@ -53,11 +54,9 @@
 </template>
 
 <script>
-    import moment from 'moment';
     import swal from 'sweetalert';
     import { swiper, swiperSlide } from 'vue-awesome-swiper';
     import InfiniteLoading from 'vue-infinite-loading';
-
     import EventBus from './event-bus';
 
     export default {
@@ -70,28 +69,35 @@
                 },
                 swiperOption: {
                     pagination : '.swiper-pagination',
-                    paginationClickable :true
-                }
+                    paginationClickable :true,
+                },
             }
         },
         mounted() {
-            EventBus.$on('add-news', this.add);
+            EventBus.$on('add-news', this.addNews);
         },
         components: {
             swiper,
             swiperSlide,
-            InfiniteLoading
-        },
-        filters: {
-            ago(date) {
-                return moment(date).fromNow();
-            }
+            InfiniteLoading,
         },
         methods: {
-            add: function (item) {
+            addNews: function (item) {
                 this.news.unshift(item)
             },
-            destroy: function (id, index) {
+            loadNews: function () {
+                var page = Number(this.pagination.current_page) + 1;
+
+                axios.get('/news/all?page='+ page)
+                .then(response => {
+                    this.news = this.news.concat(response.data.data);
+                    this.pagination = response.data
+                    this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+                    if (!this.pagination.next_page_url)
+                        this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+                });
+            },
+            destroyNews: function (id, index) {
                 var self = this;
                 swal({
                     title: "Are you sure?",
@@ -120,7 +126,11 @@
                     });
                 });
             },
-            like: function (item) {
+            likeNews: function (item) {
+                if (!this.user.hasPermission['update-tasks']) {
+                    swal("Oops", "Don't have permissions to give like!",  "error");
+                    return false;
+                }
                 axios.post('/news/like/'+item.id, {like: item.like})
                 .then(response => {
                     item.likes = response.data.likes;
@@ -130,18 +140,6 @@
                 })
                 .catch(error => {
                     this.error = error.response.data;
-                });
-            },
-            loadMore: function () {
-                var page = Number(this.pagination.current_page) + 1;
-
-                axios.get('/news/all?page='+ page)
-                .then(response => {
-                    this.news = this.news.concat(response.data.data);
-                    this.pagination = response.data
-                    this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
-                    if (!this.pagination.next_page_url)
-                        this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
                 });
             },
         }

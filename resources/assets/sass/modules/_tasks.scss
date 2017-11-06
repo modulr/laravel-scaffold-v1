@@ -1,34 +1,38 @@
 .tasks {
     .list-group {
-        .btn-default{
-            color: #fff;
-        }
-        .btn-default {
-            background-color: $orange;
-        }
         .list-group-item {
             border: none;
+            border-bottom: 3px solid $body-bg;
+
             .my-handle {
                 cursor: move;
+                color: $text-muted;
+                padding-right: 5px;
+                i {
+                    vertical-align: middle !important;
+                    opacity: 0;
+                    transition: opacity .2 ease;
+                }
             }
-            a, .my-handle i {
+            .check {
                 color: $orange;
             }
-            .task-done {
-                text-decoration: line-through;
+            .title {
+                &.task-done {
+                    text-decoration: line-through;
+                }
             }
-            .close, .my-handle {
+            .delete {
+                color: $text-muted;
+                vertical-align: middle !important;
                 opacity: 0;
                 transition: opacity .2 ease;
             }
-            &:hover .close, &:hover .my-handle{
-                opacity: 1;
-            }
-            .fa {
-                vertical-align: middle !important;
-            }
+
             &:hover {
-                background-color: $hovered;
+                .my-handle i, .delete {
+                    opacity: 1;
+                }
             }
         }
 

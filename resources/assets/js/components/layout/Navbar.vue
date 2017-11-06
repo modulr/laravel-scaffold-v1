@@ -96,7 +96,7 @@
                                 </a>
                             </li>
                             <hr>
-                            <li :class="{'active': activeLink == 'users'}">
+                            <li :class="{'active': activeLink == 'users'}" v-if="user.hasPermission['read-users']">
                                 <a href="/users">
                                     <i class="mdi mdi-people mdi-3x"></i>
                                     <br>
@@ -164,7 +164,7 @@
                             <li class="divider"></li>
                             <li>
                                 <a href="https://modulr.slack.com" target="_blank">
-                                    <i class="fa fa-fw fa-question-circle"></i> Help
+                                    <i class="fa fa-fw fa-slack"></i> Help
                                 </a>
                             </li>
                             <li>
@@ -202,8 +202,8 @@
             var res = str.split("/");
 
             if (res.length == 2) {
-             this.activeLink = res[1];
-             }
+                this.activeLink = res[1];
+            }
 
             Notification.requestPermission();
 

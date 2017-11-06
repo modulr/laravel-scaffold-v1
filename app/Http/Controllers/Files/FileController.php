@@ -8,56 +8,61 @@ use Illuminate\Support\Facades\Auth;
 use Storage;
 use Image;
 use App\Models\Files\File;
-use App\FileShare;
 
 class FileController extends Controller
 {
-    public function view(Request $request)
+    public function index()
     {
         return view('files.files');
     }
 
     public function byUser(Request $request, $folderId = null)
     {
-        $query = File::with('user')
-            ->orderBy('type', 'desc')
+        $file = File::with('user')
+            ->orderBy('is_folder', 'desc')
             ->where('user_id', Auth::id());
 
         if ($folderId) {
-            $query->where('parent_id', $folderId);
+            $file->where('parent_id', $folderId);
         } else {
-            $query->where('parent_id', 0);
+            $file->where('parent_id', 0);
         }
 
-        return $query->get();
+        return $file->get();
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'string|max:255',
-            'basename' => 'string',
-            'description' => 'string',
-            'favorite' => 'boolean',
-            'parent_id' => 'integer',
-            'type' => 'required|integer',
-        ]);
-
-        if ($request->type == 1) { // File
+        if ($request->is_folder) {
+            $request->is_folder = true;
+        } else {
             $upload = $this->upload($request->file);
             $request->name = $request->file->getClientOriginalName();
             $request->basename = $upload['basename'];
-            $request->extension = $upload['extension'];
+            $request->type = $upload['type'];
+            $request->size = $upload['size'];
+            $request->is_folder = false;
         }
+
+        $this->validate($request, [
+            'name' => 'string|max:255',
+            'description' => 'string',
+            'basename' => 'string',
+            'type' => 'string',
+            'size' => 'float',
+            'is_folder' => 'boolean',
+            'parent_id' => 'integer',
+        ]);
 
         $file = File::create([
             'name' => $request->name,
-            'basename' => $request->basename,
-            'extension' => $request->extension,
             'description' => $request->description,
-            'user_id' => Auth::id(),
-            'parent_id' => $request->parent_id,
+            'basename' => $request->basename,
             'type' => $request->type,
+            'size' => $request->size,
+            'is_folder' => $request->is_folder,
+            'parent_id' => $request->parent_id,
+            'user_id' => Auth::id(),
         ]);
 
         // if (count($request->share)) {
@@ -95,27 +100,27 @@ class FileController extends Controller
         return File::destroy($id);
     }
 
-    public function addShare(Request $request, $id)
-    {
-        $this->validate($request, [
-            'userId' => 'required'
-        ]);
+    // public function addShare(Request $request, $id)
+    // {
+    //     $this->validate($request, [
+    //         'userId' => 'required'
+    //     ]);
+    //
+    //     $file = File::find($id);
+    //
+    //     if (!$file->share->contains($request->userId)) {
+    //         $file->share()->attach($request->userId);
+    //     }
+    //
+    //     return 'OK';
+    // }
 
-        $file = File::find($id);
-
-        if (!$file->share->contains($request->userId)) {
-            $file->share()->attach($request->userId);
-        }
-
-        return 'OK';
-    }
-
-    public function removeShare($id,$shareId)
-    {
-        $file = File::find($id);
-        $file->share()->detach($shareId);
-        return 'OK';
-    }
+    // public function removeShare($id,$shareId)
+    // {
+    //     $file = File::find($id);
+    //     $file->share()->detach($shareId);
+    //     return 'OK';
+    // }
 
     public function favorite(Request $request, $id)
     {
@@ -128,15 +133,17 @@ class FileController extends Controller
 
     private function upload($file)
     {
-        $path = $file->store('files/'.Auth::id());
+        $filePath = $file->store('files/'.Auth::id());
+        $infoFile = pathinfo($filePath);
+        $infoFile['type'] = $file->getMimetype();
+        $infoFile['size'] = $file->getSize();
 
-        $infoFile = pathinfo($path);
-
-        if (in_array($infoFile['extension'], ['jpg', 'jpeg', 'png'])) {
+        // Is image
+        if (is_array(getimagesize($file))) {
             $img = Image::make($file)
                 ->widen(1024)
-                ->encode($infoFile['extension']);
-
+                ->encode();
+            $infoFile['size'] = strlen((string) $img);
             Storage::put('files/'.Auth::id().'/'.$infoFile['basename'], $img);
         }
 
