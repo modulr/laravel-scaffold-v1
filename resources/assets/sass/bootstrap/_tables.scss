@@ -1,0 +1,19 @@
+.table {
+    margin-bottom: 0;
+    td:last-child .btn-group {
+        opacity: 0;
+    }
+    tr:hover td:last-child .btn-group {
+        opacity: 1;
+    }
+
+    &.table-ellipsis {
+        table-layout:fixed;
+        td {
+            max-width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}

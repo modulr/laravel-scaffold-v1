@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Illuminate\Support\Facades\DB;
 use App\Quote;
+use App\Models\Lists\ListStatusQuote;
 class QuoteController extends Controller
 {
 
@@ -16,33 +18,41 @@ class QuoteController extends Controller
 
   public function all(Request $request)
   {
-      return Quote::with('designer', 'seller', 'customer', 'project')->get();
+      return Quote::with('designer', 'salesman', 'customer', 'project', 'status', 'service', 'attachment', 'currency')->paginate(10);
   }
 
   public function show($id)
   {
-      $q = Quote::with('designer', 'seller')->find($id);
+      $q = Quote::with('designer', 'salesman')->find($id);
       return $q;
   }
 
   public function store(Request $request)
   {
-      // $this->validate($request, [
-      //     'name' => 'required|string',
-      // ]);
+      $this->validate($request, [
+          'name' => 'required',
+          'designer' => 'required',
+          'salesman' => 'required',
+          'project' => 'required',
+          'customer' => 'required',
+          'service' => 'required',
+          'request_date' => 'required|date'
+      ]);
       $quote = Quote::create([
         'name' => $request->name,
         'description' => $request->description,
         'owner_id' => Auth::id(),
-        'designer_id' => $request->designer_id,
-        'seller_id' => $request->seller_id,
-        'project_id' => $request->project_id,
-        'customer_id' => $request->customer_id,
+        'designer_id' => $request->designer,
+        'salesman_id' => $request->salesman,
+        'project_id' => $request->project,
+        'customer_id' => $request->customer,
         'request_date' => $request->request_date,
         'delivery_date' => $request->delivery_date,
         'close_date' => $request->close_date,
-        'ammount' => $request->ammount,
-        'status' => 1])->load('designer', 'seller', 'customer', 'owner', 'project');
+        'amount' => $request->amount,
+        'status_id' => 1,
+        'service_id'=> $request->service,
+        'currency_id' => $request->currency])->load('designer', 'salesman', 'customer', 'owner', 'project', 'status', 'service', 'currency');
       return $quote;
   }
 
@@ -53,21 +63,29 @@ class QuoteController extends Controller
       $q->name = $request->name;
       $q->description = $request->description;
       $q->designer_id = $request->designer_id;
-      $q->seller_id = $request->seller_id;
+      $q->salesman_id = $request->salesman_id;
       $q->project_id = $request->project_id;
       $q->customer_id = $request->customer_id;
       $q->delivery_date = $request->delivery_date;
-      $q->ammount = $request->ammount;
+      $q->amount = $request->amount;
+      $q->status_id = $request->status_id;
+      $q->service_id = $request->service_id;
+      $q->currency_id = $request->currency_id;
       $q->save();
       // $data = $request->all();
 
       // return response()->json($data);
-      return $q->load('designer', 'seller', 'customer', 'owner', 'project');
+      return $q->load('designer', 'salesman', 'customer', 'owner', 'project', 'status', 'currency', 'attachment');
   }
 
   public function destroy($id)
   {
       return Quote::destroy($id);
+  }
+
+  public function getStatus()
+  {
+      return ListStatusQuote::all();
   }
 
 }

@@ -1,0 +1,17 @@
+.header {
+    margin-top: -20px;
+    margin-bottom: 20px;
+    padding: 20px 20px 0 20px;
+    border-bottom: 1px solid lighten($brand-gray, 30%);
+    background-color: lighten($body-bg, 1%);
+    .header-title {
+        h1 {
+            font-size: 30px;
+            font-weight: normal;
+            margin: 0 0 20px 0;
+        }
+    }
+    .header-buttons {
+        text-align: right;
+    }
+}

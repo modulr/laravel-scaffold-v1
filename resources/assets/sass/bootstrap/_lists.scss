@@ -1,0 +1,38 @@
+.list-group {
+    overflow-y: auto;
+    .list-item {
+        height: 90px;
+        transition: .2s all ease;
+        background-color: white;
+        padding: 15px 30px;
+        border: 1px solid rgba(77,82,89,0.07);
+        &:hover {
+            background-color: $hovered;
+        }
+        .details {
+            img {
+                width: 60px;
+                float: left;
+                margin-right: 20px;
+                border-radius: 100%;
+            }
+            p{
+                margin-bottom: 5px;
+                font-weight: bold;
+                font-size: 16px;
+                color: $brand-primary;
+                .text-muted {
+                    font-size: 12px;
+                }
+            }
+        }
+        .actions {
+            margin-top: 12px;
+            .dropdown {
+                i {
+                    color: $brand-gray;
+                }
+            }
+        }
+    }
+}

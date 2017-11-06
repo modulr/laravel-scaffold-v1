@@ -22,6 +22,5 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'avatar' => 'avatar.png',
         'active' => true,
         'remember_token' => str_random(10),
-        'role_id' => 2,
     ];
 });

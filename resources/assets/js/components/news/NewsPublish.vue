@@ -1,23 +1,25 @@
 <template>
     <div class="news">
-        <div class="panel panel-default">
+        <!-- New Item -->
+        <div class="panel panel-default news-publish"
+             v-if="user.hasPermission['create-news']">
             <div class="panel-body">
                 <div class="form-group" :class="{'has-error': error.title}">
                     <textarea rows="2" class="form-control" placeholder="What are you thinking?"
-                        v-model="newsItem.title" autofocus></textarea>
+                        v-model="newItem.title" autofocus></textarea>
                     <small class="help-block" v-if="error.title">{{error.title[0]}}</small>
                 </div>
                 <div class="form-group" :class="{'has-error': error.images}">
-                    <dropzone id="myVueDropzone" ref="myVueDropzone" v-show="newsItem.type == 2"
-                        url="/news/upload/temp" :use-font-awesome=true
+                    <dropzone id="myVueDropzone" ref="myVueDropzone" v-show="newItem.type == 2"
+                        url="/news/upload/temp"
                         :use-custom-dropzone-options=true :dropzoneOptions="dzOptions"
-                        v-on:vdropzone-success="uploadSuccess">
+                        v-on:vdropzone-success="uploadImage">
                     </dropzone>
                     <small class="help-block" v-if="error.images">{{error.images[0]}}</small>
                 </div>
                 <div class="form-group" :class="{'has-error': error.video}">
                     <input type="url" class="form-control" placeholder="Insert Youtube video url"
-                        v-model="newsItem.video" v-show="newsItem.type == 3">
+                        v-model="newItem.video" v-show="newItem.type == 3">
                     <small class="help-block" v-if="error.video">{{error.video[0]}}</small>
                 </div>
                 <div class="row">
@@ -33,7 +35,7 @@
                         </a>
                     </div>
                     <div class="col-xs-6 text-right">
-                        <button type="button" class="btn btn-primary" @click="store">Publish</button>
+                        <button type="button" class="btn btn-primary" @click="storeNews">Publish</button>
                     </div>
                 </div>
             </div>
@@ -43,19 +45,19 @@
 
 <script>
     import Dropzone from 'vue2-dropzone';
-
     import EventBus from './event-bus';
 
     export default {
         data () {
             return {
-                newsItem: {
+                user: Laravel.user,
+                error: {},
+                newItem: {
                     type: 1
                 },
-                error: {},
                 dzOptions: {
                     headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                    acceptedFileTypes: '.jpg,.jpeg,.png'
+                    acceptedFileTypes: '.jpg,.jpeg,.png',
                 },
             }
         },
@@ -63,14 +65,13 @@
             Dropzone,
         },
         methods: {
-            // crud
-            store: function (e) {
+            storeNews: function (e) {
                 var btn = $(e.target).button('loading')
-                axios.post('/news/store', this.newsItem)
+                axios.post('/news/store', this.newItem)
                 .then(response => {
                     EventBus.$emit('add-news', response.data)
                     //this.news.unshift(response.data);
-                    this.newsItem = {
+                    this.newItem = {
                         type: 1
                     };
                     this.error = {};
@@ -82,17 +83,15 @@
                     var btn = $(e.target).button('reset')
                 });
             },
-            uploadSuccess: function(file, response){
-                if (!this.newsItem.images)
-                    this.newsItem.images = [];
+            uploadImage: function(file, response){
+                if (!this.newItem.images)
+                    this.newItem.images = [];
 
-                this.newsItem.images.push(response);
+                this.newItem.images.push(response);
             },
-            // Others
             toogleType: function (type) {
-                if (this.newsItem.type != type) {
-                    this.newsItem.type = type;
-                }
+                if (this.newItem.type != type)
+                    this.newItem.type = type;
             },
         }
     }

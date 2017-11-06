@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Models\Profile\ProfilePersonal;
+use App\Models\Profile\ProfileWork;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -75,6 +77,14 @@ class RegisterController extends Controller
 
         $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
         Storage::put('avatars/'.$user->id.'/avatar.png', $avatar);
+
+        ProfilePersonal::create([
+            'user_id' => $user->id
+        ]);
+
+        ProfileWork::create([
+            'user_id' => $user->id
+        ]);
 
         return $user;
     }

@@ -3,7 +3,7 @@
         <div class="panel-body">
             <!-- User -->
             <div class="text-center">
-                <img :src="user.avatar_url" class="img-circle">
+                <img class="avatar-md" :src="user.avatar_url">
                 <p class="lead">{{user.name}}</p>
                 <small class="text-muted">{{user.email}}</small>
             </div>

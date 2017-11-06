@@ -15,6 +15,9 @@
 // sweetalert
 @import "node_modules/sweetalert/dev/sweetalert";
 
+// swiper
+@import "node_modules/swiper/dist/css/swiper";
+
 // vue-notify
 @import "~vue-snotify/styles/material";
 
@@ -24,20 +27,36 @@
 // Bootswatch Paper
 @import "node_modules/bootswatch/paper/_bootswatch";
 
-// General
-@import 'navbar';
-@import 'content';
-@import 'panel';
-@import 'tables';
-@import 'modals';
+// Bootstrap
+@import 'bootstrap/breadcrumb';
+@import 'bootstrap/content';
+@import 'bootstrap/forms';
+@import 'bootstrap/lists';
+@import 'bootstrap/modals';
+@import 'bootstrap/navbar';
+@import 'bootstrap/navs';
+@import 'bootstrap/tables';
+@import 'bootstrap/panels';
 
-@import 'auth';
-@import 'users';
-@import 'profile';
-@import 'dashboard';
-@import 'news';
-@import 'contacts';
-@import 'files';
-@import 'tasks';
-@import 'projects';
-@import 'opportunities';
+// Modules
+@import 'modules/auth';
+@import 'modules/contacts';
+@import 'modules/customers';
+@import 'modules/dashboard';
+@import 'modules/files';
+@import 'modules/news';
+@import 'modules/opportunities';
+@import 'modules/profile';
+@import 'modules/projects';
+@import 'modules/quotes';
+@import 'modules/tasks';
+@import 'modules/events';
+
+// Components
+@import 'components/aside';
+@import 'components/actionbar';
+@import 'components/init-message';
+@import 'components/header';
+@import 'components/filters';
+@import 'components/widgets';
+@import 'components/vue-clip';

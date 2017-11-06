@@ -179,6 +179,7 @@ return [
 
         Intervention\Image\ImageServiceProvider::class,
         Laravolt\Avatar\ServiceProvider::class,
+        Laratrust\LaratrustServiceProvider::class,
 
     ],
 
@@ -231,6 +232,7 @@ return [
 
         'Image' => Intervention\Image\Facades\Image::class,
         'Avatar'    => Laravolt\Avatar\Facade::class,
+        'Laratrust'   => Laratrust\LaratrustFacade::class,
 
     ],
 

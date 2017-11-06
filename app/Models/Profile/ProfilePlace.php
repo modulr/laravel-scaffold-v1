@@ -9,12 +9,14 @@ class ProfilePlace extends Model
 {
     use SoftDeletes;
 
+    protected $dates = ['deleted_at'];
+
     protected $fillable = [
         'user_id', 'place', 'currently', 'description',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\User::class);
     }
 }

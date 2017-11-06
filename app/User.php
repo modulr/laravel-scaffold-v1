@@ -6,9 +6,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Storage;
+use Laratrust\Traits\LaratrustUserTrait;
 
 class User extends Authenticatable
 {
+    use LaratrustUserTrait;
     use Notifiable;
 
     use SoftDeletes;
@@ -21,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar', 'active', 'role_id',
+        'name', 'email', 'password', 'avatar', 'active', 'group_id',
     ];
 
     /**
@@ -33,11 +35,24 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected $appends = ['avatar_url'];
+    protected $appends = ['avatar_url', 'hasPermission'];
 
     public function getAvatarUrlAttribute()
     {
         return Storage::url('avatars/'.$this->id.'/'.$this->avatar);
+    }
+
+    public function getHasPermissionAttribute()
+    {
+        $permissions = [];
+        foreach (Permission::all() as $permission) {
+            if ($this->can($permission->name)) {
+                $permissions[$permission->name] = true;
+            } else {
+                $permissions[$permission->name] = false;
+            }
+        }
+        return $permissions;
     }
 
     public function profilePersonal()
@@ -72,17 +87,17 @@ class User extends Authenticatable
 
     public function news()
     {
-        return $this->hasMany(News::class);
+        return $this->hasMany(\App\Models\News\News::class);
     }
 
     public function tasks()
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(\App\Models\Tasks\Task::class);
     }
 
-    public function role()
+    public function events()
     {
-        return $this->belongsTo(\App\Models\Users\Role::class);
+        return $this->hasMany(\App\Models\Events\Event::class);
     }
 
     public function project()

@@ -9,6 +9,9 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+Vue.use(require('vue-moment'));
+Vue.use(require('./filters/pretty-bytes'));
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -18,12 +21,12 @@ window.Vue = require('vue');
 // Auth
 Vue.component('carousel', require('./components/auth/Carousel.vue'));
 // Layout
-Vue.component('navbar', require('./components/Navbar.vue'));
-Vue.component('notifications', require('./components/Notifications.vue'));
+Vue.component('navbar', require('./components/layout/Navbar.vue'));
+Vue.component('notifications', require('./components/layout/Notifications.vue'));
 // Users
 Vue.component('users', require('./components/users/Users.vue'));
 Vue.component('roles', require('./components/users/Roles.vue'));
-// Profile REad
+// Profile Read
 Vue.component('profileSidebar', require('./components/profile/read/Sidebar.vue'));
 Vue.component('profile', require('./components/profile/read/Profile.vue'));
 Vue.component('profileWork', require('./components/profile/read/Work.vue'));
@@ -42,21 +45,32 @@ Vue.component('profilePasswordEdit', require('./components/profile/edit/Password
 Vue.component('newsPublish', require('./components/news/NewsPublish.vue'));
 Vue.component('newsList', require('./components/news/NewsList.vue'));
 // Tasks
-Vue.component('tasks', require('./components/Tasks.vue'));
+Vue.component('tasks', require('./components/tasks/Tasks.vue'));
 // Contacts
-Vue.component('contacts', require('./components/Contacts.vue'));
+Vue.component('contacts', require('./components/contacts/Contacts.vue'));
+Vue.component('contacts-widget', require('./components/contacts/ContactsWidget.vue'));
 // Files
 Vue.component('files', require('./components/files/Files.vue'));
 // Projects & Opportunities
 Vue.component('projects', require('./components/projects/Projects.vue'));
 Vue.component('opportunities', require('./components/opportunities/Opportunities.vue'));
+Vue.component('opportunity', require('./components/opportunities/Opportunity.vue'));
 //Quotes
-Vue.component('quotes', require('./components/Quotes.vue'));
+Vue.component('quotes', require('./components/quotes/Quotes.vue'));
+// Customers
+Vue.component('customers', require('./components/customers/Customers.vue'));
+Vue.component('clients', require('./components/customers/Clients.vue'));
+// Employees
+Vue.component('employees', require('./components/employees/Employees.vue'));
+// Widgets
+Vue.component('opportunitiesWidget', require('./components/widgets/OpportunitiesWidget.vue'));
+Vue.component('quotesWidget', require('./components/widgets/QuotesWidget.vue'));
+Vue.component('projectsWidget', require('./components/widgets/ProjectsWidget.vue'));
+Vue.component('files-widget', require('./components/files/FilesWidget.vue'));
+// Events
+Vue.component('events', require('./components/events/Events.vue'));
+Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
 
 const app = new Vue({
-    el: '#app',
-    data: {
-        user: Laravel.user,
-        guest: Laravel.guest,
-    },
+    el: '#app'
 });

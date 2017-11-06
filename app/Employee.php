@@ -3,13 +3,19 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Employee extends Model
-{    
-    protected $fillable = ['name', 'role'];
+{
+
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
+
+    protected $fillable = ['name', 'email', 'phone'];
 
     public function quote()
     {
         return $this->hasOne(Quote::class);
     }
+    
 }

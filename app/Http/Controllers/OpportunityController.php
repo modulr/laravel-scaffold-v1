@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Project;
 use App\Priority;
-use App\Contact;
+use App\Client;
+use App\Customer;
+use App\Models\Lists\ListArea;
+use DB;
 
 class OpportunityController extends Controller
 {
@@ -21,9 +24,16 @@ class OpportunityController extends Controller
         return view('opportunities.opportunities', ['breadcrumb' => $request->path()]);
     }
 
+    public function show(Request $request, $id)
+    {
+        $opportunity = Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'quote.designer', 'quote.salesman', 'quote.status', 'quote.currency', 'area')->where('status', 1)->find($id);
+
+        return view('opportunities.opportunity', ['breadcrumb' => $request->path(), 'opportunity' => $opportunity]);
+    }
+
     public function all()
     {
-        return Project::with('owner', 'priority', 'contact', 'contact.customer')->where('status', 1)->get();
+        return Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'area', 'quote.currency')->where('status', 1)->get();
     }
 
     /**
@@ -48,6 +58,9 @@ class OpportunityController extends Controller
             'name' => 'required|string',
             'quotes' => 'numeric',
             'start_date' => 'required|date',
+            'priority' => 'required',
+            'area' => 'required',
+            'client' => 'required',
         ]);
 
         $opportunity = Project::create([
@@ -58,8 +71,9 @@ class OpportunityController extends Controller
             'description' => $request->description,
             'owner_id' => Auth::id(),
             'priority_id' => $request->priority,
-            'contact_id' => $request->contact,
-        ])->load('owner', 'priority', 'contact', 'contact.customer');
+            'client_id' => $request->client,
+            'area_id' => $request->area,
+        ])->load('owner', 'priority', 'client', 'client.customer', 'area');
 
         return $opportunity;
     }
@@ -87,9 +101,13 @@ class OpportunityController extends Controller
             $q->priority_id = $request->priority['id'];
         }
 
+        if ($q->area_id != $request->area) {
+            $q->area_id = $request->area['id'];
+        }
+
         $q->save();
 
-        return $q->load('owner', 'priority', 'contact', 'contact.customer');
+        return $q->load('owner', 'priority', 'client', 'client.customer', 'area');
     }
 
     /**
@@ -104,7 +122,7 @@ class OpportunityController extends Controller
     }
 
     /**
-     * Get a list of oportunity priorities.
+     * Get a list of opportunity priorities.
      *
      * @return \Illuminate\Http\Response
      */
@@ -114,13 +132,47 @@ class OpportunityController extends Controller
      }
 
     /**
-     * Get a list of oportunity contacts.
+     * Get a list of opportunity clients.
      *
      * @return \Illuminate\Http\Response
      */
-     public function listContacts()
+     public function listClients()
      {
-        return Contact::with('customer')->get();
+        return Client::with('customer')->get();
+     }
+
+     /**
+      * Get a list of opportunity customers.
+      *
+      * @return \Illuminate\Http\Response
+      */
+     public function listCustomers()
+     {
+        return Customer::with('client')->get();
+     }
+
+     /**
+      * Get a list of owners.
+      *
+      * @return \Illuminate\Http\Response
+      */
+     public function listOwners()
+     {
+        return DB::table('projects')
+                    ->join('users', 'projects.owner_id', '=', 'users.id')
+                    ->select('users.name')
+                    ->distinct()
+                    ->get();
+     }
+
+     /**
+      * Get a list of opportunity areas.
+      *
+      * @return \Illuminate\Http\Response
+      */
+     public function listAreas()
+     {
+         return ListArea::all();
      }
 
      public function makeProject($id)

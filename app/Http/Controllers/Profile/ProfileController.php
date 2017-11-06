@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 use App\user;
 use App\Models\Profile\ProfilePersonal;
 use App\Models\Profile\ProfileContact;
@@ -16,7 +15,7 @@ use App\Models\Profile\ProfileWork;
 
 class ProfileController extends Controller
 {
-    public function profile(Request $request, $id)
+    public function profile($id)
     {
         $user = User::with(
             'profilePersonal.gender',
@@ -29,10 +28,10 @@ class ProfileController extends Controller
             'profileWork.position'
             )->find($id);
 
-        return view('profile.profile', ['breadcrumb' => $request->path(), 'user' => $user]);
+        return view('profile.profile', ['user' => $user]);
     }
 
-    public function profileEdit(Request $request, $id)
+    public function profileEdit($id)
     {
         $user = User::with(
             'profilePersonal.gender',
@@ -45,7 +44,7 @@ class ProfileController extends Controller
             'profileWork.position'
             )->find($id);
 
-        return view('profile.edit.profile', ['breadcrumb' => $request->path(), 'user' => $user]);
+        return view('profile.edit.profile', ['user' => $user]);
     }
 
     public function updatePersonal(Request $request, $id)
@@ -172,7 +171,7 @@ class ProfileController extends Controller
             'profileWork.boss'
             )->find($id);
 
-        return view('profile.work', ['breadcrumb' => $request->path(), 'user' => $user]);
+        return view('profile.work', ['user' => $user]);
     }
 
     public function workEdit(Request $request, $id)
@@ -184,7 +183,7 @@ class ProfileController extends Controller
             'profileWork.boss'
             )->find($id);
 
-        return view('profile.edit.work', ['breadcrumb' => $request->path(), 'user' => $user]);
+        return view('profile.edit.work', ['user' => $user]);
     }
 
     public function updateWork(Request $request, $id)
@@ -212,6 +211,6 @@ class ProfileController extends Controller
     {
         $user = User::find($id);
 
-        return view('profile.edit.password', ['breadcrumb' => $request->path(), 'user' => $user]);
+        return view('profile.edit.password', ['user' => $user]);
     }
 }

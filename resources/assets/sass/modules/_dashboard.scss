@@ -1,0 +1,10 @@
+.dashboard {
+    .panel-dashboard {
+        > .panel-heading {
+            a {
+                font-size: 14px;
+                color: $orange !important;
+            }
+        }
+    }
+}

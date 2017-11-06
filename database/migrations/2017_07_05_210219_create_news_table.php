@@ -24,6 +24,16 @@ class CreateNewsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('news_images', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('basename');
+            $table->string('extension');
+            $table->integer('news_id')->unsigned();
+            $table->foreign('news_id')->references('id')->on('news');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -33,6 +43,7 @@ class CreateNewsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('news_images');
         Schema::dropIfExists('news');
     }
 }

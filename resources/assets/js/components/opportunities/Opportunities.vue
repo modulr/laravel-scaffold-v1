@@ -20,6 +20,43 @@
           <!-- List -->
           <div class="row" v-if="opportunities.length != 0">
               <div class="col-md-12">
+                  <div class="filters">
+                      <div class="sort col-xs-2">
+                          <select class="form-control" required v-model="sort.customers">
+                              <option value="" disabled selected>Customer</option>
+                              <option v-for="option in list.customers" :value="option.id">
+                                  {{ option.name }}
+                              </option>
+                              <option value="">None</option>
+                          </select>
+                      </div>
+                      <div class="sort col-xs-2">
+                          <select class="form-control" required v-model="sort.client">
+                              <option value="" disabled selected>Client</option>
+                              <option v-for="option in list.clients" :value="option.id">
+                                  {{ option.name }}
+                              </option>
+                              <option value="">None</option>
+                          </select>
+                      </div>
+                      <div class="sort col-xs-2">
+                          <select class="form-control" required v-model="sort.area">
+                              <option value="" disabled selected>Region</option>
+                              <option v-for="option in list.areas" :value="option.id">
+                                  {{ option.title }}
+                              </option>
+                              <option value="">None</option>
+                          </select>
+                      </div>
+                      <div class="search col-xs-6">
+                          <div class="col-xs-1">
+                              <i class="mdi mdi-search mdi-2x"></i>
+                          </div>
+                          <div class="col-xs-8">
+                              <input type="text" class="form-control" placeholder="Search" v-model="search">
+                          </div>
+                      </div>
+                  </div>
                   <table class="table table-hover">
                       <thead>
                           <tr>
@@ -27,20 +64,24 @@
                               <th>Name</th>
                               <th>Registered Date</th>
                               <th>Description</th>
+                              <th>Total Amount</th>
                               <th>Owner</th>
-                              <th>Contact</th>
+                              <th>Client</th>
                               <th>Customer</th>
-                              <th>Piority</th>
+                              <th>Area</th>
+                              <th>Priority</th>
                               <th></th>
                           </tr>
                       </thead>
                       <tbody>
-                          <tr v-for="(item, index) in opportunities">
+                          <tr v-for="(item, index) in filteredOpportunities">
                               <td>
                                   {{item.id}}
                               </td>
                               <td>
-                                  {{item.name}}<br>
+                                  <a :href="'/opportunities/'+item.id+'/get'">
+                                      <strong>{{item.name}}</strong>
+                                  </a>
                               </td>
                               <td>
                                   {{item.start_date | date}}<br>
@@ -49,27 +90,46 @@
                                   {{item.description}}<br>
                               </td>
                               <td>
+                                  <span>
+                                      {{ totalQuotes(item.quote) | currency }}
+                                  </span>
+                              </td>
+                              <td>
                                   <a v-bind:href="'/profile/'+item.owner.id">{{item.owner.name}}</a>
                               </td>
                               <td>
-                                  {{item.contact.name}}
+                                <span v-if="item.client != null">{{item.client.name}}</span>
                               </td>
                               <td>
-                                  {{item.contact.customer.name}}
+                                  <span v-if="item.client != null">
+                                      {{item.client.customer.name}}
+                                  </span>
+                              </td>
+                              <td>
+                                  <span v-if="item.area">
+                                      {{item.area.title}}
+                                  </span>
                               </td>
                               <td>
                                   <span class="chip" :class="'priority-'+item.priority.name">
                                       {{item.priority.name}}
                                   </span>
                               </td>
-                              <td class="text-right col-sm-2">
-                                  <div class="btn-group">
-                                      <a href="#" class="btn btn-default btn-sm" @click.prevent="edit(item, index)" v-tooltip:top="'Edit'">
-                                          <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
+                              <td class="text-right">
+                                  <div class="dropdown">
+                                      <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                          <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                       </a>
-                                      <a href="#" class="btn btn-default btn-sm" @click.prevent="makeProject(item.id, index)" v-tooltip:top="'Make project'">
-                                          <i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>
-                                      </a>
+                                      <ul class="dropdown-menu dropdown-menu-right">
+                                          <li>
+                                              <a href="#" @click.prevent="edit(item, index)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                Edit
+                                              </a>
+                                              <!-- <a href="#"><i class="fa fa-file-pdf-o"></i>
+                                                Create Quote
+                                              </a> -->
+                                          </li>
+                                      </ul>
                                   </div>
                               </td>
                           </tr>
@@ -78,7 +138,7 @@
               </div>
           </div>
           <!-- Create opportunity -->
-          <div class="modal fade" id="modalAdd">
+          <div class="modal right fade" id="modalAdd">
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                       <div class="modal-header">
@@ -88,60 +148,72 @@
                       <div class="modal-body">
                           <form class="form-horizontal">
                               <div class="form-group" :class="{'has-error': error.name}">
-                                  <label class="col-sm-2 control-label">Name *</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label required">Name</label>
+                                  <div class="col-sm-9">
                                       <input type="text" class="form-control input-lg" placeholder="Name" required v-model="opportunity.name">
                                       <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.start_date}">
-                                  <label class="col-sm-2 control-label">Start Date *</label>
-                                  <div class="col-sm-10">
-                                      <input type="datetime-local" class="form-control" v-bind:placeholder="opportunity.start_date" required v-model="opportunity.start_date">
+                                  <label class="col-sm-3 control-label required">Start Date</label>
+                                  <div class="col-sm-9">
+                                      <input type="date" class="form-control" v-bind:placeholder="opportunity.start_date" required v-model="opportunity.start_date">
                                       <span class="help-block" v-if="error.start_date">{{error.start_date[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.description}">
-                                  <label class="col-sm-2 control-label">Description</label>
-                                  <div class="col-sm-10">
-                                      <textarea type="text" class="form-control" placeholder="Description" required v-model="opportunity.description">
+                                  <label class="col-sm-3 control-label">Description</label>
+                                  <div class="col-sm-9">
+                                      <textarea type="text" class="form-control" placeholder="Description" v-model="opportunity.description">
                                       </textarea>
-                                      <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
+                                      <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.priority}">
-                                  <label class="col-sm-2 control-label">Priority</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label required">Priority</label>
+                                  <div class="col-sm-9">
                                       <select class="form-control" required v-model="opportunity.priority">
                                           <option v-for="option in list.priorities" :value="option.id">
                                               {{ option.name }}
                                           </option>
                                       </select>
-                                      <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
+                                      <span class="help-block" v-if="error.priority">{{error.priority[0]}}</span>
                                   </div>
                               </div>
-                              <div class="form-group" :class="{'has-error': error.contact}">
-                                  <label class="col-sm-2 control-label">Contact</label>
-                                  <div class="col-sm-10">
-                                      <select class="form-control" required v-model="opportunity.contact">
-                                          <option v-for="option in list.contacts" :value="option.id">
+                              <div class="form-group" :class="{'has-error': error.area}">
+                                  <label class="col-sm-3 control-label required">Area</label>
+                                  <div class="col-sm-9">
+                                      <select class="form-control" required v-model="opportunity.area">
+                                          <option v-for="option in list.areas" :value="option.id">
+                                              {{ option.title }}
+                                          </option>
+                                      </select>
+                                      <span class="help-block" v-if="error.area">{{error.area[0]}}</span>
+                                  </div>
+                              </div>
+                              <div class="form-group" :class="{'has-error': error.client}">
+                                  <label class="col-sm-3 control-label required">Client</label>
+                                  <div class="col-sm-9">
+                                      <select class="form-control" required v-model="opportunity.client">
+                                          <option v-for="option in list.clients" :value="option.id">
                                               {{option.name}}, {{option.customer.name}}
                                           </option>
                                       </select>
-                                      <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
+                                      <span class="help-block" v-if="error.client">{{error.client[0]}}</span>
+                                      <span>Or <a :href="'/clients'">create a new client.</a></span>
                                   </div>
                               </div>
                           </form>
                       </div>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                          <button type="button" class="btn btn-success" @click="store">Add</button>
+                          <button type="button" class="btn btn-primary" @click="store">Add</button>
                       </div>
                   </div>
               </div>
           </div>
           <!-- Edit opportunity -->
-          <div class="modal fade" id="modalEdit">
+          <div class="modal right fade" id="modalEdit">
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                       <div class="modal-header">
@@ -151,41 +223,53 @@
                       <div class="modal-body">
                           <form class="form-horizontal">
                               <div class="form-group" :class="{'has-error': error.name}">
-                                  <label class="col-sm-2 control-label">Name</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label required">Name</label>
+                                  <div class="col-sm-9">
                                       <input type="text" class="form-control input-lg" placeholder="Name" required v-model="opportunity.name">
                                         <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.description}">
-                                  <label class="col-sm-2 control-label">Description</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label">Description</label>
+                                  <div class="col-sm-9">
                                       <textarea type="text" class="form-control input-lg" placeholder="Description" required v-model="opportunity.description">
                                       </textarea>
                                       <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.priority}">
-                                  <label class="col-sm-2 control-label">Priority</label>
-                                  <div class="col-sm-10" v-if="list.priorities && opportunity.priority">
+                                  <label class="col-sm-3 control-label required">Priority</label>
+                                  <div class="col-sm-9" v-if="list.priorities && opportunity.priority">
                                       <select class="form-control" required v-model="opportunity.priority.id">
                                           <option v-for="option in list.priorities" :value="option.id">
                                               {{ option.name }}
                                           </option>
                                       </select>
+                                       <span class="help-block" v-if="error.priority">{{error.priority[0]}}</span>
+                                  </div>
+                              </div>
+                              <div class="form-group" :class="{'has-error': error.area}">
+                                  <label class="col-sm-3 control-label required">Area</label>
+                                  <div class="col-sm-9" v-if="list.areas && opportunity.area">
+                                      <select class="form-control" required v-model="opportunity.area.id">
+                                          <option v-for="option in list.areas" :value="option.id">
+                                              {{ option.title }}
+                                          </option>
+                                      </select>
+                                       <span class="help-block" v-if="error.area">{{error.area[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group">
-                                  <label class="col-sm-2 control-label">Owner</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label required">Owner</label>
+                                  <div class="col-sm-9">
                                       <p class="form-control-static">
                                           <small class="text-mute" v-if="opportunity.owner">{{opportunity.owner.name}}</small>
                                       </p>
                                   </div>
                               </div>
                               <div class="form-group">
-                                  <label class="col-sm-2 control-label">Registered</label>
-                                  <div class="col-sm-10">
+                                  <label class="col-sm-3 control-label required">Registered</label>
+                                  <div class="col-sm-9">
                                       <p class="form-control-static">
                                           <small class="text-mute">{{opportunity.start_date | date}}</small>
                                       </p>
@@ -211,18 +295,78 @@
 import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
+import Vue2Filters from 'vue2-filters';
 export default {
     data() {
         return {
             loading: false,
+            newCustomer: false,
             opportunities: [],
-            opportunity: {},
+            opportunity: {
+                area: {},
+            },
             search: '',
+            sort: {
+                customers: '',
+                client: '',
+                area: '',
+                total: '',
+            },
             error: {},
             list: {
                 priorities: [],
-                contacts: [],
+                clients: [],
+                customers: [],
+                areas: []
             }
+        }
+    },
+    computed: {
+        filteredOpportunities: function() {
+            var filteredArray = this.opportunities,
+                sort_customers = this.sort.customers,
+                sort_client = this.sort.client,
+                sort_area = this.sort.area,
+                search = this.search;
+
+            if(sort_customers) {
+                filteredArray = filteredArray.filter(function (item) {
+                    if (item.client.customer_id === sort_customers) {
+                        return item;
+                    }
+                });
+            }
+
+            if(sort_client) {
+                filteredArray = filteredArray.filter(function (item) {
+                    if (item.client.id === sort_client) {
+                        return item;
+                    }
+                });
+            }
+
+            if(sort_area) {
+                filteredArray = filteredArray.filter(function (item) {
+                    if (item.area.id === sort_area) {
+                        return item;
+                    }
+                });
+            }
+
+            if(search) {
+                search = search.trim().toLowerCase();
+
+                filteredArray = filteredArray.filter(function(item){
+                    console.log(item);
+                    return Object.keys(item).some(function (key) {
+                        return String(item[key]).toLowerCase().indexOf(search) !== -1
+                    })
+                })
+            }
+
+
+            return filteredArray;
+
         }
     },
     components: {
@@ -233,7 +377,7 @@ export default {
     },
     filters: {
         date(date) {
-            return moment(date).format('LLL');
+            return moment(date).format('LL');
         }
     },
     methods: {
@@ -241,19 +385,27 @@ export default {
             this.loading = true;
             axios.get('/opportunities/all')
                 .then(response => {
+                    axios.get('/opportunities/list/priorities')
+                    .then(response => {
+                        this.list.priorities = response.data;
+                    });
+                    axios.get('/opportunities/list/clients')
+                    .then(response => {
+                        this.list.clients = response.data;
+                    });
+                    axios.get('/opportunities/list/customers')
+                    .then(response => {
+                        this.list.customers = response.data;
+                    });
+                    axios.get('/opportunities/list/areas')
+                    .then(response => {
+                        this.list.areas = response.data;
+                    });
                     this.opportunities = response.data;
                     this.loading = false;
                 });
         },
         add: function() {
-            axios.get('/opportunities/list/priorities')
-            .then(response => {
-                this.list.priorities = response.data;
-            });
-            axios.get('/opportunities/list/contacts')
-            .then(response => {
-                this.list.contacts = response.data;
-            });
             this.opportunity = {
                 name: '',
                 start_date: '',
@@ -274,16 +426,13 @@ export default {
                 })
                 .catch(error => {
                     this.error = error.response.data;
+                    console.log(error.response.data);
                     var btn = $(e.target).button('reset')
                   });
         },
         edit: function (opportunity, index) {
-            axios.get('/opportunities/list/priorities')
-            .then(response => {
-                this.list.priorities = response.data;
-                this.opportunity = _.clone(opportunity);
-                this.opportunity.index = index;
-            });
+            this.opportunity = _.clone(opportunity);
+            this.opportunity.index = index;
             $('#modalEdit').modal('show');
         },
         update: function (e) {
@@ -331,6 +480,7 @@ export default {
                 });
             });
         },
+<<<<<<< HEAD
         makeProject: function (id, index) {
             var self = this;
             swal({
@@ -361,6 +511,22 @@ export default {
                 });
             });
           },
+=======
+        totalQuotes (quotes) {
+          let total = 0.00
+          if (quotes) {
+              if(quotes.length > 0)
+                quotes.forEach(function (item, index) {
+                  if (item.currency.id == 2) {
+                      total += item.amount * item.currency.exchange_rate;
+                  } else {
+                      total += item.amount
+                  }
+                })
+          }
+          return total
+        }
+>>>>>>> ensicom
     }
 }
 </script>
