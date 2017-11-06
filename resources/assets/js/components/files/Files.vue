@@ -215,10 +215,9 @@
                         </div>
                     </div>
                     <!-- Init Message  -->
-                    <div class="text-center" v-if="files.length == 0">
-                        <br>
-                        <i class="fa fa-folder-o fa-5x text-muted" aria-hidden="true"></i>
-                        <p class="lead text-muted">Upload or create your first file/folder!!</p>
+                    <div class="init-message" v-if="files.length == 0">
+                        <i class="mdi mdi-folder" aria-hidden="true"></i>
+                        <p class="lead">Upload or create your first file/folder!!</p>
                     </div>
                 </div>
             </div>
@@ -319,7 +318,7 @@ export default {
             editFile: {},
             error: {},
             search: '',
-            layout: 'grid',
+            layout: 'list',
             dzOptions: {
                 acceptedFileTypes: '.jpg,.jpeg,.png,.pdf',
                 headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
@@ -422,6 +421,7 @@ export default {
         },
         uploadSuccess: function (file, response) {
             this.files.push(response);
+            this.$refs.myVueDropzone.removeAllFiles();
             $('#myModalFile').modal('hide');
         },
         toggleLayout: function (layout) {

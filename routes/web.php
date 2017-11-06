@@ -123,7 +123,7 @@ Route::middleware('auth')->group(function () {
 
     // Files
     Route::group(['namespace' => 'Files'], function() {
-        Route::get('files/{folderId?}', 'FileController@view');
+        Route::get('/files/{folderId?}', 'FileController@view');
         Route::group(['prefix' => 'file'], function() {
             Route::get('/byUser/{parentId?}', 'FileController@byUser');
             Route::post('/store', 'FileController@store');
@@ -191,4 +191,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/widget/getQuoteInsights', 'WidgetController@getQuoteInsights');
     Route::get('/widget/opportunity/charts', 'WidgetController@opportunityCharts');
     Route::get('/widget/quote/charts', 'WidgetController@quoteCharts');
+    // Events
+    Route::group(['namespace' => 'Events'], function() {
+        Route::get('/events', 'EventController@index');
+        Route::group(['prefix' => 'event'], function() {
+            Route::get('/all', 'EventController@all');
+            Route::post('/store', 'EventController@store');
+            Route::put('/update/{id}', 'EventController@update');
+            Route::delete('/destroy/{id}', 'EventController@destroy');
+        });
+    });
+
 });

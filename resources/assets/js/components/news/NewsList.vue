@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="news">
         <!-- List -->
         <div class="panel panel-default" v-for="(item, index) in news">
             <div class="panel-heading">
@@ -18,7 +18,7 @@
                 <p :class="{'lead': item.title.length <= 50}" v-if="item.title">{{item.title}}</p>
                 <swiper :options="swiperOption" v-if="item.type == 2">
                     <swiper-slide v-for="image in item.images" :key="image.id">
-                        <img class="img-responsive" :src="image.url">
+                        <img class="img-responsive center-block" :src="image.url">
                     </swiper-slide>
                     <div class="swiper-pagination" slot="pagination"></div>
                 </swiper>
@@ -39,10 +39,9 @@
         </div>
 
         <!-- Init Message  -->
-        <div class="text-center" v-if="news.length == 0">
-            <br>
-            <i class="fa fa-bullhorn fa-5x text-muted" aria-hidden="true"></i>
-            <p class="lead text-muted">Publish the first news!!</p>
+        <div class="init-message" v-if="news.length == 0">
+            <i class="mdi mdi-whatshot" aria-hidden="true"></i>
+            <p class="lead">Publish the first news!!</p>
         </div>
 
         <!-- Loading -->

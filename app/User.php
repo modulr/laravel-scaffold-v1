@@ -40,6 +40,11 @@ class User extends Authenticatable
         return Storage::url('avatars/'.$this->id.'/'.$this->avatar);
     }
 
+    public function group()
+    {
+        return $this->belongsTo(\App\Models\Users\Group::class);
+    }
+
     public function profilePersonal()
     {
         return $this->hasOne(\App\Models\Profile\ProfilePersonal::class);
@@ -80,9 +85,9 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Tasks\Task::class);
     }
 
-    public function group()
+    public function events()
     {
-        return $this->belongsTo(\App\Models\Users\Group::class);
+        return $this->hasMany(\App\Models\Events\Event::class);
     }
 
     public function project()

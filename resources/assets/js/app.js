@@ -42,9 +42,10 @@ Vue.component('profilePasswordEdit', require('./components/profile/edit/Password
 Vue.component('newsPublish', require('./components/news/NewsPublish.vue'));
 Vue.component('newsList', require('./components/news/NewsList.vue'));
 // Tasks
-Vue.component('tasks', require('./components/Tasks.vue'));
+Vue.component('tasks', require('./components/tasks/Tasks.vue'));
 // Contacts
 Vue.component('contacts', require('./components/contacts/Contacts.vue'));
+Vue.component('contacts-widget', require('./components/contacts/ContactsWidget.vue'));
 // Files
 Vue.component('files', require('./components/files/Files.vue'));
 // Projects & Opportunities
@@ -61,6 +62,10 @@ Vue.component('employees', require('./components/employees/Employees.vue'));
 Vue.component('opportunitiesWidget', require('./components/widgets/OpportunitiesWidget.vue'));
 Vue.component('quotesWidget', require('./components/widgets/QuotesWidget.vue'));
 Vue.component('projectsWidget', require('./components/widgets/ProjectsWidget.vue'));
+Vue.component('files-widget', require('./components/files/FilesWidget.vue'));
+// Events
+Vue.component('events', require('./components/events/Events.vue'));
+Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
 
 const app = new Vue({
     el: '#app',

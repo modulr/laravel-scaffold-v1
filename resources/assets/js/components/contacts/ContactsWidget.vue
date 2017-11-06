@@ -1,81 +1,46 @@
 <template>
     <div>
-        <!-- Header -->
-        <div class="container-fluid header">
+        <!-- Actionbar -->
+        <div class="actionbar">
             <div class="row">
-                <div class="col-xs-6 header-title">
-                    <h1>Contacts</h1>
-                </div>
-                <div class="col-xs-6 header-buttons">
-                    <!-- <a href="#" class="btn btn-success">
-                        <i class="mdi mdi-person-add mdi-lg"></i> New Contact
-                    </a> -->
+                <div class="col-xs-12">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" placeholder="Search" v-model="search">
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="container-fluid contacts">
-            <div class="row">
-                <div class="col-lg-10 col-lg-offset-1">
-                    <!-- Actionbar -->
-                    <div class="actionbar">
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" placeholder="Search" v-model="search">
+        <!-- List -->
+        <div class="row">
+            <!-- Layout list -->
+            <div class="col-md-12 list" v-if="layout == 'list'">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr v-for="contact in filteredContacts">
+                            <td @click="viewContact(contact)">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <img class="avatar-sm" :src="contact.avatar_url">
+                                    </div>
+                                    <div class="media-body">
+                                        <p class="media-heading">{{contact.name}}</p>
+                                        <span class="text-muted">{{contact.email}}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-8 text-right">
-                                <div class="button-group">
-                                    <a href="#" class="btn btn-link" :class="{ 'active': layout == 'list'}"
-                                        @click.prevent="toggleLayout('list')">
-                                        <i class="fa fa-lg fa-list" aria-hidden="true"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-link" :class="{ 'active': layout == 'grid'}"
-                                        @click.prevent="toggleLayout('grid')">
-                                        <i class="fa fa-lg fa-th-large" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- List -->
-                    <div class="row">
-                        <!-- Layout list -->
-                        <div class="col-md-12 list" v-if="layout == 'list'">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                            <tr v-for="contact in filteredContacts">
-                                                <td @click="viewContact(contact)">
-                                                    <div class="media">
-                                                        <div class="media-left">
-                                                            <img class="avatar-sm" :src="contact.avatar_url">
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <p class="media-heading">{{contact.name}}</p>
-                                                            <span class="text-muted">{{contact.email}}</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- layout Grid -->
-                        <div class="col-sm-4 col-lg-3 grid" v-if="layout == 'grid'"
-                             v-for="contact in filteredContacts">
-                            <div class="panel panel-default">
-                                <div class="panel-body" @click="viewContact(contact)">
-                                    <img class="avatar-md" :src="contact.avatar_url">
-                                    <h4 class="media-heading">{{contact.name}}</h4>
-                                    <span class="text-muted">{{contact.email}}</span>
-                                </div>
-                            </div>
-                        </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- layout Grid -->
+            <div class="col-sm-4 col-lg-3 grid" v-if="layout == 'grid'"
+                 v-for="contact in filteredContacts">
+                <div class="panel panel-default">
+                    <div class="panel-body" @click="viewContact(contact)">
+                        <img class="avatar-md" :src="contact.avatar_url">
+                        <h4 class="media-heading">{{contact.name}}</h4>
+                        <span class="text-muted">{{contact.email}}</span>
                     </div>
                 </div>
             </div>

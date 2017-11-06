@@ -1,12 +1,19 @@
 .news {
     .news-publish {
-        margin-top: 20px;
+        //margin-top: 20px;
     }
     .panel-default {
         .panel-heading {
             background: transparent;
             img {
                 margin-right: 10px;
+            }
+        }
+        .panel-body {
+            .swiper-slide {
+                img {
+                    max-height: 400px;
+                }
             }
         }
         .panel-footer {

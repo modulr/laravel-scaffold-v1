@@ -95,6 +95,21 @@
                 margin-right: 5px;
             }
         }
+        ul {
+            padding-bottom: 0;
+            li {
+                &.dropdown-header {
+                    text-align: center;
+                    p {
+                        margin-bottom: 0;
+                    }
+                }
+                &.divider {
+                    margin: 0;
+                }
+            }
+        }
+
     }
 }
 

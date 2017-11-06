@@ -88,11 +88,11 @@
                                     <span>Contacts</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'users'}">
-                                <a href="/users">
-                                    <i class="mdi mdi-people mdi-3x"></i>
+                            <li :class="{'active': activeLink == 'events'}">
+                                <a href="/events">
+                                    <i class="mdi mdi-event mdi-3x"></i>
                                     <br>
-                                    <span>Users</span>
+                                    <span>Events</span>
                                 </a>
                             </li>
                             <li :class="{'active': activeLink == 'opportunities'}">
@@ -123,6 +123,14 @@
                                     <span>Employees</span>
                                 </a>
                             </li>
+                             <hr>
+                            <li :class="{'active': activeLink == 'users'}">
+                                <a href="/users">
+                                    <i class="mdi mdi-people mdi-3x"></i>
+                                    <br>
+                                    <span>Users</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <!-- Notifications -->
@@ -149,10 +157,9 @@
                                     <hr>
                                 </a>
                                 <!-- Init Message  -->
-                                <div class="text-center" v-if="notifications.length == 0">
-                                    <br>
-                                    <i class="fa fa-bell fa-5x text-muted" aria-hidden="true"></i>
-                                    <p class="lead text-muted">Don't have notifications</p>
+                                <div class="init-message" v-if="notifications.length == 0">
+                                    <i class="fa fa-bell" aria-hidden="true"></i>
+                                    <p class="lead">Don't have notifications</p>
                                 </div>
                             </li>
                             <li class="text-center">
@@ -168,7 +175,8 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li class="dropdown-header">
-                                <span class="lead">{{user.name}}</span>
+                                <p class="lead">{{user.name}}</p>
+                                <span>{{user.email}}</span>
                             </li>
                             <li class="divider"></li>
                             <li>
@@ -179,6 +187,17 @@
                             <li>
                                 <a :href="'/profile/'+user.id+'/edit'">
                                     <i class="fa fa-fw fa-pencil"></i> Edit profile
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="https://modulr.slack.com" target="_blank">
+                                    <i class="fa fa-fw fa-question-circle"></i> Help
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://docs.modulr.io" target="_blank">
+                                    <i class="fa fa-fw fa-book"></i> Documentation
                                 </a>
                             </li>
                             <li class="divider"></li>

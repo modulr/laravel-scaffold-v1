@@ -5,7 +5,7 @@
             <input @keyup.enter="storeTask" type="text" class="form-control" placeholder="Add new task" v-model="newTask.title">
         </div>
         <!-- List -->
-        <ul class="list-group">
+        <ul class="list-group" v-if="tasks.length">
             <draggable v-model="tasks" @end="updateOrder" :options="{handle:'.my-handle'}">
                 <li class="list-group-item" v-for="(task, index) in tasks" :key="task.id">
                     <span class="my-handle"><i class="mdi mdi-reorder"></i></span>
@@ -30,6 +30,11 @@
                 </li>
             </draggable>
         </ul>
+        <!-- Init Message -->
+        <div class="init-message" v-else>
+            <i class="mdi mdi-assignment" aria-hidden="true"></i>
+            <p class="lead">Don't exist Tasks... create one!!</p>
+        </div>
     </div>
 </template>
 
