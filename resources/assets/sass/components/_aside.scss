@@ -1,0 +1,20 @@
+.aside {
+    position: fixed;
+    top: 140px;
+    bottom: 0;
+    width: 350px;
+    z-index: 2;
+
+    &.aside-fixed-right {
+        right: -350px;
+        &.show {
+            right: 0;
+        }
+    }
+    &.aside-fixed-left {
+        left: -350px;
+        &.show {
+            left: 0;
+        }
+    }
+}

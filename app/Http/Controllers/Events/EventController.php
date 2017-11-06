@@ -35,7 +35,7 @@ class EventController extends Controller
             'title' => 'required|string',
         ]);
 
-        $q = Event::create([
+        $event = Event::create([
             'title' => $request->title,
             'description' => $request->description,
             'place' => $request->place,
@@ -46,7 +46,7 @@ class EventController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        return Event::with('user')->find($q->id);
+        return Event::with('user')->find($event->id);
     }
 
     public function update(Request $request, $id)
@@ -55,16 +55,16 @@ class EventController extends Controller
             'title' => 'required|string',
         ]);
 
-        $q = Event::find($id);
-        $q->title = $request->title;
-        $q->description = $request->description;
-        $q->place = $request->place;
-        $q->date = $request->date;
-        $q->start_time = $request->start_time;
-        $q->end_time = $request->end_time;
-        $q->save();
+        $event = Event::find($id);
+        $event->title = $request->title;
+        $event->description = $request->description;
+        $event->place = $request->place;
+        $event->date = $request->date;
+        $event->start_time = $request->start_time;
+        $event->end_time = $request->end_time;
+        $event->save();
 
-        return $q;
+        return $event;
     }
 
     public function destroy($id)

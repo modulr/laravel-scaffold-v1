@@ -5,40 +5,38 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Helpers\Upload;
 use Storage;
 use Avatar;
-use App\Http\Helpers\Upload;
-
 use App\User;
 
 class UserController extends Controller
 {
     public function index(Request $request)
     {
-        return view('users.users', ['breadcrumb' => $request->path()]);
+        return view('users.users');
     }
 
     public function all()
     {
-        return User::with('group')->get();
+        return User::with('roles')->get();
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users',
             'password' => 'required|string',
-            'active' => 'required|boolean'
+            'role_id' => 'integer',
+            'active' => 'required|boolean',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'avatar' => $request->avatar,
-            'active' => $request->active,
-            'group_id' => 2,
+            'active' => $request->active
         ]);
 
         if ($request->avatar_url) {
@@ -55,6 +53,10 @@ class UserController extends Controller
         $user->avatar = $request->avatar;
         $user->save();
 
+        if ($request->role_id) {
+            $user->roles()->attach([$request->role_id]);
+        }
+
         return $user;
     }
 
@@ -63,6 +65,8 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email,'.$id,
+            'password' => 'string|nullable',
+            'role_id' => 'integer',
             'active' => 'required|boolean'
         ]);
 
@@ -87,6 +91,11 @@ class UserController extends Controller
         }
 
         $user->save();
+
+        if ($request->role_id) {
+            $user->roles()->sync([$request->role_id]);
+            $user = User::with('roles')->find($user->id);
+        }
 
         return $user;
     }

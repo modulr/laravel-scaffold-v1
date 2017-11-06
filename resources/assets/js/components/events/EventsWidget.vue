@@ -29,61 +29,6 @@
                 </div>
             </div>
         </div>
-        <!-- Modal New Event -->
-        <div class="modal right fade" id="modalNewEvent">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">New Event</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group" :class="{'has-error': error.title}">
-                            <label>Event *</label>
-                            <input type="text" class="form-control" v-model="newEvent.title">
-                            <span class="help-block" v-if="error.title">{{error.title[0]}}</span>
-                        </div>
-                        <div class="form-group" :class="{'has-error': error.description}">
-                            <label>Description</label>
-                            <textarea class="form-control" rows="3" v-model="newEvent.description"></textarea>
-                            <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
-                        </div>
-                        <div class="form-group" :class="{'has-error': error.place}">
-                            <label>Place</label>
-                            <input type="text" class="form-control" v-model="newEvent.place">
-                            <span class="help-block" v-if="error.place">{{error.place[0]}}</span>
-                        </div>
-                        <div class="form-group" :class="{'has-error': error.date}">
-                            <label>Date</label>
-                            <input type="date" class="form-control" v-model="newEvent.date">
-                            <span class="help-block" v-if="error.date">{{error.date[0]}}</span>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <label>Start Time</label>
-                                <div class="form-group" :class="{'has-error': error.start_time}">
-                                    <input type="time" class="form-control" v-model="newEvent.start_time">
-                                    <span class="help-block" v-if="error.start_time">{{error.start_time[0]}}</span>
-                                </div>
-                            </div>
-                            <div class="col-xs-6">
-                                <label>End Time</label>
-                                <div class="form-group" :class="{'has-error': error.end_time}">
-                                    <input type="time" class="form-control" v-model="newEvent.end_time">
-                                    <span class="help-block" v-if="error.end_time">{{error.end_time[0]}}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" @click="storeEvent">Create</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- Modal Edit Event -->
         <div class="modal right fade" data-backdrop="false" id="modalEditEvent">
             <div class="modal-dialog">
@@ -133,11 +78,15 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default  pull-left" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-link" @click="destroyEvent()">
+                        <button type="button" class="btn btn-primary pull-left"
+                                v-if="user.hasPermission['update-events']"
+                                @click="updateEvent">Save</button>
+                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-default"
+                                v-if="user.hasPermission['delete-events']"
+                                @click="destroyEvent">
                             <i class="fa fa-trash-o fa-lg"></i>
                         </button>
-                        <button type="button" class="btn btn-primary" @click="updateEvent">Update</button>
                     </div>
                 </div>
             </div>
@@ -146,15 +95,12 @@
 </template>
 
 <script>
-    import dateFormat from '../../filters/date-format'
-    Vue.use(dateFormat)
-
     export default {
         data() {
             return {
+                user: Laravel.user,
                 error: {},
                 events: [],
-                newEvent: {},
                 Editevent: {},
             }
         },
@@ -163,24 +109,9 @@
         },
         methods: {
             getEvents: function () {
-                axios.get('/event/all')
+                axios.get('/events/all')
                 .then(response => {
                     this.events = response.data.data
-                });
-            },
-            storeEvent: function (e) {
-                var btn = $(e.target).button('loading')
-                axios.post('/event/store', this.newEvent)
-                .then(response => {
-                    this.events.unshift(response.data);
-                    this.newEvent = {};
-                    this.error = {};
-                    var btn = $(e.target).button('reset')
-                    $('#modalNewEvent').modal('hide')
-                })
-                .catch(error => {
-                    this.error = error.response.data;
-                    var btn = $(e.target).button('reset')
                 });
             },
             editEvent: function (item, index) {
@@ -190,7 +121,7 @@
             },
             updateEvent: function (e) {
                 var btn = $(e.target).button('loading')
-                axios.put('/event/update/'+this.Editevent.id, this.Editevent)
+                axios.put('/events/update/'+this.Editevent.id, this.Editevent)
                 .then(response => {
                     this.events[this.Editevent.index] = response.data;
                     this.Editevent = {};
@@ -215,7 +146,7 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    axios.delete('/event/destroy/' + self.Editevent.id)
+                    axios.delete('/events/destroy/' + self.Editevent.id)
                     .then(response => {
                         self.events.splice(self.Editevent.index, 1);
                         swal({

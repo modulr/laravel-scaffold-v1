@@ -1,229 +1,215 @@
 <template>
     <div class="files">
-        <!-- Header -->
-        <div class="container-fluid header">
-            <div class="row">
-                <div class="col-xs-6 header-title">
-                    <h1>Files</h1>
-                </div>
-                <div class="col-xs-6 header-buttons">
-                    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#myModalFolder">
-                        <i class="mdi mdi-create-new-folder mdi-lg"></i> New folder
-                    </a>
-                </div>
-            </div>
-        </div>
         <!-- Container -->
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-10 col-lg-offset-1">
-                    <!-- Actionbar -->
-                    <div class="actionbar">
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" placeholder="Search" v-model="search">
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-8 text-right">
-                                <div class="button-group">
-                                    <a href="#" class="btn btn-link" :class="{ 'active': layout == 'list'}"
-                                        @click.prevent="toggleLayout('list')">
-                                        <i class="fa fa-lg fa-list" aria-hidden="true"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-link" :class="{ 'active': layout == 'grid'}"
-                                        @click.prevent="toggleLayout('grid')">
-                                        <i class="fa fa-lg fa-th-large" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                            </div>
+            <!-- Actionbar -->
+            <div class="actionbar">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <vue-clip class="vue-clip-btn"
+                                  :options="uploadFileOptions"
+                                  :on-sending="uploadFileSending"
+                                  :on-complete="uploadFileComplete"
+                                  v-if="user.hasPermission['create-files']">
+                            <template slot="clip-uploader-action">
+                                <span class="dz-message btn btn-success">
+                                    <i class="mdi mdi-file-upload mdi-lg"></i> Upload
+                                </span>
+                            </template>
+                        </vue-clip>
+                        <a href="#" class="btn btn-success"
+                           v-if="user.hasPermission['create-files']"
+                           @click.prevent="newFolder">
+                            <i class="mdi mdi-create-new-folder mdi-lg"></i> New folder
+                        </a>
+                    </div>
+                    <div class="col-sm-5 text-right">
+                        <div class="btn-group">
+                            <button class="btn btn-default" :disabled="!fileCurrent.name"
+                                    @click.prevent="comingSoon"
+                                    v-if="user.hasPermission['update-files']">
+                                <i class="fa fa-fw fa-arrows" aria-hidden="true"></i> Move
+                            </button>
+                            <button class="btn btn-default" :disabled="!fileCurrent.name"
+                                    @click.prevent="comingSoon"
+                                    v-if="user.hasPermission['update-files']">
+                                <i class="fa fa-fw fa-clone" aria-hidden="true"></i> Copy
+                            </button>
+                            <button class="btn btn-default" :disabled="!fileCurrent.name"
+                                    @click.prevent="destroyFile"
+                                    v-if="user.hasPermission['delete-files']">
+                                <i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete
+                            </button>
+                        </div>
+                        <span class="separator"></span>
+                        <a href="#" class="btn btn-link" @click.prevent="toggleLayout">
+                            <i class="fa fa-fw fa-lg" aria-hidden="true"
+                               :class="{'fa-list': layout == 'list', 'fa-th-large': layout == 'grid'}"
+                            ></i>
+                        </a>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search" v-model="search">
+                            <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
                         </div>
                     </div>
-                    <!-- List -->
+                </div>
+            </div>
+            <!-- List & Info -->
+            <div class="row">
+                <!-- List Files -->
+                <div class="col-md-9">
                     <!-- Layout List -->
                     <div class="row" v-if="layout == 'list'">
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover table-ellipsis">
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
-                                                <th>Modified</th>
-                                                <th></th>
+                                                <th class="hidden-xs">Modified</th>
+                                                <th class="hidden-xs">Size</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="(file, index) in files">
-                                                <td>
-                                                    <div class="media">
-                                                        <div class="media-left">
-                                                            <!-- Folder -->
-                                                            <a href="#" v-if="file.type == 2" @click.prevent="goToFolder(file.id)">
-                                                                <i class="fa fa-fw fa-folder-o fa-2x"></i>
-                                                            </a>
-                                                            <!-- File -->
-                                                            <a :href="file.url" target="_blank" v-else>
-                                                                <img :src="file.url" class="img-responsive" v-if="file.is_image">
-                                                                <i class="fa fa-fw fa-file-o fa-2x" v-else></i>
-                                                            </a>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            {{file.name}}
-                                                        </div>
-                                                    </div>
+                                            <tr :class="{'info': file.id == fileCurrent.id}" v-for="(file, index) in filteredFiles">
+                                                <td @click="infoFile(file, index)">
+                                                    <a href="#" @click.prevent="openFile(file)">
+                                                        <i class="fa fa-fw fa-folder-o fa-2x" v-if="file.is_folder"></i>
+                                                        <img :src="file.url" class="media-object" v-if="!file.is_folder && file.type.match('image/*')">
+                                                        <i class="fa fa-fw fa-file-o fa-2x" v-if="!file.is_folder && !file.type.match('image/*')"></i>
+                                                        {{file.name}}
+                                                    </a>
                                                 </td>
-                                                <td>{{file.updated_at | ago}}</td>
-                                                <td class="text-right">
-                                                    <div class="dropdown">
-                                                        <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu dropdown-menu-right">
-                                                            <li>
-                                                                <a href="#" v-if="file.type == 2" @click.prevent="goToFolder(file.id)">
-                                                                    <i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Open
-                                                                </a>
-                                                                <a :href="file.url" download v-else>
-                                                                    <i class="fa fa-fw fa-download" aria-hidden="true"></i> Download
-                                                                </a>
-                                                            </li>
-                                                            <li role="separator" class="divider"></li>
-                                                            <li><a href="#" @click.prevent="comingSoon"><i class="fa fa-fw fa-share-alt" aria-hidden="true"></i> Share</a></li>
-                                                            <li>
-                                                                <a href="#" @click.prevent="edit(file, index)">
-                                                                    <i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Rename
-                                                                </a>
-                                                            </li>
-                                                            <li><a href="#" @click.prevent="info(file)"><i class="fa fa-fw fa-info-circle" aria-hidden="true"></i> Info</a></li>
-                                                            <li role="separator" class="divider"></li>
-                                                            <li><a href="#" @click.prevent="comingSoon"><i class="fa fa-fw fa-arrows" aria-hidden="true"></i> Move</a></li>
-                                                            <li><a href="#" @click.prevent="comingSoon"><i class="fa fa-fw fa-clone" aria-hidden="true"></i> Copy</a></li>
-                                                            <li>
-                                                                <a href="#" @click.prevent="destroy(file.id, index)">
-                                                                    <i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+                                                <td class="hidden-xs" @click="infoFile(file, index)">{{file.updated_at | moment('from')}}</td>
+                                                <td class="hidden-xs" @click="infoFile(file, index)">
+                                                    <span v-if="file.size">{{file.size | prettyBytes}}</span>
+                                                    <span v-else>---</span>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <dropzone id="myVueDropzone" ref="myVueDropzone"
-                                        url="/file/store"
-                                        :use-custom-dropzone-options=true :dropzoneOptions="dzOptions"
-                                        v-on:vdropzone-success="uploadSuccess">
-                                        <input type="hidden" name="parent_id" v-model="newFile.parent_id">
-                                        <input type="hidden" name="type" v-model="newFile.type">
-                                    </dropzone>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <!-- Layout Grid -->
                     <div class="row" v-if="layout == 'grid'">
-                        <div class="col-xs-6 col-sm-3 col-md-2" v-for="(file, index) in files">
-                            <!-- Folder -->
-                            <a class="thumbnail" href="#" v-if="file.type == 2" @dblclick.prevent="goToFolder(file.id)">
-                                <i class="fa fa-folder-o fa-5x"></i>
+                        <div class="col-xs-6 col-sm-3 col-md-2" v-for="(file, index) in filteredFiles">
+                            <div class="thumbnail">
+                                <a href="#" class="thumbnail-heading" @click.prevent="infoFile(file, index)">
+                                    <i class="fa fa-fw fa-folder-o" v-if="file.is_folder"></i>
+                                    <img :src="file.url" class="img-responsive" v-if="!file.is_folder && file.type.match('image/*')">
+                                    <i class="fa fa-fw fa-file-o" v-if="!file.is_folder && !file.type.match('image/*')"></i>
+                                </a>
                                 <div class="caption">
-                                    <p>{{file.name}}</p>
-                                    <div class="dropdown pull-right">
-                                        <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a href="#" v-if="file.type == 2" @click.prevent="goToFolder(file.id)">
-                                                    <i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Open
-                                                </a>
-                                                <a :href="file.url" download v-else>
-                                                    <i class="fa fa-fw fa-download" aria-hidden="true"></i> Download
-                                                </a>
-                                            </li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#" @click.prevent="comingSoon"><i class="fa fa-fw fa-share-alt" aria-hidden="true"></i> Share</a></li>
-                                            <li>
-                                                <a href="#" @click.prevent="edit(file, index)">
-                                                    <i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Rename
-                                                </a>
-                                            </li>
-                                            <li><a href="#" @click.prevent="info(file)"><i class="fa fa-fw fa-info-circle" aria-hidden="true"></i> Info</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#" @click.prevent="comingSoon"><i class="fa fa-fw fa-arrows" aria-hidden="true"></i> Move</a></li>
-                                            <li><a href="#" @click.prevent="comingSoon"><i class="fa fa-fw fa-clone" aria-hidden="true"></i> Copy</a></li>
-                                            <li>
-                                                <a href="#" @click.prevent="destroy(file.id, index)">
-                                                    <i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <a href="#" @click.prevent="openFile(file)">
+                                        <p :title="file.name">{{file.name}}</p>
+                                        <small class="text-muted" v-if="file.size">{{file.size | prettyBytes}}</small>
+                                        <small class="text-muted" v-else>---</small>
+                                    </a>
                                 </div>
-                            </a>
-                            <!-- File -->
-                            <a class="thumbnail" v-else :href="file.url" target="_blank">
-                                <img :src="file.url" class="img-responsive" v-if="file.is_image">
-                                <i class="fa fa-file-o fa-5x" v-else></i>
-                                <div class="caption">
-                                    <p>{{file.name}}</p>
-                                    <div class="dropdown pull-right">
-                                        <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a href="#" v-if="file.type == 2" @click.prevent="goToFolder(file.id)">
-                                                    <i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Open
-                                                </a>
-                                                <a :href="file.url" download v-else>
-                                                    <i class="fa fa-fw fa-download" aria-hidden="true"></i> Download
-                                                </a>
-                                            </li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#" @click.prevent="comingSoon"><i class="fa fa-fw fa-share-alt" aria-hidden="true"></i> Share</a></li>
-                                            <li>
-                                                <a href="#" @click.prevent="edit(file, index)">
-                                                    <i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Rename
-                                                </a>
-                                            </li>
-                                            <li><a href="#" @click.prevent="info(file)"><i class="fa fa-fw fa-info-circle" aria-hidden="true"></i> Info</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#" @click.prevent="comingSoon"><i class="fa fa-fw fa-arrows" aria-hidden="true"></i> Move</a></li>
-                                            <li><a href="#" @click.prevent="comingSoon"><i class="fa fa-fw fa-clone" aria-hidden="true"></i> Copy</a></li>
-                                            <li>
-                                                <a href="#" @click.prevent="destroy(file.id, index)">
-                                                    <i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-xs-6 col-sm-3 col-md-2">
-                            <dropzone id="myVueDropzone" ref="myVueDropzone"
-                                url="/file/store"
-                                :use-custom-dropzone-options=true :dropzoneOptions="dzOptions"
-                                v-on:vdropzone-success="uploadSuccess">
-                                <input type="hidden" name="parent_id" v-model="newFile.parent_id">
-                                <input type="hidden" name="type" v-model="newFile.type">
-                            </dropzone>
+                            </div>
                         </div>
                     </div>
-                    <!-- Init Message  -->
-                    <div class="init-message" v-if="files.length == 0">
-                        <i class="mdi mdi-folder" aria-hidden="true"></i>
-                        <p class="lead">Upload or create your first file/folder!!</p>
+                </div>
+                <!-- Info File -->
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="file-info" v-if="fileCurrent.id">
+                            <div class="file-info-heading text-center">
+                                <i class="fa fa-folder-o" v-if="fileCurrent.is_folder"></i>
+                                <img :src="fileCurrent.url" v-if="!fileCurrent.is_folder && fileCurrent.type.match('image/*')">
+                                <i class="fa fa-file-o" v-if="!fileCurrent.is_folder && !fileCurrent.type.match('image/*')"></i>
+                            </div>
+                            <hr>
+                            <div class="file-info-body">
+                                <p class="lead" v-if="!fileRename">
+                                    {{fileCurrent.name}}
+                                    <a href="#" class="btn btn-link btn-sm" @click.prevent="fileRename = true"
+                                       v-if="user.hasPermission['update-files']">
+                                        <i class="fa fa-fw fa-pencil" aria-hidden="true"></i>
+                                    </a>
+                                </p>
+                                <div class="form-group" v-else :class="{'has-error': error.name}">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" required
+                                               v-model="fileCurrent.name">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-link" @click="updateFileName">Save</button>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
+                                </div>
+                                <dl class="dl-horizontal">
+                                    <dt><i class="fa fa-fw fa-database" aria-hidden="true"></i> Size</dt>
+                                    <dd>
+                                        <span v-if="fileCurrent.size">{{fileCurrent.size | prettyBytes}}</span>
+                                        <span v-else>---</span>
+                                    </dd>
+                                    <dt><i class="fa fa-fw fa-user" aria-hidden="true"></i> Owner</dt>
+                                    <dd>{{fileCurrent.user.name}}</dd>
+                                    <dt><i class="fa fa-fw fa-calendar-check-o" aria-hidden="true"></i> Created</dt>
+                                    <dd>{{fileCurrent.created_at | moment('from')}}</dd>
+                                    <dt><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Modified</dt>
+                                    <dd>{{fileCurrent.updated_at | moment('from')}}</dd>
+                                    <dt v-if="fileCurrent.is_folder"><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Open Folder</dt>
+                                    <dd v-if="fileCurrent.is_folder"><a :href="'/files/folder/' + fileCurrent.id">Click here</a></dd>
+                                    <dt v-if="!fileCurrent.is_folder"><i class="fa fa-fw fa-download" aria-hidden="true"></i> Download File</dt>
+                                    <dd v-if="!fileCurrent.is_folder"><a :href="fileCurrent.url" download>Click here</a></dd>
+                                    <hr>
+                                    <dt><i class="fa fa-fw fa-share-alt" aria-hidden="true"></i> Shared</dt>
+                                    <dd>Coming soon...</dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <div class="init-message" v-else>
+                            <i class="mdi mdi-select-all" aria-hidden="true"></i>
+                            <p class="lead">Nothing is selected.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Modal Folder -->
-        <div class="modal fade" id="myModalFolder">
+        <!-- Modal Upload Files -->
+        <div class="modal fade" id="modalUploadFiles">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Upload Files</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="media vue-clip-queue" v-for="file in filesUpload">
+                            <div class="media-left">
+                                <img class="media-object" :src="file.dataUrl" v-if="file.type.match('image/*')">
+                                <i class="fa fa-fw fa-file-o fa-3x" v-else></i>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">{{file.name}}</h4>
+                                <small class="text-muted">{{file.status}}</small>
+                                <div class="progress" @click="file.progress = 0">
+                                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                                         :aria-valuenow="file.progress"
+                                         :style="{width: file.progress+'%'}">
+                                        <span class="sr-only">{{file.progress}}% Complete</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" @click="filesUpload=[]">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal New Folder -->
+        <div class="modal fade" id="modalNewFolder">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -233,64 +219,16 @@
                         <h4 class="modal-title" id="myModalLabel">New Folder</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Folder name" v-model="newFile.name">
+                        <div class="form-group" :class="{'has-error': error.name}">
+                            <input type="text" class="form-control" placeholder="Folder name" v-model="folderNew.name">
+                            <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" @click="store">Create</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal Update -->
-        <div class="modal fade" id="myModalUpdate">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">Rename</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="name" v-model="editFile.name">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" @click="update">Update</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal Info -->
-        <div class="modal fade" id="myModalInfo">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title">
-                            <i class="fa fa-folder-o fa-lg" v-if="file.type == 2"></i>
-                            <img :src="file.url" class="img-responsive" v-if="file.type == 1 && file.is_image">
-                            <i class="fa fa-file-o fa-lg" v-if="file.type == 1 && !file.is_image"></i>
-                            {{file.name}}
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <ul class="list-unstyled">
-                            <li><i class="fa fa-fw fa-share-alt" aria-hidden="true"></i> Shared Coming soon...</li>
-                            <li><i class="fa fa-fw fa-user" aria-hidden="true"></i> Owner {{file.user.name}}</li>
-                            <li><i class="fa fa-fw fa-calendar-check-o" aria-hidden="true"></i> Created {{file.created_at | ago}}</li>
-                            <li><i class="fa fa-fw fa-calendar-o" aria-hidden="true"></i> Modified {{file.updated_at | ago}}</li>
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-success"
+                                v-if="user.hasPermission['create-files']"
+                                @click="storeFolder">Create</button>
                     </div>
                 </div>
             </div>
@@ -299,139 +237,173 @@
 </template>
 
 <script>
+    import swal from 'sweetalert';
+    import VueClip from 'vue-clip'
 
-import moment from 'moment';
-import swal from 'sweetalert';
-import Dropzone from 'vue2-dropzone';
+    export default {
+        data() {
+            return {
+                user: Laravel.user,
+                error: {},
+                search: null,
+                layout: 'list',
+                uploadFileOptions: {
+                    headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
+                    url: '/files/store',
+                    paramName: 'file',
+                    maxFilesize: {
+                        limit: 10,
+                        message: '{{filesize}} is greater than the {{maxFilesize}}MB'
+                    },
+                    acceptedFiles: {
+                        extensions: ['image/*', 'application/pdf'],
+                        message: 'You are uploading an invalid file'
+                    },
+                },
+                files: [],
+                filesUpload: [],
 
-export default {
-    data() {
-        return {
-            files: [],
-            file: {
-                user:{}
-            },
-            newFile: {
-                parent_id: 0,
-                type: 1,
-            },
-            editFile: {},
-            error: {},
-            search: '',
-            layout: 'list',
-            dzOptions: {
-                acceptedFileTypes: '.jpg,.jpeg,.png,.pdf',
-                headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-            },
-        }
-    },
-    components: {
-        Dropzone
-    },
-    filters: {
-        ago(date) {
-            return moment(date).fromNow();
-        }
-    },
-    mounted() {
-        var str = window.location.pathname;
-        var res = str.split("/");
+                fileCurrent: {},
+                fileRename: false,
 
-        if (res.length == 3) {
-
-            var currentFolderId = parseInt(res[2]);
-
-            this.newFile.parent_id = currentFolderId;
-
-            axios.get('/file/byUser/' + currentFolderId)
-            .then(response => {
-                this.files = response.data;
-            });
-        } else {
-            axios.get('/file/byUser')
-            .then(response => {
-                this.files = response.data;
-            });
-        }
-
-        if (JSON.parse(localStorage.getItem('files'))) {
-            this.layout = JSON.parse(localStorage.getItem('files')).layout;
-        }
-    },
-
-    methods: {
-        store: function () {
-            this.newFile.type = 2;
-            axios.post('/file/store', this.newFile)
-            .then(response => {
-                this.files.unshift(response.data);
-                this.newFile.name = '';
-                this.newFile.type = 1;
-                $('#myModalFolder').modal('hide');
-            });
+                folderCurrentId: 0,
+                folderNew: {},
+            }
         },
-        destroy: function (id, index) {
-            var self = this;
-            swal({
-                title: "Are you sure?",
-                text: "You will not be able to recover this file!",
-                type: "warning",
-                showLoaderOnConfirm: true,
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-            },
-            function(){
-                axios.delete('/file/destroy/' + id)
+        mounted() {
+            var str = window.location.pathname;
+            var res = str.split("/");
+
+            if (res[2] == 'folder') {
+                this.folderCurrentId = parseInt(res[3]);
+                axios.get('/files/byUser/' + this.folderCurrentId)
                 .then(response => {
-                    self.files.splice(index, 1);
-                    swal({
-                        title: "Deleted!",
-                        text: "Your file has been deleted.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
-                    });
+                    this.files = response.data;
+                });
+            } else {
+                axios.get('/files/byUser')
+                .then(response => {
+                    this.files = response.data;
+                });
+            }
+
+            if (JSON.parse(localStorage.getItem('files'))) {
+                this.layout = JSON.parse(localStorage.getItem('files')).layout;
+            }
+        },
+        computed: {
+            filteredFiles: function () {
+                var filteredArray = this.files,
+                    search = this.search;
+
+                if(!search){
+                    return filteredArray;
+                }
+
+                search = search.trim().toLowerCase();
+
+                filteredArray = filteredArray.filter(function(item){
+                    return Object.keys(item).some(function (key) {
+                        return String(item[key]).toLowerCase().indexOf(search) !== -1
+                    })
+                })
+
+                return filteredArray;;
+            }
+        },
+        methods: {
+            uploadFileSending (file, xhr, formData) {
+                this.filesUpload.push(file);
+                formData.append('parent_id', this.folderCurrentId);
+                $('#modalUploadFiles').modal('show');
+            },
+            uploadFileComplete (file, status, xhr) {
+                if (status == 'success')
+                    this.files.push(JSON.parse(xhr.response));
+            },
+            newFolder () {
+                this.folderNew = {
+                    parent_id: this.folderCurrentId,
+                    is_folder: true,
+                };
+                $('#modalNewFolder').modal('show');
+            },
+            storeFolder (e) {
+                axios.post('/files/store', this.folderNew)
+                .then(response => {
+                    this.files.unshift(response.data);
+                    this.folderNew = {};
                     this.error = {};
+                    $('#modalNewFolder').modal('hide');
                 })
                 .catch(error => {
-                    self.error = error.response.data;
+                    this.error = error.response.data;
+                    var btn = $(e.target).button('reset')
                 });
-            });
-        },
-        info: function (file) {
-            this.file = file;
-            $('#myModalInfo').modal('show');
-        },
-        edit: function (file, index) {
-            this.editFile = _.clone(file);
-            this.editFile.index = index;
-            $('#myModalUpdate').modal('show');
-        },
-        update: function () {
-            axios.put('/file/update/'+this.editFile.id, {name: this.editFile.name})
-            .then(response => {
-                this.files[this.editFile.index].name = response.data.name;
-                this.editFile = {};
-                $('#myModalUpdate').modal('hide');
-            });
-        },
-        goToFolder: function (id) {
-            location.href = '/files/' + id;
-        },
-        uploadSuccess: function (file, response) {
-            this.files.push(response);
-            this.$refs.myVueDropzone.removeAllFiles();
-            $('#myModalFile').modal('hide');
-        },
-        toggleLayout: function (layout) {
-            this.layout = layout;
-            localStorage.setItem('files', JSON.stringify({'layout':layout}));
-        },
-        comingSoon: function () {
-            swal('Coming soon...');
+            },
+            destroyFile () {
+                var self = this;
+                var whatIs = 'file';
+
+                if (self.fileCurrent.is_folder)
+                    whatIs = 'folder'
+
+                swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this "+whatIs+"!",
+                    type: "warning",
+                    showLoaderOnConfirm: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, delete it!",
+                    closeOnConfirm: false
+                },
+                function(){
+                    axios.delete('/files/destroy/' + self.fileCurrent.id)
+                    .then(response => {
+                        self.files.splice(self.fileCurrent.index, 1);
+                        self.fileCurrent = {};
+                        swal({
+                            title: "Deleted!",
+                            text: "Your "+whatIs+" has been deleted.",
+                            type: "success",
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                        this.error = {};
+                    })
+                    .catch(error => {
+                        self.error = error.response.data;
+                    });
+                });
+            },
+            openFile (file) {
+                if (file.is_folder) {
+                    location.href = '/files/folder/' + file.id;
+                } else {
+                    location.href = file.url;
+                }
+            },
+            infoFile (file, index) {
+                this.fileCurrent = file;
+                this.fileCurrent.index = index;
+            },
+            updateFileName () {
+                axios.put('/files/update/'+this.fileCurrent.id, {name: this.fileCurrent.name})
+                .then(response => {
+                    this.files[this.fileCurrent.index].name = response.data.name;
+                    this.fileRename = false;
+                })
+                .catch(error => {
+                    this.error = error.response.data;
+                });
+            },
+            toggleLayout () {
+                this.layout == 'list' ? this.layout = 'grid' : this.layout = 'list';
+                localStorage.setItem('files', JSON.stringify({'layout':this.layout}));
+            },
+            comingSoon () {
+                swal('Coming soon...');
+            }
         }
     }
-}
-
 </script>

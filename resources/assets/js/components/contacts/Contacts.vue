@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="contacts">
         <!-- Header -->
         <div class="container-fluid header">
             <div class="row">
@@ -13,7 +13,8 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid contacts">
+        <!-- Container -->
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-10 col-lg-offset-1">
                     <!-- Actionbar -->
@@ -39,7 +40,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- List -->
+                    <!-- List Items -->
                     <div class="row">
                         <!-- Layout list -->
                         <div class="col-md-12 list" v-if="layout == 'list'">
@@ -80,7 +81,7 @@
                 </div>
             </div>
         </div>
-        <!-- Modal view contact -->
+        <!-- Modal View Contact -->
         <div class="modal right fade modal-contacts" data-backdrop="false" id="modalViewContact">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -151,14 +152,14 @@
     export default {
         data() {
             return {
+                search: '',
                 contacts: [],
                 contact: {},
-                search: '',
                 layout: 'list',
             }
         },
         mounted() {
-            this.getAll();
+            this.getContacts();
             if (JSON.parse(localStorage.getItem('contacts'))) {
                 this.layout = JSON.parse(localStorage.getItem('contacts')).layout;
             }
@@ -184,7 +185,7 @@
             }
         },
         methods: {
-            getAll: function () {
+            getContacts: function () {
                 axios.get('/contacts/all')
                 .then(response => {
                     this.contacts = response.data;

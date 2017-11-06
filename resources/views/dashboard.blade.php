@@ -3,6 +3,7 @@
 @section('content')
     <div class="container-fluid dashboard">
         <div class="row">
+            @permission('read-news')
             <div class="col-md-4">
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
@@ -16,6 +17,8 @@
                     </div>
                 </div>
             </div>
+            @endpermission
+            @permission('read-events')
             <div class="col-md-4">
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
@@ -29,6 +32,8 @@
                     </div>
                 </div>
             </div>
+            @endpermission
+            @permission('read-tasks')
             <div class="col-md-4">
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
@@ -42,6 +47,8 @@
                     </div>
                 </div>
             </div>
+            @endpermission
+            @permission('read-contacts')
             <div class="col-md-5">
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
@@ -55,6 +62,8 @@
                     </div>
                 </div>
             </div>
+            @endpermission
+            @permission('read-files')
             <div class="col-md-7">
                 <div class="panel panel-default panel-dashboard">
                     <div class="panel-heading">
@@ -68,6 +77,7 @@
                     </div>
                 </div>
             </div>
+            @endpermission
           </div>
         </div>
     </div>

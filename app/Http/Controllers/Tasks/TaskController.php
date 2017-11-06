@@ -10,9 +10,9 @@ use App\Models\Tasks\Task;
 class TaskController extends Controller
 {
 
-    public function view(Request $request)
+    public function index()
     {
-        return view('tasks.tasks', ['breadcrumb' => $request->path()]);
+        return view('tasks.tasks');
     }
 
     public function byUser()
@@ -26,35 +26,21 @@ class TaskController extends Controller
             'title' => 'required|string',
         ]);
 
-      $maxOrder = Task::where('user_id', Auth::id())->max('order');
-      $maxOrder ++;
+        $maxOrder = Task::where('user_id', Auth::id())->max('order');
+        $maxOrder ++;
 
-      $task = Task::create([
-          'title' => $request->title,
-          'user_id' => Auth::id(),
-          'order'=>$maxOrder
-      ]);
+        $task = Task::create([
+            'title' => $request->title,
+            'user_id' => Auth::id(),
+            'order'=>$maxOrder
+        ]);
 
       return Task::with('user')->find($task->id);
     }
 
     public function destroy($id)
     {
-      return Task::destroy($id);
-    }
-
-    public function updateOrder(Request $request)
-    {
-        info($request->tasks);
-        $x=0;
-        foreach ($request->tasks as $key => $v) {
-            $x++;
-            info($v['id']);
-            info($x);
-            Task::where('id', $v['id'])
-                 ->update(['order' => $x]);
-        }
-        return Task::orderBy('order', 'asc')->get();
+        return Task::destroy($id);
     }
 
     public function markDone(Request $request, $id)
@@ -64,6 +50,19 @@ class TaskController extends Controller
         ]);
 
         return Task::where('id', $id)
-             ->update(['done' => $request->done]);
+                     ->update(['done' => $request->done]);
     }
+
+    public function updateOrder(Request $request)
+    {
+        $x=0;
+        foreach ($request->tasks as $key => $v) {
+            $x++;
+            Task::where('id', $v['id'])
+                  ->update(['order' => $x]);
+        }
+
+        return $request->tasks;
+    }
+
 }

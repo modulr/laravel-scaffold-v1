@@ -1,0 +1,5 @@
+.nav-tabs {
+    &.border-bottom {
+        border-bottom: 1px solid lighten($brand-gray, 30%);
+    }
+}

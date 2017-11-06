@@ -16,12 +16,13 @@ class CreateFilesTable extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->increments('id');
             $table->text('name');
-            $table->text('basename')->nullable();
-            $table->string('extension')->nullable();
             $table->text('description')->nullable();
+            $table->text('basename')->nullable();
+            $table->string('type')->nullable();
+            $table->float('size')->nullable();
+            $table->boolean('is_folder')->default(0);
             $table->boolean('favorite')->default(false);
             $table->integer('parent_id')->default(0);
-            $table->integer('type')->default(1); // 1.File, 2.Folder
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

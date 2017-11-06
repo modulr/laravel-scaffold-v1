@@ -12,7 +12,7 @@
                     <div class="col-md-4">
                         <dl>
                             <dd>Birthday</dd>
-                            <dt>{{user.profile_personal.birthday | date-format}}</dt>
+                            <dt>{{user.profile_personal.birthday | moment('from')}}</dt>
                         </dl>
                         <dl>
                             <dd>Place of birth</dd>
@@ -106,7 +106,7 @@
                 <dl v-for="(family, index) in user.profile_family">
                     <dt>{{family.name}} - {{family.relation.title}}</dt>
                     <dd>
-                        {{family.gender.title}} - {{family.birthday | date-format}}
+                        {{family.gender.title}} - {{family.birthday | moment('from')}}
                         <span class="text-muted" v-show="family.description"> / {{family.description}}</span>
                     </dd>
                 </dl>
@@ -136,10 +136,7 @@
 </template>
 
 <script>
-import dateFormat from '../../../filters/date-format'
-Vue.use(dateFormat)
-
-export default {
-    props: ['user']
-}
+    export default {
+        props: ['user']
+    }
 </script>
