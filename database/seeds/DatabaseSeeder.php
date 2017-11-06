@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ListTypeCurrencySeeder::class);
         $this->call(GroupsTableSeeder::class);
         $this->call(PrioritiesSeeder::class);
+        $this->call(ListsTableSeeder::class);
+        $this->call(LaratrustSeeder::class);
 
         // factory(App\User::class, 10)
         //     ->create()

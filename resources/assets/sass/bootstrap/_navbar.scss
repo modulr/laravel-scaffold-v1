@@ -27,9 +27,10 @@
         .dropdown-menu {
             width: 300px;
             max-height: 400px;
-            overflow: scroll;
+            overflow-y: overlay;
             padding-top: 30px;
             padding-bottom: 10px;
+            text-align: center;
             li {
                 display: inline-block;
                 text-align: center;

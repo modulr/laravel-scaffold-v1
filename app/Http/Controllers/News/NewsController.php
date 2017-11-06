@@ -19,7 +19,7 @@ use App\Events\StatusLiked;
 
 class NewsController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         return view('news.news');
     }

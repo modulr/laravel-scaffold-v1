@@ -8,7 +8,7 @@ use App\User;
 
 class ContactsController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         return view('contacts.contacts');
     }

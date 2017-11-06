@@ -12,9 +12,9 @@ class File extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name', 'basename', 'extension', 'description', 'favorite', 'parent_id', 'type', 'user_id'];
+    protected $guarded = ['id'];
 
-    protected $appends = ['url', 'is_image'];
+    protected $appends = ['url'];
 
     public function user()
     {
@@ -30,13 +30,4 @@ class File extends Model
     {
         return Storage::url('files/'.$this->user_id.'/'.$this->basename);
     }
-
-    public function getIsImageAttribute()
-    {
-        if (in_array($this->extension, ['jpg', 'jpeg', 'png'])) {
-            return true;
-        }
-        return false;
-    }
-
 }

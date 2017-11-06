@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <groups></groups>
+    <roles></roles>
 @endsection

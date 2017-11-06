@@ -9,7 +9,7 @@
             <div class="col-md-6">
                 <quotes-widget></quotes-widget>
             </div>
-          </div>
+        </div>
         <!-- <div class="row">
             <div class="col-md-12">
                 <projects-widget></projects-widget>

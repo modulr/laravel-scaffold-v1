@@ -15,6 +15,7 @@ Route::get('/', function () {
     //return view('welcome');
     return redirect('login');
 });
+//Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home', function () {
     return redirect('dashboard');
 });
@@ -22,11 +23,12 @@ Route::get('/home', function () {
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
-    //Route::get('/home', 'HomeController@index')->name('home');
-
     // Dashboard
     Route::get('/dashboard', 'DashboardController@index');
     Route::get('/dashboard/markAsRead', 'DashboardController@markAsRead');
+
+    // Notifications
+    Route::get('/notifications', 'NotificationController@index');
 
     // Lists
     Route::group(['namespace' => 'Lists', 'prefix' => 'list'], function() {
@@ -39,29 +41,31 @@ Route::middleware('auth')->group(function () {
         Route::get('/department', 'ListDepartmentController@all');
     });
 
-    // Notifications
-    Route::get('/notifications', 'NotificationController@index');
-
     // Users
     Route::group(['namespace' => 'Users'], function() {
         // Users
-        Route::get('/users', 'UserController@index');
-        Route::group(['prefix' => 'user'], function() {
-            Route::get('/all', 'UserController@all');
-            Route::post('/store', 'UserController@store');
-            Route::put('/update/{id}', 'UserController@update');
-            Route::put('/updatePassword/{id}', 'UserController@updatePassword');
-            Route::delete('/destroy/{id}', 'UserController@destroy');
-            Route::post('/upload/avatar/temp', 'UserController@uploadAvatarTemp');
-            Route::post('/upload/avatar/{id}', 'UserController@uploadAvatar');
+        Route::group(['prefix' => 'users'], function() {
+            Route::get('/', 'UserController@index')->middleware('permission:read-users');
+            Route::get('/all', 'UserController@all')->middleware('permission:read-users');
+            Route::post('/store', 'UserController@store')->middleware('permission:create-users');
+            Route::put('/update/{id}', 'UserController@update')->middleware('permission:update-users');
+            Route::put('/updatePassword/{id}', 'UserController@updatePassword')->middleware('permission:update-users');
+            Route::delete('/destroy/{id}', 'UserController@destroy')->middleware('permission:delete-users');
+            Route::post('/upload/avatar/temp', 'UserController@uploadAvatarTemp')->middleware('permission:update-users');
+            Route::post('/upload/avatar/{id}', 'UserController@uploadAvatar')->middleware('permission:update-users');
         });
-        // Groups
-        Route::get('groups', 'GroupController@index');
-        Route::group(['prefix' => 'group'], function() {
-            Route::get('/all', 'GroupController@all');
-            Route::post('/store', 'GroupController@store');
-            Route::put('/update/{id}', 'GroupController@update');
-            Route::delete('/destroy/{id}', 'GroupController@destroy');
+        // Roles
+        Route::group(['prefix' => 'roles'], function() {
+            Route::get('/', 'RoleController@index')->middleware('permission:read-roles');
+            Route::get('/all', 'RoleController@all')->middleware('permission:read-roles');
+            Route::get('/{id}', 'RoleController@show')->middleware('permission:read-roles');
+            Route::post('/store', 'RoleController@store')->middleware('permission:create-roles');
+            Route::put('/update/{id}', 'RoleController@update')->middleware('permission:update-roles');
+            Route::delete('/destroy/{id}', 'RoleController@destroy')->middleware('permission:delete-roles');
+        });
+        // Permissions
+        Route::group(['prefix' => 'permissions'], function() {
+            Route::get('/all', 'PermissionController@all');
         });
     });
 
@@ -93,43 +97,40 @@ Route::middleware('auth')->group(function () {
 
     // News
     Route::group(['namespace' => 'News', 'prefix' => 'news'], function() {
-        Route::get('/', 'NewsController@index');
-        Route::get('/all', 'NewsController@all');
-        Route::post('/store', 'NewsController@store');
-        Route::delete('/destroy/{id}', 'NewsController@destroy');
-        Route::post('/like/{id}', 'NewsController@like');
-        Route::post('/upload/temp', 'NewsController@uploadTemp');
+        Route::get('/', 'NewsController@index')->middleware('permission:read-news');
+        Route::get('/all', 'NewsController@all')->middleware('permission:read-news');
+        Route::post('/store', 'NewsController@store')->middleware('permission:create-news');
+        Route::delete('/destroy/{id}', 'NewsController@destroy')->middleware('permission:delete-news');
+        Route::post('/like/{id}', 'NewsController@like')->middleware('permission:read-news');
+        Route::post('/upload/temp', 'NewsController@uploadTemp')->middleware('permission:create-news');
     });
 
     // Tasks
-    Route::group(['namespace' => 'Tasks'], function() {
-        Route::get('/tasks', 'TaskController@view');
-        Route::group(['prefix' => 'task'], function() {
-            Route::get('/byUser', 'TaskController@byUser');
-            Route::post('/store', 'TaskController@store');
-            Route::delete('/destroy/{id}', 'TaskController@destroy');
-            Route::put('/markDone/{id}', 'TaskController@markDone');
-            Route::put('/updateOrder', 'TaskController@updateOrder');
-            Route::put('/editTask/{id}', 'TaskController@editTask');
-        });
+    Route::group(['namespace' => 'Tasks', 'prefix' => 'tasks'], function() {
+        Route::get('/', 'TaskController@index')->middleware('permission:read-tasks');
+        Route::get('/byUser', 'TaskController@byUser')->middleware('permission:read-tasks');
+        Route::post('/store', 'TaskController@store')->middleware('permission:create-tasks');
+        //Route::put('/update/{id}', 'TaskController@update')->middleware('permission:update-tasks');
+        Route::delete('/destroy/{id}', 'TaskController@destroy')->middleware('permission:delete-tasks');
+        Route::put('/markDone/{id}', 'TaskController@markDone')->middleware('permission:update-tasks');
+        Route::put('/updateOrder', 'TaskController@updateOrder')->middleware('permission:update-tasks');
     });
 
     // Contacts
     Route::group(['namespace' => 'Contacts', 'prefix' => 'contacts'], function() {
-        Route::get('/', 'ContactsController@index');
-        Route::get('/all', 'ContactsController@all');
-        Route::get('/{id}', 'ContactsController@show');
+        Route::get('/', 'ContactsController@index')->middleware('permission:read-contacts');
+        Route::get('/all', 'ContactsController@all')->middleware('permission:read-contacts');
+        Route::get('/{id}', 'ContactsController@show')->middleware('permission:read-contacts');
     });
 
     // Files
-    Route::group(['namespace' => 'Files'], function() {
-        Route::get('/files/{folderId?}', 'FileController@view');
-        Route::group(['prefix' => 'file'], function() {
-            Route::get('/byUser/{parentId?}', 'FileController@byUser');
-            Route::post('/store', 'FileController@store');
-            Route::put('/update/{id}', 'FileController@update');
-            Route::delete('/destroy/{id}', 'FileController@destroy');
-        });
+    Route::group(['namespace' => 'Files', 'prefix' => 'files'], function() {
+        Route::get('/', 'FileController@index')->middleware('permission:read-files');
+        Route::get('/folder/{folderId?}', 'FileController@index')->middleware('permission:read-files');
+        Route::get('/byUser/{parentId?}', 'FileController@byUser')->middleware('permission:read-files');
+        Route::post('/store', 'FileController@store')->middleware('permission:create-files');
+        Route::put('/update/{id}', 'FileController@update')->middleware('permission:update-files');
+        Route::delete('/destroy/{id}', 'FileController@destroy')->middleware('permission:delete-files');
     });
 
     // Projects and Opportunities
@@ -192,14 +193,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/widget/opportunity/charts', 'WidgetController@opportunityCharts');
     Route::get('/widget/quote/charts', 'WidgetController@quoteCharts');
     // Events
-    Route::group(['namespace' => 'Events'], function() {
-        Route::get('/events', 'EventController@index');
-        Route::group(['prefix' => 'event'], function() {
-            Route::get('/all', 'EventController@all');
-            Route::post('/store', 'EventController@store');
-            Route::put('/update/{id}', 'EventController@update');
-            Route::delete('/destroy/{id}', 'EventController@destroy');
-        });
+    Route::group(['namespace' => 'Events', 'prefix' => 'events'], function() {
+        Route::get('/', 'EventController@index')->middleware('permission:read-events');
+        Route::get('/all', 'EventController@all')->middleware('permission:read-events');
+        Route::post('/store', 'EventController@store')->middleware('permission:create-events');
+        Route::put('/update/{id}', 'EventController@update')->middleware('permission:update-events');
+        Route::delete('/destroy/{id}', 'EventController@destroy')->middleware('permission:delete-events');
     });
 
 });

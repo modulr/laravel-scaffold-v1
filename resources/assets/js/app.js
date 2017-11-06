@@ -9,6 +9,9 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+Vue.use(require('vue-moment'));
+Vue.use(require('./filters/pretty-bytes'));
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -22,7 +25,7 @@ Vue.component('navbar', require('./components/layout/Navbar.vue'));
 Vue.component('notifications', require('./components/layout/Notifications.vue'));
 // Users
 Vue.component('users', require('./components/users/Users.vue'));
-Vue.component('groups', require('./components/users/Groups.vue'));
+Vue.component('roles', require('./components/users/Roles.vue'));
 // Profile Read
 Vue.component('profileSidebar', require('./components/profile/read/Sidebar.vue'));
 Vue.component('profile', require('./components/profile/read/Profile.vue'));
@@ -68,9 +71,5 @@ Vue.component('events', require('./components/events/Events.vue'));
 Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
 
 const app = new Vue({
-    el: '#app',
-    data: {
-        user: Laravel.user,
-        guest: Laravel.guest,
-    },
+    el: '#app'
 });

@@ -1,32 +1,39 @@
 <template>
     <div class="tasks">
-        <!-- newTask -->
+        <!-- New Task -->
         <div class="form-group">
-            <input @keyup.enter="storeTask" type="text" class="form-control" placeholder="Add new task" v-model="newTask.title">
+            <input type="text" class="form-control" placeholder="Add new task"
+                   v-model="newTask.title"
+                   v-if="user.hasPermission['create-tasks']"
+                   @keyup.enter="storeTask">
         </div>
-        <!-- List -->
+        <!-- List Tasks -->
         <ul class="list-group" v-if="tasks.length">
-            <draggable v-model="tasks" @end="updateOrder" :options="{handle:'.my-handle'}">
+            <draggable :options="{handle:'.my-handle'}" v-model="tasks" @end="updateOrderTasks">
                 <li class="list-group-item" v-for="(task, index) in tasks" :key="task.id">
-                    <span class="my-handle"><i class="mdi mdi-reorder"></i></span>
-                    <span v-if="!task.done">
-                        <a href="#" @click="doneTask(task)">
-                            <i class="fa fa-lg fa-fw fa-2x" :class="{'fa-circle-thin': !task.done, 'fa-check-circle': task.done}" aria-hidden="true"></i>
-                        </a>
-                        <span :class="{'task-done': task.done}" @click="'contentEditable',true" >{{task.title}}</span>
-                        <a href="#" class="close" aria-label="Close" @click.prevent="deleteTask(task)">
-                            <span aria-hidden="true">&times;</span>
-                        </a>
-                    </span>
-                    <span v-if="task.done">
-                        <a href="#" @click="doneTask(task)">
-                            <i class="fa fa-lg fa-fw fa-2x" :class="{'fa-circle-thin': !task.done, 'fa-check-circle': task.done}" aria-hidden="true"></i>
-                        </a>
-                        <span :class="{'task-done': task.done}" @click="'contentEditable',true" >{{task.title}}</span>
-                        <a href="#" class="close" aria-label="Close" @click.prevent="deleteTask(task)">
-                            <span aria-hidden="true">&times;</span>
-                        </a>
-                    </span>
+                    <div class="media">
+                        <div class="media-left my-handle">
+                            <i class="mdi mdi-more-vert"></i>
+                        </div>
+                        <div class="media-left">
+                            <a href="#"
+                               v-if="user.hasPermission['update-tasks']"
+                               @click="doneTask(task)">
+                                <i class="check mdi mdi-2x" aria-hidden="true"
+                                   :class="{'mdi-radio-button-unchecked': !task.done, 'mdi-check': task.done}"></i>
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <span class="title" :class="{'task-done': task.done}">{{task.title}}</span>
+                        </div>
+                        <div class="media-right">
+                            <a href="#" class="delete"
+                               v-if="user.hasPermission['delete-tasks']"
+                               @click.prevent="destroyTask(task)">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
                 </li>
             </draggable>
         </ul>
@@ -38,56 +45,50 @@
     </div>
 </template>
 
-<!-- Scripts -->
 <script>
+    import draggable from 'vuedraggable'
 
-import draggable from 'vuedraggable'
-
-export default {
-    mounted() {
-        this.getAll();
-    },
-    data() {
-        return{
-            tasks: [],
-            newTask:{},
-            user: Laravel.user
+    export default {
+        data() {
+            return{
+                user: Laravel.user,
+                tasks: [],
+                newTask: {},
+            }
+        },
+        mounted() {
+            this.getTasks();
+        },
+        components: {
+            draggable,
+        },
+        methods: {
+            getTasks: function(){
+                axios.get('/tasks/byUser')
+                .then(response => {
+                    this.tasks = response.data;
+                });
+            },
+            storeTask: function () {
+                if (this.newTask.title) {
+                    axios.post('/tasks/store', this.newTask)
+                    .then(response => {
+                        this.tasks.unshift(response.data);
+                        this.newTask = {};
+                    });
+                }
+            },
+            destroyTask: function (task) {
+                axios.delete('/tasks/destroy/'+task.id)
+                    this.tasks.splice(this.tasks.indexOf(task), 1);
+            },
+            doneTask: function (task) {
+                task.done = !task.done
+                axios.put('/tasks/markDone/'+task.id, task);
+            },
+            updateOrderTasks: function () {
+                axios.put('/tasks/updateOrder', {tasks:this.tasks});
+            },
         }
-    },
-    components: {
-        draggable,
-    },
-    methods: {
-        getAll: function(){
-            axios.get('/task/byUser')
-            .then(response => {
-                this.tasks = response.data;
-            });
-        },
-        deleteTask: function (task) {
-            axios.delete('/task/destroy/' + task.id)
-                this.tasks.splice(this.tasks.indexOf(task),1);
-        },
-        storeTask: function () {
-            axios.post('/task/store', this.newTask)
-            .then(response => {
-                this.tasks.unshift(response.data);
-                this.newTask = {};
-            });
-        },
-        doneTask: function (task) {
-            task.done = !task.done
-            axios.put('/task/markDone/'+ task.id , task)
-            .then(response => {
-                console.log(response);
-            });
-        },
-        updateOrder: function (e) {
-            axios.put('/task/updateOrder', {tasks:this.tasks})
-            .then(response => {
-                console.log(response);
-            });
-        },
     }
-}
 </script>
