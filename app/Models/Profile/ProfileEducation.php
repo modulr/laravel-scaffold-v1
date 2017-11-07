@@ -11,9 +11,7 @@ class ProfileEducation extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = [
-        'user_id', 'title', 'school_name', 'start_year', 'end_year', 'description',
-    ];
+    protected $guarded = ['id'];
 
     public function user()
     {

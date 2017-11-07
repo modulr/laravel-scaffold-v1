@@ -11,9 +11,7 @@ class ProfilePlace extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = [
-        'user_id', 'place', 'currently', 'description',
-    ];
+    protected $guarded = ['id'];
 
     public function user()
     {

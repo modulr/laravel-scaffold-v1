@@ -6,10 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
-use DB;
-use Validator;
-use Storage;
-use Image;
+use App\Http\Helpers\Upload;
 use App\User;
 use App\Models\News\News;
 use App\Models\News\NewsImage;
@@ -32,7 +29,7 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required_if:type,1|string',
+            'name' => 'required_if:type,1|string',
             'type' => 'required|numeric',
             'images' => 'required_if:type,2|array',
             'video' => 'required_if:type,3|url'
@@ -45,7 +42,7 @@ class NewsController extends Controller
         }
 
         $news = News::create([
-            'title' => $request->title,
+            'name' => $request->name,
             'video' => $request->video,
             'type' => $request->type,
             'user_id' => Auth::id(),
@@ -55,10 +52,10 @@ class NewsController extends Controller
         if ($request->type == 2) { // Image
             if (count($request->images)) {
                 foreach ($request->images as $key => $value) {
-                    $this->moveFromTemp($value['infoFile'], $news->id);
+                    $upload = new Upload();
+                    $upload->move($value['path'], 'news/'.$news->id);
                     NewsImage::create([
-                        'basename' => $value['infoFile']['basename'],
-                        'extension' => $value['infoFile']['extension'],
+                        'basename' => $value['basename'],
                         'news_id' => $news->id
                     ]);
                 }
@@ -69,17 +66,17 @@ class NewsController extends Controller
 
         if ($news->type == 1) {
             $message = [
-                'title' => 'Add a post '.$news->title,
+                'title' => 'Add a post '.$news->name,
                 'data' => $news,
             ];
         } else if ($news->type == 2) {
             $message = [
-                'title' => 'Add a photo '.$news->title,
+                'title' => 'Add a photo '.$news->name,
                 'data' => $news,
             ];
         } else {
             $message = [
-                'title' => 'Add a video '.$news->title,
+                'title' => 'Add a video '.$news->name,
                 'data' => $news,
             ];
         }
@@ -126,17 +123,17 @@ class NewsController extends Controller
         if (!$request->like && ($news->user_id != Auth::id())) {
             if ($news->type == 1) {
                 $message = [
-                    'title' => 'Like your post '.$news->title,
+                    'title' => 'Like your post '.$news->name,
                     'data' => $news,
                 ];
             } else if ($news->type == 2) {
                 $message = [
-                    'title' => 'Like your post '.$news->title,
+                    'title' => 'Like your post '.$news->name,
                     'data' => $news,
                 ];
             } else {
                 $message = [
-                    'title' => 'Like your post '.$news->title,
+                    'title' => 'Like your post '.$news->name,
                     'data' => $news,
                 ];
             }
@@ -148,31 +145,9 @@ class NewsController extends Controller
 
     public function uploadTemp(Request $request)
     {
-        $pathFile = $request->file->store('news/temp/'.Auth::id());
-        $infoFile = pathinfo($pathFile);
-        return ['pathFile' => $pathFile, 'infoFile' => $infoFile];
-    }
-
-    public function moveFromTemp($infoFile, $newsId)
-    {
-        Storage::move(
-            $infoFile['dirname'].'/'.$infoFile['basename'],
-            'news/'.$newsId.'/'.$infoFile['basename']
-        );
-
-        $this->resize($newsId, $infoFile);
-    }
-
-    private function resize($newsId, $infoFile)
-    {
-        $file = Storage::get('news/'.$newsId.'/'.$infoFile['basename']);
-
-        $img = Image::make($file)
-            ->widen(1024)
-            ->encode($infoFile['extension']);
-
-        Storage::put('news/'.$newsId.'/'.$infoFile['basename'], $img);
-
+        $upload = new Upload();
+        $uploadData = $upload->uploadTemp($request->file)->resize(1024)->getData();
+        return $uploadData;
     }
 
 }

@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Files;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Storage;
-use Image;
+use App\Http\Helpers\Upload;
 use App\Models\Files\File;
 
 class FileController extends Controller
@@ -36,11 +35,18 @@ class FileController extends Controller
         if ($request->is_folder) {
             $request->is_folder = true;
         } else {
-            $upload = $this->upload($request->file);
+            $upload = new Upload();
+            // Is image
+            if (is_array(getimagesize($request->file))) {
+                $uploadData = $upload->upload($request->file, 'files/'.Auth::id())
+                                     ->resize(1024)->thumbnail(200,200)->getData();
+            } else {
+                $uploadData = $upload->upload($request->file)->getData();
+            }
             $request->name = $request->file->getClientOriginalName();
-            $request->basename = $upload['basename'];
-            $request->type = $upload['type'];
-            $request->size = $upload['size'];
+            $request->basename = $uploadData['basename'];
+            $request->type = $uploadData['type'];
+            $request->size = $uploadData['size'];
             $request->is_folder = false;
         }
 
@@ -129,24 +135,5 @@ class FileController extends Controller
         $file->save();
 
         return $file;
-    }
-
-    private function upload($file)
-    {
-        $filePath = $file->store('files/'.Auth::id());
-        $infoFile = pathinfo($filePath);
-        $infoFile['type'] = $file->getMimetype();
-        $infoFile['size'] = $file->getSize();
-
-        // Is image
-        if (is_array(getimagesize($file))) {
-            $img = Image::make($file)
-                ->widen(1024)
-                ->encode();
-            $infoFile['size'] = strlen((string) $img);
-            Storage::put('files/'.Auth::id().'/'.$infoFile['basename'], $img);
-        }
-
-        return $infoFile;
     }
 }

@@ -14,7 +14,7 @@
 $factory->define(App\Models\Events\Event::class, function (Faker\Generator $faker) {
 
     return [
-        'title' => $faker->text($maxNbChars = 50),
+        'name' => $faker->text($maxNbChars = 50),
         'description' => $faker->text,
         'place' => $faker->text(70),
         'date' => $faker->date($format = 'Y-m-d', $max = 'now'),

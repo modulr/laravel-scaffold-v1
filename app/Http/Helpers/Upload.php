@@ -11,14 +11,17 @@ class Upload {
 
     /**
      * [upload description]
-     * @param  [file] $file [description]
-     * @param  [string] $path [description]
-     * @return [obj] $this  [description]
+     * @param  [file]   $file  [description]
+     * @param  [string] $path  [description]
+     * @return [obj]    $this  [description]
      */
     public function upload($file, $path)
     {
         $this->file = $file;
-        $this->info['pathFile'] = $this->file->store($path);
+
+        $path = $this->file->store($path);
+
+        $this->getInfo($path);
 
         return $this;
     }
@@ -26,63 +29,107 @@ class Upload {
     /**
      * [uploadTemp description]
      * @param  [file] $file [description]
-     * @return [obj] $this [description]
+     * @return [obj]  $this [description]
      */
     public function uploadTemp($file)
     {
         $this->file = $file;
-        $this->info['pathFile'] = $this->file->store('temp/'.Auth::id());
+
+        $path = $this->file->store('temp/'.Auth::id());
+
+        $this->getInfo($path);
 
         return $this;
     }
     /**
-     * [moveFromTemp description]
-     * @param  [string] $from [description]
-     * @param  [string] $to   [description]
-     * @return [obj] $this [description]
+     * [move description]
+     * @param  [string] $from [path]
+     * @param  [string] $to   [path]
+     * @return [obj]    $this [description]
      */
-    public function moveFromTemp($from, $to, $name=null)
+    public function move($from, $to)
     {
-        if (is_null($name)) {
-            $infoFile = pathinfo($from);
-            $to = $to.'/'.$infoFile['basename'];
-        }
+        $this->getInfo($from);
+
+        $to = $to.'/'.$this->info['basename'];
 
         Storage::move($from, $to);
 
-        $this->file = Storage::get($to);
-        $this->info['pathFile'] = $to;
+        $this->getInfo($to);
 
         return $this;
     }
 
     /**
      * [resize description]
-     * @param  [number] $size [description]
-     * @return [obj] $this [description]
+     * @param  [integer] $width [pixels]
+     * @param  [integer] $height [pixels]
+     * @return [obj]    $this [description]
      */
-    public function resize($size)
+    public function resize($width=null, $height=null)
     {
-        $this->getInfo();
-
         $img = Image::make($this->file)
-            ->widen($size)
-            ->encode($this->info['extension']);
+                    ->resize($width, $height, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode();
 
-        Storage::put($this->info['pathFile'], $img);
+        $this->info['size'] = strlen((string) $img);
+
+        Storage::put($this->info['path'], $img);
 
         return $this;
     }
 
     /**
-     * [getInfo description]
+     * [thumbnail description]
+     * @param  [integer] $width [pixels]
+     * @param  [integer] $height [pixels]
+     * @return [obj]    $this [description]
+     */
+    public function thumbnail($width=null, $height=null)
+    {
+        $img = Image::make($this->file)
+                    ->fit($width, $height, function ($constraint) {
+                        $constraint->upsize();
+                    })
+                    // ->resize($width, $height, function ($constraint) {
+                    //     $constraint->aspectRatio();
+                    //     $constraint->upsize();
+                    // })
+                    // ->crop($width, $height)
+                    ->encode();
+
+        Storage::put($this->info['dirname'].'/thumbnail_'.$this->info['basename'], $img);
+
+        return $this;
+    }
+
+    /**
+     * [getData description]
      * @return [array] [description]
      */
-    public function getInfo()
+    public function getData()
     {
-        $infoFile = pathinfo($this->info['pathFile']);
-        $this->info = $this->info + $infoFile;
-
         return $this->info;
+    }
+
+    /**
+     * [getInfo description]
+     * @param  [string] $path   [description]
+     * @return [obj]    $this   [description]
+     */
+    private function getInfo($path)
+    {
+        $this->info = pathinfo($path);
+        $this->info['path'] = $path;
+        $this->info['type'] = Storage::mimeType($path);
+        $this->info['size'] = Storage::size($path);
+
+        if (!$this->file)
+            $this->file = Storage::get($path);
+
+        return $this;
     }
 }

@@ -79,61 +79,61 @@
 </template>
 
 <script>
-import ProfileSidebarEdit from './Sidebar.vue';
+    import ProfileSidebarEdit from './Sidebar.vue';
 
-import {Snotify} from 'vue-snotify';
-import {SnotifyService} from 'vue-snotify';
-Vue.use(Snotify)
+    import {Snotify} from 'vue-snotify';
+    import {SnotifyService} from 'vue-snotify';
+    Vue.use(Snotify)
 
-export default {
-    data() {
-        return {
-            list: {
-                professions: [],
-                positions: [],
-                departments: [],
-                bosses: []
-            },
-            error: {}
-        }
-    },
-    props: ['user'],
-    mounted() {
-        axios.get('/list/profession')
-        .then(response => {
-            this.list.professions = response.data;
-        });
-
-        axios.get('/list/position')
-        .then(response => {
-            this.list.positions = response.data;
-        });
-
-        axios.get('/list/department')
-        .then(response => {
-            this.list.departments = response.data;
-        });
-
-        axios.get('/user/all')
-        .then(response => {
-            this.list.bosses = response.data;
-        });
-    },
-    methods: {
-        updateWork: function (e) {
-            var btn = $(e.target).button('loading')
-            axios.put('/profile/work/update/'+this.user.profile_work.id, this.user.profile_work)
+    export default {
+        data() {
+            return {
+                list: {
+                    professions: [],
+                    positions: [],
+                    departments: [],
+                    bosses: []
+                },
+                error: {}
+            }
+        },
+        props: ['user'],
+        mounted() {
+            axios.get('/list/profession')
             .then(response => {
-                this.user.profile_work = response.data;
-                this.error = {};
-                var btn = $(e.target).button('reset')
-                SnotifyService.success('The work has been saved success!');
-            })
-            .catch(error => {
-                this.error = error.response.data;
-                var btn = $(e.target).button('reset')
+                this.list.professions = response.data;
             });
+
+            axios.get('/list/position')
+            .then(response => {
+                this.list.positions = response.data;
+            });
+
+            axios.get('/list/department')
+            .then(response => {
+                this.list.departments = response.data;
+            });
+
+            axios.get('/users/all')
+            .then(response => {
+                this.list.bosses = response.data;
+            });
+        },
+        methods: {
+            updateWork (e) {
+                var btn = $(e.target).button('loading')
+                axios.put('/profile/work/update/'+this.user.profile_work.id, this.user.profile_work)
+                .then(response => {
+                    this.user.profile_work = response.data;
+                    this.error = {};
+                    var btn = $(e.target).button('reset')
+                    SnotifyService.success('The work has been saved success!');
+                })
+                .catch(error => {
+                    this.error = error.response.data;
+                    var btn = $(e.target).button('reset')
+                });
+            }
         }
     }
-}
 </script>

@@ -11,9 +11,7 @@ class ProfilePersonal extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = [
-        'user_id', 'birthday', 'place_of_birth', 'gender_id', 'relationship_id', 'rfc', 'curp', 'nss',
-    ];
+    protected $guarded = ['id'];
 
     public function user()
     {
@@ -22,11 +20,11 @@ class ProfilePersonal extends Model
 
     public function gender()
     {
-        return $this->belongsTo(\App\Models\Lists\ListGender::class);
+        return $this->belongsTo(\App\Models\Profile\ListGender::class);
     }
 
     public function relationship()
     {
-        return $this->belongsTo(\App\Models\Lists\ListRelationship::class);
+        return $this->belongsTo(\App\Models\Profile\ListRelationship::class);
     }
 }

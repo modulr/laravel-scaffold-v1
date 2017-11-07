@@ -8,12 +8,12 @@
                     <table class="table table-hover" v-if="events.length">
                         <tbody>
                             <tr v-for="(item, index) in events" >
-                                <td @click="editEvent(item, index)">
+                                <td @click="viewEvent(item, index)">
                                     <div class="media">
                                         <div class="media-body">
-                                            <p>{{item.title}}</p>
+                                            <p>{{item.name}}</p>
                                             <div class="event-info">
-                                                <small v-show="item.date">{{item.date | date-format}}.</small>
+                                                <small v-if="item.date">{{item.date | moment('LL')}}</small>
                                             </div>
                                         </div>
                                     </div>
@@ -29,64 +29,49 @@
                 </div>
             </div>
         </div>
-        <!-- Modal Edit Event -->
-        <div class="modal right fade" data-backdrop="false" id="modalEditEvent">
+        <!-- Modal View Event -->
+        <div class="modal right fade" data-backdrop="false" id="modalViewEvent">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel">Edit Event</h4>
+                        <h4 class="modal-title" id="myModalLabel">Event</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group" :class="{'has-error': error.title}">
-                            <label>Event *</label>
-                            <input type="text" class="form-control" v-model="Editevent.title">
-                            <span class="help-block" v-if="error.title">{{error.title[0]}}</span>
-                        </div>
-                        <div class="form-group" :class="{'has-error': error.description}">
-                            <label>Description</label>
-                            <textarea class="form-control" rows="3" v-model="Editevent.description"></textarea>
-                            <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
-                        </div>
-                        <div class="form-group" :class="{'has-error': error.place}">
-                            <label>Place</label>
-                            <input type="text" class="form-control" v-model="Editevent.place">
-                            <span class="help-block" v-if="error.place">{{error.place[0]}}</span>
-                        </div>
-                        <div class="form-group" :class="{'has-error': error.date}">
-                            <label>Date</label>
-                            <input type="date" class="form-control" v-model="Editevent.date">
-                            <span class="help-block" v-if="error.date">{{error.date[0]}}</span>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <label>Start Time</label>
-                                <div class="form-group" :class="{'has-error': error.start_time}">
-                                    <input type="time" class="form-control" v-model="Editevent.start_time">
-                                    <span class="help-block" v-if="error.start_time">{{error.start_time[0]}}</span>
-                                </div>
-                            </div>
-                            <div class="col-xs-6">
-                                <label>End Time</label>
-                                <div class="form-group" :class="{'has-error': error.end_time}">
-                                    <input type="time" class="form-control" v-model="Editevent.end_time">
-                                    <span class="help-block" v-if="error.end_time">{{error.end_time[0]}}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary pull-left"
-                                v-if="user.hasPermission['update-events']"
-                                @click="updateEvent">Save</button>
-                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-default"
-                                v-if="user.hasPermission['delete-events']"
-                                @click="destroyEvent">
-                            <i class="fa fa-trash-o fa-lg"></i>
-                        </button>
+                        <dl>
+                            <dd>Name</dd>
+                            <dt><p class="lead">{{eventView.name}}</p></dt>
+                        </dl>
+                        <dl>
+                            <dd>Description</dd>
+                            <dt>{{eventView.description}}</dt>
+                        </dl>
+                        <dl>
+                            <dd>Place</dd>
+                            <dt>{{eventView.place}}</dt>
+                        </dl>
+                        <dl>
+                            <dd>Date</dd>
+                            <dt><small v-if="eventView.date">{{eventView.date | moment('LL')}}.</small></dt>
+                        </dl>
+                        <dl>
+                            <dd>From</dd>
+                            <dt>
+                                <span v-if="eventView.start_time">
+                                    {{eventView.date+' '+eventView.start_time | moment('h:mm a')}}
+                                </span>
+                            </dt>
+                        </dl>
+                        <dl>
+                            <dd>To</dd>
+                            <dt>
+                                <span v-if="eventView.end_time">
+                                    {{eventView.date+' '+eventView.end_time | moment('h:mm a')}}
+                                </span>
+                            </dt>
+                        </dl>
                     </div>
                 </div>
             </div>
@@ -98,71 +83,24 @@
     export default {
         data() {
             return {
-                user: Laravel.user,
                 error: {},
                 events: [],
-                Editevent: {},
+                eventView: {},
             }
         },
         mounted() {
             this.getEvents();
         },
         methods: {
-            getEvents: function () {
+            getEvents () {
                 axios.get('/events/all')
                 .then(response => {
                     this.events = response.data.data
                 });
             },
-            editEvent: function (item, index) {
-                this.Editevent = _.clone(item);
-                this.Editevent.index = index;
-                $('#modalEditEvent').modal('show')
-            },
-            updateEvent: function (e) {
-                var btn = $(e.target).button('loading')
-                axios.put('/events/update/'+this.Editevent.id, this.Editevent)
-                .then(response => {
-                    this.events[this.Editevent.index] = response.data;
-                    this.Editevent = {};
-                    this.error = {};
-                    var btn = $(e.target).button('reset')
-                    $('#modalEditEvent').modal('hide')
-                })
-                .catch(error => {
-                    this.error = error.response.data;
-                    var btn = $(e.target).button('reset')
-                });
-            },
-            destroyEvent: function () {
-                var self = this;
-                swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this Event!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
-                    axios.delete('/events/destroy/' + self.Editevent.id)
-                    .then(response => {
-                        self.events.splice(self.Editevent.index, 1);
-                        swal({
-                            title: "Deleted!",
-                            text: "The Event has been deleted.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
-                        });
-                        self.error = {};
-                        $('#modalEditEvent').modal('hide');
-                    })
-                    .catch(error => {
-                        self.error = error.response.data;
-                    });
-                });
+            viewEvent (item, index) {
+                this.eventView = _.clone(item);
+                $('#modalViewEvent').modal('show')
             },
         }
     }

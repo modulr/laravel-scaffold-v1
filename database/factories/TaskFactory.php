@@ -15,7 +15,7 @@
 $factory->define(App\Models\Tasks\Task::class, function (Faker\Generator $faker) {
 
     return [
-        'title' => $faker->text,
+        'name' => $faker->text,
         'done' => $faker->randomElement([0,1]),
         'order' => 1,
     ];

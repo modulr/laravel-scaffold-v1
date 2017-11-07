@@ -7,6 +7,12 @@
         opacity: 1;
     }
 
+    td {
+        .avatar-sm {
+            margin-right: 15px;
+        }
+    }
+
     &.table-ellipsis {
         table-layout:fixed;
         td {

@@ -78,7 +78,7 @@
                                                 <td @click="infoFile(file, index)">
                                                     <a href="#" @click.prevent="openFile(file)">
                                                         <i class="fa fa-fw fa-folder-o fa-2x" v-if="file.is_folder"></i>
-                                                        <img :src="file.url" class="media-object" v-if="!file.is_folder && file.type.match('image/*')">
+                                                        <img :src="file.urlThumbnail" class="media-object" v-if="!file.is_folder && file.type.match('image/*')">
                                                         <i class="fa fa-fw fa-file-o fa-2x" v-if="!file.is_folder && !file.type.match('image/*')"></i>
                                                         {{file.name}}
                                                     </a>
@@ -97,11 +97,11 @@
                     </div>
                     <!-- Layout Grid -->
                     <div class="row" v-show="layout == 'grid'" v-if="files.length">
-                        <div class="col-xs-6 col-sm-3 col-md-2" v-for="(file, index) in filteredFiles">
+                        <div class="col-xs-6 col-sm-4 col-md-3" v-for="(file, index) in filteredFiles">
                             <div class="thumbnail">
-                                <a href="#" class="thumbnail-heading" @click.prevent="infoFile(file, index)">
+                                <a href="#" class="heading" @click.prevent="infoFile(file, index)">
                                     <i class="fa fa-fw fa-folder-o" v-if="file.is_folder"></i>
-                                    <img :src="file.url" class="img-responsive" v-if="!file.is_folder && file.type.match('image/*')">
+                                    <img :src="file.urlThumbnail" class="img-responsive" v-if="!file.is_folder && file.type.match('image/*')">
                                     <i class="fa fa-fw fa-file-o" v-if="!file.is_folder && !file.type.match('image/*')"></i>
                                 </a>
                                 <div class="caption">
@@ -126,7 +126,7 @@
                         <div class="file-info" v-if="fileCurrent.id">
                             <div class="file-info-heading text-center">
                                 <i class="fa fa-folder-o" v-if="fileCurrent.is_folder"></i>
-                                <img :src="fileCurrent.url" v-if="!fileCurrent.is_folder && fileCurrent.type.match('image/*')">
+                                <img :src="fileCurrent.urlThumbnail" v-if="!fileCurrent.is_folder && fileCurrent.type.match('image/*')">
                                 <i class="fa fa-file-o" v-if="!fileCurrent.is_folder && !fileCurrent.type.match('image/*')"></i>
                             </div>
                             <hr>
@@ -250,7 +250,7 @@
             return {
                 user: Laravel.user,
                 error: {},
-                search: null,
+                search: '',
                 layout: 'list',
                 uploadFileOptions: {
                     headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
@@ -408,7 +408,7 @@
             },
             comingSoon () {
                 swal('Coming soon...');
-            }
+            },
         }
     }
 </script>
