@@ -480,7 +480,6 @@ export default {
                 });
             });
         },
-<<<<<<< HEAD
         makeProject: function (id, index) {
             var self = this;
             swal({
@@ -511,7 +510,6 @@ export default {
                 });
             });
           },
-=======
         totalQuotes (quotes) {
           let total = 0.00
           if (quotes) {
@@ -526,7 +524,6 @@ export default {
           }
           return total
         }
->>>>>>> ensicom
     }
 }
 </script>

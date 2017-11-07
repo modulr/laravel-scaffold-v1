@@ -95,18 +95,11 @@
                                     <span>Events</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'opportunities'}">
-                                <a href="/opportunities">
-                                    <i class="mdi mdi-turned-in mdi-3x"></i>
+                            <li :class="{'active': activeLink == 'employees'}">
+                                <a href="/employees">
+                                    <i class="mdi mdi-group-add mdi-3x"></i>
                                     <br>
-                                    <span>Opportunities</span>
-                                </a>
-                            </li>
-                            <li :class="{'active': activeLink == 'quote'}">
-                                <a href="/quote">
-                                    <i class="mdi mdi-receipt mdi-3x"></i>
-                                    <br>
-                                    <span>Quote</span>
+                                    <span>Employees</span>
                                 </a>
                             </li>
                             <li :class="{'active': activeLink == 'clients'}">
@@ -116,11 +109,25 @@
                                     <span>Clients</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'employees'}">
-                                <a href="/employees">
-                                    <i class="mdi mdi-group-add mdi-3x"></i>
+                            <li :class="{'active': activeLink == 'quote'}">
+                                <a href="/quote">
+                                    <i class="mdi mdi-receipt mdi-3x"></i>
                                     <br>
-                                    <span>Employees</span>
+                                    <span>Quote</span>
+                                </a>
+                            </li>
+                            <li :class="{'active': activeLink == 'opportunities'}">
+                                <a href="/opportunities">
+                                    <i class="mdi mdi-turned-in mdi-3x"></i>
+                                    <br>
+                                    <span>Opportunities</span>
+                                </a>
+                            </li>
+                            <li :class="{'active': activeLink == 'projects'}">
+                                <a href="/projects">
+                                    <i class="mdi mdi-book mdi-3x"></i>
+                                    <br>
+                                    <span>Projects</span>
                                 </a>
                             </li>
                             <hr>

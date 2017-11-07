@@ -5,7 +5,7 @@
                 <p class="lead">Quotes</p>
                 <a href="/quote" class="pull-right">View all</a>
             </div>
-            <div class="panel-body" style="height:455px; overflow-y:scroll;">
+            <div class="panel-body">
                 <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
                 <div v-if="!loading">
                     <div class="info-block">

@@ -11,21 +11,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(ListGenderTableSeeder::class);
-        $this->call(ListRelationshipTableSeeder::class);
-        $this->call(ListRelationTableSeeder::class);
-        $this->call(ListContactTableSeeder::class);
-        $this->call(ListProfessionTableSeeder::class);
-        $this->call(ListPositionTableSeeder::class);
-        $this->call(ListDepartmentTableSeeder::class);
+        $this->call(ListsTableSeeder::class);
         $this->call(ListTypeEmployeesSeeder::class);
         $this->call(ListAreasTableSeeder::class);
         $this->call(ListStatusQuoteSeeder::class);
         $this->call(ListTypeServiceSeeder::class);
         $this->call(ListTypeCurrencySeeder::class);
-        $this->call(GroupsTableSeeder::class);
         $this->call(PrioritiesSeeder::class);
-        $this->call(ListsTableSeeder::class);
         $this->call(LaratrustSeeder::class);
 
         // factory(App\User::class, 10)

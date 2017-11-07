@@ -25,12 +25,12 @@
 
     .menu {
         .dropdown-menu {
-            width: 300px;
-            max-height: 400px;
-            overflow-y: overlay;
-            padding-top: 30px;
-            padding-bottom: 10px;
-            text-align: center;
+                width: 320px;
+                max-height: 400px;
+                overflow-y: overlay;
+                padding-top: 30px;
+                padding-bottom: 10px;
+                text-align: center;
             li {
                 display: inline-block;
                 text-align: center;
@@ -50,15 +50,15 @@
             li.active {
                 a {
                     background-color: transparent;
-                    color: $brand-primary;
+                    color: $orange;
                     &:hover {
                         .mdi {
-                            color: $brand-primary;
+                            color: $orange;
                         }
                     }
                 }
                 .mdi {
-                    color: $brand-primary;
+                    color: $orange;
                 }
             }
         }
@@ -131,7 +131,7 @@
             li.active {
                 a {
                     background-color: transparent !important;
-                    color: $brand-primary !important;
+                    color: $orange !important;
                 }
             }
         }

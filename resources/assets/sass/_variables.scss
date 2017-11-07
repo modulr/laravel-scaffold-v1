@@ -14,7 +14,7 @@ $white:  #fff;
 $orange: #FEAE3B;
 
 
-$brand-primary: #2cbaf7;
+$brand-primary: #feae3b;
 $brand-info:    #7e76ee;
 $brand-success: #389E70;
 $brand-warning: #FED33A;
@@ -44,6 +44,12 @@ $headings-color: darken($brand-gray, 10%);
 $panel-default-text:       darken($brand-gray, 10%);
 $panel-default-heading-bg: $white;
 
+//== Buttons
+.btn-orange {
+    color: #fff;
+    background-color: $orange;
+}
+
 // mdi icons
 .mdi-10x, .mdi-size-10x {
     font-size: 10em;
@@ -70,16 +76,16 @@ $panel-default-heading-bg: $white;
 }
 
 // Scrollbar
-// ::-webkit-scrollbar {
-//     width: 3px;
-//     height: 3px;
-//     background-color: #F5F5F5;
-// }
-//
-// ::-webkit-scrollbar-thumb {
-//     background-color: #d1d1d1;
-// }
-//
-// ::-webkit-scrollbar-track {
-//     background-color: inherit;
-// }
+::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #d1d1d1;
+}
+
+::-webkit-scrollbar-track {
+    background-color: inherit;
+}
