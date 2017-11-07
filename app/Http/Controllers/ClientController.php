@@ -22,13 +22,14 @@ class ClientController extends Controller
     {
         $this->validate($request, [
             'client.name' => 'required|string',
-            // 'client.email' => 'required|string',
-            // 'client.phone_number_1' => 'required|string',
-            // 'client.customer' => 'required',
         ]);
 
 
         if ($request->customer) {
+            $this->validate($request, [
+                'customer.name' => 'unique:customers,name',
+            ]);
+            
             $customer = Customer::create([
                 'name' => $request->customer['name']
             ])->load('client');
