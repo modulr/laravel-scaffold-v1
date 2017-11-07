@@ -52,13 +52,14 @@
 
 <script>
     import { swiper, swiperSlide } from 'vue-awesome-swiper';
+
     export default {
         data () {
             return {
                 swiperOption: {
                     loop: true,
                     nextButton: '.swiper-button-next',
-                    prevButton: '.swiper-button-prev'
+                    prevButton: '.swiper-button-prev',
                 }
             }
         },

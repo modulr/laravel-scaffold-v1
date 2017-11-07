@@ -32,11 +32,11 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required|string',
+            'name' => 'required|string',
         ]);
 
         $event = Event::create([
-            'title' => $request->title,
+            'name' => $request->name,
             'description' => $request->description,
             'place' => $request->place,
             'date' => $request->date,
@@ -52,11 +52,11 @@ class EventController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'title' => 'required|string',
+            'name' => 'required|string',
         ]);
 
         $event = Event::find($id);
-        $event->title = $request->title;
+        $event->name = $request->name;
         $event->description = $request->description;
         $event->place = $request->place;
         $event->date = $request->date;

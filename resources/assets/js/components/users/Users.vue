@@ -3,16 +3,6 @@
         <!-- Header -->
         <div class="container-fluid header">
             <div class="row">
-                <div class="col-xs-6 header-title">
-                    <h1>Users</h1>
-                </div>
-                <div class="col-xs-6 header-buttons">
-                    <a href="#" class="btn btn-success"
-                       v-if="user.hasPermission['create-users']"
-                       @click.prevent="newItem">
-                        <i class="mdi mdi-person-add mdi-lg"></i> New User
-                    </a>
-                </div>
                 <div class="col-xs-12">
                     <ul class="nav nav-tabs header-tabs">
                         <li class="active"><a href="">Users</a></li>
@@ -23,70 +13,70 @@
         </div>
         <!-- Container -->
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-10 col-lg-offset-1">
-                    <!-- Actionbar -->
-                    <div class="actionbar">
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" placeholder="Search" v-model="search">
-                                </div>
-                            </div>
+            <!-- Actionbar -->
+            <div class="actionbar">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <a href="#" class="btn btn-success"
+                           v-if="user.hasPermission['create-users']"
+                           @click.prevent="newUser">
+                            <i class="mdi mdi-person-add mdi-lg"></i> New User
+                        </a>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search" v-model="search">
+                            <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
                         </div>
                     </div>
-                    <!-- List Items -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th></th>
-                                                    <th>Name</th>
-                                                    <th>Email</th>
-                                                    <th>Role</th>
-                                                    <th class="text-center">Active</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr v-for="(item, index) in filteredListItems">
-                                                    <td @click="editItem(item, index)">
-                                                        {{item.id}}
-                                                    </td>
-                                                    <td @click="editItem(item, index)">
-                                                        <img class="avatar-sm" :src="item.avatar_url">
-                                                    </td>
-                                                    <td @click="editItem(item, index)">
-                                                        {{item.name}}
-                                                    </td>
-                                                    <td @click="editItem(item, index)">
-                                                        {{item.email}}
-                                                    </td>
-                                                    <td @click="editItem(item, index)">
-                                                        <span v-if="item.roles.length">{{item.roles[0].display_name}}</span>
-                                                        <span v-else>---</span>
-                                                    </td>
-                                                    <td class="text-center" @click="editItem(item, index)">
-                                                        <i class="mdi mdi-2x" :class="{'mdi-mood text-success': item.active, 'mdi-mood-bad': !item.active}"></i>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                </div>
+            </div>
+            <!-- List Users -->
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th class="text-center">Active</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item, index) in filteredUsers">
+                                            <td @click="editUser(item, index)">
+                                                {{item.id}}
+                                            </td>
+                                            <td @click="editUser(item, index)">
+                                                <img class="avatar-sm" :src="item.avatar_url">
+                                                {{item.name}}
+                                            </td>
+                                            <td @click="editUser(item, index)">
+                                                <a :href="`mailto:${item.email}`">{{item.email}}</a>
+                                            </td>
+                                            <td @click="editUser(item, index)">
+                                                <span v-if="item.roles.length">{{item.roles[0].display_name}}</span>
+                                                <span v-else>---</span>
+                                            </td>
+                                            <td class="text-center" @click="editUser(item, index)">
+                                                <i class="mdi mdi-2x" :class="{'mdi-mood text-success': item.active, 'mdi-mood-bad': !item.active}"></i>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Modal New Item -->
-        <div class="modal right fade" tabindex="-1" id="modalNewItem">
+        <!-- Modal New User -->
+        <div class="modal right fade" tabindex="-1" id="modalNewUser">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -99,10 +89,10 @@
                         <form>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <input type="checkbox" v-model="currentItem.active"> Active
+                                    <input type="checkbox" v-model="userNew.active"> Active
                                 </div>
-                                <label class="col-sm-12 text-center">
-                                    <img class="avatar-md" :src="currentItem.avatar_url" v-if="currentItem.avatar_url">
+                                <div class="col-sm-12 text-center">
+                                    <img class="avatar-md" :src="userNew.avatar_url" v-if="userNew.avatar_url">
                                     <i class="mdi mdi-account-circle mdi-10x" v-else></i>
                                     <br>
                                     <vue-core-image-upload
@@ -112,38 +102,36 @@
                                         :headers="{'X-CSRF-TOKEN': csrfToken}"
                                         :url="'users/upload/avatar/temp'">
                                     </vue-core-image-upload>
-                                </label>
+                                </div>
                             </div>
                             <hr>
                             <div class="form-group" :class="{'has-error': error.name}">
                                 <label>Name *</label>
                                 <input type="text" class="form-control input-lg" placeholder="John Doe" required
-                                       v-model="currentItem.name">
+                                       v-model="userNew.name">
                                 <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                             </div>
                             <div class="form-group" :class="{'has-error': error.email}">
                                 <label>Email *</label>
                                 <input type="email" class="form-control" placeholder="doe@modulr.io" required
-                                       v-model="currentItem.email">
+                                       v-model="userNew.email">
                                 <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
                             </div>
                             <div class="form-group" :class="{'has-error': error.password}">
                                 <label>Password *</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" required
-                                           v-model="currentItem.password">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" @click="generatePassword">
-                                            Generate password
-                                        </button>
-                                    </span>
-                                </div>
+                                <input type="password" class="form-control" required
+                                       v-model="userNew.password">
                                 <span class="help-block" v-if="error.password">{{error.password[0]}}</span>
+                            </div>
+                            <div class="form-group text-right">
+                                <button class="btn btn-link btn-sm" type="button" @click="generatePassword">
+                                    Generate password
+                                </button>
                             </div>
                             <div class="form-group" :class="{'has-error': error.role_id}">
                                 <label>Role</label>
                                 <select class="form-control text-capitalize"
-                                    v-model="currentItem.role_id">
+                                    v-model="userNew.role_id">
                                     <option v-for="option in lists.roles" :value="option.id">
                                         {{ option.name }}
                                     </option>
@@ -155,14 +143,14 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success pull-left"
                                 v-if="user.hasPermission['create-users']"
-                                @click="storeItem">Create</button>
+                                @click="storeUser">Create</button>
                         <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Modal Edit Item -->
-        <div class="modal right fade" tabindex="-1" data-backdrop="false" id="modalEditItem">
+        <!-- Modal Edit User -->
+        <div class="modal right fade" tabindex="-1" data-backdrop="false" id="modalEditUser">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -175,68 +163,57 @@
                         <form>
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <input type="checkbox" v-model="currentItem.active"> Active
+                                    <input type="checkbox" v-model="userEdit.active"> Active
                                 </div>
                                 <div class="col-xs-6 text-right">
-                                    <a :href="'/profile/'+currentItem.id">
+                                    <a :href="'/profile/'+userEdit.id">
                                         View Profile
                                     </a>
                                 </div>
-                                <label class="col-xs-12 text-center">
-                                    <img class="avatar-md" :src="currentItem.avatar_url">
+                                <div class="col-xs-12 text-center">
+                                    <img class="avatar-md" :src="userEdit.avatar_url">
                                     <br>
                                     <vue-core-image-upload
                                         class="btn btn-link"
                                         @imageuploaded="editAvatar"
                                         extensions="png,jpeg,jpg"
                                         :headers="{'X-CSRF-TOKEN': csrfToken}"
-                                        :url="'users/upload/avatar/'+currentItem.id">
+                                        :url="'users/upload/avatar/'+userEdit.id">
                                     </vue-core-image-upload>
-                                </label>
+                                </div>
                             </div>
                             <hr>
-                            <div class="row">
-                                <div class="col-xs-1">
-                                    ID:
-                                </div>
-                                <div class="col-xs-3">
-                                    <strong>{{currentItem.id}}</strong>
-                                </div>
-                                <div class="col-xs-8 text-right">
-                                    <small class="text-mute">Created: </small>
-                                    <em>{{currentItem.created_at | moment("LLL")}}</em>
-                                </div>
+                            <div class="form-group">
+                                <label>Created: <em>{{userEdit.created_at | moment("LLL")}}</em></label>
+                                <p class="form-control-static">ID: <strong>{{userEdit.id}}</strong></p>
                             </div>
-                            <br>
                             <div class="form-group" :class="{'has-error': error.name}">
                                 <label>Name *</label>
                                 <input type="text" class="form-control input-lg" placeholder="Name" required
-                                       v-model="currentItem.name">
+                                       v-model="userEdit.name">
                                 <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                             </div>
                             <div class="form-group" :class="{'has-error': error.email}">
                                 <label>Email *</label>
                                 <input type="email" class="form-control" placeholder="Email" required
-                                       v-model="currentItem.email">
+                                       v-model="userEdit.email">
                                 <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
                             </div>
                             <div class="form-group" :class="{'has-error': error.password}">
                                 <label>Password</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control"
-                                           v-model="currentItem.password">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" @click="generatePassword">
-                                            Generate password
-                                        </button>
-                                    </span>
-                                </div>
+                                <input type="password" class="form-control"
+                                       v-model="userEdit.password">
                                 <span class="help-block" v-if="error.password">{{error.password[0]}}</span>
+                            </div>
+                            <div class="form-group text-right">
+                                <button class="btn btn-link btn-sm" type="button" @click="generatePassword">
+                                    Generate password
+                                </button>
                             </div>
                             <div class="form-group" :class="{'has-error': error.role_id}">
                                 <label>Role</label>
                                 <select class="form-control text-capitalize"
-                                    v-model="currentItem.role_id">
+                                    v-model="userEdit.role_id">
                                     <option v-for="option in lists.roles" :value="option.id">
                                         {{ option.name }}
                                     </option>
@@ -248,11 +225,11 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary pull-left"
                                 v-if="user.hasPermission['update-users']"
-                                @click="updateItem">Save</button>
+                                @click="updateUser">Save</button>
                         <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-default"
                                 v-if="user.hasPermission['delete-users']"
-                                @click="destroyItem">
+                                @click="destroyUser">
                             <i class="fa fa-trash-o fa-lg"></i>
                         </button>
                     </div>
@@ -273,23 +250,24 @@
                 csrfToken: Laravel.csrfToken,
                 error: {},
                 search: '',
-                listItems: [],
-                currentItem: {},
+                users: [],
+                userNew: {},
+                userEdit: {},
                 lists: {
-                    roles: []
+                    roles: [],
                 },
             }
         },
         mounted() {
-            this.getListItems();
+            this.getUsers();
             this.getLists();
         },
         components: {
             'vue-core-image-upload': VueCoreImageUpload
         },
         computed: {
-            filteredListItems: function () {
-                var filteredArray = this.listItems,
+            filteredUsers: function () {
+                var filteredArray = this.users,
                     search = this.search;
 
                 if(!search){
@@ -308,68 +286,68 @@
             }
         },
         methods: {
-            getListItems: function () {
+            getUsers () {
                 axios.get('/users/all')
                 .then(response => {
-                    this.listItems = response.data;
+                    this.users = response.data;
                 });
             },
-            getLists: function () {
+            getLists () {
                 axios.get('/roles/all')
                 .then(response => {
                     this.lists.roles = response.data;
                 });
             },
-            newItem: function () {
-                this.currentItem = {
+            newUser () {
+                this.userNew = {
                     avatar_url: null,
                     password: '',
                     active: true,
                 };
                 this.error = {};
-                $('#modalNewItem').modal('show');
+                $('#modalNewUser').modal('show');
             },
-            storeItem: function (e) {
+            storeUser (e) {
                 var btn = $(e.target).button('loading')
-                axios.post('/users/store', this.currentItem)
+                axios.post('/users/store', this.userNew)
                 .then(response => {
-                    this.listItems.push(response.data);
-                    this.currentItem = {};
+                    this.users.push(response.data);
+                    this.userNew = {};
                     this.error = {};
                     var btn = $(e.target).button('reset')
-                    $('#modalNewItem').modal('hide');
+                    $('#modalNewUser').modal('hide');
                 })
                 .catch(error => {
                     this.error = error.response.data;
                     var btn = $(e.target).button('reset')
                 });
             },
-            editItem: function (item, index) {
-                this.currentItem = _.clone(item);
-                this.currentItem.index = index;
-                this.$set(this.currentItem, 'password', '');
-                if (this.currentItem.roles.length) {
-                    this.currentItem.role_id = this.currentItem.roles[0].id;
+            editUser (item, index) {
+                this.userEdit = _.clone(item);
+                this.userEdit.index = index;
+                this.$set(this.userEdit, 'password', '');
+                if (this.userEdit.roles.length) {
+                    this.userEdit.role_id = this.userEdit.roles[0].id;
                 }
                 this.error = {};
-                $('#modalEditItem').modal('show');
+                $('#modalEditUser').modal('show');
             },
-            updateItem: function (e) {
+            updateUser (e) {
                 var btn = $(e.target).button('loading')
-                axios.put('/users/update/'+this.currentItem.id, this.currentItem)
+                axios.put('/users/update/'+this.userEdit.id, this.userEdit)
                 .then(response => {
-                    this.listItems[this.currentItem.index] = response.data;
-                    this.currentItem = {};
+                    this.users[this.userEdit.index] = response.data;
+                    this.userEdit = {};
                     this.error = {};
                     var btn = $(e.target).button('reset')
-                    $('#modalEditItem').modal('hide');
+                    $('#modalEditUser').modal('hide');
                 })
                 .catch(error => {
                     this.error = error.response.data;
                     var btn = $(e.target).button('reset')
                 });
             },
-            destroyItem: function () {
+            destroyUser () {
                 var self = this;
                 swal({
                     title: "Are you sure?",
@@ -381,9 +359,9 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    axios.delete('/users/destroy/' + self.currentItem.id)
+                    axios.delete('/users/destroy/' + self.userEdit.id)
                     .then(response => {
-                        self.listItems.splice(self.currentItem.index, 1);
+                        self.users.splice(self.userEdit.index, 1);
                         swal({
                             title: "Deleted!",
                             text: "The user has been deleted.",
@@ -391,32 +369,33 @@
                             timer: 1000,
                             showConfirmButton: false
                         });
-                        self.currentItem = {};
+                        self.userEdit = {};
                         this.error = {};
-                        $('#modalEditItem').modal('hide');
+                        $('#modalEditUser').modal('hide');
                     })
                     .catch(error => {
                         self.error = error.response.data;
                     });
                 });
             },
-            newAvatar(response) {
-                this.currentItem.avatar = response.avatar;
-                this.currentItem.avatar_url = response.avatar_url;
+            newAvatar (response) {
+                this.userNew.avatar = response.avatar;
+                this.userNew.avatar_url = response.avatar_url;
             },
-            editAvatar(response) {
-                this.currentItem.avatar_url = response.avatar_url;
-                this.listItems[this.currentItem.index].avatar_url = response.avatar_url;
-                if (Laravel.user.id == this.currentItem.id) {
+            editAvatar (response) {
+                this.userEdit.avatar_url = response.avatar_url;
+                this.users[this.userEdit.index].avatar_url = response.avatar_url;
+                if (Laravel.user.id == this.userEdit.id) {
                     Laravel.user.avatar_url =response.avatar_url;
                 }
             },
-            generatePassword: function () {
+            generatePassword () {
                 var length = 10;
                 var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 var result = '';
                 for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
-                this.currentItem.password = result;
+                this.userNew.password = result;
+                this.userEdit.password = result;
             }
 
         }

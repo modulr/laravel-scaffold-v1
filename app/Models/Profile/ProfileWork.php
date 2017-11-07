@@ -11,9 +11,7 @@ class ProfileWork extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = [
-        'user_id', 'profession_id', 'position_id', 'department_id', 'boss_id', 'starting_from',
-    ];
+    protected $guarded = ['id'];
 
     public function user()
     {
@@ -22,17 +20,17 @@ class ProfileWork extends Model
 
     public function profession()
     {
-        return $this->belongsTo(\App\Models\Lists\ListProfession::class);
+        return $this->belongsTo(\App\Models\Profile\ListProfession::class);
     }
 
     public function position()
     {
-        return $this->belongsTo(\App\Models\Lists\ListPosition::class);
+        return $this->belongsTo(\App\Models\Profile\ListPosition::class);
     }
 
     public function department()
     {
-        return $this->belongsTo(\App\Models\Lists\ListDepartment::class);
+        return $this->belongsTo(\App\Models\Profile\ListDepartment::class);
     }
 
     public function boss()

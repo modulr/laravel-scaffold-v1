@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePrioritiesTable extends Migration
+class CreateListPrioritiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatePrioritiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('priorities', function(Blueprint $table){
-          $table->increments('id');
-          $table->string('name');
-          $table->softDeletes();
+        Schema::create('list_priorities', function(Blueprint $table){
+            $table->increments('id');
+            $table->string('name');
+            $table->softDeletes();
         });
     }
 
@@ -27,6 +27,6 @@ class CreatePrioritiesTable extends Migration
      */
     public function down()
     {
-        $tables->dropIfExists('priority');
+        $tables->dropIfExists('list_priorities');
     }
 }

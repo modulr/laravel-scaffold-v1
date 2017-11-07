@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="navbar-header pull-left">
                     <a class="navbar-brand" href="/dashboard">
-                        <svg viewBox="0 0 218 42">
+                        <svg viewBox="0 0 218 42" class="hidden-xs">
                             <g>
                                 <path fill="#feae3b" d="M40.433,19.072h17.324c0.559,0,1.011-0.452,1.011-1.01v-6.705c0-0.559-0.452-1.011-1.011-1.011H40.433
                                     c-0.557,0-1.01,0.452-1.01,1.011v6.705C39.423,18.62,39.876,19.072,40.433,19.072z"/>
@@ -44,6 +44,28 @@
                                     h6.394v-8.816H206.31z"/>
                             </g>
                         </svg>
+                        <svg viewBox="0 0 65 42" class="visible-xs-block">
+                            <g>
+                                <path fill="#feae3b" d="M40.433,19.072h17.324c0.559,0,1.011-0.452,1.011-1.01v-6.705c0-0.559-0.452-1.011-1.011-1.011H40.433
+                                    c-0.557,0-1.01,0.452-1.01,1.011v6.705C39.423,18.62,39.876,19.072,40.433,19.072z"/>
+                                <path fill="#feae3b" d="M19.102,19.072h17.323c0.559,0,1.01-0.452,1.01-1.01v-6.705c0-0.559-0.451-1.011-1.01-1.011H19.102
+                                    c-0.559,0-1.011,0.452-1.011,1.011v6.705C18.091,18.62,18.543,19.072,19.102,19.072z"/>
+                                <path fill="#feae3b" d="M3.831,19.072h11.418c0.558,0,1.01-0.452,1.01-1.01v-6.705c0-0.559-0.452-1.011-1.01-1.011H3.831
+                                    c-0.559,0-1.01,0.452-1.01,1.011v6.705C2.821,18.62,3.272,19.072,3.831,19.072z"/>
+                                <path fill="#feae3b" d="M57.758,31.232H40.434c-0.558,0-1.011,0.453-1.011,1.011v6.704c0,0.558,0.453,1.01,1.011,1.01h17.324
+                                    c0.558,0,1.011-0.452,1.011-1.01v-6.704C58.769,31.685,58.315,31.232,57.758,31.232z"/>
+                                <path fill="#feae3b" d="M36.425,31.232H19.102c-0.558,0-1.01,0.453-1.01,1.011v6.704c0,0.558,0.452,1.01,1.01,1.01h17.323
+                                    c0.559,0,1.012-0.452,1.012-1.01v-6.704C37.437,31.685,36.983,31.232,36.425,31.232z"/>
+                                <path fill="#feae3b" d="M15.249,31.232H3.831c-0.558,0-1.01,0.453-1.01,1.011v6.704c0,0.558,0.452,1.01,1.01,1.01h11.418
+                                    c0.558,0,1.01-0.452,1.01-1.01v-6.704C16.259,31.685,15.807,31.232,15.249,31.232z"/>
+                                <path fill="#feae3b" d="M21.155,29.556c0.558,0,1.01-0.452,1.01-1.01v-6.705c0-0.558-0.452-1.01-1.01-1.01H3.831
+                                    c-0.559,0-1.01,0.452-1.01,1.01v6.705c0,0.558,0.451,1.01,1.01,1.01H21.155z"/>
+                                <path fill="#feae3b" d="M25.296,20.832c-0.559,0-1.012,0.452-1.012,1.01v6.705c0,0.558,0.453,1.01,1.012,1.01h17.323
+                                    c0.558,0,1.01-0.452,1.01-1.01v-6.705c0-0.558-0.452-1.01-1.01-1.01H25.296z"/>
+                                <path fill="#feae3b" d="M57.757,20.832H46.339c-0.557,0-1.01,0.452-1.01,1.01v6.705c0,0.558,0.453,1.01,1.01,1.01h11.418
+                                    c0.559,0,1.011-0.452,1.011-1.01v-6.705C58.768,21.284,58.315,20.832,57.757,20.832z"/>
+                            </g>
+                        </svg>
                     </a>
                 </div>
                 <ul class="nav navbar-nav pull-right">
@@ -60,35 +82,35 @@
                                     <span>Dashboard</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'news'}">
+                            <li :class="{'active': activeLink == 'news'}" v-if="user.hasPermission['read-news']">
                                 <a href="/news">
                                     <i class="mdi mdi-whatshot mdi-3x"></i>
                                     <br>
                                     <span>News</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'tasks'}">
+                            <li :class="{'active': activeLink == 'tasks'}" v-if="user.hasPermission['read-tasks']">
                                 <a href="/tasks">
                                     <i class="mdi mdi-assignment mdi-3x"></i>
                                     <br>
                                     <span>Tasks</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'files'}">
+                            <li :class="{'active': activeLink == 'files'}" v-if="user.hasPermission['read-files']">
                                 <a href="/files">
                                     <i class="mdi mdi-folder mdi-3x"></i>
                                     <br>
                                     <span>Files</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'contacts'}">
+                            <li :class="{'active': activeLink == 'contacts'}" v-if="user.hasPermission['read-contacts']">
                                 <a href="/contacts">
                                     <i class="mdi mdi-contacts mdi-3x"></i>
                                     <br>
                                     <span>Contacts</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'events'}">
+                            <li :class="{'active': activeLink == 'events'}" v-if="user.hasPermission['read-events']">
                                 <a href="/events">
                                     <i class="mdi mdi-event mdi-3x"></i>
                                     <br>
@@ -179,12 +201,12 @@
                                 <span>{{user.email}}</span>
                             </li>
                             <li class="divider"></li>
-                            <li>
+                            <li v-if="user.hasPermission['read-profile']">
                                 <a :href="'/profile/'+user.id">
                                     <i class="fa fa-fw fa-user-circle-o"></i> Profile
                                 </a>
                             </li>
-                            <li>
+                            <li v-if="user.hasPermission['update-profile']">
                                 <a :href="'/profile/'+user.id+'/edit'">
                                     <i class="fa fa-fw fa-pencil"></i> Edit profile
                                 </a>

@@ -1,13 +1,13 @@
 <template>
     <div class="news">
-        <!-- New Item -->
+        <!-- New News -->
         <div class="panel panel-default news-publish"
              v-if="user.hasPermission['create-news']">
             <div class="panel-body">
-                <div class="form-group" :class="{'has-error': error.title}">
+                <div class="form-group" :class="{'has-error': error.name}">
                     <textarea rows="2" class="form-control" placeholder="What are you thinking?"
-                        v-model="newItem.title" autofocus></textarea>
-                    <small class="help-block" v-if="error.title">{{error.title[0]}}</small>
+                        v-model="newItem.name" autofocus></textarea>
+                    <small class="help-block" v-if="error.name">{{error.name[0]}}</small>
                 </div>
                 <div class="form-group" :class="{'has-error': error.images}">
                     <dropzone id="myVueDropzone" ref="myVueDropzone" v-show="newItem.type == 2"
@@ -65,7 +65,7 @@
             Dropzone,
         },
         methods: {
-            storeNews: function (e) {
+            storeNews (e) {
                 var btn = $(e.target).button('loading')
                 axios.post('/news/store', this.newItem)
                 .then(response => {
@@ -83,13 +83,13 @@
                     var btn = $(e.target).button('reset')
                 });
             },
-            uploadImage: function(file, response){
+            uploadImage (file, response){
                 if (!this.newItem.images)
                     this.newItem.images = [];
 
                 this.newItem.images.push(response);
             },
-            toogleType: function (type) {
+            toogleType (type) {
                 if (this.newItem.type != type)
                     this.newItem.type = type;
             },

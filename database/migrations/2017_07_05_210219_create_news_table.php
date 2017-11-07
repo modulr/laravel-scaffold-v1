@@ -15,9 +15,9 @@ class CreateNewsTable extends Migration
     {
         Schema::create('news', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('title')->nullable();
+            $table->text('name')->nullable();
             $table->text('video')->nullable();
-            $table->integer('type');
+            $table->integer('type'); // 1.Text, 2.Image, 3.Video
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->json('likes');
@@ -27,8 +27,7 @@ class CreateNewsTable extends Migration
 
         Schema::create('news_images', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('basename');
-            $table->string('extension');
+            $table->text('basename')->nullable();
             $table->integer('news_id')->unsigned();
             $table->foreign('news_id')->references('id')->on('news');
             $table->timestamps();

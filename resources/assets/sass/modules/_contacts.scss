@@ -1,28 +1,32 @@
 .contacts {
-    .list {
-        .table {
-            > tbody > tr:first-child > td {
-                border-top-color: transparent;
-            }
-            p {
-                margin-bottom: 0;
-            }
+    .table {
+        > tbody > tr:first-child > td {
+            border-top-color: transparent;
+        }
+        p {
+            margin-bottom: 0;
         }
     }
 
-    .grid {
-        .panel-body {
-            text-align: center;
-            .avatar-md {
-                margin-bottom: 20px;
-            }
+    .thumbnail {
+        background-color: $white;
+        text-align: center;
+        .avatar-md {
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
     }
 }
 
 .modal-contacts {
-    .contact-header {
+    .contact-heading {
         text-align: center;
-        padding: 40px 0;
+        padding-top: 20px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid $gray-lighter;
+        margin-bottom: 30px;
+    }
+    .contact-body {
+        padding: 0 20px;
     }
 }

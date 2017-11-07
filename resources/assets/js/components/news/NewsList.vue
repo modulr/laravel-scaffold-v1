@@ -1,6 +1,6 @@
 <template>
     <div class="news">
-        <!-- List Items -->
+        <!-- List News -->
         <div class="panel panel-default" v-for="(item, index) in news">
             <div class="panel-heading">
                 <img class="avatar-sm" :src="item.user.avatar_url" alt="">
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="panel-body">
-                <p :class="{'lead': item.title.length <= 50}" v-if="item.title">{{item.title}}</p>
+                <p :class="{'lead': item.name.lenght <= 50}" v-if="item.name">{{item.name}}</p>
                 <swiper :options="swiperOption" v-if="item.type == 2">
                     <swiper-slide v-for="image in item.images" :key="image.id">
                         <img class="img-responsive center-block" :src="image.url">
@@ -82,10 +82,10 @@
             InfiniteLoading,
         },
         methods: {
-            addNews: function (item) {
+            addNews (item) {
                 this.news.unshift(item)
             },
-            loadNews: function () {
+            loadNews () {
                 var page = Number(this.pagination.current_page) + 1;
 
                 axios.get('/news/all?page='+ page)
@@ -97,7 +97,7 @@
                         this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
                 });
             },
-            destroyNews: function (id, index) {
+            destroyNews (id, index) {
                 var self = this;
                 swal({
                     title: "Are you sure?",
@@ -126,7 +126,7 @@
                     });
                 });
             },
-            likeNews: function (item) {
+            likeNews (item) {
                 if (!this.user.hasPermission['update-tasks']) {
                     swal("Oops", "Don't have permissions to give like!",  "error");
                     return false;

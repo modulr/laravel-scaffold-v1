@@ -34,7 +34,9 @@
                     </dl>
                     <dl>
                         <dd>Starting from</dd>
-                        <dt>{{user.profile_work.starting_from | moment('from')}}</dt>
+                        <dt v-if="user.profile_work.starting_from">
+                            {{user.profile_work.starting_from | moment('from')}}
+                        </dt>
                     </dl>
                 </div>
             </div>

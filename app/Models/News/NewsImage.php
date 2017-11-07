@@ -12,7 +12,7 @@ class NewsImage extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['basename', 'extension', 'news_id'];
+    protected $guarded = ['id'];
 
     protected $appends = ['url'];
 

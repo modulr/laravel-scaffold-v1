@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-use App\Project;
-use App\Priority;
-use App\Client;
-use App\Customer;
+use App\Models\Projects\Project;
+use App\Models\Projets\ListPriority;
+use App\Models\Customers\Customer;
+use App\Models\Customers\Client;
 use App\Models\Lists\ListArea;
 use DB;
 
@@ -126,52 +126,52 @@ class OpportunityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-     public function listPriorities()
-     {
-        return Priority::all();
-     }
+    public function listPriorities()
+    {
+        return ListPriority::all();
+    }
 
     /**
      * Get a list of opportunity clients.
      *
      * @return \Illuminate\Http\Response
      */
-     public function listClients()
-     {
+    public function listClients()
+    {
         return Client::with('customer')->get();
-     }
+    }
 
      /**
       * Get a list of opportunity customers.
       *
       * @return \Illuminate\Http\Response
       */
-     public function listCustomers()
-     {
+    public function listCustomers()
+    {
         return Customer::with('client')->get();
-     }
+    }
 
      /**
       * Get a list of owners.
       *
       * @return \Illuminate\Http\Response
       */
-     public function listOwners()
-     {
+    public function listOwners()
+    {
         return DB::table('projects')
                     ->join('users', 'projects.owner_id', '=', 'users.id')
                     ->select('users.name')
                     ->distinct()
                     ->get();
-     }
+    }
 
      /**
       * Get a list of opportunity areas.
       *
       * @return \Illuminate\Http\Response
       */
-     public function listAreas()
-     {
-         return ListArea::all();
-     }
+    public function listAreas()
+    {
+        return ListArea::all();
+    }
 }
