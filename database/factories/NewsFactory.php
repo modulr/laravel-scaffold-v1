@@ -15,7 +15,7 @@
 $factory->define(App\Models\News\News::class, function (Faker\Generator $faker) {
 
     return [
-        'title' => $faker->text,
+        'name' => $faker->text,
         'type' => 1,
         'likes' => [],
     ];

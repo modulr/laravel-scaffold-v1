@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Lists\ListArea;
 
 class Project extends Model
 {
@@ -21,7 +20,7 @@ class Project extends Model
 
     public function priority()
     {
-        return $this->belongsTo(Priority::class);
+        return $this->belongsTo(ListPriority::class);
     }
 
     public function client()
@@ -31,7 +30,7 @@ class Project extends Model
 
     public function quote()
     {
-      return $this->hasMany(Quote::class);
+        return $this->hasMany(Quote::class);
     }
 
     public function area()

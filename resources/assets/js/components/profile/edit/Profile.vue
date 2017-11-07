@@ -48,7 +48,7 @@
                                     @imageuploaded="uploadAvatar"
                                     extensions="png,jpeg,jpg"
                                     :headers=headers
-                                    :url="'/user/upload/avatar/'+user.id">
+                                    :url="'/users/upload/avatar/'+user.id">
                                 </vue-core-image-upload>
                             </div>
                         </div>
@@ -71,66 +71,66 @@
 </template>
 
 <script>
-import ProfileSidebarEdit from './Sidebar.vue';
-import ProfilePersonalEdit from './Personal.vue';
-import ProfileContactEdit from './Contact.vue';
-import ProfileEducationEdit from './Education.vue';
-import ProfileFamilyEdit from './Family.vue';
-import ProfilePlaceEdit from './Place.vue';
+    import ProfileSidebarEdit from './Sidebar.vue';
+    import ProfilePersonalEdit from './Personal.vue';
+    import ProfileContactEdit from './Contact.vue';
+    import ProfileEducationEdit from './Education.vue';
+    import ProfileFamilyEdit from './Family.vue';
+    import ProfilePlaceEdit from './Place.vue';
 
-import VueCoreImageUpload from 'vue-core-image-upload';
+    import VueCoreImageUpload from 'vue-core-image-upload';
 
-import {Snotify} from 'vue-snotify';
-import {SnotifyService} from 'vue-snotify';
-Vue.use(Snotify)
+    import {Snotify} from 'vue-snotify';
+    import {SnotifyService} from 'vue-snotify';
+    Vue.use(Snotify)
 
-export default {
-    components: {
-        'vue-core-image-upload': VueCoreImageUpload
-    },
-    data() {
-        return {
-            usr: {},
-            headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-            error: {}
-        }
-    },
-    props:['user'],
-    mounted(){
-        this.usr = _.clone(this.user);
-    },
-    methods: {
-        updateProfile: function (e) {
-            var btn = $(e.target).button('loading')
-            axios.put('/user/update/'+this.user.id, this.user)
-            .then(response => {
-                this.user.name = response.data.name;
-                this.user.email = response.data.email;
-                this.usr.name = response.data.name;
-                this.usr.email = response.data.email;
-                if (this.user.id == Laravel.user.id) {
-                    Laravel.user.name = response.data.name;
-                    Laravel.user.email = response.data.email;
-                }
-                this.error = {};
-                var btn = $(e.target).button('reset')
-                SnotifyService.success('The profile has been saved success!');
-            })
-            .catch(error => {
-                this.error = error.response.data;
-                var btn = $(e.target).button('reset')
-            });
+    export default {
+        props:['user'],
+        data() {
+            return {
+                usr: {},
+                headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
+                error: {}
+            }
         },
-        uploadAvatar(response) {
-            this.user.avatar = response.avatar;
-            this.user.avatar_url = response.avatar_url;
-            this.usr.avatar = response.avatar;
-            this.usr.avatar_url = response.avatar_url;
-            if (this.user.id == Laravel.user.id) {
-                Laravel.user.avatar = response.avatar;
-                Laravel.user.avatar_url = response.avatar_url;
+        components: {
+            'vue-core-image-upload': VueCoreImageUpload
+        },
+        mounted(){
+            this.usr = _.clone(this.user);
+        },
+        methods: {
+            updateProfile (e) {
+                var btn = $(e.target).button('loading')
+                axios.put('/user/update/'+this.user.id, this.user)
+                .then(response => {
+                    this.user.name = response.data.name;
+                    this.user.email = response.data.email;
+                    this.usr.name = response.data.name;
+                    this.usr.email = response.data.email;
+                    if (this.user.id == Laravel.user.id) {
+                        Laravel.user.name = response.data.name;
+                        Laravel.user.email = response.data.email;
+                    }
+                    this.error = {};
+                    var btn = $(e.target).button('reset')
+                    SnotifyService.success('The profile has been saved success!');
+                })
+                .catch(error => {
+                    this.error = error.response.data;
+                    var btn = $(e.target).button('reset')
+                });
+            },
+            uploadAvatar (response) {
+                this.user.avatar = response.avatar;
+                this.user.avatar_url = response.avatar_url;
+                this.usr.avatar = response.avatar;
+                this.usr.avatar_url = response.avatar_url;
+                if (this.user.id == Laravel.user.id) {
+                    Laravel.user.avatar = response.avatar;
+                    Laravel.user.avatar_url = response.avatar_url;
+                }
             }
         }
     }
-}
 </script>

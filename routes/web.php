@@ -31,14 +31,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/notifications', 'NotificationController@index');
 
     // Lists
-    Route::group(['namespace' => 'Lists', 'prefix' => 'list'], function() {
-        Route::get('/gender', 'ListGenderController@all');
-        Route::get('/relationship', 'ListRelationshipController@all');
-        Route::get('/contact', 'ListContactController@all');
-        Route::get('/relation', 'ListRelationController@all');
-        Route::get('/profession', 'ListProfessionController@all');
-        Route::get('/position', 'ListPositionController@all');
-        Route::get('/department', 'ListDepartmentController@all');
+    Route::group(['namespace' => 'Profile', 'prefix' => 'list'], function() {
+        Route::get('/gender', 'ProfileListController@gender');
+        Route::get('/relationship', 'ProfileListController@relationship');
+        Route::get('/contact', 'ProfileListController@contact');
+        Route::get('/relation', 'ProfileListController@relation');
+        Route::get('/profession', 'ProfileListController@profession');
+        Route::get('/position', 'ProfileListController@position');
+        Route::get('/department', 'ProfileListController@department');
     });
 
     // Users

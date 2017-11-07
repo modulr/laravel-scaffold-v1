@@ -12,23 +12,27 @@
                     <div class="col-md-4">
                         <dl>
                             <dd>Birthday</dd>
-                            <dt>{{user.profile_personal.birthday | moment('from')}}</dt>
+                            <dt v-if="user.profile_personal.birthday">
+                                {{user.profile_personal.birthday | moment('from')}}
+                            </dt>
                         </dl>
                         <dl>
                             <dd>Place of birth</dd>
-                            <dt>{{user.profile_personal.place_of_birth}}</dt>
+                            <dt v-if="user.profile_personal">
+                                {{user.profile_personal.place_of_birth}}
+                            </dt>
                         </dl>
                     </div>
                     <div class="col-md-4">
                         <dl>
                             <dd>Gender</dd>
-                            <dt v-if="user.profile_personal.gender" class="text-capitalize">
+                            <dt class="text-capitalize" v-if="user.profile_personal.gender">
                                 {{user.profile_personal.gender.title}}
                             </dt>
                         </dl>
                         <dl>
                             <dd>Relationship</dd>
-                            <dt v-if="user.profile_personal.relationship" class="text-capitalize">
+                            <dt class="text-capitalize" v-if="user.profile_personal.relationship">
                                 {{user.profile_personal.relationship.title}}
                             </dt>
                         </dl>
@@ -38,19 +42,25 @@
                     <div class="col-md-4">
                         <dl>
                             <dd>RFC</dd>
-                            <dt>{{user.profile_personal.rfc}}</dt>
+                            <dt v-if="user.profile_personal">
+                                {{user.profile_personal.rfc}}
+                            </dt>
                         </dl>
                     </div>
                     <div class="col-md-4">
                         <dl>
                             <dd>CURP</dd>
-                            <dt>{{user.profile_personal.curp}}</dt>
+                            <dt v-if="user.profile_personal">
+                                {{user.profile_personal.curp}}
+                            </dt>
                         </dl>
                     </div>
                     <div class="col-md-4">
                         <dl>
                             <dd>NSS</dd>
-                            <dt>{{user.profile_personal.nss}}</dt>
+                            <dt v-if="user.profile_personal">
+                                {{user.profile_personal.nss}}
+                            </dt>
                         </dl>
                     </div>
                 </div>

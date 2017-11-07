@@ -33,24 +33,25 @@
 </template>
 
 <script>
-import comingSoon from '../../../mixins/comingSoon'
-export default {
-    mixins: [ comingSoon ],
-    data () {
-        return {
-            activeLink: '',
-        }
-    },
-    props:['user'],
-    mounted() {
-        var str = window.location.pathname;
-        var res = str.split("/");
+    import comingSoon from '../../../mixins/comingSoon'
+    
+    export default {
+        mixins: [ comingSoon ],
+        data () {
+            return {
+                activeLink: '',
+            }
+        },
+        props:['user'],
+        mounted() {
+            var str = window.location.pathname;
+            var res = str.split("/");
 
-        if (res.length == 4) {
-            this.activeLink = res[1];
-        } else if (res.length == 5) {
-            this.activeLink = res[3];
+            if (res.length == 4) {
+                this.activeLink = res[1];
+            } else if (res.length == 5) {
+                this.activeLink = res[3];
+            }
         }
     }
-}
 </script>

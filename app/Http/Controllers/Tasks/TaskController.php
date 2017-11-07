@@ -23,14 +23,14 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required|string',
+            'name' => 'required|string',
         ]);
 
         $maxOrder = Task::where('user_id', Auth::id())->max('order');
         $maxOrder ++;
 
         $task = Task::create([
-            'title' => $request->title,
+            'name' => $request->name,
             'user_id' => Auth::id(),
             'order'=>$maxOrder
         ]);

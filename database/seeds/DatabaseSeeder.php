@@ -11,13 +11,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(ListsTableSeeder::class);
-        $this->call(ListTypeEmployeesSeeder::class);
-        $this->call(ListAreasTableSeeder::class);
-        $this->call(ListStatusQuoteSeeder::class);
-        $this->call(ListTypeServiceSeeder::class);
-        $this->call(ListTypeCurrencySeeder::class);
-        $this->call(PrioritiesSeeder::class);
+        $this->call(ProfileListsTableSeeder::class);
+        $this->call(ProjectManagerSeeder::class);
         $this->call(LaratrustSeeder::class);
 
         // factory(App\User::class, 10)

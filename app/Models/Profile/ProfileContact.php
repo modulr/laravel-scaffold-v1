@@ -11,9 +11,7 @@ class ProfileContact extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = [
-        'user_id', 'contact', 'type_id',
-    ];
+    protected $guarded = ['id'];
 
     public function user()
     {
@@ -22,6 +20,6 @@ class ProfileContact extends Model
 
     public function type()
     {
-        return $this->belongsTo(\App\Models\Lists\ListContact::class, 'type_id');
+        return $this->belongsTo(\App\Models\Profile\ListContact::class, 'type_id');
     }
 }

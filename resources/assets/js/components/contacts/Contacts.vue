@@ -1,55 +1,42 @@
 <template>
     <div class="contacts">
-        <!-- Header -->
-        <div class="container-fluid header">
-            <div class="row">
-                <div class="col-xs-6 header-title">
-                    <h1>Contacts</h1>
-                </div>
-                <div class="col-xs-6 header-buttons">
-                    <!-- <a href="#" class="btn btn-success">
-                        <i class="mdi mdi-person-add mdi-lg"></i> New Contact
-                    </a> -->
-                </div>
-            </div>
-        </div>
         <!-- Container -->
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-10 col-lg-offset-1">
-                    <!-- Actionbar -->
-                    <div class="actionbar">
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" placeholder="Search" v-model="search">
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-8 text-right">
-                                <div class="button-group">
-                                    <a href="#" class="btn btn-link" :class="{ 'active': layout == 'list'}"
-                                        @click.prevent="toggleLayout('list')">
-                                        <i class="fa fa-lg fa-list" aria-hidden="true"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-link" :class="{ 'active': layout == 'grid'}"
-                                        @click.prevent="toggleLayout('grid')">
-                                        <i class="fa fa-lg fa-th-large" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                            </div>
+            <!-- Actionbar -->
+            <div class="actionbar">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <a href="#" class="btn btn-success" @click="comingSoon">
+                            <i class="mdi mdi-person-add mdi-lg"></i> New Contact
+                        </a>
+                    </div>
+                    <div class="col-sm-5 text-right">
+                        <a href="#" class="btn btn-link" @click.prevent="toggleLayout">
+                            <i class="fa fa-fw fa-lg" aria-hidden="true"
+                               :class="{'fa-list': layout == 'list', 'fa-th-large': layout == 'grid'}"
+                            ></i>
+                        </a>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search" v-model="search">
+                            <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
                         </div>
                     </div>
-                    <!-- List Items -->
+                </div>
+            </div>
+            <!-- List Contacts -->
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1">
                     <div class="row">
                         <!-- Layout list -->
-                        <div class="col-md-12 list" v-if="layout == 'list'">
+                        <div class="col-md-12 list" v-show="layout == 'list'">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <table class="table table-hover">
                                         <tbody>
                                             <tr v-for="contact in filteredContacts">
-                                                <td @click="viewContact(contact)">
+                                                <td @click="viewContact(contact.id)">
                                                     <div class="media">
                                                         <div class="media-left">
                                                             <img class="avatar-sm" :src="contact.avatar_url">
@@ -67,11 +54,11 @@
                             </div>
                         </div>
                         <!-- layout Grid -->
-                        <div class="col-sm-4 col-lg-3 grid" v-if="layout == 'grid'"
+                        <div class="col-xs-6 col-sm-4 col-md-3" v-show="layout == 'grid'"
                              v-for="contact in filteredContacts">
-                            <div class="panel panel-default">
-                                <div class="panel-body" @click="viewContact(contact)">
-                                    <img class="avatar-md" :src="contact.avatar_url">
+                            <div class="thumbnail" @click="viewContact(contact.id)">
+                                <img class="avatar-md" :src="contact.avatar_url">
+                                <div class="caption">
                                     <h4 class="media-heading">{{contact.name}}</h4>
                                     <span class="text-muted">{{contact.email}}</span>
                                 </div>
@@ -92,52 +79,52 @@
                         <h4 class="modal-title"></h4>
                     </div>
                     <div class="modal-body">
-                        <div class="contact-header">
-                            <img class="avatar-md" :src="contact.avatar_url">
-                            <h5>{{contact.name}}</h5>
+                        <div class="contact-heading">
+                            <img class="avatar-md" :src="contactView.avatar_url">
+                            <h5>{{contactView.name}}</h5>
                         </div>
                         <div class="contact-body">
                             <dl>
                                 <dd>Email Address</dd>
-                                <dt><a :href="`mailto:${contact.email}`">{{contact.email}}</a></dt>
+                                <dt><a :href="`mailto:${contactView.email}`">{{contactView.email}}</a></dt>
                             </dl>
                             <dl>
                                 <dd>Phone Number</dd>
-                                <dt v-if="contact.profile_contact && contact.profile_contact.length"
-                                    v-for="profile_contact in contact.profile_contact">
+                                <dt v-if="contactView.profile_contact && contactView.profile_contact.length"
+                                    v-for="profile_contact in contactView.profile_contact">
                                     <span v-if="profile_contact.type_id == 2">{{profile_contact.contact}}</span>
                                 </dt>
                             </dl>
                             <dl>
                                 <dd>Location</dd>
-                                <dt v-if="contact.profile_place && contact.profile_place.length"
-                                    v-for="profile_place in contact.profile_place">
+                                <dt v-if="contactView.profile_place && contactView.profile_place.length"
+                                    v-for="profile_place in contactView.profile_place">
                                     <span v-if="profile_place.currently">{{profile_place.place}}</span>
                                 </dt>
                             </dl>
                             <hr>
                             <dl>
                                 <dd>Profession</dd>
-                                <dt v-if="contact.profile_work">
-                                    {{contact.profile_work.profession.title}}
+                                <dt v-if="contactView.profile_work">
+                                    {{contactView.profile_work.profession.title}}
                                 </dt>
                             </dl>
                             <dl>
                                 <dd>Position</dd>
-                                <dt v-if="contact.profile_work">
-                                    {{contact.profile_work.position.title}}
+                                <dt v-if="contactView.profile_work">
+                                    {{contactView.profile_work.position.title}}
                                 </dt>
                             </dl>
                             <dl>
                                 <dd>Department</dd>
-                                <dt v-if="contact.profile_work">
-                                    {{contact.profile_work.department.title}}
+                                <dt v-if="contactView.profile_work">
+                                    {{contactView.profile_work.department.title}}
                                 </dt>
                             </dl>
                             <dl>
                                 <dd>Boss</dd>
-                                <dt v-if="contact.profile_work">
-                                    {{contact.profile_work.boss.name}}
+                                <dt v-if="contactView.profile_work">
+                                    {{contactView.profile_work.boss.name}}
                                 </dt>
                             </dl>
                         </div>
@@ -153,13 +140,14 @@
         data() {
             return {
                 search: '',
-                contacts: [],
-                contact: {},
                 layout: 'list',
+                contacts: [],
+                contactView: {},
             }
         },
         mounted() {
             this.getContacts();
+
             if (JSON.parse(localStorage.getItem('contacts'))) {
                 this.layout = JSON.parse(localStorage.getItem('contacts')).layout;
             }
@@ -185,22 +173,25 @@
             }
         },
         methods: {
-            getContacts: function () {
+            getContacts () {
                 axios.get('/contacts/all')
                 .then(response => {
                     this.contacts = response.data;
                 });
             },
-            viewContact: function (contact) {
-                axios.get('/contacts/'+contact.id)
+            viewContact (contactId) {
+                axios.get('/contacts/'+contactId)
                 .then(response => {
-                    this.contact = response.data;
+                    this.contactView = response.data;
                     $('#modalViewContact').modal('show');
                 });
             },
-            toggleLayout: function (layout) {
-                this.layout = layout;
-                localStorage.setItem('contacts', JSON.stringify({'layout':layout}));
+            toggleLayout () {
+                this.layout == 'list' ? this.layout = 'grid' : this.layout = 'list';
+                localStorage.setItem('contacts', JSON.stringify({'layout':this.layout}));
+            },
+            comingSoon () {
+                swal('Coming soon...');
             },
         }
     }

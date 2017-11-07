@@ -80,46 +80,47 @@
 </template>
 
 <script>
-import {Snotify} from 'vue-snotify';
-import {SnotifyService} from 'vue-snotify';
-Vue.use(Snotify)
-export default {
-    data() {
-        return {
-            list: {
-                genders: [],
-                relationships: []
-            },
-            error: {}
-        }
-    },
-    props: ['user'],
-    mounted() {
-        axios.get('/list/gender')
-        .then(response => {
-            this.list.genders = response.data;
-        });
+    import {Snotify} from 'vue-snotify';
+    import {SnotifyService} from 'vue-snotify';
+    Vue.use(Snotify)
 
-        axios.get('/list/relationship')
-        .then(response => {
-            this.list.relationships = response.data;
-        });
-    },
-    methods: {
-        updatePersonal: function (e) {
-            var btn = $(e.target).button('loading')
-            axios.put('/profile/personal/update/'+this.user.id, this.user.profile_personal)
+    export default {
+        data() {
+            return {
+                list: {
+                    genders: [],
+                    relationships: []
+                },
+                error: {}
+            }
+        },
+        props: ['user'],
+        mounted() {
+            axios.get('/list/gender')
             .then(response => {
-                this.user.profile_personal = response.data;
-                this.error = {};
-                var btn = $(e.target).button('reset')
-                SnotifyService.success('The profile has been saved success!')
-            })
-            .catch(error => {
-                this.error = error.response.data;
-                var btn = $(e.target).button('reset')
+                this.list.genders = response.data;
             });
+
+            axios.get('/list/relationship')
+            .then(response => {
+                this.list.relationships = response.data;
+            });
+        },
+        methods: {
+            updatePersonal (e) {
+                var btn = $(e.target).button('loading')
+                axios.put('/profile/personal/update/'+this.user.id, this.user.profile_personal)
+                .then(response => {
+                    this.user.profile_personal = response.data;
+                    this.error = {};
+                    var btn = $(e.target).button('reset')
+                    SnotifyService.success('The profile has been saved success!')
+                })
+                .catch(error => {
+                    this.error = error.response.data;
+                    var btn = $(e.target).button('reset')
+                });
+            }
         }
     }
-}
 </script>

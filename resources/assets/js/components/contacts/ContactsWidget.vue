@@ -1,24 +1,13 @@
 <template>
     <div class="contacts">
-        <!-- Actionbar -->
-        <div class="actionbar">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" placeholder="Search" v-model="search">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- List Items -->
+        <!-- List Contacts -->
         <div class="row">
             <!-- Layout list -->
-            <div class="col-md-12 list" v-if="layout == 'list'">
+            <div class="col-md-12">
                 <table class="table table-hover">
                     <tbody>
                         <tr v-for="contact in filteredContacts">
-                            <td @click="viewContact(contact)">
+                            <td @click="viewContact(contact.id)">
                                 <div class="media">
                                     <div class="media-left">
                                         <img class="avatar-sm" :src="contact.avatar_url">
@@ -33,19 +22,8 @@
                     </tbody>
                 </table>
             </div>
-            <!-- layout Grid -->
-            <div class="col-sm-4 col-lg-3 grid" v-if="layout == 'grid'"
-                 v-for="contact in filteredContacts">
-                <div class="panel panel-default">
-                    <div class="panel-body" @click="viewContact(contact)">
-                        <img class="avatar-md" :src="contact.avatar_url">
-                        <h4 class="media-heading">{{contact.name}}</h4>
-                        <span class="text-muted">{{contact.email}}</span>
-                    </div>
-                </div>
-            </div>
         </div>
-        <!-- Modal view contact -->
+        <!-- Modal View Contact -->
         <div class="modal right fade modal-contacts" data-backdrop="false" id="modalViewContact">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -56,52 +34,52 @@
                         <h4 class="modal-title"></h4>
                     </div>
                     <div class="modal-body">
-                        <div class="contact-header">
-                            <img class="avatar-md" :src="contact.avatar_url">
-                            <h5>{{contact.name}}</h5>
+                        <div class="contact-heading">
+                            <img class="avatar-md" :src="contactView.avatar_url">
+                            <h5>{{contactView.name}}</h5>
                         </div>
                         <div class="contact-body">
                             <dl>
                                 <dd>Email Address</dd>
-                                <dt><a :href="`mailto:${contact.email}`">{{contact.email}}</a></dt>
+                                <dt><a :href="`mailto:${contactView.email}`">{{contactView.email}}</a></dt>
                             </dl>
                             <dl>
                                 <dd>Phone Number</dd>
-                                <dt v-if="contact.profile_contact && contact.profile_contact.length"
-                                    v-for="profile_contact in contact.profile_contact">
+                                <dt v-if="contactView.profile_contact && contactView.profile_contact.length"
+                                    v-for="profile_contact in contactView.profile_contact">
                                     <span v-if="profile_contact.type_id == 2">{{profile_contact.contact}}</span>
                                 </dt>
                             </dl>
                             <dl>
                                 <dd>Location</dd>
-                                <dt v-if="contact.profile_place && contact.profile_place.length"
-                                    v-for="profile_place in contact.profile_place">
+                                <dt v-if="contactView.profile_place && contactView.profile_place.length"
+                                    v-for="profile_place in contactView.profile_place">
                                     <span v-if="profile_place.currently">{{profile_place.place}}</span>
                                 </dt>
                             </dl>
                             <hr>
                             <dl>
                                 <dd>Profession</dd>
-                                <dt v-if="contact.profile_work">
-                                    {{contact.profile_work.profession.title}}
+                                <dt v-if="contactView.profile_work">
+                                    {{contactView.profile_work.profession.title}}
                                 </dt>
                             </dl>
                             <dl>
                                 <dd>Position</dd>
-                                <dt v-if="contact.profile_work">
-                                    {{contact.profile_work.position.title}}
+                                <dt v-if="contactView.profile_work">
+                                    {{contactView.profile_work.position.title}}
                                 </dt>
                             </dl>
                             <dl>
                                 <dd>Department</dd>
-                                <dt v-if="contact.profile_work">
-                                    {{contact.profile_work.department.title}}
+                                <dt v-if="contactView.profile_work">
+                                    {{contactView.profile_work.department.title}}
                                 </dt>
                             </dl>
                             <dl>
                                 <dd>Boss</dd>
-                                <dt v-if="contact.profile_work">
-                                    {{contact.profile_work.boss.name}}
+                                <dt v-if="contactView.profile_work">
+                                    {{contactView.profile_work.boss.name}}
                                 </dt>
                             </dl>
                         </div>
@@ -116,17 +94,12 @@
     export default {
         data() {
             return {
-                search: '',
                 contacts: [],
-                contact: {},
-                layout: 'list',
+                contactView: {},
             }
         },
         mounted() {
             this.getContacts();
-            if (JSON.parse(localStorage.getItem('contacts'))) {
-                this.layout = JSON.parse(localStorage.getItem('contacts')).layout;
-            }
         },
         computed: {
             filteredContacts: function () {
@@ -149,22 +122,18 @@
             }
         },
         methods: {
-            getContacts: function () {
+            getContacts () {
                 axios.get('/contacts/all')
                 .then(response => {
                     this.contacts = response.data;
                 });
             },
-            viewContact: function (contact) {
-                axios.get('/contacts/'+contact.id)
+            viewContact (contactId) {
+                axios.get('/contacts/'+contactId)
                 .then(response => {
-                    this.contact = response.data;
+                    this.contactView = response.data;
                     $('#modalViewContact').modal('show');
                 });
-            },
-            toggleLayout: function (layout) {
-                this.layout = layout;
-                localStorage.setItem('contacts', JSON.stringify({'layout':layout}));
             },
         }
     }

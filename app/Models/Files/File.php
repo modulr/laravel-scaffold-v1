@@ -14,7 +14,7 @@ class File extends Model
 
     protected $guarded = ['id'];
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'urlThumbnail'];
 
     public function user()
     {
@@ -29,5 +29,10 @@ class File extends Model
     public function getUrlAttribute()
     {
         return Storage::url('files/'.$this->user_id.'/'.$this->basename);
+    }
+
+    public function getUrlThumbnailAttribute()
+    {
+        return Storage::url('files/'.$this->user_id.'/thumbnail_'.$this->basename);
     }
 }

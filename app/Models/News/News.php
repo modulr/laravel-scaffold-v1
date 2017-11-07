@@ -12,7 +12,7 @@ class News extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['title', 'video', 'type', 'user_id', 'likes'];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'likes' => 'array',

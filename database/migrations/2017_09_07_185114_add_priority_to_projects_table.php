@@ -15,7 +15,7 @@ class AddPriorityToProjectsTable extends Migration
     {
         Schema::table('projects', function (Blueprint $table) {
             $table->integer('priority_id')->unsigned();
-            $table->foreign('priority_id')->references('id')->on('priorities');
+            $table->foreign('priority_id')->references('id')->on('list_priorities');
         });
     }
 
