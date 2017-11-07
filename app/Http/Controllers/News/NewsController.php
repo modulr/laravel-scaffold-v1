@@ -28,18 +28,25 @@ class NewsController extends Controller
 
     public function store(Request $request)
     {
+        if ($request->type == 3) { // video
+            $url = parse_url($request->video);
+            if ($url['host'] == 'www.youtube.com' || $url['host'] == 'youtube.com') {
+                $video = explode('=', $url['query']);
+                $request['video'] = 'https://www.youtube.com/embed/' . $video[1];
+            } else if ($url['host'] == 'youtu.be') {
+                $video = explode('/', $url['path']);
+                $request['video'] = 'https://www.youtube.com/embed/' . $video[1];
+            } else {
+                $request['video'] = 'Invalidate URL';
+            }
+        }
+
         $this->validate($request, [
             'name' => 'required_if:type,1|string',
             'type' => 'required|numeric',
             'images' => 'required_if:type,2|array',
             'video' => 'required_if:type,3|url'
         ]);
-
-        if ($request->type == 3) { // video
-            $video = explode('=', $request->video);
-            $video = explode('&', $video[1]);
-            $request->video = 'https://www.youtube.com/embed/' . $video[0];
-        }
 
         $news = News::create([
             'name' => $request->name,
