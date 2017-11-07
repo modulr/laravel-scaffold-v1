@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Employee;
+use App\Models\Employees\Employee;
 
 class EmployeeController extends Controller
 {

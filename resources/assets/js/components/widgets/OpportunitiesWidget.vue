@@ -8,19 +8,22 @@
             <div class="panel-body">
                 <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
                 <div v-if="!loading">
-                    <div class="info-block">
+                    <div class="info-block col-xs-12">
                         <div class="col-md-4">
                             <h3>{{opportunities.active.length}}</h3>
                             <p><strong>Active opportunities</strong> (this year).</p>
                         </div>
                         <div class="col-md-4">
-                            <h3>{{total}}</h3>
+                            <h3>{{monthlyOpportunities}}</h3>
                             <p><strong>Registered opportunities</strong> (this month).</p>
                         </div>
                         <div class="col-md-4">
                             <h3>{{opportunities.all.length}}</h3>
                             <p><strong>Opportunities</strong> (this year).</p>
                         </div>
+                    </div>
+                    <div class="charts-block col-xs-12">
+                        <div class="charts" v-if="total.active > 0 && total.rejected > 0">
                         <canvas id="opportunityCanvas" count="2"></canvas>
                         <chartjs-bar
                             :scalesdisplay="false"
@@ -44,6 +47,10 @@
                             :bordercolor="'#FEAE3B'"
                             :backgroundcolor="'#b4a898'"
                             ></chartjs-bar>
+                        </div>
+                        <div class="charts-error" v-else>
+                            Not enough data to draw a chart.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,7 +77,11 @@ export default {
             opportunity: {},
             search: '',
             error: {},
-            total: '',
+            monthlyOpportunities: '',
+            total: {
+                active: '',
+                rejected: ''
+            },
             chartLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dec'],
             activeOpportunities: {
                 chartData: [],
@@ -102,7 +113,7 @@ export default {
             this.loading = true;
             axios.get('widget/getMonthOpportunities')
                 .then(response => {
-                    this.total = response.data;
+                    this.monthlyOpportunities = response.data;
                     this.loading = false;
                 })
         },
@@ -111,6 +122,9 @@ export default {
                 .then(response => {
                     this.activeOpportunities.chartData = Object.values(response.data.active);
                     this.rejectedOpportunities.chartData = Object.values(response.data.rejected);
+
+                    this.total.active = this.activeOpportunities.chartData.reduce(function(a, b){ return a + b; });
+                    this.total.rejected = this.rejectedOpportunities.chartData.reduce(function(a, b){ return a + b; });
                 })
         }
     }

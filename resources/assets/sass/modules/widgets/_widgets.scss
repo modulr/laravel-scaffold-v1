@@ -1,10 +1,19 @@
 .widget {
     .info-block {
+        position: relative;
         h1,h2,h3,h4,h5,h6 {
             color: $orange;
         }
         .inner-text {
             font-size: 14px;
         }
+    }
+    .charts-block {
+        position: relative;
+            .charts-error {
+                margin-top: 10px;
+                text-align: center;
+                color: $brand-warning;
+            }
     }
 }

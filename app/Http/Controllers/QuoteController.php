@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Support\Facades\DB;
-use App\Quote;
+use App\Models\Quotes\Quote;
 use App\Models\Lists\ListStatusQuote;
 class QuoteController extends Controller
 {

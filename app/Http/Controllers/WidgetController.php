@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Project;
-use App\Quote;
+use App\Models\Projects\Project;
+use App\Models\Quotes\Quote;
 use DB;
 use Carbon\Carbon;
 

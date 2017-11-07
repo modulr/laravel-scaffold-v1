@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Models\Projects\Project;
-use App\Models\Projets\ListPriority;
+use App\Models\Projects\ListPriority;
 use App\Models\Customers\Customer;
 use App\Models\Customers\Client;
 use App\Models\Lists\ListArea;
@@ -170,12 +170,12 @@ class OpportunityController extends Controller
       *
       * @return \Illuminate\Http\Response
       */
-     public function listAreas()
-     {
-         return ListArea::all();
-     }
+    public function listAreas()
+    {
+        return ListArea::all();
+    }
 
-     public function makeProject($id)
+    public function makeProject($id)
     {
         $q = Project::find($id);
         $q->status = 2;

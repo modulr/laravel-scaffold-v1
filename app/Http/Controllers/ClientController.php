@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Client;
-use App\Customer;
+use App\Models\Customers\Client;
+use App\Models\Customers\Customer;
 
 class ClientController extends Controller
 {

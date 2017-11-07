@@ -8,7 +8,7 @@
             <div class="panel-body">
                 <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
                 <div v-if="!loading">
-                    <div class="info-block">
+                    <div class="info-block col-xs-12">
                         <div class="col-md-4">
                             <h5>{{quotes.totalAmountMXN | currency}}<small>MXN</small></h5>
                             <h5>{{quotes.totalAmountUSD | currency}}<small>USD</small></h5>
@@ -22,6 +22,9 @@
                             <h3>{{quotes.rejected.length}}</h3>
                             <p><strong>Rejected quotes</strong> (this year).</p>
                         </div>
+                    </div>
+                    <div class="charts-block col-xs-12">
+                        <div class="charts" v-if="total.active > 0 && total.rejected > 0">
                         <canvas id="quoteCanvas" count="2"></canvas>
                         <chartjs-bar
                             :scalesdisplay="false"
@@ -45,6 +48,10 @@
                             :bordercolor="'#FEAE3B'"
                             :backgroundcolor="'#b4a898'"
                             ></chartjs-bar>
+                        </div>
+                        <div class="charts-error" v-else>
+                            Not enough data to draw a chart.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -74,7 +81,10 @@ export default {
             opportunity: {},
             search: '',
             error: {},
-            total: '',
+            total: {
+                active: '',
+                rejected: ''
+            },
             chartLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dec'],
             activeQuotes: {
                 chartData: [],
@@ -108,6 +118,9 @@ export default {
                 .then(response => {
                     this.activeQuotes.chartData = Object.values(response.data.active);
                     this.rejectedQuotes.chartData = Object.values(response.data.rejected);
+
+                    this.total.active = this.activeQuotes.chartData.reduce(function(a, b){ return a + b; });
+                    this.total.rejected = this.rejectedQuotes.chartData.reduce(function(a, b){ return a + b; });
                 })
         }
     }
