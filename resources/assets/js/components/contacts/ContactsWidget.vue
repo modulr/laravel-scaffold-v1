@@ -51,6 +51,13 @@
                                 </dt>
                             </dl>
                             <dl>
+                                <dd>Cellphone Number</dd>
+                                <dt v-if="contactView.profile_contact && contactView.profile_contact.length"
+                                    v-for="profile_contact in contactView.profile_contact">
+                                    <span v-if="profile_contact.type_id == 3">{{profile_contact.contact}}</span>
+                                </dt>
+                            </dl>
+                            <dl>
                                 <dd>Location</dd>
                                 <dt v-if="contactView.profile_place && contactView.profile_place.length"
                                     v-for="profile_place in contactView.profile_place">
@@ -58,27 +65,27 @@
                                 </dt>
                             </dl>
                             <hr>
-                            <dl>
+                            <dl v-if="contactView.profile_work">
                                 <dd>Profession</dd>
-                                <dt v-if="contactView.profile_work">
+                                <dt v-if="contactView.profile_work.profession">
                                     {{contactView.profile_work.profession.title}}
                                 </dt>
                             </dl>
-                            <dl>
+                            <dl v-if="contactView.profile_work">
                                 <dd>Position</dd>
-                                <dt v-if="contactView.profile_work">
+                                <dt v-if="contactView.profile_work.position">
                                     {{contactView.profile_work.position.title}}
                                 </dt>
                             </dl>
-                            <dl>
+                            <dl v-if="contactView.profile_work">
                                 <dd>Department</dd>
-                                <dt v-if="contactView.profile_work">
+                                <dt v-if="contactView.profile_work.department">
                                     {{contactView.profile_work.department.title}}
                                 </dt>
                             </dl>
-                            <dl>
+                            <dl v-if="contactView.profile_work">
                                 <dd>Boss</dd>
-                                <dt v-if="contactView.profile_work">
+                                <dt v-if="contactView.profile_work.boss">
                                     {{contactView.profile_work.boss.name}}
                                 </dt>
                             </dl>
