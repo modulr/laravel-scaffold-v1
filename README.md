@@ -6,7 +6,7 @@ v2 - Laravel, Vuejs & MySQL
 ## What is it
 Modulr is open source software, made to be easy to use, develop and implement, is a real time application, scalable, adaptable and safety.
 
-See the [documentation](http://docs.modulr.io) for more details or visit the [project website](https://modulr.io).
+See the [documentation](http://docs.modulr.io) for more details or visit the [project website](http://modulr.io).
 
 You can also try our live [demo](http://app.modulr.io), just sign up and enjoy the experience of modulr [here](http://app.modulr.io)
 
