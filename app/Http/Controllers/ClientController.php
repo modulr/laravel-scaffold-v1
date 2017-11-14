@@ -83,7 +83,7 @@ class ClientController extends Controller
         }
 
         if ($q->customer_id != $request->customer) {
-            $q->customer_id = $request->customer;
+            $q->customer_id = $request->customer['id'];
         }
 
         $q->save();
