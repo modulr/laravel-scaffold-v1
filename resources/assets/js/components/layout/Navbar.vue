@@ -145,13 +145,13 @@
                                     <span>Opportunities</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'projects'}">
+                            <!-- <li :class="{'active': activeLink == 'projects'}">
                                 <a href="/projects">
                                     <i class="mdi mdi-book mdi-3x"></i>
                                     <br>
                                     <span>Projects</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <hr>
                             <li :class="{'active': activeLink == 'users'}" v-if="user.hasPermission['read-users']">
                                 <a href="/users">

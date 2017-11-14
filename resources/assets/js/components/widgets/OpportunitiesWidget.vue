@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="charts-block col-xs-12">
-                        <div class="charts" v-if="total.active > 0 && total.rejected > 0">
+                        <div class="charts" v-if="total.active > 0 || total.rejected > 0">
                         <canvas id="opportunityCanvas" count="2"></canvas>
                         <chartjs-bar
                             :scalesdisplay="false"
