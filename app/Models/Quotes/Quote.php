@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Lists\ListStatusQuote;
 use App\Models\Lists\ListTypeService;
 use App\Models\Lists\ListTypeCurrency;
+use App\Models\Employees\Employee;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Quote extends Model
 {
