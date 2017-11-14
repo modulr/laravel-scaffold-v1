@@ -25,7 +25,7 @@ class Quote extends Model
 
     public function customer()
     {
-        return $this->belongsTo(\App\Models\Cstomers\Customer::class);
+        return $this->belongsTo(\App\Models\Customers\Customer::class);
     }
 
     public function owner()
