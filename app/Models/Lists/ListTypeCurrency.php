@@ -3,7 +3,6 @@
 namespace App\Models\Lists;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Quote;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ListTypeCurrency extends Model
@@ -15,6 +14,6 @@ class ListTypeCurrency extends Model
 
     public function quote()
     {
-        return $this->hasOne(Quote::class);
+        return $this->hasOne(\App\Models\Quotes\Quote::class);
     }
 }

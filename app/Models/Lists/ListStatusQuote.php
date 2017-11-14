@@ -10,6 +10,6 @@ class ListStatusQuote extends Model
 
   public function quote()
   {
-      return $this->hasOne(Quote::class);
+      return $this->hasOne(\App\Models\Quotes\Quote::class);
   }
 }

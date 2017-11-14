@@ -3,7 +3,6 @@
 namespace App\Models\Lists;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Employee;
 
 class ListTypeEmployee extends Model
 {
@@ -11,6 +10,6 @@ class ListTypeEmployee extends Model
 
     public function employee()
     {
-        return $this->hasOne(Employee::class);
+        return $this->hasOne(\App\Models\Employees\Employee::class);
     }
 }
