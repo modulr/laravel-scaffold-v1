@@ -102,11 +102,11 @@ class User extends Authenticatable
 
     public function project()
     {
-      return $this->hasMany(Project::class);
+      return $this->hasMany(\App\Models\Projects\Project::class);
     }
 
     public function quotes()
     {
-        return $this->hasMany(Quote::class);
+        return $this->hasMany(\App\Models\Quotes\Quote::class);
     }
 }

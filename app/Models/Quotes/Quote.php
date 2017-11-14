@@ -3,10 +3,6 @@
 namespace App\Models\Quotes;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Lists\ListStatusQuote;
-use App\Models\Lists\ListTypeService;
-use App\Models\Lists\ListTypeCurrency;
-use App\Models\Employees\Employee;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Quote extends Model
 {
@@ -19,47 +15,47 @@ class Quote extends Model
 
     public function designer()
     {
-        return $this->belongsTo(Employee::class, 'designer_id');
+        return $this->belongsTo(\App\Models\Employees\Employee::class, 'designer_id');
     }
 
     public function salesman()
     {
-        return $this->belongsTo(Employee::class, 'salesman_id');
+        return $this->belongsTo(\App\Models\Employees\Employee::class, 'salesman_id');
     }
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(\App\Models\Cstomers\Customer::class);
     }
 
     public function owner()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\User::class);
     }
 
     public function project()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(\App\Models\Projects\Project::class);
     }
 
     public function attachment()
     {
-      return $this->hasMany(Attachment::class);
+        return $this->hasMany(\App\Attachment::class);
     }
 
     public function status()
     {
-        return $this->belongsTo(ListStatusQuote::class);
+        return $this->belongsTo(\App\Models\Lists\ListStatusQuote::class);
     }
 
     public function service()
     {
-        return $this->belongsTo(ListTypeService::class);
+        return $this->belongsTo(\App\Models\Lists\ListTypeService::class);
     }
 
     public function currency()
     {
-        return $this->belongsTo(ListTypeCurrency::class);
+        return $this->belongsTo(\App\Models\Lists\ListTypeCurrency::class);
     }
 
 }

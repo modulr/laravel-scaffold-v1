@@ -22,6 +22,6 @@ class Attachment extends Model
 
     public function quote()
     {
-      return $this->belongsTo(Quote::class);
+      return $this->belongsTo(\App\Models\Quotes\Quote::class);
     }
 }

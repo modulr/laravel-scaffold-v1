@@ -20,6 +20,6 @@ class Client extends Model
 
     public function project()
     {
-        return $this->hasOne(Project::class);
+        return $this->hasOne(\App\Models\Projects\Project::class);
     }
 }
