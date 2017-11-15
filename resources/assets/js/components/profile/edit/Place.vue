@@ -57,6 +57,8 @@ export default {
         storePlace: function (e) {
             var btn = $(e.target).button('loading')
             this.place.user_id = this.user.id;
+            if(!this.place.currently)
+                this.place.currently = 0;
             axios.post('/profile/place/store', this.place)
             .then(response => {
                 this.user.profile_place.push(response.data);

@@ -147,7 +147,7 @@ class ProfileController extends Controller
         $this->validate($request, [
             'user_id' => 'required|integer',
             'place' => 'required|string|max:255',
-            'currently' => 'boolean',
+            'currently' => 'required|boolean',
         ]);
 
         return ProfilePlace::create([

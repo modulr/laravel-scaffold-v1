@@ -10,7 +10,7 @@
                 </a>
                 <dt>{{family.name}} - {{family.relation.title}}</dt>
                 <dd>
-                    {{family.gender.title}} - {{family.birthday | moment('from')}}
+                    {{family.gender.title}} - {{family.birthday | moment('LL')}}
                     <span class="text-muted" v-show="family.description"> / {{family.description}}</span>
                 </dd>
             </dl>

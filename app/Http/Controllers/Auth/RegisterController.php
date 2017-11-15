@@ -78,6 +78,8 @@ class RegisterController extends Controller
         $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
         Storage::put('avatars/'.$user->id.'/avatar.png', $avatar);
 
+        $user->roles()->attach([2]);
+
         ProfilePersonal::create([
             'user_id' => $user->id
         ]);
