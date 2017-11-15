@@ -21,33 +21,39 @@
         <div class="col-md-12">
           <div class="filters">
               <div class="sort col-xs-2">
-                  <select class="form-control" required v-model="sort.customer">
-                      <option value="" disabled selected>Customer</option>
-                      <option v-for="option in list.customers" :value="option.id">
-                          {{ option.name }}
-                      </option>
-                      <option value="">None</option>
-                  </select>
+                  <v-select v-model="sort.customer" label="name" :options="list.customers" placeholder="Customer"></v-select>
               </div>
               <div class="sort col-xs-2">
-                  <select class="form-control" required v-model="sort.project">
+                  <!-- <select class="form-control" required v-model="sort.project">
                       <option value="" disabled selected>Project</option>
                       <option v-for="option in list.projects" :value="option.id">
                           {{ option.name }}
                       </option>
                       <option value="">None</option>
-                  </select>
+                  </select> -->
+                  <v-select v-model="sort.project" label="name" :options="list.projects" placeholder="Project"></v-select>
               </div>
               <div class="sort col-xs-2">
-                  <select class="form-control" required v-model="sort.status">
+                  <!-- <select class="form-control" required v-model="sort.status">
                       <option value="" disabled selected>Status</option>
                       <option v-for="option in list.status" :value="option.id">
                           {{ option.title }}
                       </option>
                       <option value="">None</option>
-                  </select>
+                  </select> -->
+                  <v-select v-model="sort.status" label="title" :options="list.status" placeholder="Status"></v-select>
               </div>
-              <div class="search col-xs-6">
+              <div class="sort col-xs-2">
+                  <!-- <select class="form-control" required v-model="sort.service">
+                      <option value="" disabled selected>Service</option>
+                      <option v-for="option in list.services" :value="option.id">
+                          {{ option.title }}
+                      </option>
+                      <option value="">None</option>
+                  </select> -->
+                  <v-select v-model="sort.service" label="title" :options="list.services" placeholder="Service"></v-select>
+              </div>
+              <div class="search col-xs-4">
                   <div class="col-xs-1">
                       <i class="mdi mdi-search mdi-2x"></i>
                   </div>
@@ -158,45 +164,35 @@
                     <div class="form-group" :class="{'has-error': error.project}">
                         <label class="col-sm-3 control-label required">Project</label>
                         <div class="col-sm-9">
-                            <select type="text" class="form-control input-lg" placeholder="Customer" required v-model="quote.project">
-                              <option v-for="project in list.projects" :value="project.id"> {{ project.name }} </option>
-                            </select>
+                            <v-select v-model="quote.project" label="name" :options="list.projects" placeholder="Project"></v-select>
                             <span class="help-block" v-if="error.project">{{error.project[0]}}</span>
                         </div>
                     </div>
                     <div class="form-group" :class="{'has-error': error.designer}">
                         <label class="col-sm-3 control-label required">Designer</label>
                         <div class="col-sm-9">
-                            <select type="text" class="form-control input-lg" placeholder="Designer" required required v-model="quote.designer">
-                              <option v-for="designer in list.designers" :value="designer.id"> {{ designer.name }} </option>
-                            </select>
+                            <v-select v-model="quote.designer" label="name" :options="list.designers" placeholder="Designer"></v-select>
                             <span class="help-block" v-if="error.designer">{{error.designer[0]}}</span>
                         </div>
                     </div>
                     <div class="form-group" :class="{'has-error': error.salesman}">
                         <label class="col-sm-3 control-label required">Salesman</label>
                         <div class="col-sm-9">
-                            <select type="text" class="form-control input-lg" placeholder="Salesman" required v-model="quote.salesman">
-                              <option v-for="seller in list.sellers" :value="seller.id"> {{ seller.name }} </option>
-                            </select>
+                            <v-select v-model="quote.salesman" label="name" :options="list.sellers" placeholder="Salesman"></v-select>
                             <span class="help-block" v-if="error.salesman">{{error.salesman[0]}}</span>
                         </div>
                     </div>
                     <div class="form-group" :class="{'has-error': error.customer}">
                         <label class="col-sm-3 control-label required">Customer</label>
                         <div class="col-sm-9">
-                            <select type="text" class="form-control input-lg" placeholder="Customer" required v-model="quote.customer">
-                              <option v-for="customer in list.customers" :value="customer.id"> {{ customer.name }} </option>
-                            </select>
+                            <v-select v-model="quote.customer" label="name" :options="list.customers" placeholder="Customer"></v-select>
                             <span class="help-block" v-if="error.customer">{{error.customer[0]}}</span>
                         </div>
                     </div>
                     <div class="form-group" :class="{'has-error': error.service}">
                         <label class="col-sm-3 control-label required">Service</label>
                         <div class="col-sm-9">
-                            <select type="text" class="form-control input-lg" placeholder="Service" required v-model="quote.service">
-                              <option v-for="service in list.services" :value="service.id"> {{ service.title }} </option>
-                            </select>
+                            <v-select v-model="quote.service" label="title" :options="list.services" placeholder="Service"></v-select>
                             <span class="help-block" v-if="error.service">{{error.service[0]}}</span>
                         </div>
                     </div>
@@ -241,7 +237,7 @@
         </div>
     </div>
     <!-- Edit quote -->
-    <div class="modal fade" id="modalEdit">
+    <div class="modal right fade" id="modalEdit">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -272,33 +268,25 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label required">Designer</label>
                         <div class="col-sm-9">
-                            <select type="text" class="form-control input-lg" placeholder="Designer" required required v-model="quote.designer_id">
-                              <option v-for="designer in list.designers" :value="designer.id"> {{ designer.name }} </option>
-                            </select>
+                            <v-select v-model="quote.designer" label="name" :options="list.designers" placeholder="Designer"></v-select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label required">Salesman</label>
                         <div class="col-sm-9">
-                            <select type="text" class="form-control input-lg" placeholder="Salesman" required v-model="quote.salesman_id">
-                              <option v-for="seller in list.sellers" :value="seller.id"> {{ seller.name }} </option>
-                            </select>
+                            <v-select v-model="quote.salesman" label="name" :options="list.sellers" placeholder="Salesman"></v-select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label required">Customer</label>
                         <div class="col-sm-9">
-                            <select type="text" class="form-control input-lg" placeholder="Customer" required v-model="quote.customer_id">
-                              <option v-for="customer in list.customers" :value="customer.id"> {{ customer.name }} </option>
-                            </select>
+                            <v-select v-model="quote.customer" label="name" :options="list.customers" placeholder="Customer"></v-select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label required">Service</label>
                         <div class="col-sm-9">
-                            <select type="text" class="form-control input-lg" placeholder="Service" required v-model="quote.service_id">
-                              <option v-for="service in list.services" :value="service.id"> {{ service.title }} </option>
-                            </select>
+                            <v-select v-model="quote.service" label="title" :options="list.services" placeholder="Service"></v-select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -428,6 +416,7 @@ import Spinner from 'vue-simple-spinner';
 import Dropzone from 'vue2-dropzone';
 import Vue2Filters from 'vue2-filters';
 import Paginate from 'vuejs-paginate';
+import vSelect from 'vue-select';
 export default {
   data () {
     return {
@@ -462,7 +451,8 @@ export default {
       sort: {
         customer: '',
         status: '',
-        project: ''
+        project: '',
+        service: ''
       },
       pagination : {
         current_page: 0,
@@ -473,7 +463,8 @@ export default {
   components: {
     Spinner,
     Dropzone,
-    Paginate
+    Paginate,
+    vSelect
   },
   filters: {
       date (date) {
@@ -490,10 +481,12 @@ export default {
   computed : {
     filteredQuotes () {
       var filteredArray = this.quotes,
-          sort_customer = this.sort.customer,
-          sort_project = this.sort.project,
-          sort_status = this.sort.status,
+          sort_customer = this.sort.customer.id,
+          sort_project = this.sort.project.id,
+          sort_status = this.sort.status.id,
+          sort_service = this.sort.service.id,
           search = this.search;
+          console.log(sort_service)
       if(sort_customer) {
           filteredArray = filteredArray.filter(function (item) {
               if (item.customer_id == sort_customer) {
@@ -511,6 +504,13 @@ export default {
       if(sort_status) {
           filteredArray = filteredArray.filter(function (item) {
               if (item.status_id == sort_status) {
+                  return item;
+              }
+          });
+      }
+      if(sort_service) {
+          filteredArray = filteredArray.filter(function (item) {
+              if (item.service_id == sort_service) {
                   return item;
               }
           });
@@ -577,6 +577,12 @@ export default {
     },
     store (e) {
       var btn = $(e.target).button('loading')
+      this.quote.customer = this.quote.customer.id
+      this.quote.designer = this.quote.designer.id
+      this.quote.project = this.quote.project.id
+      this.quote.salesman = this.quote.salesman.id
+      this.quote.service = this.quote.service.id
+      console.log(this.quote)
       axios.post('/quote/store', this.quote)
         .then(response => {
             var btn = $(e.target).button('reset')
@@ -596,6 +602,11 @@ export default {
     },
     update (e) {
       var btn = $(e.target).button('loading')
+      this.quote.customer_id = this.quote.customer.id
+      this.quote.designer_id = this.quote.designer.id
+      this.quote.salesman_id = this.quote.salesman.id
+      this.quote.service_id = this.quote.service.id
+      console.log(this.quote)
       axios.put('/quote/update/'+this.quote.id, this.quote)
         .then(response => {
           this.quotes[this.quote.index] = response.data

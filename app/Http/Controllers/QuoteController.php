@@ -75,7 +75,7 @@ class QuoteController extends Controller
       // $data = $request->all();
 
       // return response()->json($data);
-      return $q->load('designer', 'salesman', 'customer', 'owner', 'project', 'status', 'currency', 'attachment');
+      return $q->load('designer', 'salesman', 'customer', 'owner', 'project', 'status', 'currency', 'attachment', 'service');
   }
 
   public function destroy($id)
