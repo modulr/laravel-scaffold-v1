@@ -89,7 +89,9 @@
                                 <div class="form-group" :class="{'has-error': error.phone}">
                                     <label class="col-sm-2 control-label">Phone *</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control input-lg" placeholder="Phone" required v-model="employee.phone">
+                                        <!-- <input type="text" class="form-control input-lg" placeholder="Phone" required v-model="employee.phone"> -->
+                                        <masked-input mask="\+\52 (111) 111-11-11" placeholder="Phone" class="form-control input-lg"
+                                          @input="employee.phone = arguments[1]" />
                                         <span class="help-block" v-if="error.phone">{{error.phone[0]}}</span>
                                     </div>
                                 </div>
@@ -129,7 +131,9 @@
                                     <div class="form-group" :class="{'has-error': error.phone}">
                                         <label class="col-sm-2 control-label">Phone</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control input-lg" :placeholder="employee.phone" required v-model="employee.phone">
+                                            <!-- <input type="text" class="form-control input-lg" :placeholder="employee.phone" required v-model="employee.phone"> -->
+                                            <masked-input mask="\+\52 (111) 111-11-11" placeholder="Phone" class="form-control input-lg" v-model="employee.phone"
+                                              @input="employee.phone = arguments[1]" />
                                             <span class="help-block" v-if="error.phone">{{error.phone[0]}}</span>
                                         </div>
                                     </div>
@@ -153,6 +157,7 @@ import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
 import Paginate from 'vuejs-paginate';
+import MaskedInput from 'vue-masked-input'
 export default {
     data() {
       return {
@@ -172,7 +177,8 @@ export default {
     },
     components: {
       Spinner,
-      Paginate
+      Paginate,
+      MaskedInput
     },
     mounted() {
         this.getAll();

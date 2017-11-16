@@ -164,7 +164,7 @@
                     <div class="form-group" :class="{'has-error': error.project}">
                         <label class="col-sm-3 control-label required">Project</label>
                         <div class="col-sm-9">
-                            <v-select v-model="quote.project" label="name" :options="list.projects" placeholder="Project"></v-select>
+                            <v-select v-model="quote.project" :on-change="setQuoteDate" label="name" :options="list.projects" placeholder="Project"></v-select>
                             <span class="help-block" v-if="error.project">{{error.project[0]}}</span>
                         </div>
                     </div>
@@ -420,6 +420,7 @@ import vSelect from 'vue-select';
 export default {
   data () {
     return {
+      user: Laravel.user,
       loading: false,
       quotes: [],
       quote: {},
@@ -486,7 +487,6 @@ export default {
           sort_status = this.sort.status.id,
           sort_service = this.sort.service.id,
           search = this.search;
-          console.log(sort_service)
       if(sort_customer) {
           filteredArray = filteredArray.filter(function (item) {
               if (item.customer_id == sort_customer) {
@@ -527,6 +527,11 @@ export default {
     }
   },
   methods: {
+    setQuoteDate (project) {
+      console.log(project)
+      this.quote.project = project
+      this.quote.request_date = project.start_date
+    },
     clickCallback (page) {
       this.pagination.current_page = page
       this.getQuotes()
@@ -582,7 +587,6 @@ export default {
       this.quote.project = this.quote.project.id
       this.quote.salesman = this.quote.salesman.id
       this.quote.service = this.quote.service.id
-      console.log(this.quote)
       axios.post('/quote/store', this.quote)
         .then(response => {
             var btn = $(e.target).button('reset')
@@ -606,7 +610,6 @@ export default {
       this.quote.designer_id = this.quote.designer.id
       this.quote.salesman_id = this.quote.salesman.id
       this.quote.service_id = this.quote.service.id
-      console.log(this.quote)
       axios.put('/quote/update/'+this.quote.id, this.quote)
         .then(response => {
           this.quotes[this.quote.index] = response.data
