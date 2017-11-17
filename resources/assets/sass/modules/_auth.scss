@@ -2,55 +2,43 @@
     padding: 0;
     margin: 0;
     margin-top: -85px;
+    .row {
+        margin: 0
+    }
     .left-pane{
-        position: relative;
-        float: left;
-        width: 70%;
         height: 100vh;
-        margin: 0;
-        padding: 150px 50px;
+        padding-top: 5%;
+        padding-left: 50px;
+        padding-right: 50px;
         background-size: cover;
         background-repeat: no-repeat;
         background-image: url(/img/bg/bg-banner.png);
         color: white;
+        .mdi {
+            color: $orange;
+        }
         .swiper-slide > div {
             margin: auto 40px;
             h3, p{
                 color: white;
             }
         }
+        .swiper-button-white {
+            bottom: 30px;
+            top: inherit;
+        }
     }
     .right-pane{
-        float: right;
-        width: 30%;
         height: 100vh;
         background: white;
-        padding: 60px;
-        .nav-tabs {
-            margin-bottom: 60px;
-            > li > a,
-            > li > a:focus {
-                @include box-shadow(inset 0 -1px 0 #ddd);
-                &:hover {
-                    @include box-shadow(inset 0 -2px 0 $orange);
-                    color: $orange;
-                }
-            }
-            & > li.active > a,
-            & > li.active > a:focus {
-                @include box-shadow(inset 0 -2px 0 $orange);
-                color: $orange;
-                &:hover {
-                    color: $orange;
-                }
-            }
-        }
+        padding: 0 50px;
         form{
+            svg {
+                max-width: 300px;
+                margin: 20% auto;
+            }
             .form-group {
                 margin-bottom: 40px;
-            }
-            .btn-primary {
-                margin-top: 80px;
             }
             .btn-link {
                 margin-top: 40px;
@@ -58,50 +46,4 @@
         }
     }
 
-}
-@media screen and (min-width: 300px) {
-    .auth .left-pane{
-        display: none;
-    }
-    .auth .right-pane {
-        width: 100%;
-    }
-    .auth .right-pane {
-        padding: 25px;
-    }
-}
-@media screen and (min-width: 680px) {
-    .auth .left-pane{
-        display: none;
-    }
-    .auth .right-pane {
-        width: 100%;
-    }
-    .auth .right-pane{
-        padding: 60px 120px;
-    }
-}
-@media screen and (min-width: 840px) {
-    .auth .left-pane{
-        display: block;
-        width: 60%;
-    }
-    .auth .right-pane {
-        width: 40%;
-    }
-    .auth .right-pane {
-        padding: 60px;
-    }
-}
-@media screen and (min-width: 1280px) {
-    .auth .left-pane{
-        display: block;
-        width: 60%;
-    }
-    .auth .right-pane {
-        width: 40%;
-    }
-    .auth .right-pane {
-        padding: 60px 120px;
-    }
 }
