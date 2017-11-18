@@ -16,7 +16,7 @@
                             </dl>
                             <dl>
                                 <dd>Registered Date</dd>
-                                <dt>{{opportunity.start_date | date}}</dt>
+                                <dt>{{opportunity.registered_date | date}}</dt>
                             </dl>
                             <dl>
                                 <dd>Quotes</dd>

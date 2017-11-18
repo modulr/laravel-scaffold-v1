@@ -11,7 +11,7 @@ class Project extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name', 'start_date', 'status', 'description', 'owner_id', 'priority_id', 'client_id', 'area_id'];
+    protected $fillable = ['name', 'registered_date', 'acceptance_date', 'cancelled_date', 'start_date', 'end_date', 'status', 'description', 'owner_id', 'priority_id', 'client_id', 'area_id'];
 
     public function owner()
     {
@@ -38,4 +38,8 @@ class Project extends Model
         return $this->belongsTo(\App\Models\Lists\ListArea::class);
     }
 
+    public function comment()
+    {
+        return $this->belongsTo(\App\Models\Comments\ProjectComment::class);
+    }
 }

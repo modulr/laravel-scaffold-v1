@@ -57,7 +57,7 @@ class OpportunityController extends Controller
         $this->validate($request, [
             'name' => 'required|string',
             'quotes' => 'numeric',
-            'start_date' => 'required|date',
+            'registered_date' => 'required|date',
             'priority' => 'required',
             'area' => 'required',
             'client' => 'required',
@@ -66,7 +66,7 @@ class OpportunityController extends Controller
         $opportunity = Project::create([
             'name' => $request->name,
             'quotes' => $request->quotes,
-            'start_date' => $request->start_date,
+            'registered_date' => $request->registered_date,
             'status' => 1, // 1 = Opportunity
             'description' => $request->description,
             'owner_id' => Auth::id(),

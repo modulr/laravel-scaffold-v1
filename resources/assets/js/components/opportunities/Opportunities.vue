@@ -84,7 +84,7 @@
                                   </a>
                               </td>
                               <td>
-                                  {{item.start_date | date}}<br>
+                                  {{item.registered_date | date}}<br>
                               </td>
                               <td>
                                   {{item.description}}<br>
@@ -154,11 +154,11 @@
                                       <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                   </div>
                               </div>
-                              <div class="form-group" :class="{'has-error': error.start_date}">
-                                  <label class="col-sm-3 control-label required">Start Date</label>
+                              <div class="form-group" :class="{'has-error': error.registered_date}">
+                                  <label class="col-sm-3 control-label required">Registered Date</label>
                                   <div class="col-sm-9">
-                                      <input type="date" class="form-control" v-bind:placeholder="opportunity.start_date" required v-model="opportunity.start_date">
-                                      <span class="help-block" v-if="error.start_date">{{error.start_date[0]}}</span>
+                                      <input type="date" class="form-control" v-bind:placeholder="opportunity.registered_date" required v-model="opportunity.registered_date">
+                                      <span class="help-block" v-if="error.registered_date">{{error.registered_date[0]}}</span>
                                   </div>
                               </div>
                               <div class="form-group" :class="{'has-error': error.description}">
@@ -271,7 +271,7 @@
                                   <label class="col-sm-3 control-label required">Registered</label>
                                   <div class="col-sm-9">
                                       <p class="form-control-static">
-                                          <small class="text-mute">{{opportunity.start_date | date}}</small>
+                                          <small class="text-mute">{{opportunity.registered_date | date}}</small>
                                       </p>
                                   </div>
                               </div>
@@ -408,7 +408,7 @@ export default {
         add: function() {
             this.opportunity = {
                 name: '',
-                start_date: '',
+                registered: '',
                 description: '',
             };
             this.error = {};
