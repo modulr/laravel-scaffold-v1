@@ -3,14 +3,6 @@
         <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
         <!-- Actions Buttons -->
         <div class="wrapper" v-if="!loading">
-          <div class="row">
-              <div class="col-xs-12 text-right">
-                  <a href="#" class="btn btn-primary" @click.prevent="add">
-                      <i class="mdi mdi-person-add mdi-lg"></i> Add Project
-                  </a>
-              </div>
-          </div>
-          <br>
           <!-- No items found -->
           <div class="row" v-if="projects.length == 0">
               <div class="col-md-12">
@@ -25,11 +17,14 @@
                           <tr>
                               <th>ID</th>
                               <th>Name</th>
-                              <th>Registered Date</th>
-                              <th>Description</th>
-                              <th>Owner</th>
-                              <th>Contact</th>
+                              <th>Start Date</th>
+                              <th>End Date</th>
+                              <th>Leader</th>
+                              <th>Supervisor</th>
+                              <th>Client</th>
                               <th>Customer</th>
+                              <th>Progress</th>
+                              <th>Status</th>
                               <th></th>
                           </tr>
                       </thead>
@@ -45,16 +40,25 @@
                                   {{item.start_date | date}}<br>
                               </td>
                               <td>
-                                  {{item.description}}<br>
+                                  {{item.end_date | date}}<br>
                               </td>
                               <td>
-                                  <a v-bind:href="'/profile/'+item.owner.id">{{item.owner.name}}</a>
+                                  Leader<br>
                               </td>
                               <td>
-                                  {{item.contact.name}}
+                                  Supervisor<br>
                               </td>
                               <td>
-                                  {{item.contact.customer.name}}
+                                  {{item.client.name}}
+                              </td>
+                              <td>
+                                  {{item.client.customer.name}}
+                              </td>
+                              <td>
+                                  50%
+                              </td>
+                              <td>
+                                  {{item.project_status.name}}
                               </td>
                               <td class="text-right col-sm-2">
                                   <div class="btn-group">
@@ -111,11 +115,11 @@
                                       <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
                                   </div>
                               </div>
-                              <div class="form-group" :class="{'has-error': error.contact}">
+                              <div class="form-group" :class="{'has-error': error.client}">
                                   <label class="col-sm-2 control-label">Contact</label>
                                   <div class="col-sm-10">
-                                      <select class="form-control" required v-model="project.contact">
-                                          <option v-for="option in list.contacts" :value="option.id">
+                                      <select class="form-control" required v-model="project.client">
+                                          <option v-for="option in list.clients" :value="option.id">
                                               {{option.name}}, {{option.customer.name}}
                                           </option>
                                       </select>
@@ -202,6 +206,7 @@
 import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
+import Vue2Filters from 'vue2-filters';
 export default {
     data() {
         return {
@@ -212,7 +217,7 @@ export default {
             error: {},
             list: {
                 priorities: [],
-                contacts: [],
+                clients: [],
             }
         }
     },
@@ -241,9 +246,9 @@ export default {
             .then(response => {
                 this.list.priorities = response.data;
             });
-            axios.get('/projects/list/contacts')
+            axios.get('/projects/list/clients')
             .then(response => {
-                this.list.contacts = response.data;
+                this.list.clients = response.data;
             });
             this.project = {
                 name: '',

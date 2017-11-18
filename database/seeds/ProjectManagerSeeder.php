@@ -77,5 +77,20 @@ class ProjectManagerSeeder extends Seeder
                 'name' => 'Low'
             ]
         ]);
+                // Project Status
+        DB::table('list_project_statuses')->insert([
+            [
+                'id' => '1',
+                'name' => 'Done'
+            ],
+            [
+                'id' => '2',
+                'name' => 'In Progress'
+            ],
+            [
+                'id' => '3',
+                'name' => 'Canceled'
+            ]
+        ]);
     }
 }

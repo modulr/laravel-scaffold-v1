@@ -125,9 +125,9 @@
                                               <a href="#" @click.prevent="edit(item, index)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 Edit
                                               </a>
-                                              <!-- <a href="#"><i class="fa fa-file-pdf-o"></i>
-                                                Create Quote
-                                              </a> -->
+                                              <a href="#" @click.prevent="makeProject(item, index)"><i class="fa fa-check-circle-o"></i>
+                                                Make Project
+                                              </a>
                                           </li>
                                       </ul>
                                   </div>
@@ -480,7 +480,7 @@ export default {
                 });
             });
         },
-        makeProject: function (id, index) {
+        makeProject: function (item, index) {
             var self = this;
             swal({
                 title: "Are you sure?",
@@ -492,7 +492,7 @@ export default {
                 closeOnConfirm: false
             },
             function(){
-                axios.put('/opportunities/update/' + id + '/make_project')
+                axios.put('/opportunities/update/' + item.id + '/make_project')
                 .then(response => {
                     self.opportunities.splice(index, 1);
                     swal({

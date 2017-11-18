@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Projects\Project;
 use Illuminate\Http\Request;
+use App\Models\Lists\ListArea;
+use App\Models\Projects\ListPriority;
 
 class ProjectController extends Controller
 {
@@ -19,7 +21,7 @@ class ProjectController extends Controller
 
     public function all()
     {
-        return Project::with('owner', 'priority', 'contact', 'contact.customer')->where('status', 2)->get();
+        return Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'area', 'quote.currency', 'project_status')->where('status', 2)->get();
     }
 
     /**
@@ -99,33 +101,57 @@ class ProjectController extends Controller
         return Project::destroy($id);
     }
 
-    /**
-     * Get a list of oportunity priorities.
+     /**
+     * Get a list of opportunity priorities.
      *
      * @return \Illuminate\Http\Response
      */
-     public function listPriorities()
-     {
-        return Priority::all();
-     }
-
-    /**
-     * Get a list of oportunity contacts.
-     *
-     * @return \Illuminate\Http\Response
-     */
-     public function listContacts()
-     {
-        return Contact::with('customer')->get();
-     }
-
-     public function makeProject($id)
+    public function listPriorities()
     {
-        $q = Project::find($id);
-        $q->status = 2;
+        return ListPriority::all();
+    }
 
-        $q->save();
+    /**
+     * Get a list of opportunity clients.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listClients()
+    {
+        return Client::with('customer')->get();
+    }
 
-        return $q;
+     /**
+      * Get a list of opportunity customers.
+      *
+      * @return \Illuminate\Http\Response
+      */
+    public function listCustomers()
+    {
+        return Customer::with('client')->get();
+    }
+
+     /**
+      * Get a list of owners.
+      *
+      * @return \Illuminate\Http\Response
+      */
+    public function listOwners()
+    {
+        return DB::table('projects')
+                    ->join('users', 'projects.owner_id', '=', 'users.id')
+                    ->select('users.name')
+                    ->distinct()
+                    ->get();
+    }
+
+     /**
+      * Get a list of opportunity areas.
+      *
+      * @return \Illuminate\Http\Response
+      */
+    public function listAreas()
+    {
+        return ListArea::all();
     }
 }

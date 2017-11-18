@@ -148,18 +148,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/opportunities/list/areas', 'OpportunityController@listAreas');
 
     //Projects
-    // Route::get('/projects', 'ProjectController@index');
-    // Route::get('/projects/{id}/get', 'ProjectController@show');
-    // Route::get('/projects/all', 'ProjectController@all');
-    // Route::post('/projects/store', 'ProjectController@store');
-    // Route::put('/projects/update/{id}', 'ProjectController@update');
-    // Route::put('/projects/update/{id}/make_project', 'ProjectController@makeProject');
-    // Route::delete('/projects/destroy/{id}', 'ProjectController@destroy');
-    // Route::get('/projects/list/priorities', 'ProjectController@listPriorities');
-    // Route::get('/projects/list/clients', 'ProjectController@listClients');
-    // Route::get('/projects/list/customers', 'ProjectController@listCustomers');
-    // Route::get('/projects/list/owners', 'ProjectController@listOwners');
-    // Route::get('/projects/list/areas', 'ProjectController@listAreas');
+    Route::get('/projects', 'ProjectController@index');
+    Route::get('/projects/{id}/get', 'ProjectController@show');
+    Route::get('/projects/all', 'ProjectController@all');
+    Route::post('/projects/store', 'ProjectController@store');
+    Route::put('/projects/update/{id}', 'ProjectController@update');
+    Route::put('/projects/update/{id}/make_project', 'ProjectController@makeProject');
+    Route::delete('/projects/destroy/{id}', 'ProjectController@destroy');
+    Route::get('/projects/list/priorities', 'ProjectController@listPriorities');
+    Route::get('/projects/list/clients', 'ProjectController@listClients');
+    Route::get('/projects/list/customers', 'ProjectController@listCustomers');
+    Route::get('/projects/list/owners', 'ProjectController@listOwners');
+    Route::get('/projects/list/areas', 'ProjectController@listAreas');
 
 
     // Employes

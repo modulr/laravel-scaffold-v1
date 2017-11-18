@@ -179,6 +179,8 @@ class OpportunityController extends Controller
     {
         $q = Project::find($id);
         $q->status = 2;
+        $q->project_status_id = 2;
+        $q->acceptance_date = date('Y-m-d h:i:s');
 
         $q->save();
 
