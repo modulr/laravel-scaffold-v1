@@ -450,10 +450,10 @@ export default {
       type: '2',
       search: '',
       sort: {
-        customer: '',
-        status: '',
-        project: '',
-        service: ''
+        customer: {id:"", name: "None"},
+        status: {id:"", title: "None"},
+        project: {id:"", name: "None"},
+        service: {id:"", title: "None"}
       },
       pagination : {
         current_page: 0,
@@ -541,23 +541,29 @@ export default {
       axios.get('/services/all')
         .then(response => {
           this.list.services = response.data
+          this.list.services.push({ id : "", title: "None"})
         });
       axios.get('/employees/quotes')
         .then(response => {
           this.list.sellers = response.data
+          this.list.sellers.push({id:"", name: "None"})
           this.list.designers = response.data
+          this.list.designers.push({id:"", name: "None"})
         });
       axios.get('/opportunities/all')
         .then(response => {
           this.list.projects = response.data
+          this.list.projects.push({id:"", name: "None"})
         });
       axios.get('/customers/all')
         .then(response => {
             this.list.customers = response.data
+            this.list.customers.push({id:"", name: "None"})
         });
       axios.get('/quote/status/all')
         .then(response => {
           this.list.status = response.data
+          this.list.status.push({id:"", title: "None"})
         });
     },
     getQuotes () {
