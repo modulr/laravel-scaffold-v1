@@ -530,7 +530,7 @@ export default {
     setQuoteDate (project) {
       console.log(project)
       this.quote.project = project
-      this.quote.request_date = project.start_date
+      this.quote.request_date = project.registered_date
     },
     clickCallback (page) {
       this.pagination.current_page = page
