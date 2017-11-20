@@ -41,14 +41,14 @@ class WidgetController extends Controller
         $activeArray = array();
 
         for ($i=1; $i <= 12; $i++) {
-            $activeData = Project::where('status', 1)->whereRaw('MONTH(start_date) = ?' , $i)->get();
+            $activeData = Project::where('status', 1)->whereRaw('MONTH(registered_date) = ?' , $i)->get();
             $activeArray[$i] = $activeData->count();
         }
 
         $rejectedArray = array();
 
         for ($i=1; $i <= 12; $i++) {
-            $rejectedData = Project::where('status', 0)->whereRaw('MONTH(start_date) = ?' , $i)->get();
+            $rejectedData = Project::where('status', 0)->whereRaw('MONTH(registered_date) = ?' , $i)->get();
             $rejectedArray[$i] = $rejectedData->count();
         }
 
