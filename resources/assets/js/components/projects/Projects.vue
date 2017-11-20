@@ -11,108 +11,115 @@
             </div>
             <!-- List -->
             <div class="row" v-if="projects.length != 0">
-                <div class="col-md-12">
-                    <div class="row filters">
-                        <div class="sort col-xs-2">
-                            <select class="form-control" required v-model="sort.customers">
-                                <option value="" disabled selected>Customer</option>
-                                <option v-for="option in list.customers" :value="option.id">
-                                    {{ option.name }}
-                                </option>
-                                <option value="">None</option>
-                            </select>
-                        </div>
-                        <div class="sort col-xs-2">
-                            <select class="form-control" required v-model="sort.client">
-                                <option value="" disabled selected>Client</option>
-                                <option v-for="option in list.clients" :value="option.id">
-                                    {{ option.name }}
-                                </option>
-                                <option value="">None</option>
-                            </select>
-                        </div>
-                        <div class="sort col-xs-2">
-                            <select class="form-control" required v-model="sort.area">
-                                <option value="" disabled selected>Region</option>
-                                <option v-for="option in list.areas" :value="option.id">
-                                    {{ option.title }}
-                                </option>
-                                <option value="">None</option>
-                            </select>
-                        </div>
-                        <div class="search col-xs-6">
-                            <div class="col-xs-1">
-                                <i class="mdi mdi-search mdi-2x"></i>
+                <div class="col-md-2">
+                    <div class="col-md-12 filters">
+                        <h4 class="heading">Filters</h4>
+                        <a href="#" class="pull-right" @click.prevent="clearFilters">Clear</a>
+                        <div class="row">
+                            <div class="card search col-xs-12">
+                                <p class="title"><small>Search</small></p>
+                                <div class="col-xs-1">
+                                    <i class="mdi mdi-search mdi-2x"></i>
+                                </div>
+                                <div class="col-xs-10">
+                                    <input type="text" class="form-control" placeholder="Search" v-model="search">
+                                </div>
                             </div>
-                            <div class="col-xs-8">
-                                <input type="text" class="form-control" placeholder="Search" v-model="search">
+                        </div>
+                        <div class="row">
+                            <div class="card col-xs-12">
+                                <p class="title"><small>Customers</small></p>
+                                <select class="form-control" required v-model="sort.customers">
+                                    <option value="" disabled selected>Customer</option>
+                                    <option v-for="option in list.customers" :value="option.id">
+                                        {{ option.name }}
+                                    </option>
+                                    <option value="">None</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card col-xs-12">
+                                <p class="title"><small>Clients</small></p>
+                                <select class="form-control" required v-model="sort.client">
+                                    <option value="" disabled selected>Client</option>
+                                    <option v-for="option in list.clients" :value="option.id">
+                                        {{ option.name }}
+                                    </option>
+                                    <option value="">None</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card col-xs-12">
+                                <p class="title"><small>Region</small></p>
+                                <div v-for="option in list.areas">
+                                    <input type="checkbox" v-model="sort.area" :value="option.id">
+                                    <label>{{option.title}}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Start Date</th>
-                                <th>Deadline</th>
-                                <th>Priority</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(item, index) in filteredOpportunities">
-                                <td>
-                                    {{item.id}}
-                                </td>
-                                <td>
-                                    <a class="heading" :href="'/projects/'+item.id+'/get'">
-                                        <strong>{{item.name}}</strong>
-                                    </a>
-                                    <span class="text-muted">{{item.client.customer.name}}</span>
-                                </td>
-                                <td>
-                                    {{item.start_date | date}}
-                                    <br>
-                                </td>
-                                <td>
-                                    {{item.end_date | date}}
-                                    <br>
-                                </td>
-                                <td>
-                                    <span class="chip" :class="'priority-'+item.priority.name">
-                                        {{item.priority.name}}
-                                    </span>
-                                </td>
-                                <td class="text-right">
-                                    <div class="dropdown">
-                                        <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                </div>
+                <div class="col-md-10">
+                    <div class="col-md-12">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Start Date</th>
+                                    <th>Deadline</th>
+                                    <th>Priority</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item, index) in filteredOpportunities">
+                                    <td>
+                                        {{item.id}}
+                                    </td>
+                                    <td>
+                                        <a class="heading" :href="'/projects/'+item.id+'/get'">
+                                            <strong>{{item.name}}</strong>
                                         </a>
-                                        <ul class="dropdown-menu dropdown-menu-right">
-                                            <li>
-                                                <a href="#" @click.prevent="edit(item, index)">
-                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                    Edit
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <paginate
-                        :page-count="pagination.last_page"
-                        :margin-pages="2"
-                        :page-range="2"
-                        :initial-page="pagination.current_page"
-                        :container-class="'ui pagination menu'"
-                        :page-link-class="'item'"
-                        :prev-link-class="'item'"
-                        :next-link-class="'item'"
-                        :click-handler="clickCallback">
-                    </paginate>
+                                        <span class="text-muted">{{item.client.customer.name}}</span>
+                                    </td>
+                                    <td>
+                                        {{item.start_date | date}}
+                                        <br>
+                                    </td>
+                                    <td>
+                                        {{item.end_date | date}}
+                                        <br>
+                                    </td>
+                                    <td>
+                                        <span class="chip" :class="'priority-'+item.priority.name">
+                                            {{item.priority.name}}
+                                        </span>
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="dropdown">
+                                            <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li>
+                                                    <a href="#" @click.prevent="edit(item, index)">
+                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                        Edit
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <paginate :page-count="pagination.last_page" :margin-pages="2" :page-range="2" :initial-page="pagination.current_page" :container-class="'ui pagination menu'"
+                            :page-link-class="'item'" :prev-link-class="'item'" :next-link-class="'item'" :click-handler="clickCallback">
+                        </paginate>
+                    </div>
                 </div>
             </div>
             <!-- Create project -->
@@ -276,6 +283,14 @@ export default {
                 }
             return total;
         },
+        clearFilters: function () {
+            this.sort = {
+                customers: '',
+                client: '',
+                area: [],
+                total: '',
+            }
+        }
     }
 }
 </script>

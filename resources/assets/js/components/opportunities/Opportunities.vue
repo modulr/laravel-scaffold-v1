@@ -3,13 +3,11 @@
         <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
         <!-- Actions Buttons -->
         <div class="wrapper" v-if="!loading">
-            <div class="material-button right">
+            <div class="material-button top right">
                 <button href="#" class="btn-primary" @click.prevent="add">
                     <i class="mdi mdi-add mdi-lg"></i>
                 </button>
             </div>
-            <br>
-            <br>
             <!-- No items found -->
             <div class="row" v-if="opportunities.length == 0">
                 <div class="col-md-12">
@@ -19,20 +17,23 @@
             <!-- List -->
             <div class="row" v-if="opportunities.length != 0">
                 <div class="col-md-2">
-                    <div class="row filters">
-                        <h4>Filters</h4>
+                    <div class="col-md-12 filters">
+                        <h4 class="heading">Filters</h4>
+                        <a href="#" class="pull-right" @click.prevent="clearFilters">Clear</a>
                         <div class="row">
-                            <div class="search col-xs-12">
+                            <div class="card search col-xs-12">
+                                <p class="title"><small>Search</small></p>
                                 <div class="col-xs-1">
                                     <i class="mdi mdi-search mdi-2x"></i>
                                 </div>
-                                <div class="col-xs-8">
+                                <div class="col-xs-10">
                                     <input type="text" class="form-control" placeholder="Search" v-model="search">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="sort col-xs-12">
+                            <div class="card col-xs-12">
+                                <p class="title"><small>Customers</small></p>
                                 <select class="form-control" required v-model="sort.customers">
                                     <option value="" disabled selected>Customer</option>
                                     <option v-for="option in list.customers" :value="option.id">
@@ -43,7 +44,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="sort col-xs-12">
+                            <div class="card col-xs-12">
+                                <p class="title"><small>Clients</small></p>
                                 <select class="form-control" required v-model="sort.client">
                                     <option value="" disabled selected>Client</option>
                                     <option v-for="option in list.clients" :value="option.id">
@@ -54,17 +56,19 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="sort col-xs-12">
+                            <div class="card col-xs-12">
+                                <p class="title"><small>Region</small></p>
                                 <div v-for="option in list.areas">
-                                    <label>{{option.title}}</label>
                                     <input type="checkbox" v-model="sort.area" :value="option.id">
+                                    <label>{{option.title}}</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-10">
-                    <table class="table table-hover">
+                    <div class="col-md-12">
+                        <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -157,6 +161,7 @@
                         :next-link-class="'item'"
                         :click-handler="clickCallback">
                     </paginate>
+                    </div>
                 </div>
             </div>
             <!-- Create opportunity -->
@@ -346,6 +351,14 @@ export default {
                             self.error = error.response.data;
                         });
                 });
+        },
+        clearFilters: function() {
+            this.sort = {
+                customers: '',
+                client: '',
+                area: [],
+                total: '',
+            }
         }
     }
 }

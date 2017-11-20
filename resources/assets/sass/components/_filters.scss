@@ -1,6 +1,13 @@
 .filters {
+    .heading {
+        margin-top: 0;
+        display: inline-block;
+    }
+    .pull-right {
+        display: inline-block;
+    }
     position: relative;
-    padding: 20px 0px;
+    padding: 0px 0px;
     .search {
         i {
             vertical-align: text-top;

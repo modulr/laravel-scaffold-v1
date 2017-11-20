@@ -1,0 +1,11 @@
+.card {
+    background-color: $white;
+    padding: 10px;
+    margin: 10px 0px;
+    .title {
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-bottom: 30px;
+        color: $headings-color;
+    }
+}
