@@ -1,4 +1,14 @@
 .table {
+    background-color: #ffffff;
+    thead {
+        text-transform: uppercase;
+        tr {
+            th {
+                padding: 18px 8px;
+                border-bottom: 1px solid $gray-lighter;
+            }
+        }
+    }
     margin-bottom: 0;
     td:last-child .btn-group {
         opacity: 0;
@@ -6,13 +16,6 @@
     tr:hover td:last-child .btn-group {
         opacity: 1;
     }
-
-    td {
-        .avatar-sm {
-            margin-right: 15px;
-        }
-    }
-
     &.table-ellipsis {
         table-layout:fixed;
         td {
@@ -20,6 +23,23 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+    }
+    tbody {
+        tr {
+            border-bottom: 1px solid $gray-lighter;
+        }
+        td {
+            font-size: 16px;
+            padding: 18px 8px !important;
+            vertical-align: center;
+            .text-muted {
+                display: block;
+                font-size: 10px;
+            }
+            .avatar-sm {
+                margin-right: 15px;
+            }
         }
     }
 }

@@ -14,6 +14,10 @@ use DB;
 
 class OpportunityController extends Controller
 {
+    public function __construct()
+    {
+        $this->relationships = ['owner', 'priority', 'client', 'client.customer', 'quote', 'quote.designer', 'quote.salesman', 'quote.status', 'quote.currency', 'area'];
+    }
     /**
      * Display a listing of the resource.
      *
@@ -26,14 +30,14 @@ class OpportunityController extends Controller
 
     public function show(Request $request, $id)
     {
-        $opportunity = Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'quote.designer', 'quote.salesman', 'quote.status', 'quote.currency', 'area')->where('status', 1)->find($id);
+        $opportunity = Project::with($this->relationships)->where('status', 1)->find($id);
 
         return view('opportunities.opportunity', ['breadcrumb' => $request->path(), 'opportunity' => $opportunity]);
     }
 
     public function all()
     {
-        return Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'area', 'quote.currency')->where('status', 1)->paginate(10);
+        return Project::with($this->relationships)->where('status', 1)->paginate(10);
     }
 
     /**
@@ -73,7 +77,7 @@ class OpportunityController extends Controller
             'priority_id' => $request->priority,
             'client_id' => $request->client,
             'area_id' => $request->area,
-        ])->load('owner', 'priority', 'client', 'client.customer', 'area');
+        ])->load($this->relationships);
 
         return $opportunity;
     }
@@ -107,7 +111,7 @@ class OpportunityController extends Controller
 
         $q->save();
 
-        return $q->load('owner', 'priority', 'client', 'client.customer', 'area');
+        return $q->load($this->relationships);
     }
 
     /**

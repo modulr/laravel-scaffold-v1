@@ -3,13 +3,12 @@
         <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
         <!-- Actions Buttons -->
         <div class="wrapper" v-if="!loading">
-            <div class="row">
-                <div class="col-xs-12 text-right">
-                    <a href="#" class="btn btn-primary" @click.prevent="add">
-                        <i class="mdi mdi-person-add mdi-lg"></i> Add Opportunity
-                    </a>
-                </div>
+            <div class="material-button right">
+                <button href="#" class="btn-primary" @click.prevent="add">
+                    <i class="mdi mdi-add mdi-lg"></i>
+                </button>
             </div>
+            <br>
             <br>
             <!-- No items found -->
             <div class="row" v-if="opportunities.length == 0">
@@ -19,57 +18,65 @@
             </div>
             <!-- List -->
             <div class="row" v-if="opportunities.length != 0">
-                <div class="col-md-12">
-                    <div class="filters">
-                        <div class="sort col-xs-2">
-                            <select class="form-control" required v-model="sort.customers">
-                                <option value="" disabled selected>Customer</option>
-                                <option v-for="option in list.customers" :value="option.id">
-                                    {{ option.name }}
-                                </option>
-                                <option value="">None</option>
-                            </select>
-                        </div>
-                        <div class="sort col-xs-2">
-                            <select class="form-control" required v-model="sort.client">
-                                <option value="" disabled selected>Client</option>
-                                <option v-for="option in list.clients" :value="option.id">
-                                    {{ option.name }}
-                                </option>
-                                <option value="">None</option>
-                            </select>
-                        </div>
-                        <div class="sort col-xs-2">
-                            <select class="form-control" required v-model="sort.area">
-                                <option value="" disabled selected>Region</option>
-                                <option v-for="option in list.areas" :value="option.id">
-                                    {{ option.title }}
-                                </option>
-                                <option value="">None</option>
-                            </select>
-                        </div>
-                        <div class="search col-xs-6">
-                            <div class="col-xs-1">
-                                <i class="mdi mdi-search mdi-2x"></i>
+                <div class="col-md-2">
+                    <div class="row filters">
+                        <h4>Filters</h4>
+                        <div class="row">
+                            <div class="search col-xs-12">
+                                <div class="col-xs-1">
+                                    <i class="mdi mdi-search mdi-2x"></i>
+                                </div>
+                                <div class="col-xs-8">
+                                    <input type="text" class="form-control" placeholder="Search" v-model="search">
+                                </div>
                             </div>
-                            <div class="col-xs-8">
-                                <input type="text" class="form-control" placeholder="Search" v-model="search">
+                        </div>
+                        <div class="row">
+                            <div class="sort col-xs-12">
+                                <select class="form-control" required v-model="sort.customers">
+                                    <option value="" disabled selected>Customer</option>
+                                    <option v-for="option in list.customers" :value="option.id">
+                                        {{ option.name }}
+                                    </option>
+                                    <option value="">None</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="sort col-xs-12">
+                                <select class="form-control" required v-model="sort.client">
+                                    <option value="" disabled selected>Client</option>
+                                    <option v-for="option in list.clients" :value="option.id">
+                                        {{ option.name }}
+                                    </option>
+                                    <option value="">None</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="sort col-xs-12">
+                                <div v-for="option in list.areas">
+                                    <label>{{option.title}}</label>
+                                    <input type="checkbox" v-model="sort.area" :value="option.id">
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-md-10">
                     <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Registered Date</th>
-                                <th>Description</th>
                                 <th>Total Amount</th>
                                 <th>Owner</th>
                                 <th>Client</th>
                                 <th>Customer</th>
-                                <th>Area</th>
+                                <th>Region</th>
                                 <th>Priority</th>
+                                <th>Description</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -85,10 +92,6 @@
                                 </td>
                                 <td>
                                     {{item.registered_date | date}}
-                                    <br>
-                                </td>
-                                <td>
-                                    {{item.description}}
                                     <br>
                                 </td>
                                 <td>
@@ -117,6 +120,10 @@
                                         {{item.priority.name}}
                                     </span>
                                 </td>
+                                <td>
+                                    {{item.description}}
+                                    <br>
+                                </td>
                                 <td class="text-right">
                                     <div class="dropdown">
                                         <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -139,7 +146,7 @@
                             </tr>
                         </tbody>
                     </table>
-                     <paginate
+                    <paginate
                         :page-count="pagination.last_page"
                         :margin-pages="2"
                         :page-range="2"
@@ -153,7 +160,7 @@
                 </div>
             </div>
             <!-- Create opportunity -->
-            <opportunities-create :opportunity="opportunity" class="modal right fade" id="modalAdd"></opportunities-create>
+            <opportunities-create :opportunities="opportunities" class="modal right fade" id="modalAdd"></opportunities-create>
             <!-- Edit opportunity -->
             <opportunities-edit :opportunity="opportunity" class="modal right fade" id="modalEdit"></opportunities-edit>
         </div>
@@ -181,7 +188,7 @@ export default {
             sort: {
                 customers: '',
                 client: '',
-                area: '',
+                area: [],
                 total: '',
             },
             search: '',
@@ -227,12 +234,8 @@ export default {
             });
         }
 
-        if (sort_area) {
-            filteredArray = filteredArray.filter(function (item) {
-                if (item.area.id === sort_area) {
-                    return item;
-                }
-            });
+        if (sort_area.length) {
+            return filteredArray.filter(item => sort_area.includes(item.area_id));
         }
 
         if (search) {

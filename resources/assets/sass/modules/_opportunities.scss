@@ -1,18 +1,4 @@
 .opportunities {
-    .table {
-        .priority-High {
-            color: $brand-danger;
-            background-color: lighten($brand-danger, 20%);
-        }
-        .priority-Medium {
-            color: $brand-success;
-            background-color: lighten($brand-success, 20%);
-        }
-        .priority-Low {
-            color: $brand-gray;
-            background-color: lighten($brand-gray, 20%);
-        }
-    }
     .modal {
         .modal-body {
             img {

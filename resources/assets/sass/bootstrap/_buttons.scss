@@ -1,0 +1,47 @@
+.material-button {
+    position: absolute;
+    z-index: 100;
+    top: 20px;
+    &.left {
+        left: 0;
+        margin-left: -40px;
+    }
+    &.right {
+        right: 0;
+        margin-right: -40px;
+    }
+    .btn-primary {
+        -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        width: 60px;
+        height: 60px;
+        border-radius: 100%;
+        i {
+            font-size: 2em;
+            line-height: inherit;
+        }
+    }
+}
+
+.chip {
+    display: inline-block;
+    padding: 0 15px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 25px;
+}
+
+.priority-High {
+    color: $brand-danger;
+    background-color: lighten($brand-danger, 20%);
+}
+
+.priority-Medium {
+    color: $brand-success;
+    background-color: lighten($brand-success, 20%);
+}
+
+.priority-Low {
+    color: $brand-gray;
+    background-color: lighten($brand-gray, 20%);
+}

@@ -3,360 +3,279 @@
         <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
         <!-- Actions Buttons -->
         <div class="wrapper" v-if="!loading">
-          <!-- No items found -->
-          <div class="row" v-if="projects.length == 0">
-              <div class="col-md-12">
-                  <h3>No projects found.</h3>
-              </div>
-          </div>
-          <!-- List -->
-          <div class="row" v-if="projects.length != 0">
-              <div class="col-md-12">
-                  <table class="table table-hover">
-                      <thead>
-                          <tr>
-                              <th>ID</th>
-                              <th>Name</th>
-                              <th>Start Date</th>
-                              <th>End Date</th>
-                              <th>Leader</th>
-                              <th>Supervisor</th>
-                              <th>Client</th>
-                              <th>Customer</th>
-                              <th>Progress</th>
-                              <th>Status</th>
-                              <th></th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <tr v-for="(item, index) in projects">
-                              <td>
-                                  {{item.id}}
-                              </td>
-                              <td>
-                                  {{item.name}}<br>
-                              </td>
-                              <td>
-                                  {{item.start_date | date}}<br>
-                              </td>
-                              <td>
-                                  {{item.end_date | date}}<br>
-                              </td>
-                              <td>
-                                  Leader<br>
-                              </td>
-                              <td>
-                                  Supervisor<br>
-                              </td>
-                              <td>
-                                  {{item.client.name}}
-                              </td>
-                              <td>
-                                  {{item.client.customer.name}}
-                              </td>
-                              <td>
-                                  50%
-                              </td>
-                              <td>
-                                  {{item.project_status.name}}
-                              </td>
-                              <td class="text-right col-sm-2">
-                                  <div class="btn-group">
-                                      <a href="#" class="btn btn-default btn-sm" @click.prevent="edit(item, index)" v-tooltip:top="'Edit'">
-                                          <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
-                                      </a>
-                                  </div>
-                              </td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-          <!-- Create project -->
-          <div class="modal fade" id="modalAdd">
-              <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                          <h4 class="modal-title">Add Opportunity</h4>
-                      </div>
-                      <div class="modal-body">
-                          <form class="form-horizontal">
-                              <div class="form-group" :class="{'has-error': error.name}">
-                                  <label class="col-sm-2 control-label">Name *</label>
-                                  <div class="col-sm-10">
-                                      <input type="text" class="form-control input-lg" placeholder="Name" required v-model="project.name">
-                                      <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
-                                  </div>
-                              </div>
-                              <div class="form-group" :class="{'has-error': error.start_date}">
-                                  <label class="col-sm-2 control-label">Start Date *</label>
-                                  <div class="col-sm-10">
-                                      <input type="datetime-local" class="form-control" v-bind:placeholder="project.start_date" required v-model="project.start_date">
-                                      <span class="help-block" v-if="error.start_date">{{error.start_date[0]}}</span>
-                                  </div>
-                              </div>
-                              <div class="form-group" :class="{'has-error': error.description}">
-                                  <label class="col-sm-2 control-label">Description</label>
-                                  <div class="col-sm-10">
-                                      <textarea type="text" class="form-control" placeholder="Description" required v-model="project.description">
-                                      </textarea>
-                                      <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
-                                  </div>
-                              </div>
-                              <div class="form-group" :class="{'has-error': error.priority}">
-                                  <label class="col-sm-2 control-label">Priority</label>
-                                  <div class="col-sm-10">
-                                      <select class="form-control" required v-model="project.priority">
-                                          <option v-for="option in list.priorities" :value="option.id">
-                                              {{ option.name }}
-                                          </option>
-                                      </select>
-                                      <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
-                                  </div>
-                              </div>
-                              <div class="form-group" :class="{'has-error': error.client}">
-                                  <label class="col-sm-2 control-label">Contact</label>
-                                  <div class="col-sm-10">
-                                      <select class="form-control" required v-model="project.client">
-                                          <option v-for="option in list.clients" :value="option.id">
-                                              {{option.name}}, {{option.customer.name}}
-                                          </option>
-                                      </select>
-                                      <span class="help-block" v-if="error.start_date">{{error.description[0]}}</span>
-                                  </div>
-                              </div>
-                          </form>
-                      </div>
-                      <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                          <button type="button" class="btn btn-success" @click="store">Add</button>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <!-- Edit project -->
-          <div class="modal fade" id="modalEdit">
-              <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                          <h4 class="modal-title">Edit project</h4>
-                      </div>
-                      <div class="modal-body">
-                          <form class="form-horizontal">
-                              <div class="form-group" :class="{'has-error': error.name}">
-                                  <label class="col-sm-2 control-label">Name</label>
-                                  <div class="col-sm-10">
-                                      <input type="text" class="form-control input-lg" placeholder="Name" required v-model="project.name">
-                                        <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
-                                  </div>
-                              </div>
-                              <div class="form-group" :class="{'has-error': error.description}">
-                                  <label class="col-sm-2 control-label">Description</label>
-                                  <div class="col-sm-10">
-                                      <textarea type="text" class="form-control input-lg" placeholder="Description" required v-model="project.description">
-                                      </textarea>
-                                      <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
-                                  </div>
-                              </div>
-                              <div class="form-group" :class="{'has-error': error.priority}">
-                                  <label class="col-sm-2 control-label">Priority</label>
-                                  <div class="col-sm-10" v-if="list.priorities && project.priority">
-                                      <select class="form-control" required v-model="project.priority.id">
-                                          <option v-for="option in list.priorities" :value="option.id">
-                                              {{ option.name }}
-                                          </option>
-                                      </select>
-                                  </div>
-                              </div>
-                              <div class="form-group">
-                                  <label class="col-sm-2 control-label">Owner</label>
-                                  <div class="col-sm-10">
-                                      <p class="form-control-static">
-                                          <small class="text-mute" v-if="project.owner">{{project.owner.name}}</small>
-                                      </p>
-                                  </div>
-                              </div>
-                              <div class="form-group">
-                                  <label class="col-sm-2 control-label">Registered</label>
-                                  <div class="col-sm-10">
-                                      <p class="form-control-static">
-                                          <small class="text-mute">{{project.start_date | date}}</small>
-                                      </p>
-                                  </div>
-                              </div>
-                          </form>
-                      </div>
-                      <div class="modal-footer">
-                          <button type="button" class="btn btn-default pull-left" @click="destroy()">
-                              <i class="mdi mdi-delete mdi-lg"></i> Delete
-                          </button>
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                          <button type="button" class="btn btn-primary" @click="update">Save</button>
-                      </div>
-                  </div>
-              </div>
-          </div>
+            <!-- No items found -->
+            <div class="row" v-if="projects.length == 0">
+                <div class="col-md-12">
+                    <h3>No projects found.</h3>
+                </div>
+            </div>
+            <!-- List -->
+            <div class="row" v-if="projects.length != 0">
+                <div class="col-md-12">
+                    <div class="row filters">
+                        <div class="sort col-xs-2">
+                            <select class="form-control" required v-model="sort.customers">
+                                <option value="" disabled selected>Customer</option>
+                                <option v-for="option in list.customers" :value="option.id">
+                                    {{ option.name }}
+                                </option>
+                                <option value="">None</option>
+                            </select>
+                        </div>
+                        <div class="sort col-xs-2">
+                            <select class="form-control" required v-model="sort.client">
+                                <option value="" disabled selected>Client</option>
+                                <option v-for="option in list.clients" :value="option.id">
+                                    {{ option.name }}
+                                </option>
+                                <option value="">None</option>
+                            </select>
+                        </div>
+                        <div class="sort col-xs-2">
+                            <select class="form-control" required v-model="sort.area">
+                                <option value="" disabled selected>Region</option>
+                                <option v-for="option in list.areas" :value="option.id">
+                                    {{ option.title }}
+                                </option>
+                                <option value="">None</option>
+                            </select>
+                        </div>
+                        <div class="search col-xs-6">
+                            <div class="col-xs-1">
+                                <i class="mdi mdi-search mdi-2x"></i>
+                            </div>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" placeholder="Search" v-model="search">
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Start Date</th>
+                                <th>Deadline</th>
+                                <th>Priority</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, index) in filteredOpportunities">
+                                <td>
+                                    {{item.id}}
+                                </td>
+                                <td>
+                                    <a class="heading" :href="'/projects/'+item.id+'/get'">
+                                        <strong>{{item.name}}</strong>
+                                    </a>
+                                    <span class="text-muted">{{item.client.customer.name}}</span>
+                                </td>
+                                <td>
+                                    {{item.start_date | date}}
+                                    <br>
+                                </td>
+                                <td>
+                                    {{item.end_date | date}}
+                                    <br>
+                                </td>
+                                <td>
+                                    <span class="chip" :class="'priority-'+item.priority.name">
+                                        {{item.priority.name}}
+                                    </span>
+                                </td>
+                                <td class="text-right">
+                                    <div class="dropdown">
+                                        <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li>
+                                                <a href="#" @click.prevent="edit(item, index)">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                    Edit
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <paginate
+                        :page-count="pagination.last_page"
+                        :margin-pages="2"
+                        :page-range="2"
+                        :initial-page="pagination.current_page"
+                        :container-class="'ui pagination menu'"
+                        :page-link-class="'item'"
+                        :prev-link-class="'item'"
+                        :next-link-class="'item'"
+                        :click-handler="clickCallback">
+                    </paginate>
+                </div>
+            </div>
+            <!-- Create project -->
+            <projects-create :projects="projects" class="modal right fade" id="modalAdd"></projects-create>
+            <!-- Edit project -->
+            <projects-edit :project="project" class="modal right fade" id="modalEdit"></projects-edit>
         </div>
     </div>
 </template>
 
 <script>
+import OpportunitiesCreate from './Create.vue';
+import OpportunitiesEdit from './Edit.vue';
+
 import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
 import Vue2Filters from 'vue2-filters';
+import Paginate from 'vuejs-paginate';
 export default {
     data() {
         return {
             loading: false,
+            newCustomer: false,
             projects: [],
-            project: {},
+            project: {
+                area: {},
+            },
+            sort: {
+                customers: '',
+                client: '',
+                area: '',
+                total: '',
+            },
             search: '',
-            error: {},
             list: {
                 priorities: [],
                 clients: [],
+                customers: [],
+                areas: []
+            },
+            pagination : {
+                current_page: 0,
+                last_page: 1
             }
         }
     },
     components: {
-      Spinner
+        Spinner, Paginate
     },
     mounted() {
         this.getAll();
     },
+    computed: {
+    filteredOpportunities: function () {
+        var filteredArray = this.projects,
+            sort_customers = this.sort.customers,
+            sort_client = this.sort.client,
+            sort_area = this.sort.area,
+            search = this.search;
+
+        if (sort_customers) {
+            filteredArray = filteredArray.filter(function (item) {
+                if (item.client.customer_id === sort_customers) {
+                    return item;
+                }
+            });
+        }
+
+        if (sort_client) {
+            filteredArray = filteredArray.filter(function (item) {
+                if (item.client.id === sort_client) {
+                    return item;
+                }
+            });
+        }
+
+        if (sort_area) {
+            filteredArray = filteredArray.filter(function (item) {
+                if (item.area.id === sort_area) {
+                    return item;
+                }
+            });
+        }
+
+        if (search) {
+            search = search.trim().toLowerCase();
+
+            filteredArray = filteredArray.filter(function (item) {
+                console.log(item);
+                return Object.keys(item).some(function (key) {
+                    return String(item[key]).toLowerCase().indexOf(search) !== -1
+                })
+            })
+        }
+        
+        return filteredArray;
+        }
+    },
     filters: {
         date(date) {
-            return moment(date).format('LLL');
+            return moment(date).format('LL');
         }
     },
     methods: {
-        getAll: function() {
-            this.loading = true;
-            axios.get('/projects/all')
-                .then(response => {
-                    this.projects = response.data;
-                    this.loading = false;
-                });
+        clickCallback (page) {
+            this.pagination.current_page = page
+            this.getAll()
         },
-        add: function() {
-            axios.get('/projects/list/priorities')
+        getAll: function () {
+            var page = Number(this.pagination.current_page);
+            this.loading = true;
+            axios.get('/projects/all?page=' + page)
             .then(response => {
-                this.list.priorities = response.data;
+                axios.get('/projects/list/priorities')
+                .then(response => {
+                    this.list.priorities = response.data;
+                });
+                axios.get('/projects/list/clients')
+                .then(response => {
+                    this.list.clients = response.data;
+                });
+                axios.get('/projects/list/customers')
+                .then(response => {
+                    this.list.customers = response.data;
+                });
+                axios.get('/projects/list/areas')
+                .then(response => {
+                    this.list.areas = response.data;
+                });
+            this.pagination.last_page = response.data.last_page
+            this.projects = response.data.data;
+            this.loading = false;
             });
-            axios.get('/projects/list/clients')
-            .then(response => {
-                this.list.clients = response.data;
-            });
+        },
+        add: function () {
             this.project = {
                 name: '',
-                start_date: '',
+                registered: '',
                 description: '',
             };
             this.error = {};
             $('#modalAdd').modal('show');
         },
-        store: function(e) {
-            var btn = $(e.target).button('loading')
-            axios.post('/projects/store', this.project)
-                .then(response => {
-                    this.projects.push(response.data);
-                    this.project = {};
-                    this.error = {};
-                    var btn = $(e.target).button('reset')
-                    $('#modalAdd').modal('hide');
-                })
-                .catch(error => {
-                    this.error = error.response.data;
-                    var btn = $(e.target).button('reset')
-                  });
-        },
         edit: function (project, index) {
-            axios.get('/projects/list/priorities')
-            .then(response => {
-                this.list.priorities = response.data;
-                this.project = _.clone(project);
-                this.project.index = index;
-            });
+            this.project = _.clone(project);
+            this.project.index = index;
             $('#modalEdit').modal('show');
         },
-        update: function (e) {
-            var btn = $(e.target).button('loading')
-            axios.put('/projects/update/'+this.project.id, this.project)
-            .then(response => {
-                this.projects[this.project.index] = response.data;
-                this.project = {};
-                this.error = {};
-                var btn = $(e.target).button('reset')
-                $('#modalEdit').modal('hide');
-            })
-            .catch(error => {
-                this.error = error.response.data;
-                var btn = $(e.target).button('reset')
-            });
+        totalQuotes: function(quotes) {
+            let total = 0.0;
+                if (quotes) {
+                    if (quotes.length > 0)
+                        quotes.forEach(function (item, index) {
+                            if (item.currency.id == 2) {
+                                total += item.amount * item.currency.exchange_rate;
+                            } else {
+                                total += item.amount
+                            }
+                        })
+                }
+            return total;
         },
-        destroy: function () {
-            var self = this;
-            swal({
-                title: "Are you sure?",
-                text: "You will not be able to recover this project!",
-                type: "warning",
-                showLoaderOnConfirm: true,
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-            },
-            function(){
-                axios.delete('/projects/destroy/' + self.project.id)
-                .then(response => {
-                    self.projects.splice(self.project.index, 1);
-                    swal({
-                        title: "Deleted!",
-                        text: "The project has been deleted.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
-                    });
-                    self.error = {};
-                    $('#modalEdit').modal('hide');
-                })
-                .catch(error => {
-                    self.error = error.response.data;
-                });
-            });
-        },
-        makeProject: function (id, index) {
-            var self = this;
-            swal({
-                title: "Are you sure?",
-                text: "You will not be able to recover this project!",
-                type: "warning",
-                showLoaderOnConfirm: true,
-                showCancelButton: true,
-                confirmButtonText: "Yes, turn it into a new project!",
-                closeOnConfirm: false
-            },
-            function(){
-                axios.put('/projects/update/' + id + '/make_project')
-                .then(response => {
-                    self.projects.splice(index, 1);
-                    swal({
-                        title: "Updated!",
-                        text: "The project has been turned into a project.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
-                    });When
-                    self.error = {};
-                    $('#modalEdit').modal('hide');
-                })
-                .catch(error => {
-                    self.error = error.response.data;
-                });
-            });
-          },
     }
 }
 </script>

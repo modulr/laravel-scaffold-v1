@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Projects\Project;
 use Illuminate\Http\Request;
-use App\Models\Lists\ListArea;
+use Illuminate\Support\Facades\Auth;
+use Validator;
+use App\Models\Projects\Project;
 use App\Models\Projects\ListPriority;
+use App\Models\Customers\Customer;
+use App\Models\Customers\Client;
+use App\Models\Lists\ListArea;
+use DB;
 
 class ProjectController extends Controller
 {
+    public function __construct()
+    {
+        $this->relationships = ['owner', 'priority', 'client', 'client.customer', 'quote', 'quote.designer', 'quote.salesman', 'quote.status', 'quote.currency', 'area'];
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,9 +28,16 @@ class ProjectController extends Controller
         return view('projects.projects', ['breadcrumb' => $request->path()]);
     }
 
+    public function show(Request $request, $id)
+    {
+        $project = Project::with($this->relationships)->where('status', 2)->find($id);
+
+        return view('projects.projects', ['breadcrumb' => $request->path(), 'project' => $project]);
+    }
+
     public function all()
     {
-        return Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'area', 'quote.currency', 'project_status')->where('status', 2)->get();
+        return Project::with($this->relationships)->where('status', 2)->paginate(10);
     }
 
     /**
@@ -45,21 +61,25 @@ class ProjectController extends Controller
         $this->validate($request, [
             'name' => 'required|string',
             'quotes' => 'numeric',
-            'start_date' => 'required|date',
+            'registered_date' => 'required|date',
+            'priority' => 'required',
+            'area' => 'required',
+            'client' => 'required',
         ]);
 
-        $opportunity = Project::create([
+        $project = Project::create([
             'name' => $request->name,
             'quotes' => $request->quotes,
-            'start_date' => $request->start_date,
-            'status' => 1, // 1 = Opportunity
+            'registered_date' => $request->registered_date,
+            'status' => 2, // 2 = Project
             'description' => $request->description,
             'owner_id' => Auth::id(),
             'priority_id' => $request->priority,
-            'contact_id' => $request->contact,
-        ])->load('owner', 'priority', 'contact', 'contact.customer');
+            'client_id' => $request->client,
+            'area_id' => $request->area,
+        ])->load($this->relationships);
 
-        return $opportunity;
+        return $project;
     }
 
     /**
@@ -85,9 +105,13 @@ class ProjectController extends Controller
             $q->priority_id = $request->priority['id'];
         }
 
+        if ($q->area_id != $request->area) {
+            $q->area_id = $request->area['id'];
+        }
+
         $q->save();
 
-        return $q->load('owner', 'priority', 'contact', 'contact.customer');
+        return $q->load($this->relationships);
     }
 
     /**
@@ -101,8 +125,8 @@ class ProjectController extends Controller
         return Project::destroy($id);
     }
 
-     /**
-     * Get a list of opportunity priorities.
+    /**
+     * Get a list of project priorities.
      *
      * @return \Illuminate\Http\Response
      */
@@ -112,7 +136,7 @@ class ProjectController extends Controller
     }
 
     /**
-     * Get a list of opportunity clients.
+     * Get a list of project clients.
      *
      * @return \Illuminate\Http\Response
      */
@@ -122,7 +146,7 @@ class ProjectController extends Controller
     }
 
      /**
-      * Get a list of opportunity customers.
+      * Get a list of project customers.
       *
       * @return \Illuminate\Http\Response
       */
@@ -146,7 +170,7 @@ class ProjectController extends Controller
     }
 
      /**
-      * Get a list of opportunity areas.
+      * Get a list of project areas.
       *
       * @return \Illuminate\Http\Response
       */
@@ -154,4 +178,5 @@ class ProjectController extends Controller
     {
         return ListArea::all();
     }
+
 }

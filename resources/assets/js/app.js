@@ -51,8 +51,12 @@ Vue.component('contacts', require('./components/contacts/Contacts.vue'));
 Vue.component('contacts-widget', require('./components/contacts/ContactsWidget.vue'));
 // Files
 Vue.component('files', require('./components/files/Files.vue'));
-// Projects & Opportunities
+// Projects
 Vue.component('projects', require('./components/projects/Projects.vue'));
+Vue.component('projectsCreate', require('./components/projects/Create.vue'));
+Vue.component('projectsEdit', require('./components/projects/Edit.vue'));
+Vue.component('project', require('./components/projects/detail/Project.vue'));
+// Opportunities
 Vue.component('opportunities', require('./components/opportunities/Opportunities.vue'));
 Vue.component('opportunitiesCreate', require('./components/opportunities/Create.vue'));
 Vue.component('opportunitiesEdit', require('./components/opportunities/Edit.vue'));
