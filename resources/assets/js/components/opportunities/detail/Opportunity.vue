@@ -9,7 +9,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-xs-4">
                             <dl>
                                 <dd>Description</dd>
                                 <dt>{{opportunity.description}}</dt>
@@ -23,7 +23,7 @@
                                 <dt>{{opportunity.quote.length}}</dt>
                             </dl>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-xs-4">
                             <dl>
                                 <dd>Priority</dd>
                                 <dt>{{opportunity.priority.name}}</dt>
@@ -38,7 +38,7 @@
                                 <dt v-if="opportunity.area">{{opportunity.area.title}}</dt>
                             </dl>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-xs-4">
                             <dl>
                                 <dd>Customer</dd>
                                 <dt><a :href="'/clients'">{{opportunity.client.customer.name}}</a></dt>

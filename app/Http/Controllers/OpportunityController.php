@@ -33,7 +33,7 @@ class OpportunityController extends Controller
 
     public function all()
     {
-        return Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'area', 'quote.currency')->where('status', 1)->get();
+        return Project::with('owner', 'priority', 'client', 'client.customer', 'quote', 'area', 'quote.currency')->where('status', 1)->paginate(10);
     }
 
     /**
