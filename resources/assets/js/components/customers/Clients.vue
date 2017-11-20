@@ -2,14 +2,11 @@
     <div class="clients">
         <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
         <div class="wrapper" v-if="!loading">
-            <div class="row">
-                <div class="col-xs-12 text-right">
-                    <a href="#" class="btn btn-primary" @click.prevent="add()">
-                        <i class="mdi mdi-person-add mdi-lg"></i> Add Client
-                    </a>
-                </div>
+            <div class="material-button top right">
+                <button href="#" class="btn-primary" @click.prevent="add">
+                    <i class="mdi mdi-add mdi-lg"></i>
+                </button>
             </div>
-            <br>
             <!-- No items found -->
             <div class="row" v-if="clients.length == 0">
                 <div class="col-md-12">
@@ -18,49 +15,68 @@
             </div>
             <!-- List -->
             <div class="row" v-if="clients.length != 0">
-                <div class="col-md-12">
-                    <div class="list-group">
-                        <div class="filters">
-                            <div class="sort col-xs-2">
-                                <select class="form-control" required v-model="sort">
-                                    <option value="" disabled selected>Sort By</option>
+                <div class="col-md-2">
+                    <div class="col-md-12 filters">
+                        <h4 class="heading">Filters</h4>
+                        <a href="#" class="pull-right" @click.prevent="clearFilters">Clear</a>
+                        <div class="row">
+                            <div class="card search col-xs-12">
+                                <p class="title">
+                                    <small>Search</small>
+                                </p>
+                                <div class="col-xs-1">
+                                    <i class="mdi mdi-search mdi-2x"></i>
+                                </div>
+                                <div class="col-xs-10">
+                                    <input type="text" class="form-control" placeholder="Search" v-model="search">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card col-xs-12">
+                                <p class="title">
+                                    <small>Customers</small>
+                                </p>
+                                <select class="form-control" required v-model="sort.customers">
+                                    <option value="" disabled selected>Customer</option>
                                     <option v-for="option in list.customers" :value="option.id">
                                         {{ option.name }}
                                     </option>
                                     <option value="">None</option>
                                 </select>
                             </div>
-                            <div class="search col-xs-6">
-                                <div class="col-xs-1">
-                                    <i class="mdi mdi-search mdi-2x"></i>
-                                </div>
-                                <div class="col-xs-8">
-                                    <input type="text" class="form-control" placeholder="Search" v-model="search">
-                                </div>
-                            </div>
                         </div>
-                        <div class="list-item col-xs-12" v-for="(item, index) in filteredClients">
-                            <div class="col-xs-11 details" @click="edit(item, index)">
-                                <p>{{item.name}} <small class="text-muted">{{item.customer.name}}</small></p>
-                                <small class="text-muted">
-                                    <span v-if="item.email">{{item.email}}</span>
-                                    <span v-if="item.phone_number_1">- {{item.phone_number_1}}</span>
-                                    <span v-if="item.phone_number_2">- {{item.phone_number_2}}</span>
-                                    <span v-if="item.phone_number_3">- {{item.phone_number_3}}</span>
-                                </small>
-                            </div>
-                            <div class="actions col-xs-1">
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        <i class="mdi mdi-more-vert mdi-2x"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li>
-                                            <a href="#" @click.prevent="edit(item, index)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                              Edit
-                                            </a>
-                                        </li>
-                                    </ul>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="col-md-12">
+                        <div class="list-group">
+                            <div class="list-item col-xs-12" v-for="(item, index) in filteredClients">
+                                <div class="col-xs-11 details" @click="edit(item, index)">
+                                    <p>{{item.name}}
+                                        <small class="text-muted">{{item.customer.name}}</small>
+                                    </p>
+                                    <small class="text-muted">
+                                        <span v-if="item.email">{{item.email}}</span>
+                                        <span v-if="item.phone_number_1">- {{item.phone_number_1}}</span>
+                                        <span v-if="item.phone_number_2">- {{item.phone_number_2}}</span>
+                                        <span v-if="item.phone_number_3">- {{item.phone_number_3}}</span>
+                                    </small>
+                                </div>
+                                <div class="actions col-xs-1">
+                                    <div class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            <i class="mdi mdi-more-vert mdi-2x"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li>
+                                                <a href="#" @click.prevent="edit(item, index)">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                    Edit
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -229,19 +245,21 @@ export default {
           list: {
               customers: [],
           },
+          sort: {
+              customers: '',
+          },
           search: '',
-          sort: '',
       }
     },
     computed: {
         filteredClients: function() {
             var filteredArray = this.clients,
-                sort = this.sort,
+                sort_customers = this.sort.customers,
                 search = this.search;
 
-            if(sort) {
+            if(sort_customers) {
                 filteredArray = filteredArray.filter(function (item) {
-                    if (item.customer_id === sort) {
+                    if (item.customer_id === sort_customers) {
                         return item;
                     }
                 });
@@ -249,17 +267,12 @@ export default {
 
             if(search) {
                 search = search.trim().toLowerCase();
-
-                filteredArray = filteredArray.filter(function(item){
-                    return Object.keys(item).some(function (key) {
-                        return String(item[key]).toLowerCase().indexOf(search) !== -1
-                    })
-                })
+                return filteredArray.filter((item) => {
+                    return item.name.trim().toLowerCase().match(search);
+                });
             }
 
-
             return filteredArray;
-
         }
     },
     components: {
@@ -303,10 +316,13 @@ export default {
         axios.post('/clients/store', {'client': this.client, 'customer': this.customer})
             .then(response => {
                 this.clients.push(response.data);
-                this.list.customers.push(response.data.customer);
+                if(response.data.customer != this.list.customers) {
+                    this.list.customers.push(response.data.customer);
+                }
                 this.client = {};
                 this.error = {};
                 var btn = $(e.target).button('reset')
+                this.addingCustomer = false;
                 $('#modalAdd').modal('hide');
             })
             .catch(error => {
@@ -328,6 +344,7 @@ export default {
                 this.error = {};
                 var btn = $(e.target).button('reset')
                 $('#modalEdit').modal('hide');
+                this.addingCustomer = false;
             })
             .catch(error => {
                 this.error = error.response.data;
@@ -367,6 +384,14 @@ export default {
         newCustomer: function () {
             this.addingCustomer = true;
             this.client.customer = {};
+        },
+        clearFilters: function () {
+            this.sort = {
+                customers: '',
+                client: '',
+                area: [],
+                total: '',
+            }
         }
     }
 }
