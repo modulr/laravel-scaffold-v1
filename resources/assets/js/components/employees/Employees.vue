@@ -2,14 +2,11 @@
     <div class="employees">
         <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
         <div class="wrapper" v-if="!loading">
-            <div class="row">
-                <div class="col-xs-12 text-right">
-                    <a href="#" class="btn btn-primary" @click.prevent="add()">
-                        <i class="mdi mdi-person-add mdi-lg"></i> Add Employee
-                    </a>
-                </div>
+            <div class="material-button top right">
+                <button href="#" class="btn-primary" @click.prevent="add">
+                    <i class="mdi mdi-add mdi-lg"></i>
+                </button>
             </div>
-            <br>
             <!-- No items found -->
             <div class="row" v-if="employees.length == 0">
                 <div class="col-md-12">
