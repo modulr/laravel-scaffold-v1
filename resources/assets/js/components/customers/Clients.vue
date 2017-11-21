@@ -37,13 +37,7 @@
                                 <p class="title">
                                     <small>Customers</small>
                                 </p>
-                                <select class="form-control" required v-model="sort.customers">
-                                    <option value="" disabled selected>Customer</option>
-                                    <option v-for="option in list.customers" :value="option.id">
-                                        {{ option.name }}
-                                    </option>
-                                    <option value="">None</option>
-                                </select>
+                                <multiselect v-model="sort.customers" track-by="name" label="name" :options="list.customers" placeholder="Select a customer" :multiple="true"></multiselect>
                             </div>
                         </div>
                     </div>
@@ -231,6 +225,7 @@
 import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
+import Multiselect from 'vue-multiselect'
 export default {
     data() {
       return {
@@ -246,7 +241,7 @@ export default {
               customers: [],
           },
           sort: {
-              customers: '',
+              customers: [],
           },
           search: '',
       }
@@ -257,11 +252,13 @@ export default {
                 sort_customers = this.sort.customers,
                 search = this.search;
 
-            if(sort_customers) {
-                filteredArray = filteredArray.filter(function (item) {
-                    if (item.customer_id === sort_customers) {
-                        return item;
-                    }
+            if(sort_customers != '') {
+                return filteredArray.filter(item => {
+                    return _.findKey(sort_customers, (o) => {
+                        if(o.id === item.customer.id) {
+                            return item;
+                        }
+                    })
                 });
             }
 
@@ -276,7 +273,7 @@ export default {
         }
     },
     components: {
-      Spinner
+      Spinner, Multiselect
     },
     mounted() {
         this.getAll();
@@ -316,7 +313,7 @@ export default {
         axios.post('/clients/store', {'client': this.client, 'customer': this.customer})
             .then(response => {
                 this.clients.push(response.data);
-                if(response.data.customer != this.list.customers) {
+                if(response.data.customer.name != this.list.customers.name) {
                     this.list.customers.push(response.data.customer);
                 }
                 this.client = {};
@@ -387,12 +384,12 @@ export default {
         },
         clearFilters: function () {
             this.sort = {
-                customers: '',
-                client: '',
-                area: [],
-                total: '',
+                customers: [],
+                search: '',
             }
         }
     }
 }
 </script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
