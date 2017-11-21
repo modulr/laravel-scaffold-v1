@@ -1,17 +1,19 @@
 .material-button {
-    position: absolute;
+    position: fixed;
     z-index: 100;
     &.top {
-        top: 0;
+        top: 85px;
     }
     &.bottom {
-        bottom: 0;
+        bottom: 30px;
     }
     &.left {
-        left: 0;
+        left: 0px;
+        padding-left: 30px;
     }
     &.right {
-        right: 0;
+        right: 0px;
+        padding-right: 30px;
     }
     .btn-primary {
         -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);

@@ -2,7 +2,7 @@
     <div class="employees">
         <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
         <div class="wrapper" v-if="!loading">
-            <div class="material-button top right">
+            <div class="material-button bottom right">
                 <button href="#" class="btn-primary" @click.prevent="add">
                     <i class="mdi mdi-add mdi-lg"></i>
                 </button>

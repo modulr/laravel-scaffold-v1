@@ -85,7 +85,7 @@ class OpportunityController extends Controller
             'description' => $request->description,
             'owner_id' => Auth::id(),
             'priority_id' => $request->priority,
-            'client_id' => $request->client,
+            'client_id' => $request->client['id'],
             'area_id' => $request->area,
         ])->load($this->relationships);
 

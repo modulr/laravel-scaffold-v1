@@ -58,11 +58,7 @@
                         <div class="form-group" :class="{'has-error': error.client}">
                             <label class="col-sm-3 control-label required">Client</label>
                             <div class="col-sm-9">
-                                <select class="form-control" required v-model="opportunity.client">
-                                    <option v-for="option in list.clients" :value="option.id">
-                                        {{option.name}}, {{option.customer.name}}
-                                    </option>
-                                </select>
+                                <multiselect v-model="opportunity.client" track-by="name" label="name" :options="list.clients" placeholder="Select a client" :multiple="false"></multiselect>
                                 <span class="help-block" v-if="error.client">{{error.client[0]}}</span>
                                 <span>Or
                                     <a :href="'/clients'">create a new client.</a>
@@ -85,8 +81,12 @@ import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
 import Vue2Filters from 'vue2-filters';
+import Multiselect from 'vue-multiselect';
 export default {
-    props: ['opportunities'], 
+    props: ['opportunities'],
+    components: {
+        Multiselect
+    },
     data() {
         return {
             error: {},
