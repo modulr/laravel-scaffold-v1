@@ -83,7 +83,7 @@ import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
 import Vue2Filters from 'vue2-filters';
 export default {
-    props: ['opportunity'],
+    props: ['opportunity', 'opportunities'],
     data() {
         return {
             list: {
@@ -118,8 +118,8 @@ export default {
             var btn = $(e.target).button('loading')
             axios.put('/opportunities/update/' + this.opportunity.id, this.opportunity)
                 .then(response => {
-                    this.opportunities[this.opportunity.index] = response.data;
-                    this.opportunity = {};
+                    this.$parent.opportunities[this.opportunity.index] = response.data;
+                    this.$parent.opportunity = {};
                     this.error = {};
                     var btn = $(e.target).button('reset')
                     $('#modalEdit').modal('hide');

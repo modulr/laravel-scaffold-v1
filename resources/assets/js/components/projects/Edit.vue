@@ -55,41 +55,28 @@
                         <div class="form-group" :class="{'has-error': error.priority}">
                             <label class="col-sm-3 control-label required">Priority</label>
                             <div class="col-sm-9" v-if="list.priorities && project.priority">
-                                <select class="form-control" required v-model="project.priority.id">
-                                    <option v-for="option in list.priorities" :value="option.id">
-                                        {{ option.name }}
-                                    </option>
-                                </select>
+                                <multiselect v-model="project.priority" label="name" :options="list.priorities" :placeholder="project.priority.name" :multiple="false"></multiselect>
                                 <span class="help-block" v-if="error.priority">{{error.priority[0]}}</span>
                             </div>
                         </div>
-                        <div class="form-group" :class="{'has-error': error.priority}">
+                        <div class="form-group" :class="{'has-error': error.user}">
                             <label class="col-sm-3 control-label required">Project Leader</label>
-                            <div class="col-sm-9" v-if="list.priorities && project.priority">
-                                <select class="form-control" required v-model="project.priority.id">
-                                    <option v-for="option in list.priorities" :value="option.id">
-                                        {{ option.name }}
-                                    </option>
-                                </select>
-                                <span class="help-block" v-if="error.priority">{{error.priority[0]}}</span>
+                            <div class="col-sm-9" v-if="list.users">
+                                <multiselect v-model="project.leader" label="name" :options="list.users" :placeholder="project.leader ? project.leader.name:'Select a leader'" :multiple="false"></multiselect>
+                                <span class="help-block" v-if="error.leader">{{error.leader[0]}}</span>
                             </div>
                         </div>
-                        <div class="form-group" :class="{'has-error': error.priority}">
+                        <div class="form-group" :class="{'has-error': error.supervisor}">
                             <label class="col-sm-3 control-label required">Project Supervisor</label>
-                            <div class="col-sm-9" v-if="list.priorities && project.priority">
-                                <select class="form-control" required v-model="project.priority.id">
-                                    <option v-for="option in list.priorities" :value="option.id">
-                                        {{ option.name }}
-                                    </option>
-                                </select>
-                                <span class="help-block" v-if="error.priority">{{error.priority[0]}}</span>
+                            <div class="col-sm-9" v-if="list.users">
+                                <multiselect v-model="project.supervisor" label="name" :options="list.users" :placeholder="project.supervisor ? project.supervisor.name:'Select a supervisor'" :multiple="false"></multiselect>
+                                <span class="help-block" v-if="error.supervisor">{{error.supervisor[0]}}</span>
                             </div>
                         </div>
                         <div class="form-group" :class="{'has-error': error.area}">
                             <label class="col-sm-3 control-label required">Region</label>
                             <div class="col-sm-9">
                                 <p class="form-control-static">
-                                    <small class="text-mute">{{project.area.name}}</small>
                                     <small class="text-mute">{{project.area.title}}</small>
                                 </p>
                             </div>
@@ -121,15 +108,20 @@ import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
 import Vue2Filters from 'vue2-filters';
+import Multiselect from 'vue-multiselect';
 export default {
-    props: ['project'],
+    props: ['project', 'projects'],
+    components: {
+        Multiselect, Spinner
+    },
     data() {
         return {
             list: {
                 priorities: [],
                 clients: [],
                 customers: [],
-                areas: []
+                areas: [],
+                users: [],
             },
             error: {}
         }
@@ -151,14 +143,18 @@ export default {
             .then(response => {
                 this.list.areas = response.data;
             });
+        axios.get('/users/all')
+            .then(response => {
+                this.list.users = response.data;
+            });
     },
     methods: {
         update: function (e) {
             var btn = $(e.target).button('loading')
             axios.put('/projects/update/' + this.project.id, this.project)
                 .then(response => {
-                    this.projects[this.project.index] = response.data;
-                    this.project = {};
+                    this.$parent.projects[this.project.index] = response.data;
+                    this.$parent.project = {};
                     this.error = {};
                     var btn = $(e.target).button('reset')
                     $('#modalEdit').modal('hide');

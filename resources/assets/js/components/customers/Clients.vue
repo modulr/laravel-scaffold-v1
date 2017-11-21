@@ -269,7 +269,9 @@ export default {
                 });
             }
 
-            return filteredArray;
+            return _.sortBy(filteredArray, [(o) => {
+                return o.customer.id;
+            }]);
         }
     },
     components: {

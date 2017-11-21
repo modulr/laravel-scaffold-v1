@@ -155,7 +155,7 @@
             <!-- Create opportunity -->
             <opportunities-create :opportunities="opportunities" class="modal right fade" id="modalAdd"></opportunities-create>
             <!-- Edit opportunity -->
-            <opportunities-edit :opportunity="opportunity" class="modal right fade" id="modalEdit"></opportunities-edit>
+            <opportunities-edit :opportunities="opportunities" :opportunity="opportunity" class="modal right fade" id="modalEdit"></opportunities-edit>
         </div>
     </div>
 </template>

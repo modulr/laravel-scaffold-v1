@@ -16,7 +16,7 @@ class ProjectController extends Controller
 {
     public function __construct()
     {
-        $this->relationships = ['owner', 'priority', 'client', 'client.customer', 'quote', 'quote.designer', 'quote.salesman', 'quote.status', 'quote.currency', 'area'];
+        $this->relationships = ['owner', 'priority', 'client', 'client.customer', 'quote', 'quote.designer', 'quote.salesman', 'quote.status', 'quote.currency', 'area', 'leader', 'supervisor'];
     }
     /**
      * Display a listing of the resource.
@@ -101,12 +101,28 @@ class ProjectController extends Controller
             $q->description = $request->description;
         }
 
-        if ($q->priority_id != $request->priority) {
+        if ($q->priority_id != $request->priority['id']) {
             $q->priority_id = $request->priority['id'];
         }
 
         if ($q->area_id != $request->area) {
             $q->area_id = $request->area['id'];
+        }
+
+        if ($q->start_date != $request->start_date) {
+            $q->start_date = $request->start_date;
+        }
+
+        if ($q->end_date != $request->end_date) {
+            $q->end_date = $request->end_date;
+        }
+
+        if ($q->leader_id != $request->leader['id']) {
+            $q->leader_id = $request->leader['id'];
+        }
+
+        if ($q->supervisor_id != $request->supervisor['id']) {
+            $q->supervisor_id = $request->supervisor['id'];
         }
 
         $q->save();

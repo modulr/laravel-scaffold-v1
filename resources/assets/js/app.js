@@ -11,6 +11,7 @@ window.Vue = require('vue');
 
 Vue.use(require('vue-moment'));
 Vue.use(require('./filters/pretty-bytes'));
+Vue.use(require('vue-directive-tooltip'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
