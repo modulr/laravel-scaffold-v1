@@ -2,14 +2,11 @@
   <div class="quotes">
     <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
     <div class="wrapper" v-if="!loading">
-      <div class="row">
-        <div class="col-xs-12 text-right">
-          <a href="#" class="btn btn-primary" @click.prevent="add">
-            <i class="mdi mdi-person-add mdi-lg"></i> Add Quote
-          </a>
-        </div>
+      <div class="material-button top right">
+          <button href="#" class="btn-primary" @click.prevent="add">
+              <i class="mdi mdi-add mdi-lg"></i>
+          </button>
       </div>
-      <br>
       <!-- No items found -->
       <div class="row" v-if="quotes.length == 0">
         <div class="col-md-12">
@@ -18,29 +15,49 @@
       </div>
       <!-- List -->
       <div class="row" v-if="quotes.length != 0">
-        <div class="col-md-12">
-          <div class="filters">
-              <div class="sort col-xs-2">
-                  <multiselect v-model="sort.customer" @input="searchProjects" label="name" :options="list.customers" placeholder="Customer"></multiselect>
+        <div class="col-md-2">
+          <div class="col-md-12 filters">
+              <h4 class="heading">Filters</h4>
+              <a href="#" class="pull-right" @click.prevent="clearFilters">Clear</a>
+              <div class="row">
+                <div class="card search col-xs-12">
+                    <p class="title"><small>Search</small></p>
+                    <div class="col-xs-1">
+                        <i class="mdi mdi-search mdi-2x"></i>
+                    </div>
+                    <div class="col-xs-10">
+                        <input type="text" class="form-control" placeholder="Search" v-model="search">
+                    </div>
+                </div>
               </div>
-              <div class="sort col-xs-2">
-                  <multiselect v-if="list.projects && list.projects.length > 0" v-model="sort.project" label="name" :options="list.projects" placeholder="Project"></multiselect>
-              </div>
-              <div class="sort col-xs-2">
-                  <multiselect v-model="sort.status" label="title" :options="list.status" placeholder="Status"></multiselect>
-              </div>
-              <div class="sort col-xs-2">
-                  <multiselect v-model="sort.service" label="title" :options="list.services" placeholder="Service"></multiselect>
-              </div>
-              <div class="search col-xs-4">
-                  <div class="col-xs-1">
-                      <i class="mdi mdi-search mdi-2x"></i>
+                <div class="row">
+                  <div class="card col-xs-12">
+                    <p class="title"><small>Customer</small></p>
+                      <multiselect v-model="sort.customer" @input="searchProjects" track-by="name" label="name" :options="list.customers" placeholder="Customer"></multiselect>
                   </div>
-                  <div class="col-xs-8">
-                      <input type="text" class="form-control" placeholder="Search" v-model="search">
+                </div>
+                <div class="row">
+                  <div class="card col-xs-12">
+                    <p class="title"><small>Project</small></p>
+                      <multiselect v-if="list.projects && list.projects.length > 0" v-model="sort.project" track-by="name" label="name" :options="list.projects" placeholder="Project"></multiselect>
                   </div>
-              </div>
+                </div>
+                <div class="row">
+                  <div class="card col-xs-12">
+                    <p class="title"><small>Status</small></p>
+                      <multiselect v-model="sort.status" track-by="name" label="title" :options="list.status" placeholder="Status"></multiselect>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="card col-xs-12">
+                    <p class="title"><small>Service</small></p>
+                      <multiselect v-model="sort.service" track-by="name" label="title" :options="list.services" placeholder="Service"></multiselect>
+                  </div>
+                </div>
           </div>
+        </div>
+        <div class="col-md-10">
+          <div class="col-md-12">
           <table class="table table-hover">
             <thead>
               <tr>
@@ -110,6 +127,7 @@
             :next-link-class="'item'"
             :click-handler="clickCallback">
           </paginate>
+        </div>
         </div>
       </div>
     </div>
@@ -728,6 +746,15 @@ export default {
             self.error = error.response.data
         });
       });
+    },
+    clearFilters: function() {
+        this.sort = {
+          customer: "",
+          status: "",
+          project: "",
+          service: ""
+        },
+        this.search = '';
     }
   }
 }
