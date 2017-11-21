@@ -40,6 +40,16 @@ class OpportunityController extends Controller
         return Project::with($this->relationships)->where('status', 1)->paginate(10);
     }
 
+    public function listByCustomer(Request $request, $id)
+    {
+        return DB::table('projects')
+                    ->join('clients', 'projects.client_id', '=', 'clients.id')
+                    ->join('customers', 'clients.customer_id', '=', 'customers.id')
+                    ->select('projects.*')
+                    ->where('customers.id', $id)                    
+                    ->get();
+    }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -146,6 +146,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/opportunities/list/customers', 'OpportunityController@listCustomers');
     Route::get('/opportunities/list/owners', 'OpportunityController@listOwners');
     Route::get('/opportunities/list/areas', 'OpportunityController@listAreas');
+    Route::get('/opportunities/customers/{id}', 'OpportunityController@listByCustomer');
 
     //Projects
     Route::get('/projects', 'ProjectController@index');
@@ -168,7 +169,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/employees/store', 'EmployeeController@store');
     Route::put('/employees/update/{id}', 'EmployeeController@update');
     Route::delete('/employees/destroy/{id}', 'EmployeeController@destroy');
-    Route::get('/employees/quotes', 'EmployeeController@employees');    
+    Route::get('/employees/quotes', 'EmployeeController@employees');
 
     // Quotes
     Route::get('/quote', 'QuoteController@index');
