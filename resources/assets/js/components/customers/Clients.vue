@@ -228,23 +228,23 @@ import Spinner from 'vue-simple-spinner';
 import Multiselect from 'vue-multiselect'
 export default {
     data() {
-      return {
-          loading: false,
-          addingCustomer: false,
-          clients: [],
-          client: {
-              customer: {},
-          },
-          customer: {},
-          error: {},
-          list: {
-              customers: [],
-          },
-          sort: {
-              customers: [],
-          },
-          search: '',
-      }
+        return {
+            loading: false,
+            addingCustomer: false,
+            clients: [],
+            client: {
+                customer: {},
+            },
+            customer: {},
+            error: {},
+            list: {
+                customers: [],
+            },
+            sort: {
+                customers: [],
+            },
+            search: '',
+        }
     },
     computed: {
         filteredClients: function() {
@@ -253,7 +253,7 @@ export default {
                 search = this.search;
 
             if(sort_customers != '') {
-                return filteredArray.filter(item => {
+                filteredArray = filteredArray.filter(item => {
                     return _.findKey(sort_customers, (o) => {
                         if(o.id === item.customer.id) {
                             return item;
@@ -264,7 +264,7 @@ export default {
 
             if(search) {
                 search = search.trim().toLowerCase();
-                return filteredArray.filter((item) => {
+                filteredArray = filteredArray.filter((item) => {
                     return item.name.trim().toLowerCase().match(search);
                 });
             }
@@ -273,7 +273,7 @@ export default {
         }
     },
     components: {
-      Spinner, Multiselect
+        Spinner, Multiselect
     },
     mounted() {
         this.getAll();
@@ -385,8 +385,8 @@ export default {
         clearFilters: function () {
             this.sort = {
                 customers: [],
-                search: '',
-            }
+            };
+            this.search = '';
         }
     }
 }
