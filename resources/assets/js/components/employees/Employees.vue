@@ -50,7 +50,7 @@
                       :page-count="pagination.last_page"
                       :margin-pages="2"
                       :page-range="2"
-                      :initial-page="pagination.current_page"
+                      :initial-page="pagination.current_page - 1"
                       :container-class="'ui pagination menu'"
                       :page-link-class="'item'"
                       :prev-link-class="'item'"
@@ -60,7 +60,7 @@
                 </div>
             </div>
             <!-- Create employees -->
-            <div class="modal fade" id="modalAddEmployee">
+            <div class="modal right fade" id="modalAddEmployee">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -102,7 +102,7 @@
                 </div>
             </div>
             <!-- Edit employees -->
-            <div class="modal fade" id="modalEditEmployee">
+            <div class="modal right fade" id="modalEditEmployee">
                 <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
