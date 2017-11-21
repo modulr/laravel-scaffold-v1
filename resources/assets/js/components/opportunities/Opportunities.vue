@@ -34,25 +34,13 @@
                         <div class="row">
                             <div class="card col-xs-12">
                                 <p class="title"><small>Customers</small></p>
-                                <select class="form-control" required v-model="sort.customers">
-                                    <option value="" disabled selected>Customer</option>
-                                    <option v-for="option in list.customers" :value="option.id">
-                                        {{ option.name }}
-                                    </option>
-                                    <option value="">None</option>
-                                </select>
+                                <multiselect v-model="sort.customers" track-by="name" label="name" :options="list.customers" placeholder="Select a customer" :multiple="true"></multiselect>
                             </div>
                         </div>
                         <div class="row">
                             <div class="card col-xs-12">
                                 <p class="title"><small>Clients</small></p>
-                                <select class="form-control" required v-model="sort.client">
-                                    <option value="" disabled selected>Client</option>
-                                    <option v-for="option in list.clients" :value="option.id">
-                                        {{ option.name }}
-                                    </option>
-                                    <option value="">None</option>
-                                </select>
+                                <multiselect v-model="sort.client" track-by="name" label="name" :options="list.clients" placeholder="Select a client" :multiple="true"></multiselect>
                             </div>
                         </div>
                         <div class="row">
@@ -181,6 +169,7 @@ import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
 import Vue2Filters from 'vue2-filters';
 import Paginate from 'vuejs-paginate';
+import Multiselect from 'vue-multiselect';
 export default {
     data() {
         return {
@@ -191,8 +180,8 @@ export default {
                 area: {},
             },
             sort: {
-                customers: '',
-                client: '',
+                customers: [],
+                client: [],
                 area: [],
                 total: '',
             },
@@ -210,7 +199,7 @@ export default {
         }
     },
     components: {
-        Spinner, Paginate
+        Spinner, Paginate, Multiselect
     },
     mounted() {
         this.getAll();
@@ -223,31 +212,34 @@ export default {
             sort_area = this.sort.area,
             search = this.search;
 
-        if (sort_customers) {
-            filteredArray = filteredArray.filter(function (item) {
-                if (item.client.customer_id === sort_customers) {
-                    return item;
-                }
+        if(sort_customers != '') {
+            filteredArray = filteredArray.filter(item => {
+                return _.findKey(sort_customers, (o) => {
+                    if(o.id === item.client.customer.id) {
+                        return item;
+                    }
+                })
             });
         }
 
-        if (sort_client) {
-            filteredArray = filteredArray.filter(function (item) {
-                if (item.client.id === sort_client) {
-                    return item;
-                }
+        if(sort_client != '') {
+            filteredArray = filteredArray.filter(item => {
+                return _.findKey(sort_client, (o) => {
+                    if(o.id === item.client.id) {
+                        return item;
+                    }
+                })
             });
         }
 
         if (sort_area.length) {
-            return filteredArray.filter(item => sort_area.includes(item.area_id));
+            return filteredArray = filteredArray.filter(item => sort_area.includes(item.area_id));
         }
 
         if (search) {
             search = search.trim().toLowerCase();
 
             filteredArray = filteredArray.filter(function (item) {
-                console.log(item);
                 return Object.keys(item).some(function (key) {
                     return String(item[key]).toLowerCase().indexOf(search) !== -1
                 })
@@ -354,8 +346,8 @@ export default {
         },
         clearFilters: function() {
             this.sort = {
-                customers: '',
-                client: '',
+                customers: [],
+                client: [],
                 area: [],
                 total: '',
             }

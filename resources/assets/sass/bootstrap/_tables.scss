@@ -26,13 +26,12 @@
         }
     }
     tbody {
-        tr {
-            border-bottom: 1px solid $gray-lighter;
-        }
         td {
             font-size: 14px;
             padding: 18px 8px !important;
             vertical-align: center;
+            border-bottom: 1px solid $gray-lighter;
+            border-top: 1px solid transparent !important;
             .text-muted {
                 display: block;
                 font-size: 10px;

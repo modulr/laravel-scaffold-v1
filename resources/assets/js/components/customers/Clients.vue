@@ -225,7 +225,7 @@
 import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
-import Multiselect from 'vue-multiselect'
+import Multiselect from 'vue-multiselect';
 export default {
     data() {
         return {
@@ -391,5 +391,3 @@ export default {
     }
 }
 </script>
-
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
