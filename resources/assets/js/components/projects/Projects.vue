@@ -87,7 +87,7 @@
                                         <span v-if="item.leader">
                                             <img class="avatar-sm" :src="item.leader.avatar_url" v-tooltip="item.leader.name">
                                         </span>
-                                        
+
                                     </td>
                                     <td>
                                         <span v-if="item.supervisor">
@@ -117,7 +117,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <paginate :page-count="pagination.last_page" :margin-pages="2" :page-range="2" :initial-page="pagination.current_page" :container-class="'ui pagination menu'"
+                        <paginate :page-count="pagination.last_page" :margin-pages="2" :page-range="2" :initial-page="pagination.current_page - 1" :container-class="'ui pagination menu'"
                             :page-link-class="'item'" :prev-link-class="'item'" :next-link-class="'item'" :click-handler="clickCallback">
                         </paginate>
                     </div>
@@ -218,7 +218,7 @@ export default {
                 })
             })
         }
-        
+
         return filteredArray;
         }
     },
