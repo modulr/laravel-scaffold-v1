@@ -10,7 +10,7 @@
                             <td @click="viewContact(contact.id)">
                                 <div class="media">
                                     <div class="media-left">
-                                        <img class="avatar-sm" :src="contact.avatar_url">
+                                        <img class="avatar-xs" :src="contact.avatar_url">
                                     </div>
                                     <div class="media-body">
                                         <p class="media-heading">{{contact.name}}</p>

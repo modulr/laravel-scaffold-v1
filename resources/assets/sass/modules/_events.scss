@@ -1,20 +1,46 @@
 .events {
-    .table {
-        > tbody > tr:first-child > td {
-            border-top-color: transparent;
+    .thumbnail {
+        padding: 0;
+        .heading {
+            display: block;
+            color: inherit;
+            height: 130px;
+            background-size: cover;
+            background-position: center center;
         }
-
-        .media {
-            .media-left {
-                padding-right: 20px;
+        .caption {
+            position: relative;
+            min-height: 130px;
+            .avatar-sm {
+                position: absolute;
+                top: -45px;
+                right: 20px;
             }
-            .media-body {
-                .media-heading {
-                    font-size: 18px;
-                }
-                .event-info {
-                    margin-top: 10px;
-                    text-align: right;
+            h3 {
+                font-size: 20px;
+                margin: 0;
+            }
+            p {
+                margin: 0;
+            }
+            div {
+                margin-top: 10px;
+            }
+        }
+    }
+
+    .modal {
+        .btn-attachments {
+            i {
+                margin-right: 10px;
+            }
+        }
+        .vue-clip-queue {
+            padding: 0 40px;
+            .media-left {
+                .media-object {
+                    width: 100px;
+                    height: 57px;
                 }
             }
         }

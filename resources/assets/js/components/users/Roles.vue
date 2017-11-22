@@ -189,7 +189,7 @@
                                             <tr v-for="item in roleEdit.users">
                                                 <td>{{item.id}}</td>
                                                 <td>
-                                                    <img class="avatar-sm" :src="item.avatar_url">
+                                                    <img class="avatar-xs" :src="item.avatar_url">
                                                     {{item.name}}
                                                 </td>
                                             </tr>

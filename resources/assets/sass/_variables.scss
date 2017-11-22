@@ -20,6 +20,8 @@ $brand-success: #389E70;
 $brand-warning: #FED33A;
 $brand-danger:  #FF5D5D;
 
+//== Typography
+
 
 // Eliminar estos
 
@@ -50,13 +52,22 @@ $panel-default-heading-bg: $white;
 }
 
 // Avatars
+.avatar-lg {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+}
 .avatar-md {
     height: 100px;
     width: 100px;
     border-radius: 50%;
 }
-
 .avatar-sm {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+}
+.avatar-xs {
     height: 30px;
     width: 30px;
     border-radius: 50%;

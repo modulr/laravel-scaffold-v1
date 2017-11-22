@@ -53,7 +53,7 @@
                                                 {{item.id}}
                                             </td>
                                             <td @click="editUser(item, index)">
-                                                <img class="avatar-sm" :src="item.avatar_url">
+                                                <img class="avatar-xs" :src="item.avatar_url">
                                                 {{item.name}}
                                             </td>
                                             <td @click="editUser(item, index)">

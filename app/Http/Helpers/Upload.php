@@ -7,7 +7,13 @@ use Image;
 class Upload {
 
     protected $file;
-    protected $info;
+    protected $meta;
+    protected $allowedResize = [
+            'image/jpg',
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+        ];
 
     /**
      * [upload description]
@@ -21,7 +27,7 @@ class Upload {
 
         $path = $this->file->store($path);
 
-        $this->getInfo($path);
+        $this->getMeta($path);
 
         return $this;
     }
@@ -37,7 +43,7 @@ class Upload {
 
         $path = $this->file->store('temp/'.Auth::id());
 
-        $this->getInfo($path);
+        $this->getMeta($path);
 
         return $this;
     }
@@ -49,13 +55,13 @@ class Upload {
      */
     public function move($from, $to)
     {
-        $this->getInfo($from);
+        $this->getMeta($from);
 
-        $to = $to.'/'.$this->info['basename'];
+        $to = $to.'/'.$this->meta['basename'];
 
         Storage::move($from, $to);
 
-        $this->getInfo($to);
+        $this->getMeta($to);
 
         return $this;
     }
@@ -68,16 +74,21 @@ class Upload {
      */
     public function resize($width=null, $height=null)
     {
-        $img = Image::make($this->file)
-                    ->resize($width, $height, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })
-                    ->encode();
+        if (in_array($this->meta['type'], $this->allowedResize)) {
 
-        $this->info['size'] = strlen((string) $img);
+            $file = Storage::get($this->meta['path']);
 
-        Storage::put($this->info['path'], $img);
+            $img = Image::make($file)
+                        ->resize($width, $height, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })
+                        ->encode();
+
+            $this->meta['size'] = strlen((string) $img);
+
+            Storage::put($this->meta['path'], $img);
+        }
 
         return $this;
     }
@@ -90,18 +101,23 @@ class Upload {
      */
     public function thumbnail($width=null, $height=null)
     {
-        $img = Image::make($this->file)
-                    ->fit($width, $height, function ($constraint) {
-                        $constraint->upsize();
-                    })
-                    // ->resize($width, $height, function ($constraint) {
-                    //     $constraint->aspectRatio();
-                    //     $constraint->upsize();
-                    // })
-                    // ->crop($width, $height)
-                    ->encode();
+        if (in_array($this->meta['type'], $this->allowedResize)) {
 
-        Storage::put($this->info['dirname'].'/thumbnail_'.$this->info['basename'], $img);
+            $file = Storage::get($this->meta['path']);
+
+            $img = Image::make($file)
+                        ->fit($width, $height, function ($constraint) {
+                            $constraint->upsize();
+                        })
+                        // ->resize($width, $height, function ($constraint) {
+                        //     $constraint->aspectRatio();
+                        //     $constraint->upsize();
+                        // })
+                        // ->crop($width, $height)
+                        ->encode();
+
+            Storage::put($this->meta['dirname'].'/thumbnail_'.$this->meta['basename'], $img);
+        }
 
         return $this;
     }
@@ -112,23 +128,32 @@ class Upload {
      */
     public function getData()
     {
-        return $this->info;
+        return $this->meta;
     }
 
     /**
-     * [getInfo description]
+     * [getMeta description]
      * @param  [string] $path   [description]
      * @return [obj]    $this   [description]
      */
-    private function getInfo($path)
+    private function getMeta($path)
     {
-        $this->info = pathinfo($path);
-        $this->info['path'] = $path;
-        $this->info['type'] = Storage::mimeType($path);
-        $this->info['size'] = Storage::size($path);
+        $this->meta = pathinfo($path);
+        $this->meta['path'] = $path;
 
-        if (!$this->file)
-            $this->file = Storage::get($path);
+        if ($this->file) {
+            $this->meta['name'] = $this->file->getClientOriginalName();
+            $this->meta['type'] = $this->file->getClientMimeType();
+            $this->meta['size'] = $this->file->getClientSize();
+            $this->meta['isValid'] = $this->file->isValid();
+            $this->meta['maxFileSize'] = $this->file->getMaxFilesize();
+            $this->meta['error'] = $this->file->getError();
+            $this->meta['errorMessage'] = $this->file->getErrorMessage();
+        } else {
+            $this->meta['type'] = Storage::mimeType($path);
+            $this->meta['size'] = Storage::size($path);
+            $this->meta['meta'] = Storage::getMetaData($path);
+        }
 
         return $this;
     }

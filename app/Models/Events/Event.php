@@ -18,4 +18,9 @@ class Event extends Model
     {
       return $this->belongsTo(\App\User::class);
     }
+
+    public function attachments()
+    {
+        return $this->hasMany(EventAttachment::class);
+    }
 }

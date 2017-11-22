@@ -27,6 +27,19 @@ class CreateEventsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('event_attachments', function (Blueprint $table) {
+            $table->increments('id');
+            $table->text('basename')->nullable();
+            $table->string('name');
+            $table->string('type')->nullable();
+            $table->float('size')->nullable();
+            $table->boolean('cover')->default(0);
+            $table->integer('event_id')->unsigned();
+            $table->foreign('event_id')->references('id')->on('events');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -36,6 +49,7 @@ class CreateEventsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('event_attachments');
         Schema::dropIfExists('events');
     }
 }

@@ -137,9 +137,15 @@ Route::middleware('auth')->group(function () {
     Route::group(['namespace' => 'Events', 'prefix' => 'events'], function() {
         Route::get('/', 'EventController@index')->middleware('permission:read-events');
         Route::get('/all', 'EventController@all')->middleware('permission:read-events');
+        Route::get('/{id}', 'EventController@show')->middleware('permission:read-events');
         Route::post('/store', 'EventController@store')->middleware('permission:create-events');
         Route::put('/update/{id}', 'EventController@update')->middleware('permission:update-events');
         Route::delete('/destroy/{id}', 'EventController@destroy')->middleware('permission:delete-events');
+
+        Route::post('/attachments/makeCover/{id}', 'EventController@makeCoverAttachment')->middleware('permission:update-events');
+        Route::delete('/attachments/destroy/{id}', 'EventController@destroyAttachment')->middleware('permission:delete-events');
+        Route::post('/attachments/upload/temp', 'EventController@uploadAttachmentTemp')->middleware('permission:create-news');
+        Route::post('/attachments/upload/', 'EventController@uploadAttachment')->middleware('permission:update-news');
     });
 
 });

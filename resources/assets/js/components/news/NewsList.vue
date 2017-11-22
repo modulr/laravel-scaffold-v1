@@ -3,7 +3,7 @@
         <!-- List News -->
         <div class="panel panel-default" v-for="(item, index) in news">
             <div class="panel-heading">
-                <img class="avatar-sm" :src="item.user.avatar_url" alt="">
+                <img class="avatar-xs" :src="item.user.avatar_url" alt="">
                 {{item.user.name}}
                 <div class="dropdown pull-right" v-if="user.id == item.user.id && user.hasPermission['delete-news']">
                     <a href="#" class="btn btn-link" data-toggle="dropdown">

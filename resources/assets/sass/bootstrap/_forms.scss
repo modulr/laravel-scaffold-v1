@@ -1,8 +1,10 @@
-form {
-    label.required::after {
-        content: '*';
-        color: #f96868;
-        font-weight: 500;
-        margin-left: 8px;
-    }
+label.required::after {
+    content: '*';
+    color: #f96868;
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+.input-lg {
+    font-size: 24px !important;
 }

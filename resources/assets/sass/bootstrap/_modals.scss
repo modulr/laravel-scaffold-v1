@@ -5,12 +5,12 @@
 .modal.right .modal-dialog {
     position: fixed;
     margin: auto;
-    width: 320px;
     height: 100%;
-    -webkit-transform: translate3d(0%, 0, 0);
-        -ms-transform: translate3d(0%, 0, 0);
-         -o-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0);
+    //width: 320px;
+    // -webkit-transform: translate3d(0%, 0, 0);
+    //     -ms-transform: translate3d(0%, 0, 0);
+    //      -o-transform: translate3d(0%, 0, 0);
+    //         transform: translate3d(0%, 0, 0);
 }
 
 .modal.left .modal-content,
@@ -25,15 +25,15 @@
 }
 
 /*Left*/
-.modal.left.fade .modal-dialog{
-    left: -35px;
-    -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
-       -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
-         -o-transition: opacity 0.3s linear, left 0.3s ease-out;
-            transition: opacity 0.3s linear, left 0.3s ease-out;
+.modal.left .modal-dialog{
+    // left: -35px;
+    // -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
+    //    -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
+    //      -o-transition: opacity 0.3s linear, left 0.3s ease-out;
+    //         transition: opacity 0.3s linear, left 0.3s ease-out;
 }
 
-.modal.left.fade.in .modal-dialog{
+.modal.left.in .modal-dialog{
     left: 0;
 }
 
@@ -42,14 +42,34 @@
     left: auto;
 }
 
-.modal.right.fade .modal-dialog {
-    right: -50px;
-    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
-       -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
-         -o-transition: opacity 0.3s linear, right 0.3s ease-out;
-            transition: opacity 0.3s linear, right 0.3s ease-out;
+.modal.right .modal-dialog {
+    right: -100%;
+    // -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+    //    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+    //      -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+    //         transition: opacity 0.3s linear, right 0.3s ease-out;
 }
 
-.modal.right.fade.in .modal-dialog {
+.modal.right.in .modal-dialog {
     right: 0;
+}
+
+.modal.sm .modal-dialog {
+    width: 30%;
+}
+
+.modal.md .modal-dialog {
+    width: 50%;
+}
+
+.modal.lg .modal-dialog {
+    width: 100%;
+}
+
+
+@media (max-width: 767px) {
+    .modal.sm .modal-dialog,
+    .modal.md .modal-dialog {
+        width: 100%;
+    }
 }
