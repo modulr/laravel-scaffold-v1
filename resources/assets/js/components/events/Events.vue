@@ -125,9 +125,9 @@
                         </div>
                         <hr>
                         <vue-clip class="vue-clip-btn"
-                                  :options="uploadTempAttachmentsOptions"
-                                  :on-sending="uploadTempAttachmentsSending"
-                                  :on-complete="uploadTempAttachmentsComplete"
+                                  :options="optionsFileTemp"
+                                  :on-sending="sendingFileTemp"
+                                  :on-complete="completeFileTemp"
                                   v-if="user.hasPermission['create-events']">
                             <template slot="clip-uploader-action">
                                 <span class="dz-message btn btn-link btn-attachments">
@@ -143,24 +143,22 @@
                             <div class="media-body">
                                 <h4 class="media-heading">{{file.name}}</h4>
                                 <small class="text-muted">{{file.status}}</small>
-                                <span v-if="file.status == 'success'">
+                                <span class="text-muted" v-if="file.status == 'success'">
                                      -
-                                    <a href="#" @click.prevent="destroyTempAttachment(index)">
+                                    <a href="#" @click.prevent="destroyFileTemp(index)">
                                         <i class="fa fa-trash"></i> Delete
                                     </a>
-                                    <a href="#"
-                                        v-if="file.type.match('image/*')"
-                                        @click.prevent="makeCoverTemp(file, index)">
+                                    <a href="#" v-if="file.type.match('image/*')"
+                                        @click.prevent="makeCoverFileTemp(file, index)">
                                         <i class="fa fa-window-maximize"></i>
                                         <span v-if="!file.cover">Make Cover</span>
                                         <span v-else>Remove Cover</span>
                                     </a>
                                 </span>
-                                <div class="progress" @click="file.progress = 0">
-                                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                                <div class="progress">
+                                    <div class="progress-bar" aria-valuemin="0" aria-valuemax="100"
                                         :aria-valuenow="file.progress"
                                         :style="{width: file.progress+'%'}">
-                                        <span class="sr-only">{{file.progress}}% Complete</span>
                                     </div>
                                 </div>
                             </div>
@@ -233,9 +231,9 @@
                         </div>
                         <hr>
                         <vue-clip class="vue-clip-btn"
-                                  :options="uploadAttachmentsOptions"
-                                  :on-sending="uploadAttachmentsSending"
-                                  :on-complete="uploadAttachmentsComplete"
+                                  :options="optionsFile"
+                                  :on-sending="sendingFile"
+                                  :on-complete="completeFile"
                                   v-if="user.hasPermission['update-events']">
                             <template slot="clip-uploader-action">
                                 <span class="dz-message btn btn-link btn-attachments">
@@ -243,50 +241,45 @@
                                 </span>
                             </template>
                         </vue-clip>
-                        <br><br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="media vue-clip-queue" v-for="file in uploadAttachments">
-                                    <div class="media-left">
-                                        <img class="media-object" :src="file.dataUrl" v-if="file.type.match('image/*')">
-                                        <i class="fa fa-file-o fa-4x" v-else></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">{{file.name}}</h4>
-                                        <small class="text-muted">{{file.status}}</small>
-                                        <div class="progress" @click="file.progress = 0">
-                                            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-                                                 :aria-valuenow="file.progress"
-                                                 :style="{width: file.progress+'%'}">
-                                                <span class="sr-only">{{file.progress}}% Complete</span>
-                                            </div>
+                        <div class="media vue-clip-queue" v-for="(file, index) in eventEdit.attachments">
+                            <div class="media-left" v-if="file.url_thumbnail">
+                                <img class="media-object" :src="file.url_thumbnail" v-if="file.type.match('image/*')">
+                                <i class="fa fa-file-o fa-4x" v-else></i>
+                            </div>
+                            <div class="media-left" v-else>
+                                <img class="media-object" :src="file.dataUrl" v-if="file.type.match('image/*')">
+                                <i class="fa fa-file-o fa-4x" v-else></i>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">{{file.name}}</h4>
+                                <div v-if="file.status">
+                                    <small class="text-muted">{{file.status}}</small>
+                                    <div class="progress">
+                                        <div class="progress-bar" aria-valuemin="0" aria-valuemax="100"
+                                             :aria-valuenow="file.progress"
+                                             :style="{width: file.progress+'%'}">
+                                            <span class="sr-only">{{file.progress}}% Complete</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="media vue-clip-queue" v-for="(file, index) in eventEdit.attachments">
-                                    <div class="media-left">
-                                        <img class="media-object" :src="file.url_thumbnail" v-if="file.type.match('image/*')">
-                                        <i class="fa fa-file-o fa-4x" v-else></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">{{file.name}}</h4>
-                                        <small class="text-muted">Added {{file.created_at | moment('from')}}</small>
-                                        <div class="text-muted">
-                                            <a href="#" @click.prevent="destroyAttachment(file, index)">
-                                                <i class="fa fa-trash"></i> Delete
-                                            </a>
-                                            <a :href="file.url" download>
-                                                <i class="fa fa-download"></i> Download
-                                            </a>
-                                            <a href="#"
-                                                v-if="file.type.match('image/*')"
-                                                @click.prevent="makeCover(file, index)">
-                                                <i class="fa fa-window-maximize"></i>
-                                                <span v-if="!file.cover">Make Cover</span>
-                                                <span v-else>Remove Cover</span>
-                                            </a>
-                                        </div>
-                                    </div>
+                                <div class="text-muted"v-if="file.created_at">
+                                    <small>Added {{file.created_at | moment('from')}}</small>
+                                    <br>
+                                    <small>
+                                        <a href="#" @click.prevent="destroyFile(file, index)">
+                                            <i class="fa fa-trash"></i> Delete
+                                        </a>
+                                        <a :href="file.url" download>
+                                            <i class="fa fa-download"></i> Download
+                                        </a>
+                                        <a href="#"
+                                            v-if="file.type.match('image/*')"
+                                            @click.prevent="makeCoverFile(file, index)">
+                                            <i class="fa fa-window-maximize"></i>
+                                            <span v-if="!file.cover">Make Cover</span>
+                                            <span v-else>Remove Cover</span>
+                                        </a><br>
+                                    </small>
                                 </div>
                             </div>
                         </div>
@@ -317,7 +310,7 @@
                 user: Laravel.user,
                 error: {},
                 search: '',
-                uploadTempAttachmentsOptions: {
+                optionsFileTemp: {
                     headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
                     url: '/events/attachments/upload/temp',
                     paramName: 'file',
@@ -325,12 +318,16 @@
                         limit: 10,
                         message: '{{filesize}} is greater than the {{maxFilesize}}MB'
                     },
+                    maxFiles: {
+                        limit: 10,
+                        message: 'You can only upload a max of 10 files'
+                    },
                     acceptedFiles: {
                         extensions: ['image/*', 'application/pdf'],
                         message: 'You are uploading an invalid file'
                     },
                 },
-                uploadAttachmentsOptions: {
+                optionsFile: {
                     headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
                     url: '/events/attachments/upload',
                     paramName: 'file',
@@ -338,12 +335,15 @@
                         limit: 10,
                         message: '{{filesize}} is greater than the {{maxFilesize}}MB'
                     },
+                    maxFiles: {
+                        limit: 10,
+                        message: 'You can only upload a max of 10 files'
+                    },
                     acceptedFiles: {
                         extensions: ['image/*', 'application/pdf'],
                         message: 'You are uploading an invalid file'
                     },
                 },
-                uploadAttachments:[],
                 events: [],
                 eventNew: {},
                 eventEdit: {},
@@ -363,6 +363,7 @@
                 this.eventNew = {
                     attachments: [],
                 };
+                $('#modalEditEvent').modal('hide');
                 $('#modalNewEvent').modal('show');
             },
             storeEvent (e) {
@@ -383,6 +384,8 @@
             editEvent (item, index) {
                 this.eventEdit = _.clone(item);
                 this.eventEdit.index = index;
+                this.eventEdit.attachments = [];
+
                 $('#modalEditEvent').modal('show')
 
                 axios.get('/events/'+item.id)
@@ -437,30 +440,23 @@
                     });
                 });
             },
-            destroyTempAttachment (index) {
+            destroyFileTemp (index) {
                 this.eventNew.attachments.splice(index, 1);
             },
-            destroyAttachment (file, index) {
+            destroyFile (file, index) {
                 axios.delete('/events/attachments/destroy/' + file.id)
                 .then(response => {
                     this.eventEdit.attachments.splice(index, 1);
                     if (file.cover) {
                         this.events[this.eventEdit.index].attachments = [];
                     }
-                    swal({
-                        title: "Deleted!",
-                        text: "The Attachment has been deleted.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
-                    });
                     this.error = {};
                 })
                 .catch(error => {
                     self.error = error.response.data;
                 });
             },
-            makeCoverTemp (file, index) {
+            makeCoverFileTemp (file, index) {
                 this.eventNew.attachments.forEach(function(v,k){
                     if (k == index) {
                         v.cover = true;
@@ -469,7 +465,7 @@
                     }
                 });
             },
-            makeCover (file, index) {
+            makeCoverFile (file, index) {
                 var data = {
                     eventId: file.event_id,
                     cover: !file.cover
@@ -491,28 +487,24 @@
                     this.error = error.response.data;
                 });
             },
-            uploadTempAttachmentsSending (file, xhr, formData) {
+            sendingFileTemp (file, xhr, formData) {
                 this.eventNew.attachments.push(file);
             },
-            uploadTempAttachmentsComplete (file, status, xhr) {
+            completeFileTemp (file, status, xhr) {
                 if (status == 'success') {
                     var index = this.eventNew.attachments.indexOf(file);
                     Object.assign(this.eventNew.attachments[index], JSON.parse(xhr.response))
                     this.$set(this.eventNew.attachments[index], 'cover', false);
                 }
             },
-            uploadAttachmentsSending (file, xhr, formData) {
-                this.uploadAttachments.push(file);
+            sendingFile (file, xhr, formData) {
+                this.eventEdit.attachments.push(file);
                 formData.append('id', this.eventEdit.id);
             },
-            uploadAttachmentsComplete (file, status, xhr) {
-                if (!this.eventEdit.attachments)
-                    this.eventEdit.attachments = [];
-
+            completeFile (file, status, xhr) {
                 if (status == 'success') {
-                    this.eventEdit.attachments.push(JSON.parse(xhr.response));
-                    var index = this.uploadAttachments.indexOf(file);
-                    this.uploadAttachments.splice(index, 1);
+                    var index = this.eventEdit.attachments.indexOf(file);
+                    this.eventEdit.attachments[index] = JSON.parse(xhr.response);
                 }
             },
         }
