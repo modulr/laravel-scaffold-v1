@@ -37,7 +37,7 @@ class EventController extends Controller
 
     public function show($id)
     {
-        return Event::with('attachments')->find($id);
+        return Event::with('user', 'attachments')->find($id);
     }
 
     public function store(Request $request)

@@ -1,15 +1,21 @@
 .navbar {
     margin-bottom: 0;
 
-    .navbar-brand svg {
-        height: 25px;
-        margin-top: -5px;
-        path{
-            -webkit-transition: (all .2s ease);
-            transition: (all .2s ease);
+    .navbar-brand {
+        svg {
+            height: 25px;
+            margin-top: -5px;
+            path{
+                -webkit-transition: (all .2s ease);
+                transition: (all .2s ease);
+            }
+            path:hover {
+                fill: darken(#feae3b, 15%);
+            }
         }
-        path:hover {
-            fill: darken(#feae3b, 15%);
+        img {
+            max-height: 80px;
+            margin-top: -20px;
         }
     }
 

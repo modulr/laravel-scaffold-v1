@@ -1,6 +1,16 @@
 .events {
     .thumbnail {
         padding: 0;
+        position: relative;
+        .btn-edit {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: $white;
+            &:hover {
+                color: $orange;
+            }
+        }
         .heading {
             display: block;
             color: inherit;
@@ -11,6 +21,7 @@
         .caption {
             position: relative;
             min-height: 130px;
+            padding-top: 20px;
             .avatar-sm {
                 position: absolute;
                 top: -45px;
@@ -43,6 +54,32 @@
                     height: 57px;
                 }
             }
+        }
+    }
+}
+
+.event {
+    .panel {
+        .swiper-slide {
+            height: 400px;
+            overflow: hidden;
+        }
+        .media {
+            .media-left {
+                padding-right: 30px;
+            }
+            .media-body {
+                .date {
+                    margin-top: 20px;
+                    i {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+        .panel-footer {
+            background-color: $white;
+            padding-bottom: 40px;
         }
     }
 }

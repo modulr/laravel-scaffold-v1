@@ -12,8 +12,11 @@
         padding-right: 50px;
         background-size: cover;
         background-repeat: no-repeat;
-        background-image: url(/img/bg/bg-banner.png);
-        color: white;
+        background-image: url('/img/bg/tomatoe.jpg');
+        h1 {
+            color: white;
+            width: 50%;
+        }
         .mdi {
             color: $orange;
         }
@@ -32,12 +35,16 @@
         height: 100vh;
         background: white;
         padding: 0 50px;
-        form{
-            svg {
+        .logo {
+            margin-top: 40px;
+            margin-bottom: 60px;
+            svg, img {
                 max-width: 250px;
-                margin-top: 10%;
-                margin-bottom: 60px;
+                max-height: 100px;
             }
+        }
+        form{
+
             .form-group {
                 margin-bottom: 40px;
             }
@@ -47,7 +54,10 @@
         }
         .input-lg {
             font-size: 17px !important;
-            }
+        }
+        .alert {
+            margin-top: 40px
+        }
     }
 
 }

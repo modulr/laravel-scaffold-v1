@@ -136,6 +136,9 @@ Route::middleware('auth')->group(function () {
     // Events
     Route::group(['namespace' => 'Events', 'prefix' => 'events'], function() {
         Route::get('/', 'EventController@index')->middleware('permission:read-events');
+        Route::get('/show/{id}' , function ($id) {
+            return view('events.event', ['id' => $id]);
+        })->middleware('permission:read-events');
         Route::get('/all', 'EventController@all')->middleware('permission:read-events');
         Route::get('/{id}', 'EventController@show')->middleware('permission:read-events');
         Route::post('/store', 'EventController@store')->middleware('permission:create-events');

@@ -1,52 +1,15 @@
 <template>
     <swiper :options="swiperOption" ref="mySwiper">
         <swiper-slide>
-            <div class="text-center">
-                <img src="http://modulr.io/img/modules/notifications2.png" class="img-responsive">
-                <h3>
-                    <i class="mdi mdi-notifications mdi-lg text-primary"></i> Notifications
-                </h3>
-                <p>You will know when there is news</p>
+            <div>
+                <h1>Comparte tu Sazón y ahorra dinero</h1>
             </div>
         </swiper-slide>
         <swiper-slide>
-            <div class="text-center">
-                <img src="http://modulr.io/img/modules/news2.png" class="img-responsive">
-                <h3>
-                    <i class="mdi mdi-whatshot mdi-lg text-primary"></i> News
-                </h3>
-                <p>Keep up to date</p>
+            <div>
+                <h1>Comida tradicional, rica y accesible</h1>
             </div>
         </swiper-slide>
-        <swiper-slide>
-            <div class="text-center">
-                <img src="http://modulr.io/img/modules/contacts2.png" class="img-responsive">
-                <h3>
-                    <i class="mdi mdi-contacts mdi-lg text-primary"></i> Contacts
-                </h3>
-                <p>All your contacts in one click</p>
-            </div>
-        </swiper-slide>
-        <swiper-slide>
-            <div class="text-center">
-                <img src="http://modulr.io/img/modules/tasks2.png" class="img-responsive">
-                <h3>
-                    <i class="mdi mdi-view-list mdi-lg text-primary"></i> Tasks
-                </h3>
-                <p>Do not forget your obligations, order them</p>
-            </div>
-        </swiper-slide>
-        <swiper-slide>
-            <div class="text-center">
-                <img src="http://modulr.io/img/modules/files2.png" class="img-responsive">
-                <h3>
-                    <i class="mdi mdi-folder-open mdi-lg text-primary"></i> Files
-                </h3>
-                <p>Manage your files and share it</p>
-            </div>
-        </swiper-slide>
-        <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
-        <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
     </swiper>
 </template>
 

@@ -30,17 +30,18 @@
             <div class="row">
                 <div class="col-xs-6 col-sm-4 col-md-3" v-if="events.length" v-for="(item, index) in events">
                     <div class="thumbnail">
-                        <a href="#" class="heading"
-                            :style="{'background-image': 'url('+item.attachments[0].url_thumbnail+')'}"
-                            v-if="item.attachments.length > 0 && item.attachments[0].type.match('image/*')"
-                            @click.prevent="editEvent(item, index)">
+                        <a class="btn btn-link btn-edit" href="#" @click.prevent="editEvent(item, index)">
+                            <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
                         </a>
-                        <a href="#" class="heading" v-else
-                            @click.prevent="editEvent(item, index)"
+                        <a :href="'/events/show/'+item.id" class="heading"
+                            :style="{'background-image': 'url('+item.attachments[0].url_thumbnail+')'}"
+                            v-if="item.attachments.length > 0 && item.attachments[0].type.match('image/*')">
+                        </a>
+                        <a :href="'/events/show/'+item.id" class="heading" v-else
                             style="background-image: url('img/bg/bg-banner.png')">
                         </a>
                         <div class="caption">
-                            <img :src="item.user.avatar_url" class="avatar-sm">
+                            <img class="avatar-sm" :src="item.user.avatar_url">
                             <h3>{{item.name}}</h3>
                             <p v-show="item.description">{{item.description}}</p>
                             <div v-show="item.date || item.start_time || item.end_time">
