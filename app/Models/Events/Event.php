@@ -14,13 +14,13 @@ class Event extends Model
 
     protected $guarded = ['id'];
 
-    public function user()
+    public function owner()
     {
       return $this->belongsTo(\App\User::class);
     }
 
-    public function attachments()
+    public function images()
     {
-        return $this->hasMany(EventAttachment::class);
+        return $this->hasMany(EventImage::class);
     }
 }

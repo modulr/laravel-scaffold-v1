@@ -4,26 +4,27 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8">
-                    <div class="panel">
-                        <swiper :options="swiperOption" ref="mySwiper">
-                            <swiper-slide v-for="file in event.attachments" :key="file.id"
-                                          v-if="file.type.match('image/*')">
-                                <div>
-                                    <img class="center-block" :src="file.url">
-                                </div>
-                            </swiper-slide>
-                            <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
-                            <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
-                        </swiper>
+                    <div class="panel card">
+                        <div class="panel-heading">
+                            <swiper :options="swiperOption" ref="mySwiper" v-if="event.images.length">
+                                <swiper-slide v-for="image in event.images" :key="image.id">
+                                    <div>
+                                        <img :src="image.url">
+                                    </div>
+                                </swiper-slide>
+                                <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
+                                <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
+                            </swiper>
+                        </div>
                         <div class="panel-body">
                             <div class="media">
                                 <div class="media-left">
-                                    <img class="avatar-md" :src="event.user.avatar_url">
+                                    <img class="avatar-md" :src="event.owner.avatar_url">
                                 </div>
                                 <div class="media-body">
                                     <h4 class="media-heading">{{event.name}}</h4>
                                     <p>{{event.description}}</p>
-                                    <p class="lead date" v-show="event.date || event.start_time || event.end_time">
+                                    <p class="lead" v-show="event.date || event.start_time || event.end_time">
                                         <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i>
                                         <span v-if="event.date">{{event.date | moment('LL')}}.</span>
                                         <span v-if="event.start_time">
@@ -40,26 +41,17 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="panel">
+                    <div class="panel information">
                         <div class="panel-heading">
                             <h3 class="panel-title">Información</h3>
                         </div>
                         <div class="panel-body">
                             Contiene
                             <hr>
-                            2.5 tazas de agua <br>
-                            4 zanahorias bebé <br>
-                            3 calabacitas <br>
-                            2 chayotesbr  <br>
-                            5 ramas de apiobr <br>
-                            1 cebolla <br>
-                            1 cilantro fresco <br>
-                            1 manojo de hierba de olorbr  <br>
-                            al gusto de salbr <br>
-                            8 bolitas de pimienta enterab <br><br>
-                            <p>Platos (0/8)</p>
+                            <p class="text-nl2br">{{event.content}}</p>
+                            <p>Platos (0/{{event.attending_limit}})</p>
                             <hr>
-                            <h1 class="text-center">$46.00</h1>
+                            <h1 class="text-center">${{event.price}}</h1>
                         </div>
                         <div class="panel-footer text-center">
                             <a href="#" class="btn btn-primary">Reservar</a>
@@ -77,12 +69,10 @@
         data() {
             return {
                 event: {
-                    user: {},
-                    attachments: [],
+                    owner: {},
+                    images: [],
                 },
                 swiperOption: {
-                    autoplay: 5000,
-                    loop: true,
                     nextButton: '.swiper-button-next',
                     prevButton: '.swiper-button-prev',
                 },
@@ -101,6 +91,7 @@
                 axios.get('/events/'+this.id)
                 .then(response => {
                     this.event = response.data
+                    console.log(this.event);
                 });
             },
         }

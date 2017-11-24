@@ -106,9 +106,7 @@ class Upload {
             $file = Storage::get($this->meta['path']);
 
             $img = Image::make($file)
-                        ->fit($width, $height, function ($constraint) {
-                            $constraint->upsize();
-                        })
+                        ->fit($width, $height)
                         // ->resize($width, $height, function ($constraint) {
                         //     $constraint->aspectRatio();
                         //     $constraint->upsize();

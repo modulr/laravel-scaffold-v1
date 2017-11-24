@@ -9,7 +9,12 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-Vue.use(require('vue-moment'));
+const moment = require('moment');
+require('moment/locale/es');
+
+Vue.use(require('vue-moment'), {
+    moment
+});
 Vue.use(require('./filters/pretty-bytes'));
 
 /**

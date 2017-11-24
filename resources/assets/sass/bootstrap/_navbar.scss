@@ -1,5 +1,6 @@
 .navbar {
     margin-bottom: 0;
+    background-color: #FFAD47;
 
     .navbar-brand {
         svg {
@@ -21,11 +22,17 @@
 
     .navbar-nav {
         margin: 0;
+        .open > a,
+        .open > a:hover,
+        .open > a:focus {
+            background-color: #FFAD47;
+        }
         > li {
             float: left;
             > a {
                 padding-top: 20.5px;
                 padding-bottom: 20.5px;
+                color: $white;
             }
         }
     }

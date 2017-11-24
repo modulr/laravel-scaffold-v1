@@ -12,8 +12,8 @@
 */
 
 Route::get('/', function () {
-    //return view('welcome');
-    return redirect('login');
+    return view('welcome');
+    //return redirect('login');
 });
 //Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home', function () {
@@ -145,10 +145,10 @@ Route::middleware('auth')->group(function () {
         Route::put('/update/{id}', 'EventController@update')->middleware('permission:update-events');
         Route::delete('/destroy/{id}', 'EventController@destroy')->middleware('permission:delete-events');
 
-        Route::post('/attachments/makeCover/{id}', 'EventController@makeCoverAttachment')->middleware('permission:update-events');
-        Route::delete('/attachments/destroy/{id}', 'EventController@destroyAttachment')->middleware('permission:delete-events');
-        Route::post('/attachments/upload/temp', 'EventController@uploadAttachmentTemp')->middleware('permission:create-news');
-        Route::post('/attachments/upload/', 'EventController@uploadAttachment')->middleware('permission:update-news');
+        Route::post('/images/upload/temp', 'EventController@uploadImageTemp')->middleware('permission:create-news');
+        Route::post('/images/upload/', 'EventController@uploadImage')->middleware('permission:update-news');
+        Route::post('/images/sort/{eventId}', 'EventController@sortImage')->middleware('permission:update-news');
+        Route::delete('/images/destroy/{id}', 'EventController@destroyImage')->middleware('permission:delete-events');
     });
 
 });
