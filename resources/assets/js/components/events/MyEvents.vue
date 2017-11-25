@@ -156,7 +156,7 @@
                             </template>
                         </vue-clip>
                         - Arrastra las fotos para cambiar su orden
-                        <draggable class="row images" v-model="eventNew.images" @end="sortImageTemp">
+                        <draggable class="row images" v-model="eventNew.images">
                             <div class="col-xs-6 col-md-4" v-for="(image, index) in eventNew.images">
                                 <div class="image">
                                     <img :src="image.dataUrl" v-if="image.dataUrl">
@@ -469,15 +469,6 @@
                 } else {
                     SnotifyService.error(JSON.parse(xhr.response).file[0]);
                 }
-            },
-            sortImageTemp () {
-                // axios.post('/events/images/sort/' + this.eventNew.id, this.eventNew.images)
-                // .then(response => {
-                //     this.error = {};
-                // })
-                // .catch(error => {
-                //     self.error = error.response.data;
-                // });
             },
             destroyImageTemp (index) {
                 this.eventNew.images.splice(index, 1);
