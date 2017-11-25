@@ -64,6 +64,9 @@ Vue.component('opportunitiesEdit', require('./components/opportunities/Edit.vue'
 Vue.component('opportunity', require('./components/opportunities/detail/Opportunity.vue'));
 //Quotes
 Vue.component('quotes', require('./components/quotes/Quotes.vue'));
+Vue.component('quotesCreate', require('./components/quotes/Create.vue'));
+Vue.component('quotesEdit', require('./components/quotes/Edit.vue'));
+Vue.component('quotesAttachment', require('./components/quotes/Attachment.vue'));
 // Customers
 Vue.component('customers', require('./components/customers/Customers.vue'));
 Vue.component('clients', require('./components/customers/Clients.vue'));
