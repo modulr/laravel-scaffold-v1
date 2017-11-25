@@ -6,18 +6,13 @@
           <button href="#" class="btn-primary" @click.prevent="add">
               <i class="mdi mdi-add mdi-lg"></i>
           </button>
-      </div>
-      <!-- No items found -->
-      <div class="row" v-if="quotes.length == 0">
-        <div class="col-md-12">
-          <h3>No quotes found.</h3>
-        </div>
-      </div>
+      </div>      
       <!-- List -->
-      <div class="row" v-if="quotes.length != 0">
+      <div class="row">
         <div class="col-md-2">
           <div class="col-md-12 filters">
               <h4 class="heading">Filters</h4>
+              <a href="#" class="pull-right" @click.prevent="getQuotes">Buscar</a>
               <a href="#" class="pull-right" @click.prevent="clearFilters">Clear</a>
               <div class="row">
                 <div class="card search col-xs-12">
@@ -56,7 +51,11 @@
                 </div>
           </div>
         </div>
-        <div class="col-md-10">
+        <!-- No items found -->        
+        <div class="col-md-10" v-if="quotes.length == 0">
+            <h3>No quotes found.</h3>
+          </div>
+        <div class="col-md-10" v-if="quotes.length != 0">
           <div class="col-md-12">
           <table class="table table-hover">
             <thead>
@@ -288,7 +287,7 @@ export default {
     },
     getQuotes () {
       var page = Number(this.pagination.current_page);
-      axios.get('/quote/all?page=' + page)
+      axios.get(`/quote/all?page=${page}${this.search ? '&name=' + this.search: ''}${this.sort.customer ? '&customer=' + this.sort.customer.id : ''}${this.sort.project ? '&project=' + this.sort.project.id : ''}${this.sort.status ? '&status=' + this.sort.status.id : ''}${this.sort.service ? '&service=' + this.sort.service.id : ''}`)
         .then(response => {
           this.quotes = response.data.data
           this.pagination.last_page = response.data.last_page
@@ -350,6 +349,7 @@ export default {
           service: ""
         },
         this.search = '';
+        this.getQuotes()
     }
   }
 }

@@ -17,8 +17,27 @@ class QuoteController extends Controller
   }
 
   public function all(Request $request)
-  {
-      return Quote::with('designer', 'salesman', 'customer', 'project', 'status', 'service', 'attachment', 'currency')->paginate(10);
+  {    
+    $query = Quote::query();
+
+    if($request->name) {
+        $query->where('name', 'LIKE', '%'.$request->name.'%');
+    }
+    if($request->customer) {
+        $query->where('customer_id', $request->customer);
+    } 
+    if($request->project) {
+        $query->where('project_id', $request->project);
+    }
+    if($request->status) {
+        $query->where('status_id', $request->status);
+    }
+    if($request->service) {
+        $query->where('service_id', $request->service);
+    }
+    $quotes = $query->paginate(10);
+    $quotes->load('designer', 'salesman', 'customer', 'project', 'status', 'service', 'attachment', 'currency');
+    return $quotes;    
   }
 
   public function show($id)

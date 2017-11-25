@@ -132,6 +132,7 @@ export default {
                     var btn = $(e.target).button('reset')
                     this.$parent.quotes.push(response.data)
                     this.$parent.quote = {}
+                    this.$parent.list.projects = []
                     $('#modalAdd').modal('hide')
                 })
                 .catch(error => {
