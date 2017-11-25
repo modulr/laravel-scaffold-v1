@@ -22,6 +22,10 @@ Route::get('/home', function () {
 
 Auth::routes();
 
+Route::group(['namespace' => 'Events'], function() {
+    Route::get('/events/all', 'EventController@all');
+});
+
 Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', 'DashboardController@index');
@@ -135,11 +139,14 @@ Route::middleware('auth')->group(function () {
 
     // Events
     Route::group(['namespace' => 'Events', 'prefix' => 'events'], function() {
-        Route::get('/', 'EventController@index')->middleware('permission:read-events');
+        Route::get('/' , function () {
+            return view('events.events');
+        })->middleware('permission:read-events');
         Route::get('/show/{id}' , function ($id) {
             return view('events.event', ['id' => $id]);
         })->middleware('permission:read-events');
-        Route::get('/all', 'EventController@all')->middleware('permission:read-events');
+
+        Route::get('/byOwner', 'EventController@byOwner')->middleware('permission:read-events');
         Route::get('/{id}', 'EventController@show')->middleware('permission:read-events');
         Route::post('/store', 'EventController@store')->middleware('permission:create-events');
         Route::put('/update/{id}', 'EventController@update')->middleware('permission:update-events');
@@ -150,5 +157,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/images/sort/{eventId}', 'EventController@sortImage')->middleware('permission:update-news');
         Route::delete('/images/destroy/{id}', 'EventController@destroyImage')->middleware('permission:delete-events');
     });
+
+    Route::group(['namespace' => 'Events'], function() {
+        Route::get('/platillos' , function () {
+            return view('events.events');
+        })->middleware('permission:read-events');
+        Route::get('/platillos/{id}' , function ($id) {
+            return view('events.event', ['id' => $id]);
+        })->middleware('permission:read-events');
+        Route::get('/mis_platillos' , function () {
+            return view('events.myevents');
+        })->middleware('permission:read-events');
+    });
+
 
 });

@@ -1,0 +1,17 @@
+.welcome {
+    position: relative;
+    .background {
+        height: 300px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-image: url('/img/bg/bg-welcome.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        z-index: 1;
+    }
+    .text-center img {
+        z-index: 2;
+    }
+}

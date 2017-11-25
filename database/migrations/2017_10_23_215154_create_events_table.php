@@ -17,8 +17,8 @@ class CreateEventsTable extends Migration
             $table->increments('id')->comment = "The event ID";
             $table->string('name')->comment = "Event name";
             $table->text('description')->nullable()->comment = "Long-form description";
-            $table->date('date')->nullable()->comment = "Event day";
             $table->text('place')->nullable()->comment = "Event Place information";
+            $table->date('date')->nullable()->comment = "Event day";
             $table->time('start_time')->nullable()->comment = "Start time";
             $table->time('end_time')->nullable()->comment = "End time, if one has been set";
             $table->text('content')->nullable()->comment = "Detail of events";

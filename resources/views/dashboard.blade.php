@@ -7,22 +7,22 @@
             <div class="col-md-6">
                 <div class="panel">
                     <div class="panel-body">
-                        <div class="jumbotron text-center">
-                          <h1>¿Quieres comer?</h1>
-                          <p>...</p>
-                          <p><a class="btn btn-primary btn-lg" href="/events" role="button">Learn more</a></p>
-                        </div>
+                        <a href="/platillos">
+                            <div class="jumbotron text-center">
+                              <h1>Quiero Comer</h1>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="panel">
                     <div class="panel-body">
-                        <div class="jumbotron text-center">
-                          <h1>¿Quieres cocinar?</h1>
-                          <p>...</p>
-                          <p><a class="btn btn-primary btn-lg" href="/events" role="button">Learn more</a></p>
-                        </div>
+                        <a href="/mis_platillos">
+                            <div class="jumbotron text-center">
+                              <h1>Quiero Cocinar</h1>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>

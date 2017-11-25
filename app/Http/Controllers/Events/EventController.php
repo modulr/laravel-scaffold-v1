@@ -12,28 +12,24 @@ use App\Http\Helpers\Upload;
 
 class EventController extends Controller
 {
-    public function index()
-    {
-        return view('events.events');
-    }
-
     public function all()
     {
-        $events = Event::with(['owner', 'images' => function ($query) {
+        return Event::with(['owner', 'images' => function ($query) {
                             $query->orderBy('order', 'asc');
                         }])
                         ->orderBy('id', 'desc')
                         ->paginate(20);
-        return $events;
     }
 
-    // public function byOwner()
-    // {
-    //     return Event::with('owner', 'images')
-    //                 ->where('owner_id', Auth::id())
-    //                 ->orderBy('id', 'desc')
-    //                 ->paginate(20);
-    // }
+    public function byOwner()
+    {
+        return Event::with(['owner', 'images' => function ($query) {
+                            $query->orderBy('order', 'asc');
+                    }])
+                    ->where('owner_id', Auth::id())
+                    ->orderBy('id', 'desc')
+                    ->paginate(20);
+    }
 
     public function show($id)
     {
@@ -46,6 +42,11 @@ class EventController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string',
+            'place' => 'required|string',
+            'price' => 'required|numeric',
+            'date' => 'required|date|after_or_equal:today',
+            'start_time' => 'required',
+            'end_time' => 'after_or_equal:start_time',
         ]);
 
         $event = Event::create([
@@ -87,6 +88,11 @@ class EventController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string',
+            'place' => 'required|string',
+            'price' => 'required|numeric',
+            'date' => 'required|date|after_or_equal:today',
+            'start_time' => 'required',
+            'end_time' => 'nullable|after_or_equal:start_time',
         ]);
 
         $event = Event::with('owner', 'images')->find($id);

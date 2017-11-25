@@ -49,7 +49,7 @@
                             Contiene
                             <hr>
                             <p class="text-nl2br">{{event.content}}</p>
-                            <p>Platos (0/{{event.attending_limit}})</p>
+                            <p v-show="event.attending_limit > 0">Platos (0/{{event.attending_limit}})</p>
                             <hr>
                             <h1 class="text-center">${{event.price}}</h1>
                         </div>
