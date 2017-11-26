@@ -9,7 +9,7 @@
                     <div class="panel-body">
                         <a href="/platillos">
                             <div class="jumbotron text-center">
-                              <h1>Quiero Comer</h1>
+                              <h1>Quiero Comerr</h1>
                             </div>
                         </a>
                     </div>
