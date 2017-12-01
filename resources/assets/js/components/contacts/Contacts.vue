@@ -5,7 +5,7 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 controls">
                         <input type="text" class="form-control" placeholder="Search" v-model="search">
                     </div>
                     <div class="col-sm-9 text-right controls">
