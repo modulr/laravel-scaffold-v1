@@ -55,10 +55,17 @@
                                 <span class="help-block" v-if="error.area">{{error.area[0]}}</span>
                             </div>
                         </div>
-                        <div class="form-group" :class="{'has-error': error.client}">
+                        <div class="form-group" :class="{'has-error': error.customer}">
+                            <label class="col-sm-3 control-label required">Customer</label>
+                            <div class="col-sm-9">
+                                <multiselect v-model="opportunity.customer" track-by="name" label="name" :options="list.customers" placeholder="Select a customer" :multiple="false"></multiselect>
+                                <span class="help-block" v-if="error.customer">{{error.customer[0]}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group" :class="{'has-error': error.client}" v-show="opportunity.customer.id !== ''">
                             <label class="col-sm-3 control-label required">Client</label>
                             <div class="col-sm-9">
-                                <multiselect v-model="opportunity.client" track-by="name" label="name" :options="list.clients" placeholder="Select a client" :multiple="false"></multiselect>
+                                <multiselect v-model="opportunity.client" track-by="name" label="name" :options="filteredClients" placeholder="Select a client" :multiple="false"></multiselect>
                                 <span class="help-block" v-if="error.client">{{error.client[0]}}</span>
                                 <span>Or
                                     <a :href="'/clients'">create a new client.</a>
@@ -96,7 +103,28 @@ export default {
                 customers: [],
                 areas: []
             },
-            opportunity: {}
+            opportunity: {
+                customer: {
+                    id: ''
+                }
+            },
+        }
+    },
+    computed: {
+        filteredClients: function() {
+            var filteredArray = this.list.clients;
+
+            if (this.opportunity.customer.id !== '') {
+                filteredArray = filteredArray.filter(item => {
+                    return _.findKey(this.opportunity.customer, (o) => {
+                        if(o === item.customer_id) {
+                            return item;
+                        }
+                    })
+                })
+            }
+
+            return filteredArray;
         }
     },
     mounted() {
@@ -139,6 +167,6 @@ export default {
         date(date) {
             return moment(date).format('LL');
         }
-    }
+    },
 }
 </script>

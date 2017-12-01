@@ -32,7 +32,7 @@ class ProjectController extends Controller
     {
         $project = Project::with($this->relationships)->where('status', 2)->find($id);
 
-        return view('projects.projects', ['breadcrumb' => $request->path(), 'project' => $project]);
+        return view('projects.project', ['breadcrumb' => $request->path(), 'project' => $project]);
     }
 
     public function all()
