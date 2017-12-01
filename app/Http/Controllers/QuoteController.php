@@ -10,6 +10,10 @@ use App\Models\Quotes\Quote;
 use App\Models\Lists\ListStatusQuote;
 class QuoteController extends Controller
 {
+    public function __construct()
+    {
+        $this->relationships = ['designer', 'salesman', 'customer', 'project', 'status', 'service', 'attachment', 'currency'];
+    }
 
   public function index(Request $request)
   {
@@ -36,13 +40,13 @@ class QuoteController extends Controller
         $query->where('service_id', $request->service);
     }
     $quotes = $query->paginate(10);
-    $quotes->load('designer', 'salesman', 'customer', 'project', 'status', 'service', 'attachment', 'currency');
+    $quotes->load($this->relationships);
     return $quotes;    
   }
 
   public function show($id)
   {
-      $q = Quote::with('designer', 'salesman')->find($id);
+      $q = Quote::with($this->relationships)->find($id);
       return $q;
   }
 
@@ -71,7 +75,7 @@ class QuoteController extends Controller
         'amount' => $request->amount,
         'status_id' => 1,
         'service_id'=> $request->service,
-        'currency_id' => $request->currency])->load('designer', 'salesman', 'customer', 'owner', 'project', 'status', 'service', 'currency');
+        'currency_id' => $request->currency])->load($this->relationships);
       return $quote;
   }
 
@@ -94,7 +98,7 @@ class QuoteController extends Controller
       // $data = $request->all();
 
       // return response()->json($data);
-      return $q->load('designer', 'salesman', 'customer', 'owner', 'project', 'status', 'currency', 'attachment', 'service');
+      return $q->load($this->relationships);
   }
 
   public function destroy($id)

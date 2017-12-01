@@ -51,58 +51,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" v-if="opportunity.quote.length == 0">
-              <div class="col-md-12">
-                <h3>No quotes found.</h3>
-              </div>
-            </div>
-            <div class="row" v-if="opportunity.quote.length != 0">
-                <h3>Quotes</h3>
-                <div class="col-md-12">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Amount</th>
-                                <th>Request Date</th>
-                                <th>Designer</th>
-                                <th>Salesman</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(item, index) in opportunity.quote">
-                                <td>
-                                    {{item.id}}
-                                </td>
-                                <td>
-                                    {{item.name}}
-                                </td>
-                                <td>
-                                    {{item.description}}
-                                </td>
-                                <td>
-                                    {{item.amount | currency}}
-                                </td>
-                                <td>
-                                    {{item.request_date | date}}
-                                </td>
-                                <td v-if="item.designer">
-                                    {{item.designer.name}}
-                                </td>
-                                <td v-if="item.salesman">
-                                    {{item.salesman.name}}
-                                </td>
-                                <td>
-                                    {{item.status.title}}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <list-quotes :opportunity="opportunity"></list-quotes>
         </div>
     </div>
 </template>
@@ -132,7 +81,16 @@ export default {
         }
     },
     methods: {
+        addQuote: function() {
+            this.quote = {
+            name: '',
+            registered: '',
+            description: '',
+            };
+            this.error = {};
 
+            $('#modalAddQuote').show();
+        }
     }
 }
 </script>
