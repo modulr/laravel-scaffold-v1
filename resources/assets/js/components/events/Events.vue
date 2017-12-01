@@ -5,79 +5,85 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-sm-4">
-                        <a href="#" class="btn btn-success"
-                           v-if="user.hasPermission['create-events']"
-                           @click.prevent="newEvent">
-                            <i class="fa fa-calendar-plus-o"></i> New Event
+                    <div class="col-sm-6 links">
+                        <ul class="nav nav-tabs">
+                            <li :class="{active: tabActive == 'events'}"><a href="#" @click.prevent="getEvents">Events</a></li>
+                            <li :class="{active: tabActive == 'myEvents'}"><a href="#" @click.prevent="getMyEvents">My Events</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div class="col-sm-4 controls">
+                        <input type="text" class="form-control" placeholder="Search" v-model="search">
+                    </div> -->
+                    <div class="col-sm-6 text-right controls">
+                        <!-- <a href="#" class="btn btn-default">
+                            <i class="fa fa-lg fa-list" aria-hidden="true"></i>
                         </a>
-                    </div>
-                    <div class="col-sm-4 text-center">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" placeholder="Search" v-model="search">
-                        </div>
-                    </div>
-                    <div class="col-sm-4 text-right">
-                        <span class="separator"></span>
-                        <a href="#" class="btn btn-link">
-                            <i class="fa fa-fw fa-lg fa-list" aria-hidden="true"></i>
+                        <span class="separator"></span> -->
+                        <a href="#" class="btn btn-success"
+                            v-if="user.hasPermission['create-events']"
+                            @click.prevent="newEvent">
+                            <i class="fa fa-calendar-plus-o"></i> New Event
                         </a>
                     </div>
                 </div>
             </div>
             <!-- List Events -->
-            <div class="row">
-                <div class="col-xs-6 col-sm-4 col-md-3" v-if="events.length" v-for="(item, index) in events">
-                    <div class="thumbnail">
-                        <a href="#" class="heading"
-                            :style="{'background-image': 'url('+item.attachments[0].url_thumbnail+')'}"
-                            v-if="item.attachments.length > 0 && item.attachments[0].type.match('image/*')"
-                            @click.prevent="editEvent(item, index)">
-                        </a>
-                        <a href="#" class="heading" v-else
-                            @click.prevent="editEvent(item, index)"
-                            style="background-image: url('img/bg/bg-banner.png')">
-                        </a>
-                        <div class="caption">
-                            <img :src="item.user.avatar_url" class="avatar-sm">
-                            <h3>{{item.name}}</h3>
-                            <p v-show="item.description">{{item.description}}</p>
-                            <div v-show="item.date || item.start_time || item.end_time">
-                                <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i>
-                                <span v-if="item.date">{{item.date | moment('LL')}}.</span>
-                                <span v-if="item.start_time">
-                                    <small class="text-muted">From </small>{{'2018-01-01 '+item.start_time | moment('h:mm a')}}
+            <div class="row" v-if="events.length">
+                <div class="col-xs-12 col-sm-4 col-md-3" v-for="(event, index) in events">
+                    <div class="panel card">
+                        <div class="panel-heading">
+                            <a :href="'/events/'+event.id">
+                                <img :src="event.images[0].url_thumbnail" v-if="event.images.length">
+                            </a>
+                        </div>
+                        <div class="panel-body">
+                            <a :href="`/profile/${event.owner.id}`">
+                                <img class="avatar-sm" :src="event.owner.avatar_url">
+                            </a>
+                            <h4>{{event.name}}</h4>
+                            <p><i class="fa fa-fw fa-map-marker fa-lg" aria-hidden="true"></i> {{event.place}}</p>
+                            <div v-show="event.date || event.start_time || event.end_time">
+                                <i class="fa fa-fw fa-clock-o fa-lg" aria-hidden="true"></i>
+                                <span v-if="event.date">{{event.date | moment('LL')}}.</span>
+                                <span v-if="event.start_time && !event.end_time">
+                                    <small class="text-muted">At </small>{{'2018-01-01 '+event.start_time | moment('h:mm a')}}
                                 </span>
-                                <span v-if="item.end_time">
-                                    <small class="text-muted">to </small>{{'2018-01-01 '+item.end_time | moment('h:mm a')}}
+                                <span v-if="event.start_time && event.end_time">
+                                    <small class="text-muted">From </small>{{'2018-01-01 '+event.start_time | moment('h:mm a')}}
+                                    <small class="text-muted">to </small>{{'2018-01-01 '+event.end_time | moment('h:mm a')}}
                                 </span>
                             </div>
                         </div>
+                        <a href="#" class="btn-edit"
+                            v-if="event.owner_id == user.id"
+                            @click.prevent="editEvent(event, index)">
+                            <span class="fa-stack">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
                     </div>
                 </div>
-                <!-- Init Message -->
-                <div class="init-message" v-else>
-                    <i class="mdi mdi-event" aria-hidden="true"></i>
-                    <p class="lead">Don't exist Events... create one!!</p>
-                    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#modalNewEvent"
-                       v-if="user.hasPermission['create-events']">
-                        <i class="fa fa-calendar-plus-o"></i> New Event
-                    </a>
-                </div>
+            </div>
+            <!-- Init Message -->
+            <div class="init-message" v-else>
+                <i class="mdi mdi-event" aria-hidden="true"></i>
+                <p class="lead">Don't exist Events... create one!!</p>
+                <a href="#" class="btn btn-success"
+                    v-if="user.hasPermission['create-events']"
+                    @click.prevent="newEvent">
+                    <i class="fa fa-calendar-plus-o"></i> New Event
+                </a>
             </div>
         </div>
         <!-- Modal New Event -->
         <div class="modal right md" id="modalNewEvent">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-body">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel"></h4>
-                    </div>
-                    <div class="modal-body">
                         <div class="form-group" :class="{'has-error': error.name}">
                             <input type="text" class="form-control input-lg" placeholder="Write name event"
                                 v-model="eventNew.name">
@@ -88,16 +94,16 @@
                                 v-model="eventNew.description"></textarea>
                             <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                         </div>
-                        <div class="form-group">
-                            <div class="input-group" :class="{'has-error': error.place}">
+                        <div class="form-group" :class="{'has-error': error.place}">
+                            <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i></span>
                                 <input type="text" class="form-control" placeholder="Place"
                                     v-model="eventNew.place">
                                 <span class="help-block" v-if="error.place">{{error.place[0]}}</span>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="input-group" :class="{'has-error': error.date}">
+                        <div class="form-group" :class="{'has-error': error.date}">
+                            <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-calendar-check-o fa-lg" aria-hidden="true"></i></span>
                                 <input type="date" class="form-control" v-model="eventNew.date">
                                 <span class="help-block" v-if="error.date">{{error.date[0]}}</span>
@@ -105,8 +111,8 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-6">
-                                <div class="form-group">
-                                    <div class="input-group" :class="{'has-error': error.start_time}">
+                                <div class="form-group" :class="{'has-error': error.start_time}">
+                                    <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> From</span>
                                         <input type="time" class="form-control" v-model="eventNew.start_time">
                                         <span class="help-block" v-if="error.start_time">{{error.start_time[0]}}</span>
@@ -114,9 +120,9 @@
                                 </div>
                             </div>
                             <div class="col-xs-6">
-                                <div class="form-group">
-                                    <div class="input-group" :class="{'has-error': error.end_time}">
-                                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> To</span>
+                                <div class="form-group" :class="{'has-error': error.end_time}">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> to</span>
                                         <input type="time" class="form-control" v-model="eventNew.end_time">
                                         <span class="help-block" v-if="error.end_time">{{error.end_time[0]}}</span>
                                     </div>
@@ -125,44 +131,38 @@
                         </div>
                         <hr>
                         <vue-clip class="vue-clip-btn"
-                                  :options="optionsFileTemp"
-                                  :on-sending="sendingFileTemp"
-                                  :on-complete="completeFileTemp"
+                                  :options="optionsImageTemp"
+                                  :on-sending="sendingImageTemp"
+                                  :on-complete="completeImageTemp"
                                   v-if="user.hasPermission['create-events']">
                             <template slot="clip-uploader-action">
-                                <span class="dz-message btn btn-link btn-attachments">
-                                    <i class="fa fa-paperclip fa-lg" aria-hidden="true"></i> Add Attachment
-                                </span>
-                            </template>
-                        </vue-clip>
-                        <div class="media vue-clip-queue" v-for="(file, index) in eventNew.attachments">
-                            <div class="media-left">
-                                <img class="media-object" :src="file.dataUrl" v-if="file.type.match('image/*')">
-                                <i class="fa fa-file-o fa-4x" v-else></i>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">{{file.name}}</h4>
-                                <small class="text-muted">{{file.status}}</small>
-                                <span class="text-muted" v-if="file.status == 'success'">
-                                     -
-                                    <a href="#" @click.prevent="destroyFileTemp(index)">
-                                        <i class="fa fa-trash"></i> Delete
-                                    </a>
-                                    <a href="#" v-if="file.type.match('image/*')"
-                                        @click.prevent="makeCoverFileTemp(file, index)">
-                                        <i class="fa fa-window-maximize"></i>
-                                        <span v-if="!file.cover">Make Cover</span>
-                                        <span v-else>Remove Cover</span>
-                                    </a>
-                                </span>
-                                <div class="progress">
-                                    <div class="progress-bar" aria-valuemin="0" aria-valuemax="100"
-                                        :aria-valuenow="file.progress"
-                                        :style="{width: file.progress+'%'}">
+                                <div class="">
+                                    <div class="dz-message btn btn-link btn-upload">
+                                        <i class="fa fa-plus fa-lg" aria-hidden="true"></i> Add Images
                                     </div>
                                 </div>
+                            </template>
+                        </vue-clip>
+                        <draggable class="row images" v-model="eventNew.images">
+                            <div class="col-xs-6 col-md-4" v-for="(image, index) in eventNew.images">
+                                <div class="image">
+                                    <img :src="image.dataUrl" v-if="image.dataUrl">
+                                    <img :src="image.url_thumbnail" v-else>
+                                    <div class="progress" v-if="image.status">
+                                        <div class="progress-bar"
+                                            :class="{'progress-bar-danger': image.status == 'error'}"
+                                            :style="{width: image.progress+'%'}">
+                                        </div>
+                                    </div>
+                                    <a href="#" class="btn-delete" @click.prevent="destroyImageTemp(index)">
+                                        <span class="fa-stack">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-times fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        </draggable>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success pull-left"
@@ -174,16 +174,13 @@
             </div>
         </div>
         <!-- Modal Edit Event -->
-        <div class="modal right md" data-backdrop="false" id="modalEditEvent">
+        <div class="modal right md" id="modalEditEvent">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-body">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel"></h4>
-                    </div>
-                    <div class="modal-body">
                         <div class="form-group" :class="{'has-error': error.name}">
                             <input type="text" class="form-control input-lg" placeholder="Write name event"
                                 v-model="eventEdit.name">
@@ -222,7 +219,7 @@
                             <div class="col-xs-6">
                                 <div class="form-group" :class="{'has-error': error.end_time}">
                                     <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> To</span>
+                                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> to</span>
                                         <input type="time" class="form-control" v-model="eventEdit.end_time">
                                         <span class="help-block" v-if="error.end_time">{{error.end_time[0]}}</span>
                                     </div>
@@ -231,58 +228,37 @@
                         </div>
                         <hr>
                         <vue-clip class="vue-clip-btn"
-                                  :options="optionsFile"
-                                  :on-sending="sendingFile"
-                                  :on-complete="completeFile"
+                                  :options="optionsImage"
+                                  :on-sending="sendingImage"
+                                  :on-complete="completeImage"
                                   v-if="user.hasPermission['update-events']">
                             <template slot="clip-uploader-action">
-                                <span class="dz-message btn btn-link btn-attachments">
-                                    <i class="fa fa-paperclip fa-lg" aria-hidden="true"></i> Add Attachment
-                                </span>
-                            </template>
-                        </vue-clip>
-                        <div class="media vue-clip-queue" v-for="(file, index) in eventEdit.attachments">
-                            <div class="media-left" v-if="file.url_thumbnail">
-                                <img class="media-object" :src="file.url_thumbnail" v-if="file.type.match('image/*')">
-                                <i class="fa fa-file-o fa-4x" v-else></i>
-                            </div>
-                            <div class="media-left" v-else>
-                                <img class="media-object" :src="file.dataUrl" v-if="file.type.match('image/*')">
-                                <i class="fa fa-file-o fa-4x" v-else></i>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">{{file.name}}</h4>
-                                <div v-if="file.status">
-                                    <small class="text-muted">{{file.status}}</small>
-                                    <div class="progress">
-                                        <div class="progress-bar" aria-valuemin="0" aria-valuemax="100"
-                                             :aria-valuenow="file.progress"
-                                             :style="{width: file.progress+'%'}">
-                                            <span class="sr-only">{{file.progress}}% Complete</span>
-                                        </div>
+                                <div>
+                                    <div class="dz-message btn btn-link btn-upload">
+                                        <i class="fa fa-plus fa-lg" aria-hidden="true"></i> Add Images
                                     </div>
                                 </div>
-                                <div class="text-muted"v-if="file.created_at">
-                                    <small>Added {{file.created_at | moment('from')}}</small>
-                                    <br>
-                                    <small>
-                                        <a href="#" @click.prevent="destroyFile(file, index)">
-                                            <i class="fa fa-trash"></i> Delete
-                                        </a>
-                                        <a :href="file.url" download>
-                                            <i class="fa fa-download"></i> Download
-                                        </a>
-                                        <a href="#"
-                                            v-if="file.type.match('image/*')"
-                                            @click.prevent="makeCoverFile(file, index)">
-                                            <i class="fa fa-window-maximize"></i>
-                                            <span v-if="!file.cover">Make Cover</span>
-                                            <span v-else>Remove Cover</span>
-                                        </a><br>
-                                    </small>
+                            </template>
+                        </vue-clip>
+                        <draggable class="row images" v-model="eventEdit.images" @end="sortImage">
+                            <div class="col-xs-6 col-md-4" v-for="(image, index) in eventEdit.images">
+                                <div class="image">
+                                    <img :src="image.dataUrl" v-if="image.dataUrl">
+                                    <img :src="image.url_thumbnail" v-else>
+                                    <div class="progress" v-if="image.status">
+                                        <div class="progress-bar"
+                                             :class="{'progress-bar-danger': image.status == 'error'}"
+                                             :style="{width: image.progress+'%'}"></div>
+                                    </div>
+                                    <a href="#" class="btn-delete" @click.prevent="destroyImage(image, index)">
+                                        <span class="fa-stack">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-times fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
-                        </div>
+                        </draggable>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary pull-left"
@@ -302,18 +278,22 @@
 </template>
 
 <script>
-    import VueClip from 'vue-clip'
+    import moment from 'moment';
+    import VueClip from 'vue-clip';
+    import draggable from 'vuedraggable'
+    import {SnotifyService} from 'vue-snotify';
 
     export default {
         data() {
             return {
                 user: Laravel.user,
                 error: {},
-                search: '',
-                optionsFileTemp: {
+                tabActive: 'events',
+                optionsImageTemp: {
                     headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                    url: '/events/attachments/upload/temp',
+                    url: '/api/events/images/upload/temp',
                     paramName: 'file',
+                    parallelUploads: 1,
                     maxFilesize: {
                         limit: 10,
                         message: '{{filesize}} is greater than the {{maxFilesize}}MB'
@@ -323,14 +303,15 @@
                         message: 'You can only upload a max of 10 files'
                     },
                     acceptedFiles: {
-                        extensions: ['image/*', 'application/pdf'],
+                        extensions: ['image/*'],
                         message: 'You are uploading an invalid file'
                     },
                 },
-                optionsFile: {
+                optionsImage: {
                     headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                    url: '/events/attachments/upload',
+                    url: '/api/events/images/upload',
                     paramName: 'file',
+                    parallelUploads: 1,
                     maxFilesize: {
                         limit: 10,
                         message: '{{filesize}} is greater than the {{maxFilesize}}MB'
@@ -340,7 +321,7 @@
                         message: 'You can only upload a max of 10 files'
                     },
                     acceptedFiles: {
-                        extensions: ['image/*', 'application/pdf'],
+                        extensions: ['image/*'],
                         message: 'You are uploading an invalid file'
                     },
                 },
@@ -352,23 +333,36 @@
         mounted() {
             this.getEvents();
         },
+        components: {
+            draggable,
+        },
         methods: {
             getEvents () {
-                axios.get('/events/all')
+                axios.get('/api/events/all')
                 .then(response => {
                     this.events = response.data.data
+                    this.tabActive = 'events'
+                });
+            },
+            getMyEvents () {
+                axios.get('/api/events/byOwner')
+                .then(response => {
+                    this.events = response.data.data
+                    this.tabActive = 'myEvents'
                 });
             },
             newEvent () {
                 this.eventNew = {
-                    attachments: [],
+                    date: moment().format('YYYY-MM-DD'),
+                    start_time: moment().add(1,'h').startOf('hour').format('HH:mm'),
+                    images: [],
                 };
                 $('#modalEditEvent').modal('hide');
                 $('#modalNewEvent').modal('show');
             },
             storeEvent (e) {
                 var btn = $(e.target).button('loading')
-                axios.post('/events/store', this.eventNew)
+                axios.post('/api/events/store', this.eventNew)
                 .then(response => {
                     this.events.unshift(response.data);
                     this.eventNew = {};
@@ -381,16 +375,16 @@
                     var btn = $(e.target).button('reset')
                 });
             },
-            editEvent (item, index) {
-                this.eventEdit = _.clone(item);
+            editEvent (event, index) {
+                this.eventEdit = _.clone(event);
                 this.eventEdit.index = index;
-                this.eventEdit.attachments = [];
+                this.eventEdit.images = [];
 
                 $('#modalEditEvent').modal('show')
 
-                axios.get('/events/'+item.id)
+                axios.get('/api/events/show/'+event.id)
                 .then(response => {
-                    this.eventEdit.attachments = response.data.attachments;
+                    this.eventEdit.images = response.data.images;
                 })
                 .catch(error => {
                     this.error = error.response.data;
@@ -398,7 +392,7 @@
             },
             updateEvent (e) {
                 var btn = $(e.target).button('loading')
-                axios.put('/events/update/'+this.eventEdit.id, this.eventEdit)
+                axios.put('/api/events/update/'+this.eventEdit.id, this.eventEdit)
                 .then(response => {
                     this.events[this.eventEdit.index] = response.data;
                     this.error = {};
@@ -422,7 +416,7 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    axios.delete('/events/destroy/' + self.eventEdit.id)
+                    axios.delete('/api/events/destroy/' + self.eventEdit.id)
                     .then(response => {
                         self.events.splice(self.eventEdit.index, 1);
                         swal({
@@ -440,72 +434,60 @@
                     });
                 });
             },
-            destroyFileTemp (index) {
-                this.eventNew.attachments.splice(index, 1);
+            sendingImageTemp (file, xhr, formData) {
+                this.eventNew.images.push(file);
             },
-            destroyFile (file, index) {
-                axios.delete('/events/attachments/destroy/' + file.id)
+            completeImageTemp (file, status, xhr) {
+                if (status == 'success') {
+                    var index = this.eventNew.images.indexOf(file);
+                    Object.assign(this.eventNew.images[index], JSON.parse(xhr.response))
+                    this.$set(this.eventNew.images[index], 'cover', false);
+                } else {
+                    SnotifyService.error(JSON.parse(xhr.response).file[0]);
+                }
+            },
+            destroyImageTemp (index) {
+                this.eventNew.images.splice(index, 1);
+            },
+            sendingImage (file, xhr, formData) {
+                this.eventEdit.images.push(file);
+                formData.append('id', this.eventEdit.id);
+            },
+            completeImage (file, status, xhr) {
+                if (status == 'success') {
+                    var index = this.eventEdit.images.indexOf(file);
+                    this.eventEdit.images[index] = JSON.parse(xhr.response);
+                    this.events[this.eventEdit.index].images.push(JSON.parse(xhr.response));
+                } else {
+                    SnotifyService.error(JSON.parse(xhr.response).file[0]);
+                }
+            },
+            sortImage () {
+                axios.post('/api/events/images/sort/' + this.eventEdit.id, {images:this.eventEdit.images})
                 .then(response => {
-                    this.eventEdit.attachments.splice(index, 1);
-                    if (file.cover) {
-                        this.events[this.eventEdit.index].attachments = [];
-                    }
+                    this.events[this.eventEdit.index].images = response.data;
                     this.error = {};
                 })
                 .catch(error => {
                     self.error = error.response.data;
                 });
             },
-            makeCoverFileTemp (file, index) {
-                this.eventNew.attachments.forEach(function(v,k){
-                    if (k == index) {
-                        v.cover = true;
-                    } else {
-                        v.cover = false;
-                    }
-                });
-            },
-            makeCoverFile (file, index) {
-                var data = {
-                    eventId: file.event_id,
-                    cover: !file.cover
-                };
-                axios.post('/events/attachments/makeCover/'+file.id, data)
+            destroyImage (image, index) {
+                axios.delete('/api/events/images/destroy/' + image.id)
                 .then(response => {
-                    this.eventEdit.attachments.forEach(function(v){
-                        v.cover = false;
+                    var key;
+                    this.events[this.eventEdit.index].images.forEach(function(v, k){
+                        if (v.id == image.id) {
+                            key = k;
+                        }
                     });
-                    this.eventEdit.attachments[index].cover = response.data.cover;
-                    if (response.data.cover) {
-                        this.events[this.eventEdit.index].attachments[0] = response.data;
-                    } else {
-                        this.events[this.eventEdit.index].attachments = [];
-                    }
+                    this.events[this.eventEdit.index].images.splice(key, 1);
+                    this.eventEdit.images.splice(index, 1);
                     this.error = {};
                 })
                 .catch(error => {
-                    this.error = error.response.data;
+                    self.error = error.response.data;
                 });
-            },
-            sendingFileTemp (file, xhr, formData) {
-                this.eventNew.attachments.push(file);
-            },
-            completeFileTemp (file, status, xhr) {
-                if (status == 'success') {
-                    var index = this.eventNew.attachments.indexOf(file);
-                    Object.assign(this.eventNew.attachments[index], JSON.parse(xhr.response))
-                    this.$set(this.eventNew.attachments[index], 'cover', false);
-                }
-            },
-            sendingFile (file, xhr, formData) {
-                this.eventEdit.attachments.push(file);
-                formData.append('id', this.eventEdit.id);
-            },
-            completeFile (file, status, xhr) {
-                if (status == 'success') {
-                    var index = this.eventEdit.attachments.indexOf(file);
-                    this.eventEdit.attachments[index] = JSON.parse(xhr.response);
-                }
             },
         }
     }

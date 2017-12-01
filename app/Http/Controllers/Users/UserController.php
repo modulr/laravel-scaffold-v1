@@ -19,9 +19,20 @@ class UserController extends Controller
         return view('users.users');
     }
 
-    public function all()
+    public function all(Request $request)
     {
-        return User::with('roles')->get();
+        $query = User::query();
+
+        if($request->search) {
+            info($request->search);
+            $query->where('name', 'LIKE', '%'.$request->search.'%');
+        }
+
+        $users = $query->orderBy('id', 'asc')
+                    ->paginate(50);
+        $users->load('roles');
+
+        return $users;
     }
 
     public function store(Request $request)
@@ -80,7 +91,7 @@ class UserController extends Controller
             'active' => 'required|boolean'
         ]);
 
-        $user = User::find($id);
+        $user = User::with('roles')->find($id);
 
         if ($user->name != $request->name) {
             $avatar = Avatar::create($request->name)->getImageObject()->encode('png');

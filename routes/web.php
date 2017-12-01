@@ -134,18 +134,28 @@ Route::middleware('auth')->group(function () {
     });
 
     // Events
-    Route::group(['namespace' => 'Events', 'prefix' => 'events'], function() {
-        Route::get('/', 'EventController@index')->middleware('permission:read-events');
-        Route::get('/all', 'EventController@all')->middleware('permission:read-events');
-        Route::get('/{id}', 'EventController@show')->middleware('permission:read-events');
-        Route::post('/store', 'EventController@store')->middleware('permission:create-events');
-        Route::put('/update/{id}', 'EventController@update')->middleware('permission:update-events');
-        Route::delete('/destroy/{id}', 'EventController@destroy')->middleware('permission:delete-events');
+    Route::group(['namespace' => 'Events'], function() {
+        Route::group(['prefix' => 'events'], function() {
+            Route::get('/' , function () {
+                return view('events.events');
+            })->middleware('permission:read-events');
+            Route::get('/{id}' , function ($id) {
+                return view('events.event', ['id' => $id]);
+            })->middleware('permission:read-events');
+        });
+        Route::group(['prefix' => 'api/events'], function() {
+            Route::get('/all', 'EventController@all')->middleware('permission:read-events');
+            Route::get('/byOwner', 'EventController@byOwner')->middleware('permission:read-events');
+            Route::get('/show/{id}', 'EventController@show')->middleware('permission:read-events');
+            Route::post('/store', 'EventController@store')->middleware('permission:create-events');
+            Route::put('/update/{id}', 'EventController@update')->middleware('permission:update-events');
+            Route::delete('/destroy/{id}', 'EventController@destroy')->middleware('permission:delete-events');
 
-        Route::post('/attachments/makeCover/{id}', 'EventController@makeCoverAttachment')->middleware('permission:update-events');
-        Route::delete('/attachments/destroy/{id}', 'EventController@destroyAttachment')->middleware('permission:delete-events');
-        Route::post('/attachments/upload/temp', 'EventController@uploadAttachmentTemp')->middleware('permission:create-news');
-        Route::post('/attachments/upload/', 'EventController@uploadAttachment')->middleware('permission:update-news');
+            Route::post('/images/upload/temp', 'EventController@uploadImageTemp')->middleware('permission:create-news');
+            Route::post('/images/upload/', 'EventController@uploadImage')->middleware('permission:update-news');
+            Route::post('/images/sort/{eventId}', 'EventController@sortImage')->middleware('permission:update-news');
+            Route::delete('/images/destroy/{id}', 'EventController@destroyImage')->middleware('permission:delete-events');
+        });
     });
 
 });

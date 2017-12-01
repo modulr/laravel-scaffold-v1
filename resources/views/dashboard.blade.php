@@ -18,21 +18,6 @@
                 </div>
             </div>
             @endpermission
-            @permission('read-events')
-            <div class="col-md-4">
-                <div class="panel panel-default panel-dashboard">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Events
-                            <a href="/events" class="pull-right">View all</a>
-                        </h3>
-                    </div>
-                    <div style="height:400px; overflow-y:scroll;">
-                        <events-widget></events-widget>
-                    </div>
-                </div>
-            </div>
-            @endpermission
             @permission('read-tasks')
             <div class="col-md-4">
                 <div class="panel panel-default panel-dashboard">
@@ -44,6 +29,21 @@
                     </div>
                     <div class="panel-body" style="height:400px; overflow-y:scroll;">
                         <tasks></tasks>
+                    </div>
+                </div>
+            </div>
+            @endpermission
+            @permission('read-events')
+            <div class="col-md-4">
+                <div class="panel panel-default panel-dashboard">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Events
+                            <a href="/events" class="pull-right">View all</a>
+                        </h3>
+                    </div>
+                    <div class="panel-body" style="height:400px; overflow-y:scroll;">
+                        <events-widget></events-widget>
                     </div>
                 </div>
             </div>

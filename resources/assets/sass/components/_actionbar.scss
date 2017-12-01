@@ -1,12 +1,23 @@
 .actionbar {
-    padding-bottom: 20px;
     border-bottom: 1px solid lighten($brand-gray, 30%);
     margin-bottom: 20px;
 
-    .button-group {
-        .active {
-            color: $brand-primary;
+    .links {
+        .nav-tabs > li > a,
+        .nav-tabs > li > a:focus {
+            @include box-shadow(inset 0 -1px 0 transparent);
         }
+        .nav-tabs > li.active > a,
+        .nav-tabs > li.active > a:focus {
+            @include box-shadow(inset 0 -2px 0 $brand-primary);
+        }
+        .nav > li > a {
+            font-size: 14px;
+            padding-bottom: 12px;
+        }
+    }
+    .controls {
+        padding-bottom: 10px;
     }
 
     .separator {

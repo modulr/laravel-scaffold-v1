@@ -59,12 +59,14 @@ class NewsController extends Controller
         if ($request->type == 2) { // Image
             if (count($request->images)) {
                 foreach ($request->images as $key => $value) {
-                    $upload = new Upload();
-                    $upload->move($value['path'], 'news/'.$news->id);
-                    NewsImage::create([
-                        'basename' => $value['basename'],
-                        'news_id' => $news->id
-                    ]);
+                    if (isset($value['path'])) {
+                        $upload = new Upload();
+                        $upload->move($value['path'], 'news/'.$news->id)->resize(1024,800);
+                        NewsImage::create([
+                            'basename' => $value['basename'],
+                            'news_id' => $news->id
+                        ]);
+                    }
                 }
             }
         }
@@ -152,8 +154,11 @@ class NewsController extends Controller
 
     public function uploadTemp(Request $request)
     {
+        $this->validate($request, [
+            'file' => 'required|max:10000',
+        ]);
         $upload = new Upload();
-        $uploadData = $upload->uploadTemp($request->file)->resize(1024)->getData();
+        $uploadData = $upload->uploadTemp($request->file)->getData();
         return $uploadData;
     }
 

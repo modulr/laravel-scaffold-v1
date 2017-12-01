@@ -50,6 +50,9 @@ $panel-default-heading-bg: $white;
 .mdi-10x, .mdi-size-10x {
     font-size: 10em;
 }
+.mdi-avatar-md {
+    font-size: 9em;
+}
 
 // Avatars
 .avatar-lg {
@@ -71,11 +74,4 @@ $panel-default-heading-bg: $white;
     height: 30px;
     width: 30px;
     border-radius: 50%;
-}
-
-// Dropzone
-.dropzone {
-    .material-icons {
-        font-size: 5em
-    }
 }

@@ -1,16 +1,28 @@
 .table {
     margin-bottom: 0;
+
+    th {
+        text-transform: uppercase;
+    }
+    .media {
+        display: inline-block;
+    }
+    .media-left {
+        padding-right: 15px;
+    }
+    .media-body {
+        width: inherit;
+    }
+    .media-heading {
+        font-size: 16px;
+        margin-bottom: -5px;
+    }
+
     td:last-child .btn-group {
         opacity: 0;
     }
     tr:hover td:last-child .btn-group {
         opacity: 1;
-    }
-
-    td {
-        .avatar-xs {
-            margin-right: 15px;
-        }
     }
 
     &.table-ellipsis {
@@ -22,4 +34,8 @@
             text-overflow: ellipsis;
         }
     }
+}
+
+.pagination {
+    margin: 10px 0 0 0;
 }

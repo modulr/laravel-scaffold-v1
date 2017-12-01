@@ -5,71 +5,63 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" placeholder="Search" v-model="search">
+                    </div>
+                    <div class="col-sm-9 text-right controls">
+                        <a href="#" class="btn btn-default" @click.prevent="toggleLayout">
+                            <i class="fa fa-lg" aria-hidden="true"
+                               :class="{'fa-list': layout == 'list', 'fa-th-large': layout == 'grid'}">
+                            </i>
+                        </a>
+                        <span class="separator"></span>
                         <a href="#" class="btn btn-success" @click="comingSoon">
                             <i class="mdi mdi-person-add mdi-lg"></i> New Contact
                         </a>
-                    </div>
-                    <div class="col-sm-5 text-right">
-                        <a href="#" class="btn btn-link" @click.prevent="toggleLayout">
-                            <i class="fa fa-fw fa-lg" aria-hidden="true"
-                               :class="{'fa-list': layout == 'list', 'fa-th-large': layout == 'grid'}"
-                            ></i>
-                        </a>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search" v-model="search">
-                            <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                        </div>
                     </div>
                 </div>
             </div>
             <!-- List Contacts -->
             <div class="row">
-                <div class="col-lg-10 col-lg-offset-1">
-                    <div class="row">
-                        <!-- Layout list -->
-                        <div class="col-md-12 list" v-show="layout == 'list'">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                            <tr v-for="contact in filteredContacts">
-                                                <td @click="viewContact(contact.id)">
-                                                    <div class="media">
-                                                        <div class="media-left">
-                                                            <img class="avatar-xs" :src="contact.avatar_url">
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <p class="media-heading">{{contact.name}}</p>
-                                                            <span class="text-muted">{{contact.email}}</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                <!-- Layout list -->
+                <div class="col-md-12 list" v-show="layout == 'list'">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr v-for="contact in filteredContacts">
+                                        <td @click="viewContact(contact.id)">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <img class="avatar-xs" :src="contact.avatar_url">
+                                                </div>
+                                                <div class="media-body">
+                                                    <h4 class="media-heading">{{contact.name}}</h4>
+                                                    <span class="text-muted">{{contact.email}}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <!-- layout Grid -->
-                        <div class="col-xs-6 col-sm-4 col-md-3" v-show="layout == 'grid'"
-                             v-for="contact in filteredContacts">
-                            <div class="thumbnail" @click="viewContact(contact.id)">
-                                <img class="avatar-md" :src="contact.avatar_url">
-                                <div class="caption">
-                                    <h4 class="media-heading">{{contact.name}}</h4>
-                                    <span class="text-muted">{{contact.email}}</span>
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                <!-- layout Grid -->
+                <div class="col-xs-6 col-sm-4 col-md-3" v-show="layout == 'grid'"
+                    v-for="contact in filteredContacts">
+                    <div class="thumbnail" @click="viewContact(contact.id)">
+                        <img class="avatar-md" :src="contact.avatar_url">
+                        <div class="caption">
+                            <h4 class="media-heading">{{contact.name}}</h4>
+                            <span class="text-muted">{{contact.email}}</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Modal View Contact -->
-        <div class="modal right fade modal-contacts" data-backdrop="false" id="modalViewContact">
+        <div class="modal right sm modal-contacts" id="modalViewContact">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -81,13 +73,10 @@
                     <div class="modal-body">
                         <div class="contact-heading">
                             <img class="avatar-md" :src="contactView.avatar_url">
-                            <h5>{{contactView.name}}</h5>
+                            <h4>{{contactView.name}}</h4>
+                            <a :href="`mailto:${contactView.email}`">{{contactView.email}}</a>
                         </div>
                         <div class="contact-body">
-                            <dl>
-                                <dd>Email Address</dd>
-                                <dt><a :href="`mailto:${contactView.email}`">{{contactView.email}}</a></dt>
-                            </dl>
                             <dl>
                                 <dd>Phone Number</dd>
                                 <dt v-if="contactView.profile_contact && contactView.profile_contact.length"
@@ -189,7 +178,6 @@
             viewContact (contactId) {
                 axios.get('/contacts/'+contactId)
                 .then(response => {
-                    console.log(response.data);
                     this.contactView = response.data;
                     $('#modalViewContact').modal('show');
                 });

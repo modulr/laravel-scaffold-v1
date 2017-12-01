@@ -8,10 +8,6 @@
 // Material+Icons
 @import "node_modules/bootstrap-material-design-icons/scss/material-icons";
 
-// Variables
-@import "variables";
-@import "node_modules/bootswatch/paper/_variables";
-
 // sweetalert
 @import "node_modules/sweetalert/dev/sweetalert";
 
@@ -20,6 +16,10 @@
 
 // vue-notify
 @import "~vue-snotify/styles/material";
+
+// Variables
+@import "node_modules/bootswatch/paper/_variables";
+@import "variables";
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
@@ -35,24 +35,28 @@
 @import 'bootstrap/modals';
 @import 'bootstrap/navbar';
 @import 'bootstrap/navs';
-@import 'bootstrap/tables';
 @import 'bootstrap/panels';
-
-// Modules
-@import 'modules/auth';
-@import 'modules/profile';
-@import 'modules/dashboard';
-@import 'modules/news';
-@import 'modules/contacts';
-@import 'modules/files';
-@import 'modules/tasks';
-@import 'modules/events';
+@import 'bootstrap/tables';
+@import 'bootstrap/type';
 
 // Components
 @import 'components/aside';
 @import 'components/actionbar';
-@import 'components/init-message';
-@import 'components/header';
 @import 'components/filters';
-@import 'components/widgets';
+@import 'components/header';
+@import 'components/init-message';
+@import 'components/swiper';
+@import 'components/switch';
 @import 'components/vue-clip';
+@import 'components/widgets';
+
+
+// Modules
+@import 'modules/auth';
+@import 'modules/contacts';
+@import 'modules/dashboard';
+@import 'modules/events';
+@import 'modules/files';
+@import 'modules/news';
+@import 'modules/profile';
+@import 'modules/tasks';

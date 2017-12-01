@@ -3,9 +3,6 @@
         > tbody > tr:first-child > td {
             border-top-color: transparent;
         }
-        p {
-            margin-bottom: 0;
-        }
     }
 
     .thumbnail {
@@ -13,7 +10,7 @@
         text-align: center;
         .avatar-md {
             margin-top: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
     }
 }

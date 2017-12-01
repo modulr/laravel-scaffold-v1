@@ -3,7 +3,9 @@
         <!-- List News -->
         <div class="panel panel-default" v-for="(item, index) in news">
             <div class="panel-heading">
-                <img class="avatar-xs" :src="item.user.avatar_url" alt="">
+                <a :href="`/profile/${item.user.id}`">
+                    <img class="avatar-xs" :src="item.user.avatar_url" alt="">
+                </a>
                 {{item.user.name}}
                 <div class="dropdown pull-right" v-if="user.id == item.user.id && user.hasPermission['delete-news']">
                     <a href="#" class="btn btn-link" data-toggle="dropdown">
@@ -18,7 +20,7 @@
                 </div>
             </div>
             <div class="panel-body">
-                <p :class="{'lead': item.name.lenght <= 50}" v-if="item.name">{{item.name}}</p>
+                <p :class="{'lead': item.name.length <= 100}" v-if="item.name">{{item.name}}</p>
                 <swiper :options="swiperOption" v-if="item.type == 2">
                     <swiper-slide v-for="image in item.images" :key="image.id">
                         <img class="img-responsive center-block" :src="image.url">
@@ -46,7 +48,7 @@
             <p class="lead">Publish the first news!!</p>
         </div>
         <!-- Loading -->
-        <infinite-loading :on-infinite="loadNews" ref="infiniteLoading">
+        <infinite-loading @infinite="loadNews" ref="infiniteLoading">
             <span slot="no-results"></span>
             <span slot="no-more"></span>
         </infinite-loading>
@@ -85,16 +87,16 @@
             addNews (item) {
                 this.news.unshift(item)
             },
-            loadNews () {
+            loadNews ($state) {
                 var page = Number(this.pagination.current_page) + 1;
 
                 axios.get('/news/all?page='+ page)
                 .then(response => {
                     this.news = this.news.concat(response.data.data);
                     this.pagination = response.data
-                    this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+                    $state.loaded();
                     if (!this.pagination.next_page_url)
-                        this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+                        $state.complete();
                 });
             },
             destroyNews (id, index) {

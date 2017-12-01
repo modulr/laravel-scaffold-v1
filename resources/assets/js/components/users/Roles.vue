@@ -1,72 +1,60 @@
 <template>
     <div class="roles">
-        <!-- Header -->
-        <div class="container-fluid header">
-            <div class="row">
-                <div class="col-xs-12">
-                    <ul class="nav nav-tabs header-tabs">
-                        <li><a href="/users">Users</a></li>
-                        <li class="active"><a href="">Roles</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
         <!-- Container -->
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-10 col-lg-offset-1">
-                    <!-- Actionbar -->
-                    <div class="actionbar">
-                        <div class="row">
-                            <div class="col-sm-9">
-                                <a href="#" class="btn btn-success"
-                                   v-if="user.hasPermission['create-roles']"
-                                   @click.prevent="newRole">
-                                    <i class="mdi mdi-group-add mdi-lg"></i> New Role
-                                </a>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search" v-model="search">
-                                    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Actionbar -->
+            <div class="actionbar">
+                <div class="row">
+                    <div class="col-sm-6 links">
+                        <ul class="nav nav-tabs">
+                            <li><a href="/users">Users</a></li>
+                            <li class="active"><a href="">Roles</a></li>
+                        </ul>
                     </div>
-                    <!-- List Roles -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Description</th>
-                                                    <th>Users</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr v-for="(role, index) in filteredRoles">
-                                                    <td @click="editRole(role, index)">
-                                                        {{role.id}}
-                                                    </td>
-                                                    <td @click="editRole(role, index)">
-                                                        {{role.display_name}}
-                                                    </td>
-                                                    <td @click="editRole(role, index)">
-                                                        {{role.description}}
-                                                    </td>
-                                                    <td @click="editRole(role, index)">
-                                                        {{role.users.length}}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                    <div class="col-sm-3 controls">
+                        <input type="text" class="form-control" placeholder="Search" v-model="search">
+                    </div>
+                    <div class="col-sm-3 text-right controls">
+                        <a href="#" class="btn btn-success"
+                           v-if="user.hasPermission['create-roles']"
+                           @click.prevent="newRole">
+                            <i class="mdi mdi-group-add mdi-lg"></i> New Role
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- List Roles -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Users</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(role, index) in filteredRoles">
+                                            <td @click="editRole(role, index)">
+                                                {{role.id}}
+                                            </td>
+                                            <td @click="editRole(role, index)">
+                                                <h4 class="media-heading">{{role.display_name}}</h4>
+                                            </td>
+                                            <td @click="editRole(role, index)">
+                                                {{role.description}}
+                                            </td>
+                                            <td @click="editRole(role, index)">
+                                                {{role.users.length}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -74,17 +62,14 @@
             </div>
         </div>
         <!-- Modal New Role -->
-        <div class="modal right fade" tabindex="-1" id="modalNewRole">
+        <div class="modal right md" id="modalNewRole">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title">New Role</h4>
-                    </div>
                     <div class="modal-body">
                         <form>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                             <div class="form-group" :class="{'has-error': error.display_name}">
                                 <label>Name *</label>
                                 <input type="text" class="form-control input-lg" required
@@ -130,16 +115,13 @@
             </div>
         </div>
         <!-- Modal Edit Role -->
-        <div class="modal right fade" tabindex="-1" data-backdrop="false" id="modalEditRole">
+        <div class="modal right md" id="modalEditRole">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-body">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Edit Role</h4>
-                    </div>
-                    <div class="modal-body">
                         <form>
                             <div class="form-group" :class="{'has-error': error.display_name}">
                                 <label>Name *</label>
@@ -189,8 +171,19 @@
                                             <tr v-for="item in roleEdit.users">
                                                 <td>{{item.id}}</td>
                                                 <td>
-                                                    <img class="avatar-xs" :src="item.avatar_url">
-                                                    {{item.name}}
+                                                    <div class="media">
+                                                        <div class="media-left">
+                                                            <a :href="`/profile/${item.id}`">
+                                                                <img class="avatar-xs" :src="item.avatar_url">
+                                                            </a>
+                                                        </div>
+                                                        <div class="media-body">
+                                                            <a :href="`/profile/${item.id}`">
+                                                                <h4 class="media-heading">{{item.name}}</h4>
+                                                            </a>
+                                                            <a class="text-muted" :href="`mailto:${item.email}`">{{item.email}}</a>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>

@@ -1,11 +1,11 @@
-.auth{
+.auth {
     padding: 0;
     margin: 0;
     margin-top: -85px;
     .row {
         margin: 0
     }
-    .left-pane{
+    .left-pane {
         height: 100vh;
         padding-top: 5%;
         padding-left: 50px;
@@ -28,26 +28,29 @@
             top: inherit;
         }
     }
-    .right-pane{
+    .right-pane {
         height: 100vh;
         background: white;
         padding: 0 50px;
-        form{
-            svg {
+        .logo {
+            margin-top: 40px;
+            margin-bottom: 60px;
+            text-align: center;
+            svg, img {
                 max-width: 250px;
-                margin-top: 10%;
-                margin-bottom: 60px;
+                max-height: 100px;
             }
+        }
+        form {
             .form-group {
-                margin-bottom: 40px;
-            }
-            .btn-link {
-                margin-top: 40px;
+                margin-bottom: 30px;
             }
         }
         .input-lg {
             font-size: 17px !important;
-            }
+        }
+        .alert {
+            margin-top: 40px
+        }
     }
-
 }

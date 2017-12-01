@@ -13,7 +13,7 @@
                                         <img class="avatar-xs" :src="contact.avatar_url">
                                     </div>
                                     <div class="media-body">
-                                        <p class="media-heading">{{contact.name}}</p>
+                                        <h4 class="media-heading">{{contact.name}}</h4>
                                         <span class="text-muted">{{contact.email}}</span>
                                     </div>
                                 </div>
@@ -24,7 +24,7 @@
             </div>
         </div>
         <!-- Modal View Contact -->
-        <div class="modal right fade modal-contacts" data-backdrop="false" id="modalViewContact">
+        <div class="modal fade modal-contacts" id="modalViewContact">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -36,13 +36,10 @@
                     <div class="modal-body">
                         <div class="contact-heading">
                             <img class="avatar-md" :src="contactView.avatar_url">
-                            <h5>{{contactView.name}}</h5>
+                            <h4>{{contactView.name}}</h4>
+                            <a :href="`mailto:${contactView.email}`">{{contactView.email}}</a>
                         </div>
                         <div class="contact-body">
-                            <dl>
-                                <dd>Email Address</dd>
-                                <dt><a :href="`mailto:${contactView.email}`">{{contactView.email}}</a></dt>
-                            </dl>
                             <dl>
                                 <dd>Phone Number</dd>
                                 <dt v-if="contactView.profile_contact && contactView.profile_contact.length"

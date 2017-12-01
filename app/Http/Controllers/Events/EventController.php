@@ -6,44 +6,46 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Events\Event;
-use App\Models\Events\EventAttachment;
+use App\Models\Events\EventImage;
 use App\Http\Helpers\Upload;
 
 
 class EventController extends Controller
 {
-    public function index()
-    {
-        return view('events.events');
-    }
-
     public function all()
     {
-        $events = Event::with(['user', 'attachments' => function ($query) {
-                            $query->where('cover', true);
+        return Event::with(['owner', 'images' => function ($query) {
+                            $query->orderBy('order', 'asc');
                         }])
                         ->orderBy('id', 'desc')
                         ->paginate(20);
-        return $events;
     }
 
-    public function byUser()
+    public function byOwner()
     {
-        return Event::with('user', 'attachments')
-                    ->where('user_id', Auth::id())
+        return Event::with(['owner', 'images' => function ($query) {
+                        $query->orderBy('order', 'asc');
+                    }])
+                    ->where('owner_id', Auth::id())
                     ->orderBy('id', 'desc')
                     ->paginate(20);
     }
 
     public function show($id)
     {
-        return Event::with('attachments')->find($id);
+        return Event::with(['owner', 'images' => function ($query) {
+                        $query->orderBy('order', 'asc');
+                    }])->find($id);
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|string',
+            'place' => 'required|string',
+            'date' => 'required|date|after_or_equal:today',
+            'start_time' => 'required',
+            'end_time' => 'after_or_equal:start_time',
         ]);
 
         $event = Event::create([
@@ -53,30 +55,29 @@ class EventController extends Controller
             'date' => $request->date,
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
-            'attendees' => '[]',
-            'user_id' => Auth::id(),
+            'attending_limit' => $request->attending_limit,
+            'owner_id' => Auth::id(),
         ]);
 
-        if (count($request->attachments)) {
+        if (count($request->images)) {
             $upload = new Upload();
-            foreach ($request->attachments as $key => $value) {
-                $data = $upload->move($value['path'], 'events/'.$event->id.'/attachments')
-                                ->resize(1024)->thumbnail(360,130)
-                                ->getData();
+            foreach ($request->images as $key => $value) {
+                if (isset($value['path'])) {
+                    $upload->move($value['path'], 'events/'.$event->id.'/images')
+                            ->resize(800,500)->thumbnail(360,130)
+                            ->getData();
 
-                EventAttachment::create([
-                    'basename' => $value['basename'],
-                    'name' => $value['name'],
-                    'type' => $value['type'],
-                    'size' => $data['size'],
-                    'cover' => $value['cover'],
-                    'event_id' => $event->id
-                ]);
+                    EventImage::create([
+                        'basename' => $value['basename'],
+                        'order' => $key,
+                        'event_id' => $event->id
+                    ]);
+                }
             }
         }
 
-        return Event::with(['user', 'attachments' => function ($query) {
-                        $query->where('cover', true);
+        return Event::with(['owner', 'images' => function ($query) {
+                        $query->orderBy('order', 'asc');
                     }])->find($event->id);
     }
 
@@ -84,18 +85,21 @@ class EventController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string',
+            'place' => 'required|string',
+            'date' => 'required|date|after_or_equal:today',
+            'start_time' => 'required',
+            'end_time' => 'nullable|after_or_equal:start_time',
         ]);
 
-        $event = Event::with('user')->find($id);
+        $event = Event::with('owner', 'images')->find($id);
         $event->name = $request->name;
         $event->description = $request->description;
         $event->place = $request->place;
         $event->date = $request->date;
         $event->start_time = $request->start_time;
         $event->end_time = $request->end_time;
+        $event->attending_limit = $request->attending_limit;
         $event->save();
-
-        $event->attachments = $event->attachments()->where('cover', true)->get();
 
         return $event;
     }
@@ -106,49 +110,46 @@ class EventController extends Controller
     }
 
 
-    public function destroyAttachment($id)
-    {
-        return EventAttachment::destroy($id);
-    }
-
-    public function makeCoverAttachment(Request $request, $id)
+    public function uploadImageTemp(Request $request)
     {
         $this->validate($request, [
-            'eventId' => 'required|integer',
-            'cover' => 'required|boolean',
+            'file' => 'required|max:10000',
         ]);
-
-        EventAttachment::where('event_id', $request->eventId)
-                        ->where('cover', true)
-                        ->update(['cover' => false]);
-
-        $event = EventAttachment::find($id);
-        $event->cover = $request->cover;
-        $event->save();
-
-        return $event;
-    }
-
-    public function uploadAttachmentTemp(Request $request)
-    {
         $upload = new Upload();
         $uploadData = $upload->uploadTemp($request->file)->getData();
         return $uploadData;
     }
 
-    public function uploadAttachment(Request $request)
+    public function uploadImage(Request $request)
     {
+        $this->validate($request, [
+            'file' => 'required|max:10000',
+        ]);
         $upload = new Upload();
-        $data = $upload->upload($request->file, 'events/'.$request->id.'/attachments')
-                        ->resize(1024)->thumbnail(360,130)
+        $data = $upload->upload($request->file, 'events/'.$request->id.'/images')
+                        ->resize(800,500)->thumbnail(360,130)
                         ->getData();
-
-        return EventAttachment::create([
+        $maxOrder = EventImage::where('event_id', $request->id)->max('order');
+        $maxOrder ++;
+        return EventImage::create([
             'basename' => $data['basename'],
-            'name' => $data['name'],
-            'type' => $data['type'],
-            'size' => $data['size'],
+            'order' => $maxOrder,
             'event_id' => $request->id
         ]);
+    }
+
+    public function sortImage(Request $request, $eventId)
+    {
+        foreach ($request->images as $key => $v) {
+            EventImage::where('id', $v['id'])
+                        ->where('event_id', $eventId)
+                        ->update(['order' => $key]);
+        }
+        return EventImage::where('event_id', $eventId)->orderBy('order', 'asc')->get();
+    }
+
+    public function destroyImage($id)
+    {
+        return EventImage::destroy($id);
     }
 }

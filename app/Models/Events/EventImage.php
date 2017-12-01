@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Storage;
 
-class EventAttachment extends Model
+class EventImage extends Model
 {
     use SoftDeletes;
 
@@ -23,14 +23,14 @@ class EventAttachment extends Model
 
     public function getUrlAttribute()
     {
-        return Storage::url('events/'.$this->event_id.'/attachments/'.$this->basename);
+        return Storage::url('events/'.$this->event_id.'/images/'.$this->basename);
     }
 
     public function getUrlThumbnailAttribute()
     {
-        if (in_array($this->type, ['image/jpg','image/jpeg','image/png','image/gif',]))
-            return Storage::url('events/'.$this->event_id.'/attachments/thumbnail_'.$this->basename);
+        if (Storage::url('events/'.$this->event_id.'/images/thumbnail_'.$this->basename))
+            return Storage::url('events/'.$this->event_id.'/images/thumbnail_'.$this->basename);
 
-        return Storage::url('events/'.$this->event_id.'/attachments/'.$this->basename);
+        return Storage::url('events/'.$this->event_id.'/images/'.$this->basename);
     }
 }

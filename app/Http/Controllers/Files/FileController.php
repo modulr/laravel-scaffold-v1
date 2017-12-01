@@ -35,6 +35,9 @@ class FileController extends Controller
         if ($request->is_folder) {
             $request->is_folder = true;
         } else {
+            $this->validate($request, [
+                'file' => 'required|max:10000',
+            ]);
             $upload = new Upload();
             // Is image
             if (is_array(getimagesize($request->file))) {

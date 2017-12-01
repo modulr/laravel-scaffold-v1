@@ -26,7 +26,7 @@ Vue.component('notifications', require('./components/layout/Notifications.vue'))
 // Users
 Vue.component('users', require('./components/users/Users.vue'));
 Vue.component('roles', require('./components/users/Roles.vue'));
-// Profile REad
+// Profile
 Vue.component('profileSidebar', require('./components/profile/read/Sidebar.vue'));
 Vue.component('profile', require('./components/profile/read/Profile.vue'));
 Vue.component('profileWork', require('./components/profile/read/Work.vue'));
@@ -54,6 +54,7 @@ Vue.component('files', require('./components/files/Files.vue'));
 Vue.component('files-widget', require('./components/files/FilesWidget.vue'));
 // Events
 Vue.component('events', require('./components/events/Events.vue'));
+Vue.component('event', require('./components/events/Event.vue'));
 Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
 
 const app = new Vue({
