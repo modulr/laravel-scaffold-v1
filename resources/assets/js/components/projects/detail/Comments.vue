@@ -82,8 +82,8 @@
                 var btn = $(e.target).button('loading');
                 axios.post('/comments/store/' + this.project.id, this.comment)
                     .then(response => {
-                        this.comments.push(response.data);
-                        this.comment = '';
+                        this.comments.unshift(response.data);
+                        this.comment = {};
                         this.error = {};
                         var btn = $(e.target).button('reset')
                     })
