@@ -21,7 +21,7 @@ class QuoteController extends Controller
   }
 
   public function all(Request $request)
-  {    
+  {
     $query = Quote::query();
 
     if($request->name) {
@@ -29,7 +29,7 @@ class QuoteController extends Controller
     }
     if($request->customer) {
         $query->where('customer_id', $request->customer);
-    } 
+    }
     if($request->project) {
         $query->where('project_id', $request->project);
     }
@@ -39,9 +39,23 @@ class QuoteController extends Controller
     if($request->service) {
         $query->where('service_id', $request->service);
     }
+    $quotesMXN = clone $query;
+    $quotesUSD = clone $query;
+    $quotesPending = clone $query;
+    $quotesApprove = clone $query;
+    $quotesSent = clone $query;
+    $quotesRefuse = clone $query;
     $quotes = $query->paginate(10);
     $quotes->load($this->relationships);
-    return $quotes;    
+    return response()->json([
+        'quotes' => $quotes,
+        'amountMXN' => $quotesMXN->where('currency_id', 1)->sum('amount'),
+        'amountUSD' => $quotesUSD->where('currency_id', 2)->sum('amount'),
+        'pending' => $quotesPending->where('status_id', 1)->count(),
+        'sent' => $quotesSent->where('status_id', 2)->count(),
+        'approve' => $quotesApprove->where('status_id', 3)->count(),
+        'refuse' => $quotesRefuse->where('status_id', 4)->count(),
+    ]);
   }
 
   public function show($id)

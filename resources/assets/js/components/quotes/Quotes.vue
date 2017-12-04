@@ -2,7 +2,7 @@
   <div class="quotes">
     <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
     <div class="wrapper" v-if="!loading">
-      <div class="material-button top right">
+      <div class="material-button bottom right">
           <button href="#" class="btn-primary" @click.prevent="add">
               <i class="mdi mdi-add mdi-lg"></i>
           </button>
@@ -57,76 +57,140 @@
           </div>
         <div class="col-md-10" v-if="quotes.length != 0">
           <div class="col-md-12">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Project</th>
-                <th>Designer</th>
-                <th>Salesman</th>
-                <th>Amount</th>
-                <th>Currency</th>
-                <th>Request Date</th>
-                <th>Delivery Date</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(quote, index) in filteredQuotes">
-                <td> {{ quote.id }} </td>
-                <td> {{ quote.name }} </td>
-                <td> {{ quote.project.name }} </td>
-                <td> {{ quote.designer.name }} </td>
-                <td> {{ quote.salesman.name }} </td>
-                <td> {{ quote.amount | currency }} </td>
-                <td> {{ quote.currency.title }} </td>
-                <td> {{ quote.request_date | date }} </td>
-                <td> {{ quote.delivery_date | date }} </td>
-                <td>
-                  <span class="chip" :class="'status-'+quote.status.title">
-                      {{quote.status.title}}
-                  </span>
-                </td>
-                <td class="text-right">
-                    <div class="dropdown">
-                        <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li>
-                                <a href="#" @click.prevent="edit(quote, index)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                  Edit
-                                </a>
-                                <a href="#" @click.prevent="uploadFile(quote)"><i class="fa fa-file-pdf-o"></i>
-                                  Upload PDF
-                                </a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li>
-                              <a href="#" @click.prevent="changeStatus(quote, index, 2)"><i class="fa fa-envelope-o"></i> Sent</a>
-                              <a href="#" @click.prevent="changeStatus(quote, index, 3)"><i class="fa fa-thumbs-o-up"></i> Approve</a>
-                              <a href="#" @click.prevent="changeStatus(quote, index, 4)"><i class="fa fa-thumbs-o-down"></i> Refuse</a>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <paginate
-            :page-count="pagination.last_page"
-            :margin-pages="2"
-            :page-range="2"
-            :initial-page="pagination.current_page - 1"
-            :container-class="'ui pagination menu'"
-            :page-link-class="'item'"
-            :prev-link-class="'item'"
-            :next-link-class="'item'"
-            :click-handler="clickCallback">
-          </paginate>
-        </div>
+            <div class="row">
+              <div class="col-md-2">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Amount MXN</h3>
+                  </div>
+                  <div class="panel-body">
+                    {{ insights.amountMXN | currency }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Amount USD</h3>
+                  </div>
+                  <div class="panel-body">
+                    {{ insights.amountUSD | currency }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Total Pending</h3>
+                  </div>
+                  <div class="panel-body">
+                    {{ insights.pending }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Total Sent</h3>
+                  </div>
+                  <div class="panel-body">
+                    {{ insights.sent }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Total Approve</h3>
+                  </div>
+                  <div class="panel-body">
+                    {{ insights.approve }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Total Refuse</h3>
+                  </div>
+                  <div class="panel-body">
+                    {{ insights.refuse }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Project</th>
+                    <th>Designer</th>
+                    <th>Salesman</th>
+                    <th>Amount</th>
+                    <th>Currency</th>
+                    <th>Request Date</th>
+                    <th>Delivery Date</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(quote, index) in filteredQuotes">
+                    <td> {{ quote.id }} </td>
+                    <td> {{ quote.name }} </td>
+                    <td> {{ quote.project.name }} </td>
+                    <td> {{ quote.designer.name }} </td>
+                    <td> {{ quote.salesman.name }} </td>
+                    <td> {{ quote.amount | currency }} </td>
+                    <td> {{ quote.currency.title }} </td>
+                    <td> {{ quote.request_date | date }} </td>
+                    <td> {{ quote.delivery_date | date }} </td>
+                    <td>
+                      <span class="chip" :class="'status-'+quote.status.title">
+                          {{quote.status.title}}
+                      </span>
+                    </td>
+                    <td class="text-right">
+                        <div class="dropdown">
+                            <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="#" @click.prevent="edit(quote, index)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                      Edit
+                                    </a>
+                                    <a href="#" @click.prevent="uploadFile(quote)"><i class="fa fa-file-pdf-o"></i>
+                                      Upload PDF
+                                    </a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                  <a href="#" @click.prevent="changeStatus(quote, index, 2)"><i class="fa fa-envelope-o"></i> Sent</a>
+                                  <a href="#" @click.prevent="changeStatus(quote, index, 3)"><i class="fa fa-thumbs-o-up"></i> Approve</a>
+                                  <a href="#" @click.prevent="changeStatus(quote, index, 4)"><i class="fa fa-thumbs-o-down"></i> Refuse</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <paginate
+                :page-count="pagination.last_page"
+                :margin-pages="2"
+                :page-range="2"
+                :initial-page="pagination.current_page - 1"
+                :container-class="'ui pagination menu'"
+                :page-link-class="'item'"
+                :prev-link-class="'item'"
+                :next-link-class="'item'"
+                :click-handler="clickCallback">
+              </paginate>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -182,7 +246,8 @@ export default {
       pagination : {
         current_page: 0,
         last_page: 1
-      }
+      },
+      insights : {}
     }
   },
   components: {
@@ -247,7 +312,7 @@ export default {
           })
       }
       return filteredArray;
-    }
+    },
   },
   methods: {
     searchProjects (customer) {
@@ -289,8 +354,15 @@ export default {
       var page = Number(this.pagination.current_page);
       axios.get(`/quote/all?page=${page}${this.search ? '&name=' + this.search: ''}${this.sort.customer ? '&customer=' + this.sort.customer.id : ''}${this.sort.project ? '&project=' + this.sort.project.id : ''}${this.sort.status ? '&status=' + this.sort.status.id : ''}${this.sort.service ? '&service=' + this.sort.service.id : ''}`)
         .then(response => {
-          this.quotes = response.data.data
-          this.pagination.last_page = response.data.last_page
+          this.quotes = response.data.quotes.data
+          this.pagination.last_page = response.data.quotes.data.last_page
+          this.insights.total = response.data.quotes.total
+          this.insights.amountMXN = response.data.amountMXN
+          this.insights.amountUSD = response.data.amountUSD
+          this.insights.pending = response.data.pending
+          this.insights.sent = response.data.sent
+          this.insights.approve = response.data.approve
+          this.insights.refuse = response.data.refuse
           this.loading = false
         });
     },
