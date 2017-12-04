@@ -25,6 +25,7 @@
                                     <th>Request Date</th>
                                     <th>Delivery Date</th>
                                     <th>Status</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -43,6 +44,21 @@
                                             {{quote.status.title}}
                                         </span>
                                     </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li>
+                                                    <a href="#" @click.prevent="uploadFile(quote)">
+                                                        <i class="fa fa-file-pdf-o"></i>
+                                                        Attachments
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -51,6 +67,8 @@
                 </div>
             </div>
         </div>
+
+        <quotes-attachment :type="type" :quotes="quotes" :quote="quote" class="modal fade" id="myModalFile"></quotes-attachment>
     </div>
 </template>
 
