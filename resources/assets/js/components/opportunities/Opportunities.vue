@@ -87,7 +87,7 @@
                                 </td>
                                 <td>
                                     <span v-if="item.quote">
-                                        {{ totalQuotes(item.quote) | currency }}
+                                        {{ totalQuotes(item.quote) | currency }} <b>MXN</b>
                                     </span>
                                 </td>
                                 <td>

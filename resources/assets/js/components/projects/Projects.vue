@@ -57,6 +57,7 @@
                                     <th>Name</th>
                                     <th>Start Date</th>
                                     <th>Deadline</th>
+                                    <th>Total</th>
                                     <th>Leader</th>
                                     <th>Supervisor</th>
                                     <th>Priority</th>
@@ -83,6 +84,11 @@
                                     <td>
                                         {{item.end_date | date}}
                                         <br>
+                                    </td>
+                                    <td>
+                                        <span v-if="item.quote">
+                                            {{ totalQuotes(item.quote) | currency }} <b>MXN</b>
+                                        </span>
                                     </td>
                                     <td>
                                         <span v-if="item.leader">
