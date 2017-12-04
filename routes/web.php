@@ -161,6 +161,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/projects/list/customers', 'ProjectController@listCustomers');
     Route::get('/projects/list/owners', 'ProjectController@listOwners');
     Route::get('/projects/list/areas', 'ProjectController@listAreas');
+    
+    //Comments
+    Route::post('/comments/store/{id}', 'Comments\ProjectCommentsController@store');
 
 
     // Employes

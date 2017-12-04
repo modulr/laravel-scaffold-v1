@@ -110,23 +110,6 @@ export default {
             },
         }
     },
-    computed: {
-        filteredClients: function() {
-            var filteredArray = this.list.clients;
-
-            if (this.opportunity.customer.id !== '') {
-                filteredArray = filteredArray.filter(item => {
-                    return _.findKey(this.opportunity.customer, (o) => {
-                        if(o === item.customer_id) {
-                            return item;
-                        }
-                    })
-                })
-            }
-
-            return filteredArray;
-        }
-    },
     mounted() {
         axios.get('/opportunities/list/priorities')
             .then(response => {
@@ -144,6 +127,23 @@ export default {
             .then(response => {
                 this.list.areas = response.data;
             });
+    },
+    computed: {
+        filteredClients: function() {
+            var filteredArray = this.list.clients;
+
+            if (this.opportunity.customer.id !== '') {
+                filteredArray = filteredArray.filter(item => {
+                    return _.findKey(this.opportunity.customer, (o) => {
+                        if(o === item.customer_id) {
+                            return item;
+                        }
+                    })
+                })
+            }
+
+            return filteredArray;
+        }
     },
     methods: {
         store: function (e) {

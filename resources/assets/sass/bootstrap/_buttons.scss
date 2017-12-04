@@ -50,3 +50,8 @@
     color: $brand-gray;
     background-color: lighten($brand-gray, 20%);
 }
+
+.warning {
+    color: $warning;
+    background-color: darken($warning, 20%); 
+}

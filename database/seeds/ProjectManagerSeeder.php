@@ -90,6 +90,10 @@ class ProjectManagerSeeder extends Seeder
             [
                 'id' => '3',
                 'name' => 'Canceled'
+            ],
+            [
+                'id' => '4',
+                'name' => 'New'
             ]
         ]);
     }

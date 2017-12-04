@@ -16,7 +16,7 @@ class ProjectController extends Controller
 {
     public function __construct()
     {
-        $this->relationships = ['owner', 'priority', 'client', 'client.customer', 'quote', 'quote.designer', 'quote.salesman', 'quote.status', 'quote.currency', 'area', 'leader', 'supervisor'];
+        $this->relationships = ['owner', 'priority', 'client', 'client.customer', 'quote', 'quote.designer', 'quote.salesman', 'quote.status', 'quote.currency', 'area', 'leader', 'supervisor', 'project_status', 'comment', 'comment.user'];
     }
     /**
      * Display a listing of the resource.

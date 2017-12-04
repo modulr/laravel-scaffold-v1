@@ -1,0 +1,18 @@
+.comments {
+    img {
+        margin-right: 10px;
+    }
+    textarea {
+        overflow: auto;
+        word-wrap: break-word;
+        resize: none;
+        height: 60px;
+        z-index: auto;
+        position: relative;
+        outline: none;
+        width: 100%;
+    }
+    .comment-input {
+        margin-top: 10px;
+    }
+}

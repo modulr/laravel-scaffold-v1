@@ -110,7 +110,7 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Quotes\Quote::class);
     }
 
-    public function comments()
+    public function comment()
     {
         return $this->hasOne(\App\Models\Comments\ProjectComment::class);
     }

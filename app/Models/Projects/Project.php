@@ -55,6 +55,6 @@ class Project extends Model
 
     public function comment()
     {
-        return $this->belongsTo(\App\Models\Comments\ProjectComment::class);
+        return $this->hasMany(\App\Models\Comments\ProjectComment::class);
     }
 }

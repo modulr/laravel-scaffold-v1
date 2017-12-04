@@ -126,10 +126,6 @@
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                     Edit
                                                 </a>
-                                                <a href="#" @click.prevent="makeProject(item, index)">
-                                                    <i class="fa fa-check-circle-o"></i>
-                                                    Make Project
-                                                </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -311,37 +307,6 @@ export default {
                         })
                 }
             return total;
-        },
-        makeProject: function (item, index) {
-            var self = this;
-            swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this opportunity!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, turn it into a new project!",
-                    closeOnConfirm: false
-                },
-                function () {
-                    axios.put('/opportunities/update/' + item.id + '/make_project')
-                        .then(response => {
-                            self.opportunities.splice(index, 1);
-                            swal({
-                                title: "Updated!",
-                                text: "The opportunity has been turned into a project.",
-                                type: "success",
-                                timer: 1000,
-                                showConfirmButton: false
-                            });
-                            When
-                            self.error = {};
-                            $('#modalEdit').modal('hide');
-                        })
-                        .catch(error => {
-                            self.error = error.response.data;
-                        });
-                });
         },
         clearFilters: function() {
             this.sort = {

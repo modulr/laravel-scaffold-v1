@@ -60,6 +60,8 @@
                                     <th>Leader</th>
                                     <th>Supervisor</th>
                                     <th>Priority</th>
+                                    <th>% Completed</th>
+                                    <th>Status</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -96,6 +98,12 @@
                                     <td>
                                         <span class="chip" :class="'priority-'+item.priority.name">
                                             {{item.priority.name}}
+                                        </span>
+                                    </td>
+                                    <td>%</td>
+                                    <td>
+                                        <span :class="[item.project_status.id == 4 ? 'chip warning' : '']">
+                                            {{item.project_status.name}}
                                         </span>
                                     </td>
                                     <td class="text-right">

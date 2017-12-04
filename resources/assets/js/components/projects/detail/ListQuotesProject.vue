@@ -2,19 +2,6 @@
     <div class="quotes">
         <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
         <div class="wrapper" v-if="!loading">
-            <div class="row">
-                <div class="col-sm-10">
-                    <a href="#" class="btn btn-primary pull-right" @click.prevent="makeProject">
-                        <i class="mdi mdi-thumb-up mdi-lg"></i> Approve Project
-                    </a>
-                </div>
-                <div class="col-sm-2">
-                    <a href="#" class="btn btn-primary pull-right" @click.prevent="add">
-                        <i class="mdi mdi-person-add mdi-lg"></i> New Quote
-                    </a>
-                </div>
-            </div>
-            <br>
             <!-- List -->
             <div class="row">
                 <!-- No items found -->
@@ -38,7 +25,6 @@
                                     <th>Request Date</th>
                                     <th>Delivery Date</th>
                                     <th>Status</th>
-                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,34 +43,6 @@
                                             {{quote.status.title}}
                                         </span>
                                     </td>
-                                    <td class="text-right">
-                                        <div class="dropdown">
-                                            <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                <li>
-                                                    <a href="#" @click.prevent="edit(quote, index)">
-                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                        Edit
-                                                    </a>
-                                                    <a href="#" @click.prevent="uploadFile(quote)">
-                                                        <i class="fa fa-file-pdf-o"></i>
-                                                        Upload PDF
-                                                    </a>
-                                                </li>
-                                                <li role="separator" class="divider"></li>
-                                                <li>
-                                                    <a href="#" @click.prevent="changeStatus(quote, index, 2)">
-                                                        <i class="fa fa-envelope-o"></i> Sent</a>
-                                                    <a href="#" @click.prevent="changeStatus(quote, index, 3)">
-                                                        <i class="fa fa-thumbs-o-up"></i> Approve</a>
-                                                    <a href="#" @click.prevent="changeStatus(quote, index, 4)">
-                                                        <i class="fa fa-thumbs-o-down"></i> Refuse</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -93,12 +51,6 @@
                 </div>
             </div>
         </div>
-        <!-- Add quote -->
-        <create-quote :opportunity="opportunity" :list="list" :quotes="quotes" :quote="quote" class="modal right fade" id="modalAdd"></create-quote>
-        <!-- Edit quote -->
-        <quotes-edit :list="list" :quotes="quotes" :quote="quote" class="modal right fade" id="modalEdit"></quotes-edit>
-        <!-- Modal File -->
-        <quotes-attachment :type="type" :quotes="quotes" :quote="quote" class="modal fade" id="myModalFile"></quotes-attachment>
     </div>
 </template>
 
@@ -109,7 +61,7 @@ import Vue2Filters from 'vue2-filters';
 import Paginate from 'vuejs-paginate';
 import Multiselect from 'vue-multiselect'
 export default {
-    props: ['opportunity'],
+    props: ['project'],
     data() {
         return {
             user: Laravel.user,
@@ -158,7 +110,7 @@ export default {
     methods: {
         getQuote() {
             this.loadingQuotes = true
-            axios.get(`/quote/all?project=${this.opportunity.id}`)
+            axios.get(`/quote/all?project=${this.project.id}`)
                 .then(response => {
                     this.quotes = response.data.data
                     this.loadingQuotes = false
@@ -232,7 +184,7 @@ export default {
             var self = this;
             swal({
                     title: "Are you sure?",
-                    text: "You will not be able to recover this opportunity!",
+                    text: "You will not be able to recover this project!",
                     type: "warning",
                     showLoaderOnConfirm: true,
                     showCancelButton: true,
@@ -240,11 +192,11 @@ export default {
                     closeOnConfirm: false
                 },
                 function () {
-                    axios.put('/opportunities/update/' + self.opportunity.id + '/make_project')
+                    axios.put('/opportunities/update/' + self.project.id + '/make_project')
                         .then(response => {
                             swal({
                                 title: "Updated!",
-                                text: "The opportunity has been turned into a project.",
+                                text: "The project has been turned into a project.",
                                 type: "success",
                                 timer: 1000,
                                 showConfirmButton: false

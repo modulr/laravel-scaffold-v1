@@ -6,6 +6,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{project.name}}</h3>
+                    <a href="#" class="pull-right" @click.prevent="viewComments">View comments</a>
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -51,7 +52,8 @@
                     </div>
                 </div>
             </div>
-            <list-quotes :project="project"></list-quotes>
+            <comments :project="project" :comments="project.comment" class="modal right fade" id="modalComments"></comments>
+            <list-quotes-project :project="project"></list-quotes-project>
         </div>
     </div>
 </template>
@@ -70,7 +72,7 @@ export default {
     },
     props: ['project'],
     components: {
-      Spinner
+        Spinner
     },
     mounted() {
 
@@ -81,15 +83,8 @@ export default {
         }
     },
     methods: {
-        addQuote: function() {
-            this.quote = {
-            name: '',
-            registered: '',
-            description: '',
-            };
-            this.error = {};
-
-            $('#modalAddQuote').show();
+        viewComments: function() {
+            $('#modalComments').modal('show');
         }
     }
 }

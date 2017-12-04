@@ -57,6 +57,8 @@ Vue.component('projects', require('./components/projects/Projects.vue'));
 Vue.component('projectsCreate', require('./components/projects/Create.vue'));
 Vue.component('projectsEdit', require('./components/projects/Edit.vue'));
 Vue.component('project', require('./components/projects/detail/Project.vue'));
+Vue.component('listQuotesProject', require('./components/projects/detail/ListQuotesProject.vue'));
+Vue.component('comments', require('./components/projects/detail/Comments.vue'));
 // Opportunities
 Vue.component('opportunities', require('./components/opportunities/Opportunities.vue'));
 Vue.component('opportunitiesCreate', require('./components/opportunities/Create.vue'));

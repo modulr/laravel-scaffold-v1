@@ -9,7 +9,11 @@ class ProjectComment extends Model
 {
     use SoftDeletes;
 
+    protected $fillable = ['project_id', 'user_id', 'comment'];
+
     protected $dates = ['deleted_at'];
+
+    protected $table = 'projects_comments';
 
     public function user()
     {
@@ -18,6 +22,6 @@ class ProjectComment extends Model
 
     public function project()
     {
-        return $this->hasOne(\App\Models\Projects\Project::class);
+        return $this->belongsTo(\App\Models\Projects\Project::class);
     }
 }
