@@ -100,7 +100,8 @@
                                             {{item.priority.name}}
                                         </span>
                                     </td>
-                                    <td>%</td>
+                                    <td><span v-if="item.completed_percentage">{{item.completed_percentage}}%</span>
+                                    <span v-else>0%</span></td>
                                     <td>
                                         <span :class="[item.project_status.id == 4 ? 'chip warning' : '']">
                                             {{item.project_status.name}}

@@ -160,7 +160,7 @@ export default {
             this.loadingQuotes = true
             axios.get(`/quote/all?project=${this.opportunity.id}`)
                 .then(response => {
-                    this.quotes = response.data.data
+                    this.quotes = response.data.quotes.data
                     this.loadingQuotes = false
                 });
             axios.get('/services/all')

@@ -81,6 +81,15 @@
                                 </p>
                             </div>
                         </div>
+                        <div class="form-group" :class="{'has-error': error.completed_percentage}">
+                            <label class="col-sm-3 control-label required">% Completed</label>
+                            <div class="col-sm-9">
+                                <div class="col-sm-9">
+                                <input type="number" class="form-control" :placeholder="project.completed_percentage" required v-model="project.completed_percentage" min="0" max="100">
+                                <span class="help-block" v-if="error.completed_percentage">{{error.completed_percentage[0]}}</span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label required">Owner</label>
                             <div class="col-sm-9">

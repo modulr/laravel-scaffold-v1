@@ -144,6 +144,10 @@ class ProjectController extends Controller
             $q->supervisor_id = $request->supervisor['id'];
         }
 
+        if ($q->completed_percentage != $request->completed_percentage) {
+            $q->completed_percentage = $request->completed_percentage;
+        }
+
         $q->save();
 
         return $q->load($this->relationships);

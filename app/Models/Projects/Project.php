@@ -11,7 +11,7 @@ class Project extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name', 'registered_date', 'acceptance_date', 'cancelled_date', 'start_date', 'end_date', 'project_status', 'status', 'description', 'owner_id', 'leader_id', 'supervisor_id', 'priority_id', 'client_id', 'area_id'];
+    protected $fillable = ['name', 'registered_date', 'acceptance_date', 'cancelled_date', 'start_date', 'end_date', 'project_status', 'status', 'description', 'owner_id', 'leader_id', 'supervisor_id', 'priority_id', 'client_id', 'area_id', 'completed_percentage', 'factured_percentage'];
 
     public function owner()
     {
