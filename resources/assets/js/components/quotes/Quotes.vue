@@ -6,13 +6,13 @@
           <button href="#" class="btn-primary" @click.prevent="add">
               <i class="mdi mdi-add mdi-lg"></i>
           </button>
-      </div>      
+      </div>
       <!-- List -->
       <div class="row">
         <div class="col-md-2">
           <div class="col-md-12 filters">
               <h4 class="heading">Filters</h4>
-              <a href="#" class="pull-right" @click.prevent="getQuotes">Buscar</a>
+              <a href="#" class="pull-right" @click.prevent="getQuotes">Search</a>
               <a href="#" class="pull-right" @click.prevent="clearFilters">Clear</a>
               <div class="row">
                 <div class="card search col-xs-12">
@@ -51,7 +51,7 @@
                 </div>
           </div>
         </div>
-        <!-- No items found -->        
+        <!-- No items found -->
         <div class="col-md-10" v-if="quotes.length == 0">
             <h3>No quotes found.</h3>
           </div>
@@ -130,11 +130,11 @@
         </div>
       </div>
     </div>
-    <!-- Add quote -->    
+    <!-- Add quote -->
     <quotes-create :list="list" :quotes="quotes" :quote="quote" class="modal right fade" id="modalAdd"></quotes-create>
     <!-- Edit quote -->
     <quotes-edit :list="list" :quotes="quotes" :quote="quote" class="modal right fade" id="modalEdit"></quotes-edit>
-    <!-- Modal File --> 
+    <!-- Modal File -->
     <quotes-attachment :type="type" :quotes="quotes" :quote="quote" class="modal fade" id="myModalFile"></quotes-attachment>
   </div>
 </template>
@@ -170,7 +170,7 @@ export default {
         ],
         status: []
       },
-      error: {},      
+      error: {},
       type: '2',
       search: '',
       sort: {
@@ -249,7 +249,7 @@ export default {
       return filteredArray;
     }
   },
-  methods: {    
+  methods: {
     searchProjects (customer) {
       if (customer) {
         this.quote.customer = customer
@@ -321,7 +321,7 @@ export default {
         }
       })
       $('#myModalFile').modal('show')
-    },    
+    },
     changeStatus (quote, index, status) {
       this.quote = _.clone(quote)
       this.quote.status_id = status

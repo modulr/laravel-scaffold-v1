@@ -35,9 +35,27 @@ class OpportunityController extends Controller
         return view('opportunities.opportunity', ['breadcrumb' => $request->path(), 'opportunity' => $opportunity]);
     }
 
-    public function all()
+    public function all(Request $request)
     {
-        return Project::with($this->relationships)->where('status', 1)->paginate(10);
+        $query = Project::query();
+        $query->where('status', 1);
+        if($request->name) {
+            $query->where('projects.name', 'LIKE', '%'.$request->name.'%');
+        }
+        if($request->client) {
+          $query->whereIn('client_id', explode(",",$request->client));
+        }
+        if($request->customer) {
+          $query->join('clients', 'projects.client_id', '=', 'clients.id');
+          $query->select('projects.*');
+          $query->whereIn('clients.customer_id', explode(",",$request->customer));
+        }
+        if($request->area) {
+          $query->whereIn('area_id', explode(",",$request->area));
+        }
+        $oppotunities = $query->paginate(10);
+        $oppotunities->load($this->relationships);
+        return $oppotunities;
     }
 
     public function listByCustomer(Request $request, $id)
@@ -46,7 +64,7 @@ class OpportunityController extends Controller
                     ->join('clients', 'projects.client_id', '=', 'clients.id')
                     ->join('customers', 'clients.customer_id', '=', 'customers.id')
                     ->select('projects.*')
-                    ->where('customers.id', $id)                    
+                    ->where('customers.id', $id)
                     ->get();
     }
 

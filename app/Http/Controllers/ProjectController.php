@@ -35,9 +35,28 @@ class ProjectController extends Controller
         return view('projects.project', ['breadcrumb' => $request->path(), 'project' => $project]);
     }
 
-    public function all()
+    public function all(Request $request)
     {
-        return Project::with($this->relationships)->where('status', 2)->paginate(10);
+        // return Project::with($this->relationships)->where('status', 2)->paginate(10);
+        $query = Project::query();
+        $query->where('status', 2);
+        if($request->name) {
+            $query->where('projects.name', 'LIKE', '%'.$request->name.'%');
+        }
+        if($request->client) {
+          $query->whereIn('client_id', explode(",",$request->client));
+        }
+        if($request->customer) {
+          $query->join('clients', 'projects.client_id', '=', 'clients.id');
+          $query->select('projects.*');
+          $query->whereIn('clients.customer_id', explode(",",$request->customer));
+        }
+        if($request->area) {
+          $query->whereIn('area_id', explode(",",$request->area));
+        }
+        $projects = $query->paginate(10);
+        $projects->load($this->relationships);
+        return $projects;
     }
 
     /**

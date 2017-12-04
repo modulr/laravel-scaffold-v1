@@ -8,17 +8,12 @@
                     <i class="mdi mdi-add mdi-lg"></i>
                 </button>
             </div>
-            <!-- No items found -->
-            <div class="row" v-if="opportunities.length == 0">
-                <div class="col-md-12">
-                    <h3>No opportunities found.</h3>
-                </div>
-            </div>
             <!-- List -->
-            <div class="row" v-if="opportunities.length != 0">
+            <div class="row">
                 <div class="col-md-2">
                     <div class="col-md-12 filters">
                         <h4 class="heading">Filters</h4>
+                        <a href="#" class="pull-right" @click.prevent="getAll">Search</a>
                         <a href="#" class="pull-right" @click.prevent="clearFilters">Clear</a>
                         <div class="row">
                             <div class="card search col-xs-12">
@@ -55,7 +50,11 @@
                     </div>
                 </div>
                 <div class="col-md-10">
-                    <div class="col-md-12">
+                  <!-- No items found -->
+                    <div class="col-md-12" v-if="opportunities.length == 0">
+                        <h3>No opportunities found.</h3>
+                    </div>
+                    <div class="col-md-12" v-if="opportunities.length != 0">
                         <table class="table table-hover">
                         <thead>
                             <tr>
@@ -262,7 +261,7 @@ export default {
         getAll: function () {
             var page = Number(this.pagination.current_page);
             this.loading = true;
-            axios.get('/opportunities/all?page=' + page)
+            axios.get(`/opportunities/all?page=${page}${this.search ? '&name=' + this.search: ''}${(this.sort.client && this.sort.client.length > 0) ? '&client=' + this.sort.client.map(item => item.id) : ''}${(this.sort.customers && this.sort.customers.length > 0) ? '&customer=' + this.sort.customers.map(item => item.id) : ''}${(this.sort.area && this.sort.area.length > 0) ? '&area=' + this.sort.area : ''}`)
             .then(response => {
                 axios.get('/opportunities/list/priorities')
                 .then(response => {
