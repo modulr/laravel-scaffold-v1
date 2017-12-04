@@ -37,8 +37,8 @@
                             </a>
                         </div>
                         <div class="panel-body">
-                            <a :href="`/profile/${event.owner.id}`">
-                                <img class="avatar-sm" :src="event.owner.avatar_url">
+                            <a :href="`/profile/${event.creator.id}`">
+                                <img class="avatar-sm" :src="event.creator.avatar_url">
                             </a>
                             <h4>{{event.name}}</h4>
                             <p><i class="fa fa-fw fa-map-marker fa-lg" aria-hidden="true"></i> {{event.place}}</p>
@@ -55,7 +55,7 @@
                             </div>
                         </div>
                         <a href="#" class="btn-edit"
-                            v-if="event.owner_id == user.id"
+                            v-if="event.created_by == user.id"
                             @click.prevent="editEvent(event, index)">
                             <span class="fa-stack">
                                 <i class="fa fa-circle fa-stack-2x"></i>
@@ -68,12 +68,7 @@
             <!-- Init Message -->
             <div class="init-message" v-else>
                 <i class="mdi mdi-event" aria-hidden="true"></i>
-                <p class="lead">Don't exist Events... create one!!</p>
-                <a href="#" class="btn btn-success"
-                    v-if="user.hasPermission['create-events']"
-                    @click.prevent="newEvent">
-                    <i class="fa fa-calendar-plus-o"></i> New Event
-                </a>
+                <p class="lead">Don't exist Events!!</p>
             </div>
         </div>
         <!-- Modal New Event -->
@@ -345,7 +340,7 @@
                 });
             },
             getMyEvents () {
-                axios.get('/api/events/byOwner')
+                axios.get('/api/events/byCreator')
                 .then(response => {
                     this.events = response.data.data
                     this.tabActive = 'myEvents'

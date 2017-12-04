@@ -1,0 +1,29 @@
+.notifications {
+    a {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        padding: 10px 8px;
+        border-bottom: 1px solid $gray-lighter;
+        &:hover {
+            background-color: $gray-lighter;
+        }
+    }
+    .media {
+        .media-body {
+            .media-heading {
+                margin-bottom: -5px;
+                font-weight: bold;
+                span {
+                    font-weight: normal;
+                }
+            }
+        }
+        .media-right{
+            img {
+                width: 35px;
+                height: 35px;
+            }
+        }
+    }
+}

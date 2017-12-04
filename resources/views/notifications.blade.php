@@ -4,7 +4,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                <notifications></notifications>
+                <ul class="list-unstyled notifications">
+                    <notifications></notifications>
+                </ul>
             </div>
         </div>
     </div>

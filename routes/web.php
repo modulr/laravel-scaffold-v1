@@ -24,11 +24,15 @@ Auth::routes();
 
 Route::middleware('auth')->group(function () {
     // Dashboard
-    Route::get('/dashboard', 'DashboardController@index');
-    Route::get('/dashboard/markAsRead', 'DashboardController@markAsRead');
+    Route::get('/dashboard' , function () {
+        return view('dashboard');
+    });
 
     // Notifications
-    Route::get('/notifications', 'NotificationController@index');
+    Route::get('/notifications' , function () {
+        return view('notifications');
+    });
+    Route::get('/notifications/markAsRead', 'NotificationController@markAsRead');
 
     // Lists
     Route::group(['namespace' => 'Profile', 'prefix' => 'list'], function() {
@@ -96,38 +100,60 @@ Route::middleware('auth')->group(function () {
     });
 
     // News
-    Route::group(['namespace' => 'News', 'prefix' => 'news'], function() {
-        Route::get('/', 'NewsController@index')->middleware('permission:read-news');
-        Route::get('/all', 'NewsController@all')->middleware('permission:read-news');
-        Route::post('/store', 'NewsController@store')->middleware('permission:create-news');
-        Route::delete('/destroy/{id}', 'NewsController@destroy')->middleware('permission:delete-news');
-        Route::post('/like/{id}', 'NewsController@like')->middleware('permission:read-news');
-        Route::post('/upload/temp', 'NewsController@uploadTemp')->middleware('permission:create-news');
+    Route::group(['namespace' => 'News'], function() {
+        Route::group(['prefix' => 'news'], function() {
+            Route::get('/' , function () {
+                return view('news.news');
+            })->middleware('permission:read-news');
+            Route::get('/{id}' , function ($id) {
+                return view('news.item', ['id' => $id]);
+            })->middleware('permission:read-news');
+        });
+        Route::group(['prefix' => 'api/news'], function() {
+            Route::get('/all', 'NewsController@all')->middleware('permission:read-news');
+            Route::get('/show/{id}', 'NewsController@show')->middleware('permission:read-news');
+            Route::post('/store', 'NewsController@store')->middleware('permission:create-news');
+            Route::delete('/destroy/{id}', 'NewsController@destroy')->middleware('permission:delete-news');
+            Route::post('/like/{id}', 'NewsController@like')->middleware('permission:read-news');
+            Route::post('/upload/temp', 'NewsController@uploadTemp')->middleware('permission:create-news');
+        });
     });
 
     // Tasks
-    Route::group(['namespace' => 'Tasks', 'prefix' => 'tasks'], function() {
-        Route::get('/', 'TaskController@index')->middleware('permission:read-tasks');
-        Route::get('/byUser', 'TaskController@byUser')->middleware('permission:read-tasks');
-        Route::post('/store', 'TaskController@store')->middleware('permission:create-tasks');
-        //Route::put('/update/{id}', 'TaskController@update')->middleware('permission:update-tasks');
-        Route::delete('/destroy/{id}', 'TaskController@destroy')->middleware('permission:delete-tasks');
-        Route::put('/markDone/{id}', 'TaskController@markDone')->middleware('permission:update-tasks');
-        Route::put('/updateOrder', 'TaskController@updateOrder')->middleware('permission:update-tasks');
+    Route::group(['namespace' => 'Tasks'], function() {
+        Route::group(['prefix' => 'tasks'], function() {
+            Route::get('/' , function () {
+                return view('tasks.tasks');
+            })->middleware('permission:read-tasks');
+        });
+        Route::group(['prefix' => 'api/tasks'], function() {
+            Route::get('/byCreator', 'TaskController@byCreator')->middleware('permission:read-tasks');
+            Route::post('/store', 'TaskController@store')->middleware('permission:create-tasks');
+            //Route::put('/update/{id}', 'TaskController@update')->middleware('permission:update-tasks');
+            Route::delete('/destroy/{id}', 'TaskController@destroy')->middleware('permission:delete-tasks');
+            Route::put('/markDone/{id}', 'TaskController@markDone')->middleware('permission:update-tasks');
+            Route::put('/updateOrder', 'TaskController@updateOrder')->middleware('permission:update-tasks');
+        });
     });
 
     // Contacts
-    Route::group(['namespace' => 'Contacts', 'prefix' => 'contacts'], function() {
-        Route::get('/', 'ContactsController@index')->middleware('permission:read-contacts');
-        Route::get('/all', 'ContactsController@all')->middleware('permission:read-contacts');
-        Route::get('/{id}', 'ContactsController@show')->middleware('permission:read-contacts');
+    Route::group(['namespace' => 'Contacts'], function() {
+        Route::group(['prefix' => 'contacts'], function() {
+            Route::get('/' , function () {
+                return view('contacts.contacts');
+            })->middleware('permission:read-contacts');
+        });
+        Route::group(['prefix' => 'api/contacts'], function() {
+            Route::get('/all', 'ContactsController@all')->middleware('permission:read-contacts');
+            Route::get('/{id}', 'ContactsController@show')->middleware('permission:read-contacts');
+        });
     });
 
     // Files
     Route::group(['namespace' => 'Files', 'prefix' => 'files'], function() {
         Route::get('/', 'FileController@index')->middleware('permission:read-files');
         Route::get('/folder/{folderId?}', 'FileController@index')->middleware('permission:read-files');
-        Route::get('/byUser/{parentId?}', 'FileController@byUser')->middleware('permission:read-files');
+        Route::get('/byOwner/{parentId?}', 'FileController@byOwner')->middleware('permission:read-files');
         Route::post('/store', 'FileController@store')->middleware('permission:create-files');
         Route::put('/update/{id}', 'FileController@update')->middleware('permission:update-files');
         Route::delete('/destroy/{id}', 'FileController@destroy')->middleware('permission:delete-files');
@@ -145,12 +171,12 @@ Route::middleware('auth')->group(function () {
         });
         Route::group(['prefix' => 'api/events'], function() {
             Route::get('/all', 'EventController@all')->middleware('permission:read-events');
-            Route::get('/byOwner', 'EventController@byOwner')->middleware('permission:read-events');
+            Route::get('/byCreator', 'EventController@byCreator')->middleware('permission:read-events');
             Route::get('/show/{id}', 'EventController@show')->middleware('permission:read-events');
             Route::post('/store', 'EventController@store')->middleware('permission:create-events');
             Route::put('/update/{id}', 'EventController@update')->middleware('permission:update-events');
             Route::delete('/destroy/{id}', 'EventController@destroy')->middleware('permission:delete-events');
-
+            // Images
             Route::post('/images/upload/temp', 'EventController@uploadImageTemp')->middleware('permission:create-news');
             Route::post('/images/upload/', 'EventController@uploadImage')->middleware('permission:update-news');
             Route::post('/images/sort/{eventId}', 'EventController@sortImage')->middleware('permission:update-news');

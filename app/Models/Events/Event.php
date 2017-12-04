@@ -4,20 +4,16 @@ namespace App\Models\Events;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Auth;
+use Wildside\Userstamps\Userstamps;
 
 class Event extends Model
 {
     use SoftDeletes;
+    use Userstamps;
 
     protected $dates = ['deleted_at'];
 
     protected $guarded = ['id'];
-
-    public function owner()
-    {
-      return $this->belongsTo(\App\User::class);
-    }
 
     public function images()
     {

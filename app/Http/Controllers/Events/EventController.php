@@ -14,26 +14,26 @@ class EventController extends Controller
 {
     public function all()
     {
-        return Event::with(['owner', 'images' => function ($query) {
+        return Event::with(['creator', 'images' => function ($query) {
                             $query->orderBy('order', 'asc');
                         }])
                         ->orderBy('id', 'desc')
                         ->paginate(20);
     }
 
-    public function byOwner()
+    public function byCreator()
     {
-        return Event::with(['owner', 'images' => function ($query) {
+        return Event::with(['creator', 'images' => function ($query) {
                         $query->orderBy('order', 'asc');
                     }])
-                    ->where('owner_id', Auth::id())
+                    ->where('created_by', Auth::id())
                     ->orderBy('id', 'desc')
                     ->paginate(20);
     }
 
     public function show($id)
     {
-        return Event::with(['owner', 'images' => function ($query) {
+        return Event::with(['creator', 'images' => function ($query) {
                         $query->orderBy('order', 'asc');
                     }])->find($id);
     }
@@ -56,7 +56,6 @@ class EventController extends Controller
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
             'attending_limit' => $request->attending_limit,
-            'owner_id' => Auth::id(),
         ]);
 
         if (count($request->images)) {
@@ -76,7 +75,7 @@ class EventController extends Controller
             }
         }
 
-        return Event::with(['owner', 'images' => function ($query) {
+        return Event::with(['creator', 'images' => function ($query) {
                         $query->orderBy('order', 'asc');
                     }])->find($event->id);
     }
@@ -91,7 +90,7 @@ class EventController extends Controller
             'end_time' => 'nullable|after_or_equal:start_time',
         ]);
 
-        $event = Event::with('owner', 'images')->find($id);
+        $event = Event::with('creator', 'images')->find($id);
         $event->name = $request->name;
         $event->description = $request->description;
         $event->place = $request->place;

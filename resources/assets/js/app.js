@@ -44,6 +44,7 @@ Vue.component('profilePasswordEdit', require('./components/profile/edit/Password
 //Vue.component('news', require('./components/News.vue'));
 Vue.component('newsPublish', require('./components/news/NewsPublish.vue'));
 Vue.component('newsList', require('./components/news/NewsList.vue'));
+Vue.component('news', require('./components/news/News.vue'));
 // Tasks
 Vue.component('tasks', require('./components/tasks/Tasks.vue'));
 // Contacts

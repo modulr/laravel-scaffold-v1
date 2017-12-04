@@ -170,13 +170,13 @@
         },
         methods: {
             getContacts () {
-                axios.get('/contacts/all')
+                axios.get('/api/contacts/all')
                 .then(response => {
                     this.contacts = response.data;
                 });
             },
             viewContact (contactId) {
-                axios.get('/contacts/'+contactId)
+                axios.get('/api/contacts/'+contactId)
                 .then(response => {
                     this.contactView = response.data;
                     $('#modalViewContact').modal('show');

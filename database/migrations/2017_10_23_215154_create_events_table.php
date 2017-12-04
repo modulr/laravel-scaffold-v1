@@ -22,8 +22,9 @@ class CreateEventsTable extends Migration
             $table->time('start_time')->nullable()->comment = "Start time";
             $table->time('end_time')->nullable()->comment = "End time, if one has been set";
             $table->integer('attending_limit')->nullable()->comment = "Attending limit";
-            $table->integer('owner_id')->unsigned()->comment = "Event owner";
-            $table->foreign('owner_id')->references('id')->on('users');
+            $table->unsignedInteger('created_by')->nullable()->default(null);
+            $table->unsignedInteger('updated_by')->nullable()->default(null);
+            $table->unsignedInteger('deleted_by')->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -7,9 +7,10 @@
     }
     .left-pane {
         height: 100vh;
-        padding-top: 5%;
-        padding-left: 50px;
-        padding-right: 50px;
+        // padding: 0 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background-size: cover;
         background-repeat: no-repeat;
         background-image: url(/img/bg/bg-banner.png);
@@ -23,34 +24,36 @@
                 color: white;
             }
         }
-        .swiper-button-white {
-            bottom: 30px;
-            top: inherit;
-        }
     }
     .right-pane {
         height: 100vh;
         background: white;
-        padding: 0 50px;
-        .logo {
-            margin-top: 40px;
-            margin-bottom: 60px;
-            text-align: center;
-            svg, img {
-                max-width: 250px;
-                max-height: 100px;
+        // padding: 0 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        > div {
+            width: 80%;
+            .logo {
+                margin-bottom: 20px;
+                text-align: center;
+                svg, img {
+                    max-width: 200px;
+                    max-height: 100px;
+                }
+            }
+            form {
+                .form-group {
+                    margin-bottom: 20px;
+                }
+                .input-lg {
+                    font-size: 17px !important;
+                }
+            }
+            .alert {
+                margin-top: 40px
             }
         }
-        form {
-            .form-group {
-                margin-bottom: 30px;
-            }
-        }
-        .input-lg {
-            font-size: 17px !important;
-        }
-        .alert {
-            margin-top: 40px
-        }
+
     }
 }

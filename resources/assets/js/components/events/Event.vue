@@ -19,8 +19,8 @@
                         <div class="panel-body">
                             <div class="media">
                                 <div class="media-left">
-                                    <a :href="`/profile/${event.owner.id}`">
-                                        <img class="avatar-md" :src="event.owner.avatar_url">
+                                    <a :href="`/profile/${event.creator.id}`">
+                                        <img class="avatar-md" :src="event.creator.avatar_url">
                                     </a>
                                 </div>
                                 <div class="media-body">
@@ -68,7 +68,7 @@
         data() {
             return {
                 event: {
-                    owner: {},
+                    creator: {},
                     images: [],
                 },
                 swiperOption: {

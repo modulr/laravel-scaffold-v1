@@ -66,24 +66,17 @@
     }
 
     .notifications {
-        .dropdown-menu {
-            width: 300px;
+        padding: 0;
+        width: 300px;
+        .notifications-list {
             max-height: 400px;
             overflow: scroll;
-            .media-left{
-                img {
-                    border-radius: 50%;
-                    width: 35px;
-                    height: 35px;
-                    margin-right: 5px;
-                }
-            }
-            .media-right{
-                img {
-                    width: 50px;
-                    height: 50px;
-                }
-            }
+        }
+        a {
+            padding: 10px;
+        }
+        .text-center a {
+            padding: 3px;
         }
     }
 

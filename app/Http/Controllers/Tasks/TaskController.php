@@ -9,15 +9,9 @@ use App\Models\Tasks\Task;
 
 class TaskController extends Controller
 {
-
-    public function index()
+    public function byCreator()
     {
-        return view('tasks.tasks');
-    }
-
-    public function byUser()
-    {
-        return Task::where('user_id', Auth::id())->orderBy('order', 'asc')->get();
+        return Task::where('created_by', Auth::id())->orderBy('order', 'asc')->get();
     }
 
     public function store(Request $request)
@@ -26,16 +20,15 @@ class TaskController extends Controller
             'name' => 'required|string',
         ]);
 
-        $maxOrder = Task::where('user_id', Auth::id())->max('order');
+        $maxOrder = Task::where('created_by', Auth::id())->max('order');
         $maxOrder ++;
 
         $task = Task::create([
             'name' => $request->name,
-            'user_id' => Auth::id(),
             'order'=>$maxOrder
         ]);
 
-      return Task::with('user')->find($task->id);
+      return Task::with('creator')->find($task->id);
     }
 
     public function destroy($id)

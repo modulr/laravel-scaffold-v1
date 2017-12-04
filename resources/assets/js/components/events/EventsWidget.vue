@@ -8,8 +8,8 @@
                     </a>
                 </div>
                 <div class="panel-body">
-                    <a :href="`/profile/${event.owner.id}`">
-                        <img class="avatar-sm" :src="event.owner.avatar_url">
+                    <a :href="`/profile/${event.creator.id}`">
+                        <img class="avatar-sm" :src="event.creator.avatar_url">
                     </a>
                     <h4>{{event.name}}</h4>
                     <p><i class="fa fa-fw fa-map-marker fa-lg" aria-hidden="true"></i> {{event.place}}</p>

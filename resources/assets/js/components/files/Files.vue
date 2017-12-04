@@ -153,7 +153,7 @@
                                         <span v-else>---</span>
                                     </dd>
                                     <dt><i class="fa fa-fw fa-user" aria-hidden="true"></i> Owner</dt>
-                                    <dd>{{fileCurrent.user.name}}</dd>
+                                    <dd>{{fileCurrent.owner.name}}</dd>
                                     <dt><i class="fa fa-fw fa-calendar-check-o" aria-hidden="true"></i> Created</dt>
                                     <dd>{{fileCurrent.created_at | moment('from')}}</dd>
                                     <dt><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Modified</dt>
@@ -279,12 +279,12 @@
 
             if (res[2] == 'folder') {
                 this.folderCurrentId = parseInt(res[3]);
-                axios.get('/files/byUser/' + this.folderCurrentId)
+                axios.get('/files/byOwner/' + this.folderCurrentId)
                 .then(response => {
                     this.files = response.data;
                 });
             } else {
-                axios.get('/files/byUser')
+                axios.get('/files/byOwner')
                 .then(response => {
                     this.files = response.data;
                 });

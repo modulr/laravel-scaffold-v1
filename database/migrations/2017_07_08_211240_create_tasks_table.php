@@ -14,12 +14,13 @@ class CreateTasksTable extends Migration
     public function up()
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->boolean('done')->default(false);
-            $table->integer('order');
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->increments('id')->comment = "The task ID";
+            $table->string('name')->comment = "Task name";
+            $table->boolean('done')->default(false)->comment = "Task is done";
+            $table->integer('order')->comment = "Order show the task";
+            $table->unsignedInteger('created_by')->nullable()->default(null);
+            $table->unsignedInteger('updated_by')->nullable()->default(null);
+            $table->unsignedInteger('deleted_by')->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
         });

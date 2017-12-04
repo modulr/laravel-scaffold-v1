@@ -79,7 +79,7 @@
                 },
                 optionsImageTemp: {
                     headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                    url: '/news/upload/temp',
+                    url: '/api/news/upload/temp',
                     paramName: 'file',
                     parallelUploads: 1,
                     maxFilesize: {
@@ -100,7 +100,7 @@
         methods: {
             storeNews (e) {
                 var btn = $(e.target).button('loading')
-                axios.post('/news/store', this.newItem)
+                axios.post('/api/news/store', this.newItem)
                 .then(response => {
                     EventBus.$emit('add-news', response.data)
                     this.newItem = {

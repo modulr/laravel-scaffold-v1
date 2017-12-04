@@ -15,11 +15,11 @@ class FileController extends Controller
         return view('files.files');
     }
 
-    public function byUser(Request $request, $folderId = null)
+    public function byOwner(Request $request, $folderId = null)
     {
-        $file = File::with('user')
+        $file = File::with('owner')
             ->orderBy('is_folder', 'desc')
-            ->where('user_id', Auth::id());
+            ->where('owner_id', Auth::id());
 
         if ($folderId) {
             $file->where('parent_id', $folderId);
@@ -71,7 +71,7 @@ class FileController extends Controller
             'size' => $request->size,
             'is_folder' => $request->is_folder,
             'parent_id' => $request->parent_id,
-            'user_id' => Auth::id(),
+            'owner_id' => Auth::id(),
         ]);
 
         // if (count($request->share)) {
@@ -86,7 +86,7 @@ class FileController extends Controller
         //     }
         // }
 
-        return File::with('user')->find($file->id);
+        return File::with('owner')->find($file->id);
     }
 
     public function update(Request $request, $id)
@@ -112,13 +112,13 @@ class FileController extends Controller
     // public function addShare(Request $request, $id)
     // {
     //     $this->validate($request, [
-    //         'userId' => 'required'
+    //         'ownerId' => 'required'
     //     ]);
     //
     //     $file = File::find($id);
     //
-    //     if (!$file->share->contains($request->userId)) {
-    //         $file->share()->attach($request->userId);
+    //     if (!$file->share->contains($request->ownerId)) {
+    //         $file->share()->attach($request->ownerId);
     //     }
     //
     //     return 'OK';

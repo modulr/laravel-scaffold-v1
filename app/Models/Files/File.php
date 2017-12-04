@@ -4,11 +4,13 @@ namespace App\Models\Files;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Wildside\Userstamps\Userstamps;
 use Storage;
 
 class File extends Model
 {
     use SoftDeletes;
+    use Userstamps;
 
     protected $dates = ['deleted_at'];
 
@@ -16,7 +18,7 @@ class File extends Model
 
     protected $appends = ['url', 'urlThumbnail'];
 
-    public function user()
+    public function owner()
     {
         return $this->belongsTo(\App\User::class);
     }
@@ -28,11 +30,11 @@ class File extends Model
 
     public function getUrlAttribute()
     {
-        return Storage::url('files/'.$this->user_id.'/'.$this->basename);
+        return Storage::url('files/'.$this->owner_id.'/'.$this->basename);
     }
 
     public function getUrlThumbnailAttribute()
     {
-        return Storage::url('files/'.$this->user_id.'/thumbnail_'.$this->basename);
+        return Storage::url('files/'.$this->owner_id.'/thumbnail_'.$this->basename);
     }
 }
