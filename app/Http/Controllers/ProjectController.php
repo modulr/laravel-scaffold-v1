@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Models\Projects\Project;
 use App\Models\Projects\ListPriority;
+use App\Models\Projects\ListProjectStatus;
 use App\Models\Customers\Customer;
 use App\Models\Customers\Client;
 use App\Models\Lists\ListArea;
@@ -148,6 +149,10 @@ class ProjectController extends Controller
             $q->completed_percentage = $request->completed_percentage;
         }
 
+        if ($q->project_status_id != $request->status['id']) {
+            $q->project_status_id = $request->status['id'];
+        }
+
         $q->save();
 
         return $q->load($this->relationships);
@@ -217,5 +222,17 @@ class ProjectController extends Controller
     {
         return ListArea::all();
     }
+
+     /**
+      * Get a list of project statuses.
+      *
+      * @return \Illuminate\Http\Response
+      */
+    public function listStatuses()
+    {
+        return ListProjectStatus::all();
+    }
+
+
 
 }

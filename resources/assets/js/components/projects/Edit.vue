@@ -73,6 +73,13 @@
                                 <span class="help-block" v-if="error.supervisor">{{error.supervisor[0]}}</span>
                             </div>
                         </div>
+                        <div class="form-group" :class="{'has-error': error.status}">
+                            <label class="col-sm-3 control-label required">Project Status</label>
+                            <div class="col-sm-9" v-if="list.statuses">
+                                <multiselect v-model="project.status" label="name" :options="list.statuses" :placeholder="project.status ? project.status.name:'Select a status'" :multiple="false"></multiselect>
+                                <span class="help-block" v-if="error.status">{{error.status[0]}}</span>
+                            </div>
+                        </div>
                         <div class="form-group" :class="{'has-error': error.area}">
                             <label class="col-sm-3 control-label required">Region</label>
                             <div class="col-sm-9">
@@ -131,6 +138,7 @@ export default {
                 customers: [],
                 areas: [],
                 users: [],
+                statuses: []
             },
             error: {}
         }
@@ -151,6 +159,10 @@ export default {
         axios.get('/projects/list/areas')
             .then(response => {
                 this.list.areas = response.data;
+            });
+        axios.get('/projects/list/statuses')
+            .then(response => {
+                this.list.statuses = response.data;
             });
         axios.get('/users/all')
             .then(response => {
