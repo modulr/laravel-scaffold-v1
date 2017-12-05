@@ -1,7 +1,6 @@
 .actionbar {
-    border-bottom: 1px solid lighten($brand-gray, 30%);
+    border-bottom: 1px solid $gray-lighter;
     margin-bottom: 20px;
-
     .links {
         .nav-tabs > li > a,
         .nav-tabs > li > a:focus {
@@ -11,17 +10,31 @@
         .nav-tabs > li.active > a:focus {
             @include box-shadow(inset 0 -2px 0 $brand-primary);
         }
-        .nav > li > a {
+        .nav-tabs > li > a {
             font-size: 14px;
             padding-bottom: 12px;
         }
     }
     .controls {
-        padding-bottom: 10px;
-    }
+        .btn, input {
+            margin-bottom: 10px;
+        }
 
+    }
     .separator {
         margin-left: 5px;
         margin-right: 5px;
+    }
+}
+
+@media (max-width: 767px) {
+    .actionbar {
+        border-bottom: none;
+        .links {
+            .nav-tabs {
+                margin-bottom: 10px;
+                border-bottom: 1px solid $gray-lighter;
+            }
+        }
     }
 }

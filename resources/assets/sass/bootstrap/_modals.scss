@@ -19,6 +19,12 @@
     overflow-y: auto;
 }
 
+.modal.left .modal-header,
+.modal.right .modal-header {
+    padding-bottom: 0;
+    //padding: 15px 15px 80px;
+}
+
 .modal.left .modal-body,
 .modal.right .modal-body {
     //padding: 15px 15px 80px;

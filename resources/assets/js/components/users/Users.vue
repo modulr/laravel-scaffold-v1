@@ -26,59 +26,55 @@
             <!-- List Users -->
             <div class="row">
                 <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Role</th>
-                                            <th class="text-center">Active</th>
-                                            <th>created</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="(item, index) in users.data">
-                                            <td @click="editUser(item, index)">
-                                                {{item.id}}
-                                            </td>
-                                            <td @click="editUser(item, index)">
-                                                <div class="media">
-                                                    <div class="media-left">
-                                                        <img class="avatar-xs" :src="item.avatar_url">
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <h4 class="media-heading">{{item.name}}</h4>
-                                                        <a class="text-muted" :href="`mailto:${item.email}`">{{item.email}}</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td @click="editUser(item, index)">
-                                                <span v-if="item.roles.length">{{item.roles[0].display_name}}</span>
-                                                <span v-else>---</span>
-                                            </td>
-                                            <td class="text-center" @click="editUser(item, index)">
-                                                <i class="mdi mdi-2x" :class="{'mdi-mood text-success': item.active, 'mdi-mood-bad': !item.active}"></i>
-                                            </td>
-                                            <td @click="editUser(item, index)">
-                                                <small>{{item.created_at | moment("LLL")}}</small>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <paginate
-                                v-if="users.last_page>1"
-                                :page-count="users.last_page"
-                                :click-handler="changePage"
-                                :prev-text="'Prev'"
-                                :next-text="'Next'"
-                                :container-class="'pagination pull-right'">
-                            </paginate>
-                        </div>
+                    <div class="table-responsive table-elevation">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th class="text-center">Active</th>
+                                    <th>created</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item, index) in users.data">
+                                    <td @click="editUser(item, index)">
+                                        {{item.id}}
+                                    </td>
+                                    <td @click="editUser(item, index)">
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <img class="avatar-xs" :src="item.avatar_url">
+                                            </div>
+                                            <div class="media-body">
+                                                <h4 class="media-heading">{{item.name}}</h4>
+                                                <a class="text-muted" :href="`mailto:${item.email}`">{{item.email}}</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td @click="editUser(item, index)">
+                                        <span v-if="item.roles.length">{{item.roles[0].display_name}}</span>
+                                        <span v-else>---</span>
+                                    </td>
+                                    <td class="text-center" @click="editUser(item, index)">
+                                        <i class="mdi mdi-2x" :class="{'mdi-mood text-success': item.active, 'mdi-mood-bad': !item.active}"></i>
+                                    </td>
+                                    <td @click="editUser(item, index)">
+                                        <small>{{item.created_at | moment("LLL")}}</small>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
+                    <paginate
+                        v-if="users.last_page>1"
+                        :page-count="users.last_page"
+                        :click-handler="changePage"
+                        :prev-text="'Prev'"
+                        :next-text="'Next'"
+                        :container-class="'pagination pull-right'">
+                    </paginate>
                 </div>
             </div>
         </div>
@@ -86,24 +82,20 @@
         <div class="modal right sm" id="modalNewUser">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-body">
+                    <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <div class="form-group" :class="{'has-error': error.name}">
-                            <input type="text" class="form-control input-lg" placeholder="John Doe" required
-                                   v-model="userNew.name">
-                            <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
-                        </div>
+                        <label class="switch">
+                            <input type="checkbox" v-model="userNew.active">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="switch-text">Active</span>
+                    </div>
+                    <div class="modal-body">
                         <form>
                             <div class="row">
-                                <div class="col-sm-12">
-                                    <label class="switch pull-right">
-                                        <input type="checkbox" v-model="userNew.active">
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                                <div class="col-sm-12 text-center">
+                                <div class="col-xs-12 text-center">
                                     <img class="avatar-md" :src="userNew.avatar_url" v-if="userNew.avatar_url">
                                     <i class="mdi mdi-account-circle mdi-avatar-md" v-else></i>
                                     <br>
@@ -112,11 +104,22 @@
                                         @imageuploaded="newAvatar"
                                         extensions="png,jpeg,jpg"
                                         :headers="{'X-CSRF-TOKEN': csrfToken}"
-                                        :url="'users/upload/avatar/temp'">
+                                        :url="'/api/users/upload/avatar/temp'">
                                     </vue-core-image-upload>
                                 </div>
                             </div>
-                            <hr>
+                            <div class="form-group" :class="{'has-error': error.name}">
+                                <label>Name *</label>
+                                <input type="text" class="form-control input-lg" placeholder="John Doe" required
+                                       v-model="userNew.name">
+                                <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
+                            </div>
+                            <div class="form-group" :class="{'has-error': error.email}">
+                                <label>Email *</label>
+                                <input type="email" class="form-control" placeholder="doe@modulr.io" required
+                                       v-model="userNew.email">
+                                <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
+                            </div>
                             <div class="form-group" :class="{'has-error': error.role_id}">
                                 <label>Role</label>
                                 <select class="form-control text-capitalize"
@@ -126,12 +129,6 @@
                                     </option>
                                 </select>
                                 <span class="help-block" v-if="error.role_id">{{error.role_id[0]}}</span>
-                            </div>
-                            <div class="form-group" :class="{'has-error': error.email}">
-                                <label>Email *</label>
-                                <input type="email" class="form-control" placeholder="doe@modulr.io" required
-                                       v-model="userNew.email">
-                                <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
                             </div>
                             <div class="form-group" :class="{'has-error': error.password}">
                                 <label>Password *</label>
@@ -159,28 +156,19 @@
         <div class="modal right sm" id="modalEditUser">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-body">
+                    <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <div class="form-group" :class="{'has-error': error.name}">
-                            <input type="text" class="form-control input-lg" placeholder="Name" required
-                                   v-model="userEdit.name">
-                            <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
-                        </div>
+                        <label class="switch">
+                            <input type="checkbox" v-model="userEdit.active">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="switch-text">Active</span>
+                    </div>
+                    <div class="modal-body">
                         <form>
                             <div class="row">
-                                <div class="col-xs-6">
-                                    <a :href="`/profile/${userEdit.id}/edit`">
-                                        <i class="fa fa-external-link" aria-hidden="true"></i> Edit Profile
-                                    </a>
-                                </div>
-                                <div class="col-xs-6">
-                                    <label class="switch pull-right">
-                                        <input type="checkbox" v-model="userEdit.active">
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
                                 <div class="col-xs-12 text-center">
                                     <img class="avatar-md" :src="userEdit.avatar_url">
                                     <br>
@@ -189,11 +177,22 @@
                                         @imageuploaded="editAvatar"
                                         extensions="png,jpeg,jpg"
                                         :headers="{'X-CSRF-TOKEN': csrfToken}"
-                                        :url="'users/upload/avatar/'+userEdit.id">
+                                        :url="'/api/users/upload/avatar/'+userEdit.id">
                                     </vue-core-image-upload>
                                 </div>
                             </div>
-                            <hr>
+                            <div class="form-group" :class="{'has-error': error.name}">
+                                <label>Name *</label>
+                                <input type="text" class="form-control input-lg" placeholder="Name" required
+                                       v-model="userEdit.name">
+                                <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
+                            </div>
+                            <div class="form-group" :class="{'has-error': error.email}">
+                                <label>Email *</label>
+                                <input type="email" class="form-control" placeholder="Email" required
+                                       v-model="userEdit.email">
+                                <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
+                            </div>
                             <div class="form-group" :class="{'has-error': error.role_id}">
                                 <label>Role</label>
                                 <select class="form-control text-capitalize"
@@ -204,14 +203,8 @@
                                 </select>
                                 <span class="help-block" v-if="error.role_id">{{error.role_id[0]}}</span>
                             </div>
-                            <div class="form-group" :class="{'has-error': error.email}">
-                                <label>Email *</label>
-                                <input type="email" class="form-control" placeholder="Email" required
-                                       v-model="userEdit.email">
-                                <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
-                            </div>
                             <div class="form-group" :class="{'has-error': error.password}">
-                                <label>Password</label>
+                                <label>Change Password</label>
                                 <input type="password" class="form-control"
                                        v-model="userEdit.password">
                                 <span class="help-block" v-if="error.password">{{error.password[0]}}</span>
@@ -224,6 +217,11 @@
                             <div class="form-group">
                                 <label class="pull-right">Created: <em>{{userEdit.created_at | moment("LLL")}}</em></label>
                                 <p class="form-control-static">ID: <strong>{{userEdit.id}}</strong></p>
+                            </div>
+                            <div class="form-group">
+                                <a :href="`/profile/${userEdit.id}/edit`">
+                                    <i class="fa fa-external-link" aria-hidden="true"></i> Edit Profile
+                                </a>
                             </div>
                         </form>
                     </div>
@@ -282,19 +280,19 @@
         methods: {
             getUsers (page) {
                 if (!page) {
-                    axios.get(`/users/all${this.search ? '?search=' + this.search: ''}`)
+                    axios.get(`/api/users/filter${this.search ? '?search=' + this.search: ''}`)
                     .then(response => {
                         this.users = response.data;
                     });
                 } else {
-                    axios.get(`users/all?page=${page}${this.search ? '&search=' + this.search: ''}`)
+                    axios.get(`/api/users/filter?page=${page}${this.search ? '&search=' + this.search: ''}`)
                     .then(response => {
                         this.users = response.data;
                     });
                 }
             },
             getLists () {
-                axios.get('/roles/all')
+                axios.get('/api/roles/all')
                 .then(response => {
                     this.lists.roles = response.data;
                 });
@@ -313,7 +311,7 @@
             },
             storeUser (e) {
                 var btn = $(e.target).button('loading')
-                axios.post('/users/store', this.userNew)
+                axios.post('/api/users/store', this.userNew)
                 .then(response => {
                     this.users.data.push(response.data);
                     this.userNew = {};
@@ -338,7 +336,7 @@
             },
             updateUser (e) {
                 var btn = $(e.target).button('loading')
-                axios.put('/users/update/'+this.userEdit.id, this.userEdit)
+                axios.put('/api/users/update/'+this.userEdit.id, this.userEdit)
                 .then(response => {
                     this.users.data[this.userEdit.index] = response.data;
                     this.userEdit = {};
@@ -363,9 +361,9 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    axios.delete('/users/destroy/' + self.userEdit.id)
+                    axios.delete('/api/users/destroy/' + self.userEdit.id)
                     .then(response => {
-                        self.users.splice(self.userEdit.index, 1);
+                        self.users.data.splice(self.userEdit.index, 1);
                         swal({
                             title: "Deleted!",
                             text: "The user has been deleted.",

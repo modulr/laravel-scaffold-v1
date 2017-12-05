@@ -26,38 +26,42 @@
             <!-- List Roles -->
             <div class="row">
                 <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th>Users</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="(role, index) in filteredRoles">
-                                            <td @click="editRole(role, index)">
-                                                {{role.id}}
-                                            </td>
-                                            <td @click="editRole(role, index)">
-                                                <h4 class="media-heading">{{role.display_name}}</h4>
-                                            </td>
-                                            <td @click="editRole(role, index)">
-                                                {{role.description}}
-                                            </td>
-                                            <td @click="editRole(role, index)">
-                                                {{role.users.length}}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="table-responsive table-elevation">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Users</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(role, index) in roles.data">
+                                    <td @click="editRole(role, index)">
+                                        {{role.id}}
+                                    </td>
+                                    <td @click="editRole(role, index)">
+                                        <h4 class="media-heading">{{role.display_name}}</h4>
+                                    </td>
+                                    <td @click="editRole(role, index)">
+                                        {{role.description}}
+                                    </td>
+                                    <td @click="editRole(role, index)">
+                                        {{role.users.length}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
+                    <paginate
+                        v-if="roles.last_page>1"
+                        :page-count="roles.last_page"
+                        :click-handler="changePage"
+                        :prev-text="'Prev'"
+                        :next-text="'Next'"
+                        :container-class="'pagination pull-right'">
+                    </paginate>
                 </div>
             </div>
         </div>
@@ -212,6 +216,7 @@
 
 <script>
     import swal from 'sweetalert';
+    import Paginate from 'vuejs-paginate';
 
     export default {
         data() {
@@ -219,7 +224,9 @@
                 user: Laravel.user,
                 error: {},
                 search: '',
-                roles: [],
+                roles: {
+                    last_page: 0
+                },
                 roleNew: {},
                 roleEdit: {},
                 lists: {
@@ -231,38 +238,36 @@
             this.getRoles();
             this.getLists();
         },
-        computed: {
-            filteredRoles: function () {
-                var filteredArray = this.roles,
-                    search = this.search;
-
-                if(!search){
-                    return filteredArray;
-                }
-
-                search = search.trim().toLowerCase();
-
-                filteredArray = filteredArray.filter(function(item){
-                    return Object.keys(item).some(function (key) {
-                        return String(item[key]).toLowerCase().indexOf(search) !== -1
-                    })
-                })
-
-                return filteredArray;;
+        components: {
+            Paginate,
+        },
+        watch: {
+            search () {
+                this.getRoles();
             }
         },
         methods: {
-            getRoles () {
-                axios.get('/roles/all')
-                .then(response => {
-                    this.roles = response.data;
-                });
+            getRoles (page) {
+                if (!page) {
+                    axios.get(`/api/roles/filter${this.search ? '?search=' + this.search: ''}`)
+                    .then(response => {
+                        this.roles = response.data;
+                    });
+                } else {
+                    axios.get(`/api/roles/filter?page=${page}${this.search ? '&search=' + this.search: ''}`)
+                    .then(response => {
+                        this.roles = response.data;
+                    });
+                }
             },
             getLists () {
-                axios.get('/permissions/all')
+                axios.get('/api/permissions/all')
                 .then(response => {
                     this.lists.permissions = response.data;
                 });
+            },
+            changePage (page) {
+                this.getRoles(page);
             },
             newRole () {
                 this.roleNew = {};
@@ -276,9 +281,9 @@
             },
             storeRole (e) {
                 var btn = $(e.target).button('loading')
-                axios.post('/roles/store', this.roleNew)
+                axios.post('/api/roles/store', this.roleNew)
                 .then(response => {
-                    this.roles.push(response.data);
+                    this.roles.data.push(response.data);
                     this.roleNew = {};
                     this.error = {};
                     var btn = $(e.target).button('reset')
@@ -290,7 +295,7 @@
                 });
             },
             editRole (role, index) {
-                axios.get('/roles/'+role.id)
+                axios.get('/api/roles/'+role.id)
                 .then(response => {
                     this.roleEdit = response.data;
                     this.roleEdit.index = index;
@@ -299,9 +304,9 @@
             },
             updateRole (e) {
                 var btn = $(e.target).button('loading')
-                axios.put('/roles/update/'+this.roleEdit.id, this.roleEdit)
+                axios.put('/api/roles/update/'+this.roleEdit.id, this.roleEdit)
                 .then(response => {
-                    this.roles[this.roleEdit.index] = response.data;
+                    this.roles.data[this.roleEdit.index] = response.data;
                     this.roleEdit = {};
                     this.error = {};
                     var btn = $(e.target).button('reset')
@@ -324,9 +329,9 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    axios.delete('/roles/destroy/' + self.roleEdit.id)
+                    axios.delete('/api/roles/destroy/' + self.roleEdit.id)
                     .then(response => {
-                        self.roles.splice(self.roleEdit.index, 1);
+                        self.roles.data.splice(self.roleEdit.index, 1);
                         swal({
                             title: "Deleted!",
                             text: "The role has been deleted.",

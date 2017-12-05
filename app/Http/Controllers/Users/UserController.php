@@ -14,12 +14,12 @@ use App\Models\Profile\ProfileWork;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function all()
     {
-        return view('users.users');
+        return User::get();
     }
 
-    public function all(Request $request)
+    public function filter(Request $request)
     {
         $query = User::query();
 

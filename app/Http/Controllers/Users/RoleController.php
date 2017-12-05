@@ -9,14 +9,24 @@ use App\Permission;
 
 class RoleController extends Controller
 {
-    public function index()
-    {
-        return view('users.roles');
-    }
-
     public function all()
     {
-        return Role::with('users')->get();
+        return Role::get();
+    }
+
+    public function filter(Request $request)
+    {
+        $query = Role::query();
+
+        if($request->search) {
+            $query->where('name', 'LIKE', '%'.$request->search.'%');
+        }
+
+        $users = $query->orderBy('id', 'asc')
+                    ->paginate(50);
+        $users->load('users');
+
+        return $users;
     }
 
     public function show($id)

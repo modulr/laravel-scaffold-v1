@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <!-- layout Grid -->
-                <div class="col-xs-6 col-sm-4 col-md-3" v-show="layout == 'grid'"
+                <div class="col-xs-12 col-sm-4 col-md-3" v-show="layout == 'grid'"
                     v-for="contact in filteredContacts">
                     <div class="thumbnail" @click="viewContact(contact.id)">
                         <img class="avatar-md" :src="contact.avatar_url">
@@ -68,7 +68,6 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title"></h4>
                     </div>
                     <div class="modal-body">
                         <div class="contact-heading">

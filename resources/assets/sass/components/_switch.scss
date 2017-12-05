@@ -53,3 +53,8 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.switch-text {
+  margin-left: 10px;
+  vertical-align: top;
+}
