@@ -19,7 +19,7 @@ class CreateFilesTable extends Migration
             $table->text('description')->nullable()->comment = "Long-form description";
             $table->text('basename')->nullable()->comment = "The disk name of file";
             $table->string('type')->nullable()->comment = "The type of file";
-            $table->float('size')->nullable()->comment = "The size of file";
+            $table->string('size')->nullable()->comment = "The size of file";
             $table->boolean('is_folder')->default(0)->comment = "Is folder or file";
             $table->boolean('favorite')->default(false)->comment = "Favorite file";
             $table->integer('parent_id')->default(0)->comment = "Parent of file";

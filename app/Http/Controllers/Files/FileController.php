@@ -49,7 +49,7 @@ class FileController extends Controller
             'description' => 'string',
             'basename' => 'string',
             'type' => 'string',
-            'size' => 'float',
+            'size' => 'string',
             'is_folder' => 'boolean',
             'parent_id' => 'integer',
         ]);
