@@ -23,8 +23,6 @@ class CreateFilesTable extends Migration
             $table->boolean('is_folder')->default(0)->comment = "Is folder or file";
             $table->boolean('favorite')->default(false)->comment = "Favorite file";
             $table->integer('parent_id')->default(0)->comment = "Parent of file";
-            $table->integer('owner_id')->unsigned()->comment = "File owner";
-            $table->foreign('owner_id')->references('id')->on('users');
             $table->unsignedInteger('created_by')->nullable()->default(null);
             $table->unsignedInteger('updated_by')->nullable()->default(null);
             $table->unsignedInteger('deleted_by')->nullable()->default(null);

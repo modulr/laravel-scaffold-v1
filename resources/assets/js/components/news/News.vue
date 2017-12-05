@@ -99,7 +99,7 @@
                             showConfirmButton: false
                         });
                         self.error = {};
-                        window.location.replace('/news');
+                        location.href = '/news';
                     })
                     .catch(error => {
                         self.error = error.response.data;

@@ -10,16 +10,11 @@ use App\Models\Files\File;
 
 class FileController extends Controller
 {
-    public function index()
+    public function byCreator(Request $request, $folderId = null)
     {
-        return view('files.files');
-    }
-
-    public function byOwner(Request $request, $folderId = null)
-    {
-        $file = File::with('owner')
+        $file = File::with('creator')
             ->orderBy('is_folder', 'desc')
-            ->where('owner_id', Auth::id());
+            ->where('created_by', Auth::id());
 
         if ($folderId) {
             $file->where('parent_id', $folderId);
@@ -38,14 +33,10 @@ class FileController extends Controller
             $this->validate($request, [
                 'file' => 'required|max:10000',
             ]);
+
             $upload = new Upload();
-            // Is image
-            if (is_array(getimagesize($request->file))) {
-                $uploadData = $upload->upload($request->file, 'files/'.Auth::id())
-                                     ->resize(1024)->thumbnail(200,200)->getData();
-            } else {
-                $uploadData = $upload->upload($request->file)->getData();
-            }
+            $uploadData = $upload->uploadTemp($request->file)->getData();
+
             $request->name = $request->file->getClientOriginalName();
             $request->basename = $uploadData['basename'];
             $request->type = $uploadData['type'];
@@ -71,8 +62,12 @@ class FileController extends Controller
             'size' => $request->size,
             'is_folder' => $request->is_folder,
             'parent_id' => $request->parent_id,
-            'owner_id' => Auth::id(),
         ]);
+
+        if (!$request->is_folder) {
+            $upload->move($uploadData['path'], 'files/'.$file->id)
+                ->resize(1024)->thumbnail(200,200);
+        }
 
         // if (count($request->share)) {
         //     $collection = collect($request->share);
@@ -86,7 +81,7 @@ class FileController extends Controller
         //     }
         // }
 
-        return File::with('owner')->find($file->id);
+        return File::with('creator')->find($file->id);
     }
 
     public function update(Request $request, $id)
@@ -112,13 +107,13 @@ class FileController extends Controller
     // public function addShare(Request $request, $id)
     // {
     //     $this->validate($request, [
-    //         'ownerId' => 'required'
+    //         'createdBy' => 'required'
     //     ]);
     //
     //     $file = File::find($id);
     //
-    //     if (!$file->share->contains($request->ownerId)) {
-    //         $file->share()->attach($request->ownerId);
+    //     if (!$file->share->contains($request->createdBy)) {
+    //         $file->share()->attach($request->createdBy);
     //     }
     //
     //     return 'OK';
@@ -131,12 +126,12 @@ class FileController extends Controller
     //     return 'OK';
     // }
 
-    public function favorite(Request $request, $id)
-    {
-        $file = File::find($id);
-        $file->favorite = !$file->favorite;
-        $file->save();
-
-        return $file;
-    }
+    // public function favorite(Request $request, $id)
+    // {
+    //     $file = File::find($id);
+    //     $file->favorite = !$file->favorite;
+    //     $file->save();
+    //
+    //     return $file;
+    // }
 }

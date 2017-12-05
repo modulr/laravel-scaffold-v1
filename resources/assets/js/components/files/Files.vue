@@ -153,7 +153,7 @@
                                         <span v-else>---</span>
                                     </dd>
                                     <dt><i class="fa fa-fw fa-user" aria-hidden="true"></i> Owner</dt>
-                                    <dd>{{fileCurrent.owner.name}}</dd>
+                                    <dd>{{fileCurrent.creator.name}}</dd>
                                     <dt><i class="fa fa-fw fa-calendar-check-o" aria-hidden="true"></i> Created</dt>
                                     <dd>{{fileCurrent.created_at | moment('from')}}</dd>
                                     <dt><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Modified</dt>
@@ -252,7 +252,7 @@
                 layout: 'list',
                 uploadFileOptions: {
                     headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                    url: '/files/store',
+                    url: '/api/files/store',
                     paramName: 'file',
                     maxFilesize: {
                         limit: 10,
@@ -279,12 +279,12 @@
 
             if (res[2] == 'folder') {
                 this.folderCurrentId = parseInt(res[3]);
-                axios.get('/files/byOwner/' + this.folderCurrentId)
+                axios.get('/api/files/byCreator/' + this.folderCurrentId)
                 .then(response => {
                     this.files = response.data;
                 });
             } else {
-                axios.get('/files/byOwner')
+                axios.get('/api/files/byCreator')
                 .then(response => {
                     this.files = response.data;
                 });
@@ -332,7 +332,7 @@
                 $('#modalNewFolder').modal('show');
             },
             storeFolder (e) {
-                axios.post('/files/store', this.folderNew)
+                axios.post('/api/files/store', this.folderNew)
                 .then(response => {
                     this.files.unshift(response.data);
                     this.folderNew = {};
@@ -361,7 +361,7 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    axios.delete('/files/destroy/' + self.fileCurrent.id)
+                    axios.delete('/api/files/destroy/' + self.fileCurrent.id)
                     .then(response => {
                         self.files.splice(self.fileCurrent.index, 1);
                         self.fileCurrent = {};
@@ -391,7 +391,7 @@
                 this.fileCurrent.index = index;
             },
             updateFileName () {
-                axios.put('/files/update/'+this.fileCurrent.id, {name: this.fileCurrent.name})
+                axios.put('/api/files/update/'+this.fileCurrent.id, {name: this.fileCurrent.name})
                 .then(response => {
                     this.files[this.fileCurrent.index].name = response.data.name;
                     this.fileRename = false;

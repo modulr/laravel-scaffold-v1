@@ -18,23 +18,18 @@ class File extends Model
 
     protected $appends = ['url', 'urlThumbnail'];
 
-    public function owner()
-    {
-        return $this->belongsTo(\App\User::class);
-    }
-
-    public function shares()
-    {
-        return $this->belongsToMany(\App\User::class);
-    }
+    // public function shares()
+    // {
+    //     return $this->belongsToMany(\App\User::class);
+    // }
 
     public function getUrlAttribute()
     {
-        return Storage::url('files/'.$this->owner_id.'/'.$this->basename);
+        return Storage::url('files/'.$this->id.'/'.$this->basename);
     }
 
     public function getUrlThumbnailAttribute()
     {
-        return Storage::url('files/'.$this->owner_id.'/thumbnail_'.$this->basename);
+        return Storage::url('files/'.$this->id.'/thumbnail_'.$this->basename);
     }
 }

@@ -34,42 +34,79 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/notifications/markAsRead', 'NotificationController@markAsRead');
 
-    // Lists
-    Route::group(['namespace' => 'Profile', 'prefix' => 'list'], function() {
-        Route::get('/gender', 'ProfileListController@gender');
-        Route::get('/relationship', 'ProfileListController@relationship');
-        Route::get('/contact', 'ProfileListController@contact');
-        Route::get('/relation', 'ProfileListController@relation');
-        Route::get('/profession', 'ProfileListController@profession');
-        Route::get('/position', 'ProfileListController@position');
-        Route::get('/department', 'ProfileListController@department');
+    // Contacts
+    Route::group(['namespace' => 'Contacts'], function() {
+        Route::group(['prefix' => 'contacts'], function() {
+            Route::get('/' , function () {
+                return view('contacts.contacts');
+            })->middleware('permission:read-contacts');
+        });
+        Route::group(['prefix' => 'api/contacts'], function() {
+            Route::get('/all', 'ContactsController@all')->middleware('permission:read-contacts');
+            Route::get('/{id}', 'ContactsController@show')->middleware('permission:read-contacts');
+        });
     });
 
-    // Users
-    Route::group(['namespace' => 'Users'], function() {
-        // Users
-        Route::group(['prefix' => 'users'], function() {
-            Route::get('/', 'UserController@index')->middleware('permission:read-users');
-            Route::get('/all', 'UserController@all')->middleware('permission:read-users');
-            Route::post('/store', 'UserController@store')->middleware('permission:create-users');
-            Route::put('/update/{id}', 'UserController@update')->middleware('permission:update-users');
-            Route::put('/updatePassword/{id}', 'UserController@updatePassword')->middleware('permission:update-users');
-            Route::delete('/destroy/{id}', 'UserController@destroy')->middleware('permission:delete-users');
-            Route::post('/upload/avatar/temp', 'UserController@uploadAvatarTemp')->middleware('permission:update-users');
-            Route::post('/upload/avatar/{id}', 'UserController@uploadAvatar')->middleware('permission:update-users');
+    // Events
+    Route::group(['namespace' => 'Events'], function() {
+        Route::group(['prefix' => 'events'], function() {
+            Route::get('/' , function () {
+                return view('events.events');
+            })->middleware('permission:read-events');
+            Route::get('/{id}' , function ($id) {
+                return view('events.event', ['id' => $id]);
+            })->middleware('permission:read-events');
         });
-        // Roles
-        Route::group(['prefix' => 'roles'], function() {
-            Route::get('/', 'RoleController@index')->middleware('permission:read-roles');
-            Route::get('/all', 'RoleController@all')->middleware('permission:read-roles');
-            Route::get('/{id}', 'RoleController@show')->middleware('permission:read-roles');
-            Route::post('/store', 'RoleController@store')->middleware('permission:create-roles');
-            Route::put('/update/{id}', 'RoleController@update')->middleware('permission:update-roles');
-            Route::delete('/destroy/{id}', 'RoleController@destroy')->middleware('permission:delete-roles');
+        Route::group(['prefix' => 'api/events'], function() {
+            Route::get('/all', 'EventController@all')->middleware('permission:read-events');
+            Route::get('/byCreator', 'EventController@byCreator')->middleware('permission:read-events');
+            Route::get('/show/{id}', 'EventController@show')->middleware('permission:read-events');
+            Route::post('/store', 'EventController@store')->middleware('permission:create-events');
+            Route::put('/update/{id}', 'EventController@update')->middleware('permission:update-events');
+            Route::delete('/destroy/{id}', 'EventController@destroy')->middleware('permission:delete-events');
+            // Images
+            Route::post('/images/upload/temp', 'EventController@uploadImageTemp')->middleware('permission:create-news');
+            Route::post('/images/upload/', 'EventController@uploadImage')->middleware('permission:update-news');
+            Route::post('/images/sort/{eventId}', 'EventController@sortImage')->middleware('permission:update-news');
+            Route::delete('/images/destroy/{id}', 'EventController@destroyImage')->middleware('permission:delete-events');
         });
-        // Permissions
-        Route::group(['prefix' => 'permissions'], function() {
-            Route::get('/all', 'PermissionController@all');
+    });
+
+    // Files
+    Route::group(['namespace' => 'Files'], function() {
+        Route::group(['prefix' => 'files'], function() {
+            Route::get('/' , function () {
+                return view('files.files');
+            })->middleware('permission:read-files');
+            Route::get('/folder/{folderId?}' , function () {
+                return view('files.files');
+            })->middleware('permission:read-files');
+        });
+        Route::group(['prefix' => 'api/files'], function() {
+            Route::get('/byCreator/{parentId?}', 'FileController@byCreator')->middleware('permission:read-files');
+            Route::post('/store', 'FileController@store')->middleware('permission:create-files');
+            Route::put('/update/{id}', 'FileController@update')->middleware('permission:update-files');
+            Route::delete('/destroy/{id}', 'FileController@destroy')->middleware('permission:delete-files');
+        });
+    });
+
+    // News
+    Route::group(['namespace' => 'News'], function() {
+        Route::group(['prefix' => 'news'], function() {
+            Route::get('/' , function () {
+                return view('news.news');
+            })->middleware('permission:read-news');
+            Route::get('/{id}' , function ($id) {
+                return view('news.item', ['id' => $id]);
+            })->middleware('permission:read-news');
+        });
+        Route::group(['prefix' => 'api/news'], function() {
+            Route::get('/all', 'NewsController@all')->middleware('permission:read-news');
+            Route::get('/show/{id}', 'NewsController@show')->middleware('permission:read-news');
+            Route::post('/store', 'NewsController@store')->middleware('permission:create-news');
+            Route::delete('/destroy/{id}', 'NewsController@destroy')->middleware('permission:delete-news');
+            Route::post('/like/{id}', 'NewsController@like')->middleware('permission:read-news');
+            Route::post('/upload/temp', 'NewsController@uploadTemp')->middleware('permission:create-news');
         });
     });
 
@@ -99,24 +136,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/password/edit', 'ProfileController@password');
     });
 
-    // News
-    Route::group(['namespace' => 'News'], function() {
-        Route::group(['prefix' => 'news'], function() {
-            Route::get('/' , function () {
-                return view('news.news');
-            })->middleware('permission:read-news');
-            Route::get('/{id}' , function ($id) {
-                return view('news.item', ['id' => $id]);
-            })->middleware('permission:read-news');
-        });
-        Route::group(['prefix' => 'api/news'], function() {
-            Route::get('/all', 'NewsController@all')->middleware('permission:read-news');
-            Route::get('/show/{id}', 'NewsController@show')->middleware('permission:read-news');
-            Route::post('/store', 'NewsController@store')->middleware('permission:create-news');
-            Route::delete('/destroy/{id}', 'NewsController@destroy')->middleware('permission:delete-news');
-            Route::post('/like/{id}', 'NewsController@like')->middleware('permission:read-news');
-            Route::post('/upload/temp', 'NewsController@uploadTemp')->middleware('permission:create-news');
-        });
+    // Profile Lists
+    Route::group(['namespace' => 'Profile', 'prefix' => 'list'], function() {
+        Route::get('/gender', 'ProfileListController@gender');
+        Route::get('/relationship', 'ProfileListController@relationship');
+        Route::get('/contact', 'ProfileListController@contact');
+        Route::get('/relation', 'ProfileListController@relation');
+        Route::get('/profession', 'ProfileListController@profession');
+        Route::get('/position', 'ProfileListController@position');
+        Route::get('/department', 'ProfileListController@department');
     });
 
     // Tasks
@@ -136,51 +164,31 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    // Contacts
-    Route::group(['namespace' => 'Contacts'], function() {
-        Route::group(['prefix' => 'contacts'], function() {
-            Route::get('/' , function () {
-                return view('contacts.contacts');
-            })->middleware('permission:read-contacts');
+    // Users
+    Route::group(['namespace' => 'Users'], function() {
+        // Users
+        Route::group(['prefix' => 'users'], function() {
+            Route::get('/', 'UserController@index')->middleware('permission:read-users');
+            Route::get('/all', 'UserController@all')->middleware('permission:read-users');
+            Route::post('/store', 'UserController@store')->middleware('permission:create-users');
+            Route::put('/update/{id}', 'UserController@update')->middleware('permission:update-users');
+            Route::put('/updatePassword/{id}', 'UserController@updatePassword')->middleware('permission:update-users');
+            Route::delete('/destroy/{id}', 'UserController@destroy')->middleware('permission:delete-users');
+            Route::post('/upload/avatar/temp', 'UserController@uploadAvatarTemp')->middleware('permission:update-users');
+            Route::post('/upload/avatar/{id}', 'UserController@uploadAvatar')->middleware('permission:update-users');
         });
-        Route::group(['prefix' => 'api/contacts'], function() {
-            Route::get('/all', 'ContactsController@all')->middleware('permission:read-contacts');
-            Route::get('/{id}', 'ContactsController@show')->middleware('permission:read-contacts');
+        // Roles
+        Route::group(['prefix' => 'roles'], function() {
+            Route::get('/', 'RoleController@index')->middleware('permission:read-roles');
+            Route::get('/all', 'RoleController@all')->middleware('permission:read-roles');
+            Route::get('/{id}', 'RoleController@show')->middleware('permission:read-roles');
+            Route::post('/store', 'RoleController@store')->middleware('permission:create-roles');
+            Route::put('/update/{id}', 'RoleController@update')->middleware('permission:update-roles');
+            Route::delete('/destroy/{id}', 'RoleController@destroy')->middleware('permission:delete-roles');
         });
-    });
-
-    // Files
-    Route::group(['namespace' => 'Files', 'prefix' => 'files'], function() {
-        Route::get('/', 'FileController@index')->middleware('permission:read-files');
-        Route::get('/folder/{folderId?}', 'FileController@index')->middleware('permission:read-files');
-        Route::get('/byOwner/{parentId?}', 'FileController@byOwner')->middleware('permission:read-files');
-        Route::post('/store', 'FileController@store')->middleware('permission:create-files');
-        Route::put('/update/{id}', 'FileController@update')->middleware('permission:update-files');
-        Route::delete('/destroy/{id}', 'FileController@destroy')->middleware('permission:delete-files');
-    });
-
-    // Events
-    Route::group(['namespace' => 'Events'], function() {
-        Route::group(['prefix' => 'events'], function() {
-            Route::get('/' , function () {
-                return view('events.events');
-            })->middleware('permission:read-events');
-            Route::get('/{id}' , function ($id) {
-                return view('events.event', ['id' => $id]);
-            })->middleware('permission:read-events');
-        });
-        Route::group(['prefix' => 'api/events'], function() {
-            Route::get('/all', 'EventController@all')->middleware('permission:read-events');
-            Route::get('/byCreator', 'EventController@byCreator')->middleware('permission:read-events');
-            Route::get('/show/{id}', 'EventController@show')->middleware('permission:read-events');
-            Route::post('/store', 'EventController@store')->middleware('permission:create-events');
-            Route::put('/update/{id}', 'EventController@update')->middleware('permission:update-events');
-            Route::delete('/destroy/{id}', 'EventController@destroy')->middleware('permission:delete-events');
-            // Images
-            Route::post('/images/upload/temp', 'EventController@uploadImageTemp')->middleware('permission:create-news');
-            Route::post('/images/upload/', 'EventController@uploadImage')->middleware('permission:update-news');
-            Route::post('/images/sort/{eventId}', 'EventController@sortImage')->middleware('permission:update-news');
-            Route::delete('/images/destroy/{id}', 'EventController@destroyImage')->middleware('permission:delete-events');
+        // Permissions
+        Route::group(['prefix' => 'permissions'], function() {
+            Route::get('/all', 'PermissionController@all');
         });
     });
 
