@@ -75,10 +75,12 @@
         <div class="modal right md" id="modalNewEvent">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-body">
+                    <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
+                    </div>
+                    <div class="modal-body">
                         <div class="form-group" :class="{'has-error': error.name}">
                             <input type="text" class="form-control input-lg" placeholder="Write name event"
                                 v-model="eventNew.name">
@@ -172,10 +174,12 @@
         <div class="modal right md" id="modalEditEvent">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-body">
+                    <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
+                    </div>
+                    <div class="modal-body">
                         <div class="form-group" :class="{'has-error': error.name}">
                             <input type="text" class="form-control input-lg" placeholder="Write name event"
                                 v-model="eventEdit.name">
@@ -434,9 +438,9 @@
             },
             completeImageTemp (file, status, xhr) {
                 if (status == 'success') {
+                    console.log(xhr.response);
                     var index = this.eventNew.images.indexOf(file);
                     Object.assign(this.eventNew.images[index], JSON.parse(xhr.response))
-                    this.$set(this.eventNew.images[index], 'cover', false);
                 } else {
                     SnotifyService.error(JSON.parse(xhr.response).file[0]);
                 }

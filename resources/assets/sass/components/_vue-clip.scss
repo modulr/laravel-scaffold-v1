@@ -3,6 +3,15 @@
     div {
         display: inline-block;
     }
+    .btn-avatar {
+        position: relative;
+        .fa-stack {
+            cursor: pointer;
+            position: absolute;
+            right: 0px;
+            bottom: 0px;
+        }
+    }
 }
 
 .vue-clip-queue {

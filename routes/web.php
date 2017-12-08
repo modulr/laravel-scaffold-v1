@@ -180,7 +180,7 @@ Route::middleware('auth')->group(function () {
             Route::put('/updatePassword/{id}', 'UserController@updatePassword')->middleware('permission:update-users');
             Route::delete('/destroy/{id}', 'UserController@destroy')->middleware('permission:delete-users');
             Route::post('/upload/avatar/temp', 'UserController@uploadAvatarTemp')->middleware('permission:update-users');
-            Route::post('/upload/avatar/{id}', 'UserController@uploadAvatar')->middleware('permission:update-users');
+            Route::post('/upload/avatar', 'UserController@uploadAvatar')->middleware('permission:update-users');
         });
         // Roles
         Route::group(['prefix' => 'roles'], function() {

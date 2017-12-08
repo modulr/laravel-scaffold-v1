@@ -93,21 +93,26 @@
                         <span class="switch-text">Active</span>
                     </div>
                     <div class="modal-body">
+                        <div class="modal-avatar">
+                            <vue-clip class="vue-clip-btn"
+                                      :options="optionsAvatarTemp"
+                                      :on-complete="completeAvatarTemp"
+                                      v-if="user.hasPermission['create-users']">
+                                <template slot="clip-uploader-action">
+                                    <div class="">
+                                        <div class="dz-message btn-avatar">
+                                            <img class="avatar-md" :src="userNew.avatar_url" v-if="userNew.avatar_url">
+                                            <i class="mdi mdi-account-circle mdi-avatar-md" v-else></i>
+                                            <span class="fa-stack fa-lg text-primary">
+                                                <i class="fa fa-circle fa-stack-2x"></i>
+                                                <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </template>
+                            </vue-clip>
+                        </div>
                         <form>
-                            <div class="row">
-                                <div class="col-xs-12 text-center">
-                                    <img class="avatar-md" :src="userNew.avatar_url" v-if="userNew.avatar_url">
-                                    <i class="mdi mdi-account-circle mdi-avatar-md" v-else></i>
-                                    <br>
-                                    <vue-core-image-upload
-                                        class="btn btn-link"
-                                        @imageuploaded="newAvatar"
-                                        extensions="png,jpeg,jpg"
-                                        :headers="{'X-CSRF-TOKEN': csrfToken}"
-                                        :url="'/api/users/upload/avatar/temp'">
-                                    </vue-core-image-upload>
-                                </div>
-                            </div>
                             <div class="form-group" :class="{'has-error': error.name}">
                                 <label>Name *</label>
                                 <input type="text" class="form-control input-lg" placeholder="John Doe" required
@@ -167,20 +172,26 @@
                         <span class="switch-text">Active</span>
                     </div>
                     <div class="modal-body">
+                        <div class="modal-avatar">
+                            <vue-clip class="vue-clip-btn"
+                                      :options="optionsAvatar"
+                                      :on-sending="sendingAvatar"
+                                      :on-complete="completeAvatar"
+                                      v-if="user.hasPermission['update-users']">
+                                <template slot="clip-uploader-action">
+                                    <div class="">
+                                        <div class="dz-message btn-avatar">
+                                            <img class="avatar-md" :src="userEdit.avatar_url">
+                                            <span class="fa-stack fa-lg text-primary">
+                                                <i class="fa fa-circle fa-stack-2x"></i>
+                                                <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </template>
+                            </vue-clip>
+                        </div>
                         <form>
-                            <div class="row">
-                                <div class="col-xs-12 text-center">
-                                    <img class="avatar-md" :src="userEdit.avatar_url">
-                                    <br>
-                                    <vue-core-image-upload
-                                        class="btn btn-link"
-                                        @imageuploaded="editAvatar"
-                                        extensions="png,jpeg,jpg"
-                                        :headers="{'X-CSRF-TOKEN': csrfToken}"
-                                        :url="'/api/users/upload/avatar/'+userEdit.id">
-                                    </vue-core-image-upload>
-                                </div>
-                            </div>
                             <div class="form-group" :class="{'has-error': error.name}">
                                 <label>Name *</label>
                                 <input type="text" class="form-control input-lg" placeholder="Name" required
@@ -243,17 +254,52 @@
 </template>
 
 <script>
+    import VueClip from 'vue-clip';
     import swal from 'sweetalert';
-    import VueCoreImageUpload from 'vue-core-image-upload';
     import Paginate from 'vuejs-paginate';
 
     export default {
         data() {
             return {
                 user: Laravel.user,
-                csrfToken: Laravel.csrfToken,
                 error: {},
                 search: '',
+                optionsAvatarTemp: {
+                    headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
+                    url: '/api/users/upload/avatar/temp',
+                    paramName: 'file',
+                    parallelUploads: 1,
+                    maxFilesize: {
+                        limit: 10,
+                        message: '{{filesize}} is greater than the {{maxFilesize}}MB'
+                    },
+                    maxFiles: {
+                        limit: 10,
+                        message: 'You can only upload a max of 10 files'
+                    },
+                    acceptedFiles: {
+                        extensions: ['image/*'],
+                        message: 'You are uploading an invalid file'
+                    },
+                },
+                optionsAvatar: {
+                    headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
+                    url: '/api/users/upload/avatar',
+                    paramName: 'file',
+                    parallelUploads: 1,
+                    maxFilesize: {
+                        limit: 10,
+                        message: '{{filesize}} is greater than the {{maxFilesize}}MB'
+                    },
+                    maxFiles: {
+                        limit: 10,
+                        message: 'You can only upload a max of 10 files'
+                    },
+                    acceptedFiles: {
+                        extensions: ['image/*'],
+                        message: 'You are uploading an invalid file'
+                    },
+                },
                 users: {
                     last_page: 0
                 },
@@ -269,7 +315,6 @@
             this.getLists();
         },
         components: {
-            VueCoreImageUpload,
             Paginate,
         },
         watch: {
@@ -380,15 +425,22 @@
                     });
                 });
             },
-            newAvatar (response) {
-                this.userNew.avatar = response.avatar;
-                this.userNew.avatar_url = response.avatar_url;
+            completeAvatarTemp (file, status, xhr) {
+                if (status == 'success') {
+                    this.userNew.avatar_url = file.dataUrl;
+                    this.userNew.avatar_path = JSON.parse(xhr.response).path;
+                }
             },
-            editAvatar (response) {
-                this.userEdit.avatar_url = response.avatar_url;
-                this.users.data[this.userEdit.index].avatar_url = response.avatar_url;
-                if (Laravel.user.id == this.userEdit.id) {
-                    Laravel.user.avatar_url =response.avatar_url;
+            sendingAvatar (file, xhr, formData) {
+                formData.append('id', this.userEdit.id);
+            },
+            completeAvatar (file, status, xhr) {
+                if (status == 'success') {
+                    this.userEdit.avatar_url = JSON.parse(xhr.response).avatar_url;
+                    this.users.data[this.userEdit.index].avatar_url = JSON.parse(xhr.response).avatar_url;
+                    if (Laravel.user.id == this.userEdit.id) {
+                        Laravel.user.avatar_url = JSON.parse(xhr.response).avatar_url;
+                    }
                 }
             },
             generatePassword () {

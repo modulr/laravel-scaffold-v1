@@ -24,7 +24,7 @@
             </div>
         </div>
         <!-- Modal View Contact -->
-        <div class="modal fade modal-contacts" id="modalViewContact">
+        <div class="modal fade" id="modalViewContact">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -33,12 +33,12 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="contact-heading">
+                        <div class="modal-avatar">
                             <img class="avatar-md" :src="contactView.avatar_url">
                             <h4>{{contactView.name}}</h4>
                             <a :href="`mailto:${contactView.email}`">{{contactView.email}}</a>
                         </div>
-                        <div class="contact-body">
+                        <div class="modal-padding">
                             <dl>
                                 <dd>Phone Number</dd>
                                 <dt v-if="contactView.profile_contact && contactView.profile_contact.length"
