@@ -50,84 +50,101 @@
                         <h3>No projects found.</h3>
                     </div>
                     <div class="col-md-12" v-if="projects.length != 0">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Start Date</th>
-                                    <th>Deadline</th>
-                                    <th>Leader</th>
-                                    <th>Supervisor</th>
-                                    <th>Priority</th>
-                                    <th>% Completed</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(item, index) in filteredOpportunities">
-                                    <td>
-                                        {{item.id}}
-                                    </td>
-                                    <td>
-                                        <a class="heading" :href="'/projects/'+item.id+'/get'">
-                                            <strong>{{item.name}}</strong>
-                                        </a>
-                                        <span class="text-muted">{{item.client.customer.name}}</span>
-                                    </td>
-                                    <td>
-                                        {{item.start_date | date}}
-                                        <br>
-                                    </td>
-                                    <td>
-                                        {{item.end_date | date}}
-                                        <br>
-                                    </td>
-                                    <td>
-                                        <span v-if="item.leader">
-                                            <img class="avatar-sm" :src="item.leader.avatar_url" v-tooltip="item.leader.name">
-                                        </span>
-
-                                    </td>
-                                    <td>
-                                        <span v-if="item.supervisor">
-                                            <img class="avatar-sm" :src="item.supervisor.avatar_url" v-tooltip="item.supervisor.name">
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="chip" :class="'priority-'+item.priority.name">
-                                            {{item.priority.name}}
-                                        </span>
-                                    </td>
-                                    <td><span v-if="item.completed_percentage">{{item.completed_percentage}}%</span>
-                                    <span v-else>0%</span></td>
-                                    <td>
-                                        <span :class="[item.project_status.id == 4 ? 'chip warning' : '']">
-                                            {{item.project_status.name}}
-                                        </span>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="dropdown">
-                                            <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        <div class="row">
+                            <div class="col-md-2" v-for="(value, key) in insights">
+                                <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">{{ key }}</h3>
+                                </div>
+                                <div class="panel-body">                             
+                                    <ul class="list">
+                                        <li class="list-item" v-for="(v, key) in value"> {{key}} : {{v}} </li class="list">
+                                    </ul>       
+                                    <!-- <p v-for="(v, key) in value"> {{key}} : {{v}} </p> -->
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Start Date</th>
+                                        <th>Deadline</th>
+                                        <th>Leader</th>
+                                        <th>Supervisor</th>
+                                        <th>Priority</th>
+                                        <th>% Completed</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(item, index) in filteredOpportunities">
+                                        <td>
+                                            {{item.id}}
+                                        </td>
+                                        <td>
+                                            <a class="heading" :href="'/projects/'+item.id+'/get'">
+                                                <strong>{{item.name}}</strong>
                                             </a>
-                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                <li>
-                                                    <a href="#" @click.prevent="edit(item, index)">
-                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                        Edit
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <paginate :page-count="pagination.last_page" :margin-pages="2" :page-range="2" :initial-page="pagination.current_page - 1" :container-class="'ui pagination menu'"
-                            :page-link-class="'item'" :prev-link-class="'item'" :next-link-class="'item'" :click-handler="clickCallback">
-                        </paginate>
+                                            <span class="text-muted">{{item.client.customer.name}}</span>
+                                        </td>
+                                        <td>
+                                            {{item.start_date | date}}
+                                            <br>
+                                        </td>
+                                        <td>
+                                            {{item.end_date | date}}
+                                            <br>
+                                        </td>
+                                        <td>
+                                            <span v-if="item.leader">
+                                                <img class="avatar-sm" :src="item.leader.avatar_url" v-tooltip="item.leader.name">
+                                            </span>
+
+                                        </td>
+                                        <td>
+                                            <span v-if="item.supervisor">
+                                                <img class="avatar-sm" :src="item.supervisor.avatar_url" v-tooltip="item.supervisor.name">
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="chip" :class="'priority-'+item.priority.name">
+                                                {{item.priority.name}}
+                                            </span>
+                                        </td>
+                                        <td><span v-if="item.completed_percentage">{{item.completed_percentage}}%</span>
+                                        <span v-else>0%</span></td>
+                                        <td>
+                                            <span :class="[item.project_status.id == 4 ? 'chip warning' : '']">
+                                                {{item.project_status.name}}
+                                            </span>
+                                        </td>
+                                        <td class="text-right">
+                                            <div class="dropdown">
+                                                <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li>
+                                                        <a href="#" @click.prevent="edit(item, index)">
+                                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                            Edit
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <paginate :page-count="pagination.last_page" :margin-pages="2" :page-range="2" :initial-page="pagination.current_page - 1" :container-class="'ui pagination menu'"
+                                :page-link-class="'item'" :prev-link-class="'item'" :next-link-class="'item'" :click-handler="clickCallback">
+                            </paginate>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -176,6 +193,11 @@ export default {
             pagination : {
                 current_page: 0,
                 last_page: 1
+            },
+            insights : {
+                Region : {},
+                Priority : {},
+                Status : {}
             }
         }
     },
@@ -261,8 +283,18 @@ export default {
                 .then(response => {
                     this.list.areas = response.data;
                 });
-            this.pagination.last_page = response.data.last_page
-            this.projects = response.data.data;
+            this.pagination.last_page = response.data.projects.last_page
+            this.projects = response.data.projects.data;
+            this.insights.Region.North = response.data.north
+            this.insights.Region.South = response.data.south
+            this.insights.Region.Center = response.data.center
+            this.insights.Priority.High = response.data.high
+            this.insights.Priority.Medium = response.data.medium
+            this.insights.Priority.Low = response.data.low
+            this.insights.Status.Done = response.data.done
+            this.insights.Status['In Progress'] = response.data.inProgress
+            this.insights.Status.Canceled = response.data.canceled
+            this.insights.Status.New = response.data.new
             this.loading = false;
             });
         },
