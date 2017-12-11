@@ -11,7 +11,8 @@
         "laravel/tinker": "~1.0",
         "laravolt/avatar": "^1.8",
         "pusher/pusher-php-server": "^2.0",
-        "santigarcor/laratrust": "5.0.*"
+        "santigarcor/laratrust": "5.0.*",
+        "aws/aws-sdk-php": "~3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
