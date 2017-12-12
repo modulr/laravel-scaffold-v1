@@ -1,10 +1,23 @@
 .dashboard {
-    .panel-dashboard {
+    .logo {
+        width: 100px;
+        margin-bottom: 30px;
+    }
+    .panel {
         > .panel-heading {
             a {
                 font-size: 14px;
                 color: $orange !important;
             }
+        }
+        > .panel-body {
+            a {
+                text-decoration: none;
+                img {
+                    width: 200px;
+                }
+            }
+
         }
     }
 }

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Events\Event;
 use App\Models\Events\EventImage;
 use App\Http\Helpers\Upload;
+use App\Mail\EventAttend;
+use Illuminate\Support\Facades\Mail;
 
 
 class EventController extends Controller
@@ -23,7 +25,7 @@ class EventController extends Controller
 
     public function byOwner()
     {
-        return Event::with(['owner', 'images' => function ($query) {
+        return Event::with(['owner', 'attendings', 'images' => function ($query) {
                             $query->orderBy('order', 'asc');
                     }])
                     ->where('owner_id', Auth::id())
@@ -33,7 +35,7 @@ class EventController extends Controller
 
     public function show($id)
     {
-        return Event::with(['owner', 'images' => function ($query) {
+        return Event::with(['owner', 'attendings', 'images' => function ($query) {
                             $query->orderBy('order', 'asc');
                           }])->find($id);
     }
@@ -160,5 +162,36 @@ class EventController extends Controller
     public function destroyImage($id)
     {
         return EventImage::destroy($id);
+    }
+
+
+    public function attend($id)
+    {
+        $event = Event::find($id);
+        $query = $event->attendings()->toggle(Auth::id());
+
+        if(count($query['attached'])>0){
+            Mail::to($event->owner)->send(new EventAttend($event, Auth::user()));
+        }
+
+        $attendings = $event->attendings;
+
+        return ['attendings' => $attendings, 'attend' => count($query['attached'])>0];
+    }
+
+    public function approve($eventId, $userId)
+    {
+        $event = Event::find($eventId);
+        $event->attendings()->updateExistingPivot($userId, ['approved' => true]);
+
+        return $event;
+    }
+
+    public function reject($eventId, $userId)
+    {
+        $event = Event::find($eventId);
+        $event->attendings()->detach($userId);
+
+        return $event;
     }
 }

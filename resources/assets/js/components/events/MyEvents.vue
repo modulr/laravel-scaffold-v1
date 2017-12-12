@@ -6,11 +6,7 @@
             <div class="actionbar">
                 <div class="row">
                     <div class="col-sm-4">
-                        <a href="#" class="btn btn-success"
-                           v-if="user.hasPermission['create-events']"
-                           @click.prevent="newEvent">
-                            <i class="fa fa-eercast"></i> Crear platillo
-                        </a>
+
                     </div>
                     <div class="col-sm-4 text-center">
                         <div class="input-group">
@@ -19,9 +15,14 @@
                         </div>
                     </div>
                     <div class="col-sm-4 text-right">
-                        <span class="separator"></span>
                         <a href="#" class="btn btn-link">
                             <i class="fa fa-fw fa-lg fa-list" aria-hidden="true"></i>
+                        </a>
+                        <span class="separator"></span>
+                        <a href="#" class="btn btn-success"
+                           v-if="user.hasPermission['create-events']"
+                           @click.prevent="newEvent">
+                            <i class="fa fa-eercast"></i> Crear platillo
                         </a>
                     </div>
                 </div>
@@ -49,6 +50,7 @@
                                     <small class="text-muted">a </small>{{'2018-01-01 '+item.end_time | moment('h:mm a')}}
                                 </span>
                             </div>
+                            <div v-show="item.attending_limit > 0">Platos ({{item.attendings.length}}/{{item.attending_limit}})</div>
                         </div>
                         <a href="#" class="btn-edit" @click.prevent="editEvent(item, index)">
                             <span class="fa-stack">

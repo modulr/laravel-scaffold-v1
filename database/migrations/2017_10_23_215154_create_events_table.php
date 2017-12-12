@@ -39,6 +39,15 @@ class CreateEventsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('event_user', function (Blueprint $table) {
+            $table->integer('event_id')->unsigned()->comment = "Event ID";
+            $table->integer('user_id')->unsigned()->comment = "User ID";
+            $table->boolean('approved')->default(false);
+            $table->primary(['event_id', 'user_id']);
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -49,6 +58,7 @@ class CreateEventsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('event_images');
+        Schema::dropIfExists('event_user');
         Schema::dropIfExists('events');
     }
 }

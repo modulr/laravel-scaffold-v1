@@ -152,6 +152,10 @@ Route::middleware('auth')->group(function () {
         Route::put('/update/{id}', 'EventController@update')->middleware('permission:update-events');
         Route::delete('/destroy/{id}', 'EventController@destroy')->middleware('permission:delete-events');
 
+        Route::get('/attend/{id}', 'EventController@attend')->middleware('permission:read-events');
+        Route::get('/approve/{eventId}/{userId}', 'EventController@approve')->middleware('permission:update-events');
+        Route::get('/reject/{eventId}/{userId}', 'EventController@reject')->middleware('permission:update-events');
+
         Route::post('/images/upload/temp', 'EventController@uploadImageTemp')->middleware('permission:create-news');
         Route::post('/images/upload/', 'EventController@uploadImage')->middleware('permission:update-news');
         Route::post('/images/sort/{eventId}', 'EventController@sortImage')->middleware('permission:update-news');
