@@ -25,7 +25,7 @@
                                     <h4 class="media-heading">{{event.name}}</h4>
                                     <p>{{event.description}}</p>
                                     <p class="lead" v-show="event.date || event.start_time || event.end_time">
-                                        <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i>
+                                        <i class="fa fa-fw fa-clock-o fa-lg" aria-hidden="true"></i>
                                         <span v-if="event.date">{{event.date | moment('LL')}}.</span>
                                         <span v-if="event.start_time">
                                             <small class="text-muted">De </small>{{'2018-01-01 '+event.start_time | moment('h:mm a')}}
@@ -34,6 +34,7 @@
                                             <small class="text-muted">a </small>{{'2018-01-01 '+event.end_time | moment('h:mm a')}}
                                         </span>
                                     </p>
+                                    <p class="lead" v-if="approved"><i class="fa fa-fw fa-map-marker fa-lg" aria-hidden="true"></i> {{event.place}}</p>
                                 </div>
                             </div>
                         </div>
@@ -112,6 +113,7 @@
                     attendings: []
                 },
                 attending: false,
+                approved: false,
                 swiperOption: {
                     nextButton: '.swiper-button-next',
                     prevButton: '.swiper-button-prev',
@@ -176,6 +178,9 @@
                 this.event.attendings.forEach(function(v){
                     if (v.id == self.user.id) {
                         self.attending = true;
+                        if (v.pivot.approved) {
+                            self.approved = true;
+                        }
                     }
                 });
             }
