@@ -9,6 +9,8 @@ use App\Models\Events\Event;
 use App\Models\Events\EventImage;
 use App\Http\Helpers\Upload;
 use App\Mail\EventAttend;
+use App\Mail\EventAttendApprove;
+use App\Mail\EventAttendReject;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -184,6 +186,8 @@ class EventController extends Controller
         $event = Event::find($eventId);
         $event->attendings()->updateExistingPivot($userId, ['approved' => true]);
 
+        Mail::to(Auth::user())->send(new EventAttendApprove($event, Auth::user()));
+
         return $event;
     }
 
@@ -191,6 +195,8 @@ class EventController extends Controller
     {
         $event = Event::find($eventId);
         $event->attendings()->detach($userId);
+
+        Mail::to(Auth::user())->send(new EventAttendReject($event, Auth::user()));
 
         return $event;
     }

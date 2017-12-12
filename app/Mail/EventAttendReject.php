@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\Events\Event;
 use App\User;
 
-class EventAttend extends Mailable
+class EventAttendReject extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -34,6 +34,6 @@ class EventAttend extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.events.attend');
+        return $this->markdown('emails.events.attendReject');
     }
 }
