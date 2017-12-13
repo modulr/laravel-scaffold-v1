@@ -85,7 +85,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(item, index) in filteredOpportunities">
+                                    <tr v-for="(item, index) in opportunities">
                                         <td>
                                             {{item.id}}
                                         </td>
@@ -214,51 +214,6 @@ export default {
     mounted() {
         this.getAll();
     },
-    computed: {
-    filteredOpportunities: function () {
-        var filteredArray = this.opportunities,
-            sort_customers = this.sort.customers,
-            sort_client = this.sort.client,
-            sort_area = this.sort.area,
-            search = this.search;
-
-        if(sort_customers != '') {
-            filteredArray = filteredArray.filter(item => {
-                return _.findKey(sort_customers, (o) => {
-                    if(o.id === item.client.customer.id) {
-                        return item;
-                    }
-                })
-            });
-        }
-
-        if(sort_client != '') {
-            filteredArray = filteredArray.filter(item => {
-                return _.findKey(sort_client, (o) => {
-                    if(o.id === item.client.id) {
-                        return item;
-                    }
-                })
-            });
-        }
-
-        if (sort_area.length) {
-            return filteredArray = filteredArray.filter(item => sort_area.includes(item.area_id));
-        }
-
-        if (search) {
-            search = search.trim().toLowerCase();
-
-            filteredArray = filteredArray.filter(function (item) {
-                return Object.keys(item).some(function (key) {
-                    return String(item[key]).toLowerCase().indexOf(search) !== -1
-                })
-            })
-        }
-
-        return filteredArray;
-        }
-    },
     filters: {
         date(date) {
             return moment(date).format('LL');
@@ -336,6 +291,7 @@ export default {
                 area: [],
                 total: '',
             }
+            this.getAll()
         }
     }
 }
