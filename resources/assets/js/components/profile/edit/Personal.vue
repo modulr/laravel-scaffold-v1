@@ -96,12 +96,12 @@
         },
         props: ['user'],
         mounted() {
-            axios.get('/list/gender')
+            axios.get('/api/list/profile/gender')
             .then(response => {
                 this.list.genders = response.data;
             });
 
-            axios.get('/list/relationship')
+            axios.get('/api/list/profile/relationship')
             .then(response => {
                 this.list.relationships = response.data;
             });
@@ -109,7 +109,7 @@
         methods: {
             updatePersonal (e) {
                 var btn = $(e.target).button('loading')
-                axios.put('/profile/personal/update/'+this.user.id, this.user.profile_personal)
+                axios.put('/api/profile/personal/update/'+this.user.id, this.user.profile_personal)
                 .then(response => {
                     this.user.profile_personal = response.data;
                     this.error = {};

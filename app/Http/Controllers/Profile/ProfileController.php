@@ -52,8 +52,8 @@ class ProfileController extends Controller
         $this->validate($request, [
             'birthday' => 'date|nullable',
             'place_of_birth' => 'string|nullable',
-            'gender_id' => 'integer',
-            'relationship_id' => 'integer',
+            'gender_id' => 'integer|nullable',
+            'relationship_id' => 'integer|nullable',
             'rfc' => 'alpha_num|nullable',
             'curp' => 'alpha_num|nullable',
             'nss' => 'alpha_num|nullable',
@@ -189,11 +189,11 @@ class ProfileController extends Controller
     public function updateWork(Request $request, $id)
     {
         $this->validate($request, [
-            'profession_id' => 'integer',
-            'position_id' => 'integer',
-            'department_id' => 'integer',
-            'boss_id' => 'integer',
-            'starting_from' => 'date',
+            'profession_id' => 'integer|nullable',
+            'position_id' => 'integer|nullable',
+            'department_id' => 'integer|nullable',
+            'boss_id' => 'integer|nullable',
+            'starting_from' => 'date|nullable',
         ]);
 
         $personal = ProfileWork::find($id);

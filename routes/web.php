@@ -111,33 +111,37 @@ Route::middleware('auth')->group(function () {
     });
 
     // Profile
-    Route::group(['namespace' => 'Profile', 'prefix' => 'profile'], function() {
-        Route::get('/{id}', 'ProfileController@profile');
-        Route::get('/{id}/edit', 'ProfileController@profileEdit');
+    Route::group(['namespace' => 'Profile'], function() {
+        Route::group(['prefix' => 'profile'], function() {
+            Route::get('/{id}', 'ProfileController@profile')->middleware('permission:read-profile');
+            Route::get('/{id}/edit', 'ProfileController@profileEdit')->middleware('permission:update-profile');
 
-        Route::put('/personal/update/{id}', 'ProfileController@updatePersonal');
+            Route::get('/{id}/work', 'ProfileController@work');
+            Route::get('/{id}/work/edit', 'ProfileController@workEdit');
 
-        Route::post('/contact/store', 'ProfileController@storeContact');
-        Route::delete('/contact/destroy/{id}', 'ProfileController@destroyContact');
+            Route::get('/{id}/password/edit', 'ProfileController@password');
+        });
+        Route::group(['prefix' => 'api/profile'], function() {
+            Route::put('/personal/update/{id}', 'ProfileController@updatePersonal');
 
-        Route::post('/education/store', 'ProfileController@storeEducation');
-        Route::delete('/education/destroy/{id}', 'ProfileController@destroyEducation');
+            Route::post('/contact/store', 'ProfileController@storeContact');
+            Route::delete('/contact/destroy/{id}', 'ProfileController@destroyContact');
 
-        Route::post('/family/store', 'ProfileController@storeFamily');
-        Route::delete('/family/destroy/{id}', 'ProfileController@destroyFamily');
+            Route::post('/education/store', 'ProfileController@storeEducation');
+            Route::delete('/education/destroy/{id}', 'ProfileController@destroyEducation');
 
-        Route::post('/place/store', 'ProfileController@storePlace');
-        Route::delete('/place/destroy/{id}', 'ProfileController@destroyPlace');
+            Route::post('/family/store', 'ProfileController@storeFamily');
+            Route::delete('/family/destroy/{id}', 'ProfileController@destroyFamily');
 
-        Route::get('/{id}/work', 'ProfileController@work');
-        Route::get('/{id}/work/edit', 'ProfileController@workEdit');
-        Route::put('/work/update/{id}', 'ProfileController@updateWork');
+            Route::post('/place/store', 'ProfileController@storePlace');
+            Route::delete('/place/destroy/{id}', 'ProfileController@destroyPlace');
 
-        Route::get('/{id}/password/edit', 'ProfileController@password');
+            Route::put('/work/update/{id}', 'ProfileController@updateWork');
+        });
     });
 
     // Profile Lists
-    Route::group(['namespace' => 'Profile', 'prefix' => 'list'], function() {
+    Route::group(['namespace' => 'Profile', 'prefix' => 'api/list/profile'], function() {
         Route::get('/gender', 'ProfileListController@gender');
         Route::get('/relationship', 'ProfileListController@relationship');
         Route::get('/contact', 'ProfileListController@contact');

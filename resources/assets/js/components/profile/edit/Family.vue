@@ -5,7 +5,7 @@
         </div>
         <div class="panel-body">
             <dl v-for="(family, index) in user.profile_family">
-                <a href="" class="btn btn-link pull-right" @click="destroyFamily(family.id, index)">
+                <a href="" class="btn btn-link pull-right" @click.prevent="destroyFamily(family.id, index)">
                     <i class="fa fa-trash"></i>
                 </a>
                 <dt>{{family.name}} - {{family.relation.title}}</dt>
@@ -82,11 +82,11 @@
         },
         props: ['user'],
         mounted() {
-            axios.get('/list/gender')
+            axios.get('/api/list/profile/gender')
             .then(response => {
                 this.list.genders = response.data;
             });
-            axios.get('/list/relation')
+            axios.get('/api/list/profile/relation')
             .then(response => {
                 this.list.relations = response.data;
             });
@@ -95,7 +95,7 @@
             storeFamily: function (e) {
                 var btn = $(e.target).button('loading')
                 this.family.user_id = this.user.id;
-                axios.post('/profile/family/store', this.family)
+                axios.post('/api/profile/family/store', this.family)
                 .then(response => {
                     this.user.profile_family.push(response.data);
                     this.family = {};
@@ -119,7 +119,7 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    axios.delete('/profile/family/destroy/' + familyId)
+                    axios.delete('/api/profile/family/destroy/' + familyId)
                     .then(response => {
                         self.user.profile_family.splice(index, 1);
                         swal({

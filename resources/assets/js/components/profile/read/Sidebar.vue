@@ -20,11 +20,18 @@
                     <i class="fa fa-fw fa-lg fa-briefcase" aria-hidden="true"></i> Work
                 </a>
             </li>
+            <li>
+                <a href="" @click.prevent="comingSoon">
+                    <i class="fa fa-fw fa-lg fa-sticky-note" aria-hidden="true"></i> Notes
+                </a>
+            </li>
         </ul>
     </div>
 </template>
 
 <script>
+    import comingSoon from '../../../mixins/comingSoon'
+
     export default {
         data () {
             return {
@@ -32,6 +39,7 @@
             }
         },
         props:['user'],
+        mixins: [ comingSoon ],
         mounted() {
             var str = window.location.pathname;
             var res = str.split("/");
