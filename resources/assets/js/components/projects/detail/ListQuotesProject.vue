@@ -2,6 +2,14 @@
     <div class="quotes">
         <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
         <div class="wrapper" v-if="!loading">
+            <div class="row">                
+                <div class="col-sm-12">
+                    <a href="#" class="btn btn-primary pull-right" @click.prevent="add">
+                        <i class="mdi mdi-person-add mdi-lg"></i> New Invoice
+                    </a>
+                </div>                
+            </div>
+            <br>
             <!-- List -->
             <div class="row">
                 <!-- No items found -->
@@ -69,6 +77,8 @@
         </div>
 
         <quotes-attachment :type="type" :quotes="quotes" :quote="quote" class="modal fade" id="myModalFile"></quotes-attachment>
+        <!-- <create-invoice :project="project" :list="list" :invoices="invoices" :invoice="invoice" :quotes="quotes" class="modal right fade" id="modalAdd"></create-invoice> -->
+        <create-invoice  class="modal right fade" id="modalAdd"></create-invoice>
     </div>
 </template>
 
@@ -87,6 +97,8 @@ export default {
             loadingQuotes: false,
             quotes: [],
             quote: {},
+            invoices: [],
+            invoice: {},
             list: {
                 designers: [],
                 sellers: [],

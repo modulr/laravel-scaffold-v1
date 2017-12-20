@@ -58,4 +58,9 @@ class Quote extends Model
         return $this->belongsTo(\App\Models\Lists\ListTypeCurrency::class);
     }
 
+    public function invoices() 
+    {
+        return $this->belongsToMany(\App\Models\Invoices\Invoice::class);        
+    }
+
 }
