@@ -76,7 +76,7 @@ import moment from 'moment';
 import Multiselect from 'vue-multiselect';
 import Dropzone from 'vue2-dropzone';
 export default {
-    props: ['list', 'invoices', 'invoice', 'project', 'quotes'],
+    props: ['list', 'invoice', 'project', 'quotes'],
     components: {
         Multiselect,
         Dropzone

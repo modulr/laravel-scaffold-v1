@@ -86,6 +86,7 @@ Vue.component('events', require('./components/events/Events.vue'));
 Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
 //Invoices
 Vue.component('createInvoice', require('./components/projects/detail/CreateInvoice.vue'));
+Vue.component('quoteInvoiceList', require('./components/projects/detail/QuotesInvoicesList.vue'));
 
 const app = new Vue({
     el: '#app'

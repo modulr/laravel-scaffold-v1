@@ -17,6 +17,7 @@ class CreateInvoiceQuoteTable extends Migration
         {
             $table->unsignedInteger('invoice_id');
             $table->unsignedInteger('quote_id');            
+            $table->double('amount', 15, 8);
         });
     }
 

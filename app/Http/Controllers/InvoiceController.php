@@ -32,7 +32,7 @@ class InvoiceController extends Controller
         
         foreach (explode(",", $request->quotes) as $id) {               
             DB::table('invoice_quote')->insert([
-                ['invoice_id' => $invoice->id, 'quote_id' => $id]
+                ['invoice_id' => $invoice->id, 'quote_id' => $id, 'amount' => 120.20]
             ]);
         }      
 
