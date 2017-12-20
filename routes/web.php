@@ -223,8 +223,8 @@ Route::middleware('auth')->group(function () {
     });
 
     //Invoices    
-    Route::get('/invocies/all', 'InvoiceController@all');
-    Route::get('/invocies/{id}', 'InvoiceController@show');
-    Route::post('/invocies/store', 'InvoiceController@store');
+    Route::get('/invoices/all', 'InvoiceController@all');
+    Route::get('/invoices/{id}', 'InvoiceController@show');
+    Route::post('/invoices/store', 'InvoiceController@store');
 
 });

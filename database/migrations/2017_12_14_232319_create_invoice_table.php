@@ -17,7 +17,7 @@ class CreateInvoiceTable extends Migration
         {
             $table->increments('id');
             $table->integer('owner_id')->unsigned();
-            $table->foreign('owner_id')->references('id')->on('users');
+            $table->foreign('owner_id')->references('id')->on('users');            
             $table->double('amount', 15, 8);
             $table->string('description');
             $table->text('name');

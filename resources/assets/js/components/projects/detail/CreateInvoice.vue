@@ -6,10 +6,8 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Add Invoice</h4>
                 </div>
-                <div class="modal-body">
-                    {{ 1 + 1 }}
-                    {{ error }}
-                    <!-- <form class="form-horizontal" action="index.html" method="post">
+                <div class="modal-body">                    
+                    <form class="form-horizontal" action="index.html" method="post">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Project</label>
                             <div class="col-sm-9">
@@ -39,12 +37,12 @@
                             <div class="col-sm-9">
                                 <input type="text" class="form-control input-lg" placeholder="Amount" required v-model="invoice.amount">
                             </div>
-                            <label class="col-sm-3 control-label required">Currency </label>
+                            <!-- <label class="col-sm-3 control-label required">Currency </label>
                             <div class="col-sm-9">
                                 <select type="text" class="form-control input-lg" placeholder="Currency" required v-model="invoice.currency">
                                     <option v-for="currency in list.currencies" :value="currency.id"> {{ currency.title }} </option>
                                 </select>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="form-group" :class="{'has-error': error.service}">
                             <label class="col-sm-3 control-label required">Service</label>
@@ -55,18 +53,19 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <dropzone id="myVueDropzone" ref="myVueDropzoneInvoice"
-                                    url="/attachments/store" :use-font-awesome=true
+                                <dropzone id="myVueDropzoneInvoice" ref="myVueDropzoneInvoice"
+                                    url="/invoices/store" :use-font-awesome=true
                                     :use-custom-dropzone-options=true :dropzoneOptions="dzOptions"
+                                    v-on:vdropzone-sending="addingParams"
                                     v-on:vdropzone-success="uploadSuccess">                                    
                                 </dropzone>
                             </div>
                         </div>                        
-                    </form> -->
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" @click="store">Add</button> -->
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" @click="store">Add</button>
                 </div>
             </div>
         </div>
@@ -94,15 +93,27 @@ export default {
     },
     methods : {        
         store (e) {
-            var btn = $(e.target).button('loading')            
+            // var btn = $(e.target).button('loading')            
             this.$refs.myVueDropzoneInvoice.processQueue()            
         },
         addingParams (file, xhr, formData) {
-            formData.append('invoice', this.invoice);
+            formData.append('amount', this.invoice.amount);
+            formData.append('currency', this.invoice.currency);
+            formData.append('description', this.invoice.description);
+            let quotes = this.invoice.quotes.map(item => item.id)            
+            formData.append('quotes', quotes);
         },        
         uploadSuccess (file, response) {
             console.log(response)
+            this.invoice.quotes.forEach(item => {
+                this.$parent.quotes.map(quote => {
+                    if (quote.id === item.id) {
+                        quote.invoices.push(response)
+                    }
+                })                
+            })
+            $('#modalAdd').modal('hide')
         },
     }
 }
-</script
+</script>

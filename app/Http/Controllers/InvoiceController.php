@@ -16,7 +16,7 @@ class InvoiceController extends Controller
         // $this->validate($request, [
         //     'amount' => 'required',
         //     'description' => 'required'
-        // ]);
+        // ]);          
 
         $upload = $this->upload($request->file);
         $request->name = $request->file->getClientOriginalName();
@@ -29,7 +29,17 @@ class InvoiceController extends Controller
         'description' => $request->description,          
         'name' => $request->name,
         'basename' => $request->basename]);
+        
+        foreach (explode(",", $request->quotes) as $id) {               
+            DB::table('invoice_quote')->insert([
+                ['invoice_id' => $invoice->id, 'quote_id' => $id]
+            ]);
+        }      
+
         return $invoice;
+        // $data = $request->all();
+
+        // return response()->json($data);
     }
 
     private function upload($file)

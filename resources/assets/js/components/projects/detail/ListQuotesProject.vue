@@ -64,6 +64,12 @@
                                                         Attachments
                                                     </a>
                                                 </li>
+                                                <li>
+                                                    <a href="#" @click.prevent="viewInvoices(quote)">
+                                                        <i class="fa fa-file-pdf-o"></i>
+                                                        Invoices
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </td>
@@ -77,8 +83,7 @@
         </div>
 
         <quotes-attachment :type="type" :quotes="quotes" :quote="quote" class="modal fade" id="myModalFile"></quotes-attachment>
-        <!-- <create-invoice :project="project" :list="list" :invoices="invoices" :invoice="invoice" :quotes="quotes" class="modal right fade" id="modalAdd"></create-invoice> -->
-        <create-invoice  class="modal right fade" id="modalAdd"></create-invoice>
+        <create-invoice :project="project" :list="list" :invoices="invoices" :invoice="invoice" :quotes="quotes" class="modal right fade" id="modalAdd"></create-invoice>        
     </div>
 </template>
 
@@ -171,7 +176,7 @@ export default {
                 customer: '',
                 service: '',
                 currency: '1'
-            }
+            }              
             $('#modalAdd').modal('show');
         },
         edit(quote, index) {
