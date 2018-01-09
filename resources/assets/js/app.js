@@ -57,6 +57,8 @@ Vue.component('files-widget', require('./components/files/FilesWidget.vue'));
 Vue.component('events', require('./components/events/Events.vue'));
 Vue.component('event', require('./components/events/Event.vue'));
 Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
+// Autoparts
+Vue.component('autoparts', require('./components/autoparts/Autoparts.vue'));
 
 const app = new Vue({
     el: '#app'

@@ -34,6 +34,34 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/notifications/markAsRead', 'NotificationController@markAsRead');
 
+    // Autoparts
+    Route::group(['namespace' => 'Autoparts'], function() {
+        Route::group(['prefix' => 'autoparts'], function() {
+            Route::get('/' , function () {
+                return view('autoparts.autoparts');
+            })->middleware('permission:read-autoparts');
+            Route::get('/{id}' , function ($id) {
+                return view('autoparts.autopart', ['id' => $id]);
+            })->middleware('permission:read-autoparts');
+        });
+        Route::group(['prefix' => 'api/autoparts'], function() {
+            Route::get('/all', 'AutopartController@all')->middleware('permission:read-autoparts');
+            Route::post('/store', 'AutopartController@store')->middleware('permission:create-autoparts');
+            // Images
+            Route::post('/images/upload/temp', 'AutopartController@uploadImageTemp')->middleware('permission:create-autoparts');
+            //Route::post('/images/upload/', 'AutopartController@uploadImage')->middleware('permission:update-autoparts');
+            Route::post('/images/sort/{autopartId}', 'AutopartController@sortImage')->middleware('permission:update-autoparts');
+            Route::delete('/images/destroy/{id}', 'AutopartController@destroyImage')->middleware('permission:delete-autoparts');
+            // Lists
+            Route::group(['prefix' => 'list'], function() {
+                Route::get('/makes', 'AutopartController@makes')->middleware('permission:read-autoparts');
+                Route::get('/models', 'AutopartController@models')->middleware('permission:read-autoparts');
+                Route::get('/years', 'AutopartController@years')->middleware('permission:read-autoparts');
+                Route::get('/status', 'AutopartController@status')->middleware('permission:read-autoparts');
+            });
+        });
+    });
+
     // Contacts
     Route::group(['namespace' => 'Contacts'], function() {
         Route::group(['prefix' => 'contacts'], function() {
