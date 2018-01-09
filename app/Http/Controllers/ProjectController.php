@@ -55,9 +55,35 @@ class ProjectController extends Controller
         if($request->area) {
           $query->whereIn('area_id', explode(",",$request->area));
         }
+        $north = clone $query;
+        $south = clone $query;
+        $center = clone $query;
+
+        $high = clone $query;
+        $medium = clone $query;
+        $low = clone $query;
+
+        $done = clone $query;
+        $inProgress = clone $query;
+        $canceled = clone $query;
+        $new = clone $query;
+
         $projects = $query->paginate(10);
         $projects->load($this->relationships);
-        return $projects;
+        // return $projects;
+        return response()->json([
+            'projects' => $projects,
+            'north' => $north->where('area_id', 1)->count(),
+            'south' => $south->where('area_id', 2)->count(),
+            'center' => $center->where('area_id', 3)->count(),
+            'high' => $high->where('priority_id', 1)->count(),
+            'medium' => $medium->where('priority_id', 2)->count(),
+            'low' => $low->where('priority_id', 3)->count(),
+            'done' => $done->where('project_status_id', 1)->count(),
+            'inProgress' => $inProgress->where('project_status_id', 2)->count(),
+            'canceled' => $canceled->where('project_status_id', 3)->count(),
+            'new' => $new->where('project_status_id', 4)->count(),
+        ]);
     }
 
     /**
@@ -149,8 +175,8 @@ class ProjectController extends Controller
             $q->completed_percentage = $request->completed_percentage;
         }
 
-        if ($q->project_status_id != $request->status['id']) {
-            $q->project_status_id = $request->status['id'];
+        if ($q->project_status_id != $request->project_status['id']) {
+            $q->project_status_id = $request->project_status['id'];
         }
 
         $q->save();

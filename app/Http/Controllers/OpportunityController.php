@@ -53,9 +53,27 @@ class OpportunityController extends Controller
         if($request->area) {
           $query->whereIn('area_id', explode(",",$request->area));
         }
-        $oppotunities = $query->paginate(10);
-        $oppotunities->load($this->relationships);
-        return $oppotunities;
+
+        $north = clone $query;
+        $south = clone $query;
+        $center = clone $query;
+
+        $high = clone $query;
+        $medium = clone $query;
+        $low = clone $query;        
+
+        $opportunities = $query->paginate(10);
+        $opportunities->load($this->relationships);
+        // return $opportunities;
+        return response()->json([
+            'opportunities' => $opportunities,
+            'north' => $north->where('area_id', 1)->count(),
+            'south' => $south->where('area_id', 2)->count(),
+            'center' => $center->where('area_id', 3)->count(),
+            'high' => $high->where('priority_id', 1)->count(),
+            'medium' => $medium->where('priority_id', 2)->count(),
+            'low' => $low->where('priority_id', 3)->count()            
+        ]);
     }
 
     public function listByCustomer(Request $request, $id)

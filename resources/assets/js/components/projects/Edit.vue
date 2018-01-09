@@ -76,7 +76,7 @@
                         <div class="form-group" :class="{'has-error': error.status}">
                             <label class="col-sm-3 control-label required">Project Status</label>
                             <div class="col-sm-9" v-if="list.statuses">
-                                <multiselect v-model="project.status" label="name" :options="list.statuses" :placeholder="project.status ? project.status.name:'Select a status'" :multiple="false"></multiselect>
+                                <multiselect v-model="project.project_status" label="name" :options="list.statuses" :placeholder="project.status ? project.status.name:'Select a status'" :multiple="false"></multiselect>
                                 <span class="help-block" v-if="error.status">{{error.status[0]}}</span>
                             </div>
                         </div>

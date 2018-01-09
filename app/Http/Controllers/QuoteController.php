@@ -12,7 +12,7 @@ class QuoteController extends Controller
 {
     public function __construct()
     {
-        $this->relationships = ['designer', 'salesman', 'customer', 'project', 'status', 'service', 'attachment', 'currency'];
+        $this->relationships = ['designer', 'salesman', 'customer', 'project', 'status', 'service', 'attachment', 'currency', 'invoices'];
     }
 
   public function index(Request $request)

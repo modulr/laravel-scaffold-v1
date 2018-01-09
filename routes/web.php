@@ -222,4 +222,9 @@ Route::middleware('auth')->group(function () {
         Route::delete('/destroy/{id}', 'EventController@destroy')->middleware('permission:delete-events');
     });
 
+    //Invoices    
+    Route::get('/invoices/all', 'InvoiceController@all');
+    Route::get('/invoices/{id}', 'InvoiceController@show');
+    Route::post('/invoices/store', 'InvoiceController@store');
+
 });

@@ -12,7 +12,7 @@
         <div class="col-md-2">
           <div class="col-md-12 filters">
               <h4 class="heading">Filters</h4>
-              <a href="#" class="pull-right" @click.prevent="getQuotes">Search</a>
+              <a href="#" class="pull-right" @click.prevent="searchQuotes">Search</a>
               <a href="#" class="pull-right" @click.prevent="clearFilters">Clear</a>
               <div class="row">
                 <div class="card search col-xs-12">
@@ -137,7 +137,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(quote, index) in filteredQuotes">
+                  <tr v-for="(quote, index) in quotes">
                     <td> {{ quote.id }} </td>
                     <td> {{ quote.name }} </td>
                     <td> {{ quote.project.name }} </td>
@@ -267,53 +267,6 @@ export default {
     this.getAll()
     this.getQuotes()
   },
-  computed : {
-    filteredQuotes () {
-      var filteredArray = this.quotes,
-          sort_customer = this.sort.customer ? this.sort.customer.id : "",
-          sort_project = this.sort.project ? this.sort.project.id : "",
-          sort_status = this.sort.status ? this.sort.status.id : "",
-          sort_service = this.sort.service ? this.sort.service.id : "",
-          search = this.search;
-      if(sort_customer) {
-          filteredArray = filteredArray.filter(function (item) {
-              if (item.customer_id == sort_customer) {
-                  return item;
-              }
-          });
-      }
-      if(sort_project) {
-          filteredArray = filteredArray.filter(function (item) {
-              if (item.project_id == sort_project) {
-                  return item;
-              }
-          });
-      }
-      if(sort_status) {
-          filteredArray = filteredArray.filter(function (item) {
-              if (item.status_id == sort_status) {
-                  return item;
-              }
-          });
-      }
-      if(sort_service) {
-          filteredArray = filteredArray.filter(function (item) {
-              if (item.service_id == sort_service) {
-                  return item;
-              }
-          });
-      }
-      if(search) {
-          search = search.trim().toLowerCase();
-          filteredArray = filteredArray.filter(function(item){
-              return Object.keys(item).some(function (key) {
-                  return String(item[key]).toLowerCase().indexOf(search) !== -1
-              })
-          })
-      }
-      return filteredArray;
-    },
-  },
   methods: {
     searchProjects (customer) {
       if (customer) {
@@ -355,7 +308,7 @@ export default {
       axios.get(`/quote/all?page=${page}${this.search ? '&name=' + this.search: ''}${this.sort.customer ? '&customer=' + this.sort.customer.id : ''}${this.sort.project ? '&project=' + this.sort.project.id : ''}${this.sort.status ? '&status=' + this.sort.status.id : ''}${this.sort.service ? '&service=' + this.sort.service.id : ''}`)
         .then(response => {
           this.quotes = response.data.quotes.data
-          this.pagination.last_page = response.data.quotes.data.last_page
+          this.pagination.last_page = response.data.quotes.last_page
           this.insights.total = response.data.quotes.total
           this.insights.amountMXN = response.data.amountMXN
           this.insights.amountUSD = response.data.amountUSD
@@ -422,6 +375,10 @@ export default {
         },
         this.search = '';
         this.getQuotes()
+    },
+    searchQuotes () {
+      this.current_page = 1
+      this.getQuotes()
     }
   }
 }

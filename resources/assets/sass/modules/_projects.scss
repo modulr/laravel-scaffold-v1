@@ -1,4 +1,11 @@
 .projects {
+    .list {        
+        .list-item {
+            list-style-type: none;
+        }
+        padding: 0px;
+        margin: 0px;
+    }
     .modal {
         .modal-body {
             img {

@@ -13,6 +13,11 @@
                         <i class="mdi mdi-person-add mdi-lg"></i> New Quote
                     </a>
                 </div>
+                <!-- <div class="col-sm-2">
+                    <a href="#" class="btn btn-primary pull-right" @click.prevent="addInvoice">
+                        <i class="mdi mdi-person-add mdi-lg"></i> New Invoice
+                    </a>
+                </div> -->
             </div>
             <br>
             <!-- List -->
@@ -98,7 +103,7 @@
         <!-- Edit quote -->
         <quotes-edit :list="list" :quotes="quotes" :quote="quote" class="modal right fade" id="modalEdit"></quotes-edit>
         <!-- Modal File -->
-        <quotes-attachment :type="type" :quotes="quotes" :quote="quote" class="modal fade" id="myModalFile"></quotes-attachment>
+        <quotes-attachment :type="type" :quotes="quotes" :quote="quote" class="modal fade" id="myModalFile"></quotes-attachment>        
     </div>
 </template>
 

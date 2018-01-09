@@ -2,6 +2,14 @@
     <div class="quotes">
         <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
         <div class="wrapper" v-if="!loading">
+            <div class="row">                
+                <div class="col-sm-12">
+                    <a href="#" class="btn btn-primary pull-right" @click.prevent="add">
+                        <i class="mdi mdi-person-add mdi-lg"></i> New Invoice
+                    </a>
+                </div>                
+            </div>
+            <br>
             <!-- List -->
             <div class="row">
                 <!-- No items found -->
@@ -56,6 +64,12 @@
                                                         Attachments
                                                     </a>
                                                 </li>
+                                                <li>
+                                                    <a href="#" @click.prevent="viewInvoices(quote)">
+                                                        <i class="fa fa-file-pdf-o"></i>
+                                                        Invoices
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </td>
@@ -69,6 +83,8 @@
         </div>
 
         <quotes-attachment :type="type" :quotes="quotes" :quote="quote" class="modal fade" id="myModalFile"></quotes-attachment>
+        <create-invoice :project="project" :list="list" :invoices="invoices" :invoice="invoice" :quotes="quotes" class="modal right fade" id="modalAdd"></create-invoice>        
+        <!-- <quotes-invoice-list :invoices="invoices"></quotes-invoice-list> -->
     </div>
 </template>
 
@@ -87,6 +103,8 @@ export default {
             loadingQuotes: false,
             quotes: [],
             quote: {},
+            invoices: [],
+            invoice: {},
             list: {
                 designers: [],
                 sellers: [],
@@ -159,7 +177,7 @@ export default {
                 customer: '',
                 service: '',
                 currency: '1'
-            }
+            }              
             $('#modalAdd').modal('show');
         },
         edit(quote, index) {
@@ -237,6 +255,9 @@ export default {
                 },
                 this.search = '';
             this.getQuotes()
+        },
+        viewInvoices (quote) {
+            this.invoices = quote.invoices
         }
     }
 }
