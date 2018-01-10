@@ -11,7 +11,7 @@ class Project extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name', 'registered_date', 'acceptance_date', 'cancelled_date', 'start_date', 'end_date', 'project_status', 'status', 'description', 'owner_id', 'leader_id', 'supervisor_id', 'priority_id', 'client_id', 'area_id', 'completed_percentage', 'factured_percentage'];
+    protected $fillable = ['name', 'registered_date', 'acceptance_date', 'cancelled_date', 'start_date', 'end_date', 'project_status_id', 'opportunity_status_id', 'status', 'description', 'owner_id', 'leader_id', 'supervisor_id', 'priority_id', 'client_id', 'area_id', 'completed_percentage', 'factured_percentage'];
 
     public function owner()
     {
@@ -20,12 +20,12 @@ class Project extends Model
 
     public function leader()
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(\App\Models\Employees\Employee::class);
     }
 
     public function supervisor()
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(\App\Models\Employees\Employee::class);
     }
 
     public function priority()
@@ -36,6 +36,11 @@ class Project extends Model
     public function project_status()
     {
         return $this->belongsTo(\App\Models\Projects\ListProjectStatus::class);
+    }
+
+    public function opportunity_status()
+    {
+        return $this->belongsTo(\App\Models\Projects\ListOpportunityStatus::class);
     }
 
     public function client()

@@ -75,7 +75,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" @click="resetBindings">Cancel</button>
                     <button type="button" class="btn btn-primary" @click="store">Add</button>
                 </div>
             </div>
@@ -105,7 +105,7 @@ export default {
             },
             opportunity: {
                 customer: {
-                    id: ''
+                    id: '',
                 }
             },
         }
@@ -162,6 +162,17 @@ export default {
                     var btn = $(e.target).button('reset')
                 });
         },
+        resetBindings: function() {
+            var self = this
+            self.opportunity = {
+                name: '',
+                description: '',
+                registered_date: '',
+                priority: '',
+                area: '',
+                customer: {},
+            }
+        }
     },
     filters: {
         date(date) {

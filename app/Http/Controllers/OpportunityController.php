@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Models\Projects\Project;
 use App\Models\Projects\ListPriority;
+use App\Models\Projects\ListOpportunityStatus;
 use App\Models\Customers\Customer;
 use App\Models\Customers\Client;
 use App\Models\Lists\ListArea;
@@ -16,7 +17,7 @@ class OpportunityController extends Controller
 {
     public function __construct()
     {
-        $this->relationships = ['owner', 'priority', 'client', 'client.customer', 'quote', 'quote.designer', 'quote.salesman', 'quote.status', 'quote.currency', 'area'];
+        $this->relationships = ['owner', 'priority', 'client', 'client.customer', 'quote', 'quote.designer', 'quote.salesman', 'quote.status', 'quote.currency', 'area', 'comment', 'comment.user', 'opportunity_status'];
     }
     /**
      * Display a listing of the resource.
@@ -118,6 +119,7 @@ class OpportunityController extends Controller
             'quotes' => $request->quotes,
             'registered_date' => $request->registered_date,
             'status' => 1, // 1 = Opportunity
+            'opportunity_status_id' => 4,
             'description' => $request->description,
             'owner_id' => Auth::id(),
             'priority_id' => $request->priority,
@@ -153,6 +155,10 @@ class OpportunityController extends Controller
 
         if ($q->area_id != $request->area) {
             $q->area_id = $request->area['id'];
+        }
+
+        if ($q->opportunity_status_id != $request->opportunity_status['id']) {
+            $q->opportunity_status_id = $request->opportunity_status['id'];
         }
 
         $q->save();
@@ -225,11 +231,22 @@ class OpportunityController extends Controller
         return ListArea::all();
     }
 
+    /**
+     * Get a list of project statuses.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listStatuses()
+    {
+        return ListOpportunityStatus::all();
+    }
+
     public function makeProject($id)
     {
         $q = Project::find($id);
         $q->status = 2;
         $q->project_status_id = 4;
+        $q->opportunity_status_id = 4;
         $q->acceptance_date = date('Y-m-d h:i:s');
 
         $q->save();

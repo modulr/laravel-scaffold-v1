@@ -147,6 +147,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/opportunities/list/owners', 'OpportunityController@listOwners');
     Route::get('/opportunities/list/areas', 'OpportunityController@listAreas');
     Route::get('/opportunities/customers/{id}', 'OpportunityController@listByCustomer');
+    Route::get('/opportunities/list/statuses', 'OpportunityController@listStatuses');
 
     //Projects
     Route::get('/projects', 'ProjectController@index');

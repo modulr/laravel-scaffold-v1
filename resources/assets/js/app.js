@@ -66,6 +66,7 @@ Vue.component('opportunitiesEdit', require('./components/opportunities/Edit.vue'
 Vue.component('opportunity', require('./components/opportunities/detail/Opportunity.vue'));
 Vue.component('listQuotes', require('./components/opportunities/detail/ListQuotes.vue'));
 Vue.component('createQuote', require('./components/opportunities/detail/CreateQuote.vue'));
+Vue.component('comments', require('./components/opportunities/detail/Comments.vue'));
 //Quotes
 Vue.component('quotes', require('./components/quotes/Quotes.vue'));
 Vue.component('quotesCreate', require('./components/quotes/Create.vue'));

@@ -14,6 +14,7 @@
                     <div class="col-md-12 filters">
                         <h4 class="heading">Filters</h4>
                         <a href="#" class="pull-right" @click.prevent="getAll">Search</a>
+                        <br>
                         <a href="#" class="pull-right" @click.prevent="clearFilters">Clear</a>
                         <div class="row">
                             <div class="card search col-xs-12">
@@ -80,6 +81,7 @@
                                         <th>Customer</th>
                                         <th>Region</th>
                                         <th>Priority</th>
+                                        <th>Status</th>
                                         <th>Description</th>
                                         <th></th>
                                     </tr>
@@ -120,8 +122,13 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <span class="chip" :class="'priority-'+item.priority.name">
+                                            <span v-if="item.priority" class="chip" :class="'priority-'+item.priority.name">
                                                 {{item.priority.name}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="chip" v-if="item.opportunity_status" :class="item.opportunity_status.id == 4 ? 'warning':''">
+                                                {{item.opportunity_status.name}}
                                             </span>
                                         </td>
                                         <td>
@@ -202,8 +209,8 @@ export default {
                 areas: []
             },
             pagination : {
-                current_page: 0,
-                last_page: 1
+                current_page: 1,
+                // last_page: 1
             },
             insights : {}
         }

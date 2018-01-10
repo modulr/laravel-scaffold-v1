@@ -6,6 +6,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{opportunity.name}}</h3>
+                    <a href="#" class="pull-right" @click.prevent="viewComments">View comments</a>
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -51,6 +52,7 @@
                     </div>
                 </div>
             </div>
+            <comments :opportunity="opportunity" :comments="opportunity.comment" class="modal right fade" id="modalComments"></comments>
             <list-quotes :opportunity="opportunity"></list-quotes>
         </div>
     </div>
@@ -90,6 +92,9 @@ export default {
             this.error = {};
 
             $('#modalAddQuote').show();
+        },
+        viewComments: function() {
+            $('#modalComments').modal('show');
         }
     }
 }

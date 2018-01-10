@@ -63,6 +63,13 @@
                                 </p>
                             </div>
                         </div>
+                        <div class="form-group" :class="{'has-error': error.status}">
+                            <label class="col-sm-3 control-label required">Opportunity Status</label>
+                            <div class="col-sm-9" v-if="list.statuses">
+                                <multiselect v-model="opportunity.opportunity_status" label="name" :options="list.statuses" :placeholder="opportunity.status ? opportunity.status.name:'Select a status'" :multiple="false"></multiselect>
+                                <span class="help-block" v-if="error.status">{{error.status[0]}}</span>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -82,15 +89,20 @@ import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
 import Vue2Filters from 'vue2-filters';
+import Multiselect from 'vue-multiselect';
 export default {
     props: ['opportunity', 'opportunities'],
+    components: {
+        Multiselect, Spinner
+    },
     data() {
         return {
             list: {
                 priorities: [],
                 clients: [],
                 customers: [],
-                areas: []
+                areas: [],
+                statuses: []
             },
             error: {}
         }
@@ -111,6 +123,10 @@ export default {
         axios.get('/opportunities/list/areas')
             .then(response => {
                 this.list.areas = response.data;
+            });
+        axios.get('/opportunities/list/statuses')
+            .then(response => {
+                this.list.statuses = response.data;
             });
     },
     methods: {

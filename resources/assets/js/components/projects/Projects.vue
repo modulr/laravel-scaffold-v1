@@ -102,13 +102,15 @@
                                         </td>
                                         <td>
                                             <span v-if="item.leader">
-                                                <img class="avatar-sm" :src="item.leader.avatar_url" v-tooltip="item.leader.name">
+                                                {{item.leader.name}}
+                                                <!-- <img class="avatar-sm" :src="item.leader.avatar_url" v-tooltip="item.leader.name"> -->
                                             </span>
 
                                         </td>
                                         <td>
                                             <span v-if="item.supervisor">
-                                                <img class="avatar-sm" :src="item.supervisor.avatar_url" v-tooltip="item.supervisor.name">
+                                                {{item.supervisor.name}}
+                                                <!-- <img class="avatar-sm" :src="item.supervisor.avatar_url" v-tooltip="item.supervisor.name"> -->
                                             </span>
                                         </td>
                                         <td>
@@ -191,8 +193,8 @@ export default {
                 users: [],
             },
             pagination : {
-                current_page: 0,
-                last_page: 1
+                current_page: 1,
+                // last_page: 1
             },
             insights : {
                 Region : {},

@@ -61,15 +61,15 @@
                         </div>
                         <div class="form-group" :class="{'has-error': error.user}">
                             <label class="col-sm-3 control-label required">Project Leader</label>
-                            <div class="col-sm-9" v-if="list.users">
-                                <multiselect v-model="project.leader" label="name" :options="list.users" :placeholder="project.leader ? project.leader.name:'Select a leader'" :multiple="false"></multiselect>
+                            <div class="col-sm-9" v-if="list.employees">
+                                <multiselect v-model="project.leader" label="name" :options="list.employees" :placeholder="project.leader ? project.leader.name:'Select a leader'" :multiple="false"></multiselect>
                                 <span class="help-block" v-if="error.leader">{{error.leader[0]}}</span>
                             </div>
                         </div>
                         <div class="form-group" :class="{'has-error': error.supervisor}">
                             <label class="col-sm-3 control-label required">Project Supervisor</label>
-                            <div class="col-sm-9" v-if="list.users">
-                                <multiselect v-model="project.supervisor" label="name" :options="list.users" :placeholder="project.supervisor ? project.supervisor.name:'Select a supervisor'" :multiple="false"></multiselect>
+                            <div class="col-sm-9" v-if="list.employees">
+                                <multiselect v-model="project.supervisor" label="name" :options="list.employees" :placeholder="project.supervisor ? project.supervisor.name:'Select a supervisor'" :multiple="false"></multiselect>
                                 <span class="help-block" v-if="error.supervisor">{{error.supervisor[0]}}</span>
                             </div>
                         </div>
@@ -137,7 +137,7 @@ export default {
                 clients: [],
                 customers: [],
                 areas: [],
-                users: [],
+                employees: [],
                 statuses: []
             },
             error: {}
@@ -164,9 +164,9 @@ export default {
             .then(response => {
                 this.list.statuses = response.data;
             });
-        axios.get('/users/all')
+        axios.get('/employees/all')
             .then(response => {
-                this.list.users = response.data;
+                this.list.employees = response.data.data;
             });
     },
     methods: {
