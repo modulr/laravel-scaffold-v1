@@ -48,6 +48,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="card col-xs-12">
+                                <p class="title"><small>Status</small></p>
+                                <div v-for="option in list.status">
+                                    <input type="checkbox" v-model="sort.status" :value="option.id">
+                                    <label>{{option.name}}</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-10">
@@ -199,6 +208,7 @@ export default {
                 customers: [],
                 client: [],
                 area: [],
+                status: [],
                 total: '',
             },
             search: '',
@@ -206,7 +216,8 @@ export default {
                 priorities: [],
                 clients: [],
                 customers: [],
-                areas: []
+                areas: [],
+                status: []
             },
             pagination : {
                 current_page: 1,
@@ -234,7 +245,11 @@ export default {
         getAll: function () {
             var page = Number(this.pagination.current_page);
             this.loading = true;
-            axios.get(`/opportunities/all?page=${page}${this.search ? '&name=' + this.search: ''}${(this.sort.client && this.sort.client.length > 0) ? '&client=' + this.sort.client.map(item => item.id) : ''}${(this.sort.customers && this.sort.customers.length > 0) ? '&customer=' + this.sort.customers.map(item => item.id) : ''}${(this.sort.area && this.sort.area.length > 0) ? '&area=' + this.sort.area : ''}`)
+            axios.get(`/opportunities/all?page=${page}${this.search ? '&name=' + this.search: ''}
+                ${(this.sort.client && this.sort.client.length > 0) ? '&client=' + this.sort.client.map(item => item.id) : ''}
+                ${(this.sort.customers && this.sort.customers.length > 0) ? '&customer=' + this.sort.customers.map(item => item.id) : ''}
+                ${(this.sort.area && this.sort.area.length > 0) ? '&area=' + this.sort.area : ''}
+                ${(this.sort.status && this.sort.status.length > 0) ? '&status=' + this.sort.status : ''}`)
             .then(response => {
                 axios.get('/opportunities/list/priorities')
                 .then(response => {
@@ -251,6 +266,10 @@ export default {
                 axios.get('/opportunities/list/areas')
                 .then(response => {
                     this.list.areas = response.data;
+                });
+                axios.get('/opportunities/list/statuses')
+                .then(response => {
+                    this.list.status = response.data;
                 });
             this.pagination.last_page = response.data.opportunities.last_page
             this.opportunities = response.data.opportunities.data;
@@ -296,6 +315,7 @@ export default {
                 customers: [],
                 client: [],
                 area: [],
+                status: [],
                 total: '',
             }
             this.getAll()

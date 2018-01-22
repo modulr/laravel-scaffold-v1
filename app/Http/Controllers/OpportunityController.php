@@ -54,6 +54,9 @@ class OpportunityController extends Controller
         if($request->area) {
           $query->whereIn('area_id', explode(",",$request->area));
         }
+        if($request->status) {
+          $query->whereIn('opportunity_status_id', explode(",",$request->status));
+        }
 
         $north = clone $query;
         $south = clone $query;
