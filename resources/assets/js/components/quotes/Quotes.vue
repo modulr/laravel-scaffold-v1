@@ -305,10 +305,11 @@ export default {
     },
     getQuotes () {
       var page = Number(this.pagination.current_page);
+      this.loading = true
       axios.get(`/quote/all?page=${page}${this.search ? '&name=' + this.search: ''}${this.sort.customer ? '&customer=' + this.sort.customer.id : ''}${this.sort.project ? '&project=' + this.sort.project.id : ''}${this.sort.status ? '&status=' + this.sort.status.id : ''}${this.sort.service ? '&service=' + this.sort.service.id : ''}`)
         .then(response => {
-          this.quotes = response.data.quotes.data
           this.pagination.last_page = response.data.quotes.last_page
+          this.quotes = response.data.quotes.data
           this.insights.total = response.data.quotes.total
           this.insights.amountMXN = response.data.amountMXN
           this.insights.amountUSD = response.data.amountUSD
