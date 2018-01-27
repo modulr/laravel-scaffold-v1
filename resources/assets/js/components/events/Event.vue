@@ -90,7 +90,10 @@
                             <a href="#" class="btn btn-primary" @click.prevent="pay" v-if="showPayButton">
                                 Pagar con Paypal
                             </a>
-                            <span class="alert alert-success" v-if="showPaidMsg">Tu reservacion ya esta lista!!</span>
+                            <p class="alert alert-success" v-if="showPaidMsg">Tu reservacion ya esta lista!!</p>
+                            <p v-if="showPaidMsg">Aquí es la direccion en donde disfrutaras de tu platillo.</p>
+                            <i class="fa fa-map-marker fa-3x" aria-hidden="true"></i>
+                            <p class="lead" v-if="showPaidMsg">{{event.place}}</p>
                         </div>
 
                     </div>
