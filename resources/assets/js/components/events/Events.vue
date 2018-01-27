@@ -5,7 +5,7 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 hidden-xs">
                         <p class="lead">Cerca de ti</p>
                     </div>
                     <div class="col-sm-4 text-center">
@@ -14,12 +14,12 @@
                             <input type="text" class="form-control" placeholder="Buscar" v-model="search">
                         </div>
                     </div>
-                    <div class="col-sm-4 text-right">
+                    <!-- <div class="col-sm-4 text-right">
                         <span class="separator"></span>
                         <a href="#" class="btn btn-link">
                             <i class="fa fa-fw fa-lg fa-list" aria-hidden="true"></i>
                         </a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <!-- List Events -->

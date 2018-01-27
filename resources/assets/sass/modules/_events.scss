@@ -130,7 +130,6 @@
                 }
                 .media-body {
                     .lead {
-                        margin-top: 20px;
                         i {
                             margin-right: 5px;
                         }
@@ -140,6 +139,14 @@
         }
     }
     .panel.information {
+        .panel-body {
+            p {
+                margin-bottom: 0;
+            }
+            hr {
+                margin: 0;
+            }
+        }
         .panel-footer {
             background-color: $white;
             padding-bottom: 40px;

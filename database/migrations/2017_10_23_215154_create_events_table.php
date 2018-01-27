@@ -44,6 +44,8 @@ class CreateEventsTable extends Migration
             $table->integer('event_id')->unsigned()->comment = "Event ID";
             $table->integer('user_id')->unsigned()->comment = "User ID";
             $table->boolean('approved')->default(false);
+            $table->boolean('paid')->default(false);
+            $table->text('paypal_id')->nullable();
             $table->primary(['event_id', 'user_id']);
             $table->timestamps();
             $table->softDeletes();

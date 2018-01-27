@@ -18,14 +18,18 @@
                         </div>
                         <div class="panel-body">
                             <div class="media">
-                                <div class="media-left">
+                                <div class="media-left text-center">
                                     <img class="avatar-md" :src="event.owner.avatar_url">
+                                    <h4><i class="fa fa-eercast" aria-hidden="true"></i> {{event.attending_limit-event.attendings.length}}/{{event.attending_limit}}</h4>
+                                    <span class="text-muted" v-show="event.attending_limit > 0">
+                                        Disponibles
+                                    </span>
                                 </div>
                                 <div class="media-body">
                                     <h4 class="media-heading">{{event.name}}</h4>
-                                    <p>{{event.description}}</p>
-                                    <p class="lead" v-show="event.date || event.start_time || event.end_time">
-                                        <i class="fa fa-fw fa-clock-o fa-lg" aria-hidden="true"></i>
+                                    <p class="lead">{{event.description}}</p>
+                                    <p class="lead" v-if="showPaidMsg || showAttendingsList"><i class="fa fa-fw fa-map-marker fa-lg" aria-hidden="true"></i> {{event.place}}</p>
+                                    <p if="event.date || event.start_time || event.end_time">
                                         <span v-if="event.date">{{event.date | moment('LL')}}.</span>
                                         <span v-if="event.start_time">
                                             <small class="text-muted">De </small>{{'2018-01-01 '+event.start_time | moment('h:mm a')}}
@@ -34,7 +38,6 @@
                                             <small class="text-muted">a </small>{{'2018-01-01 '+event.end_time | moment('h:mm a')}}
                                         </span>
                                     </p>
-                                    <p class="lead" v-if="approved"><i class="fa fa-fw fa-map-marker fa-lg" aria-hidden="true"></i> {{event.place}}</p>
                                 </div>
                             </div>
                         </div>
@@ -43,57 +46,53 @@
                 <div class="col-md-4">
                     <div class="panel information">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Información</h3>
+                            <h3 class="panel-title">Reservaciones</h3>
+                        </div>
+                        <div class="panel-body" v-if="event.attendings.length && showAttendingsList">
+                            <div class="media" v-for="(attending, index) in event.attendings">
+                                <div class="media-left">
+                                    <img class="avatar-xs" :src="attending.avatar_url">
+                                </div>
+                                <div class="media-body">
+                                    <div class="pull-right" v-if="event.owner.id == user.id">
+                                        <a href="#" class="btn btn-xs btn-link"
+                                            @click.prevent="reject(attending.id, index)"
+                                            v-if="!attending.pivot.paid">
+                                            Rechazar
+                                        </a>
+                                        <a href="#" class="btn btn-xs btn-primary"
+                                            @click.prevent="approve(attending.id, index)"
+                                            v-if="!attending.pivot.approved">
+                                            Aprobar
+                                        </a>
+                                        <small class="text-primary" v-if="attending.pivot.paid">Pagada</small>
+                                        <small v-if="attending.pivot.approved && attending.pivot.paid"> / </small>
+                                        <small class="text-success" v-if="attending.pivot.approved">Aprovada</small>
+                                    </div>
+                                    <p>
+                                        {{attending.name}}
+                                    </p>
+                                    <a class="text-muted" :href="`mailto:${attending.email}`">{{attending.email}}</a>
+                                </div>
+                                <hr>
+                            </div>
                         </div>
                         <div class="panel-body">
-                            Contiene
-                            <hr>
-                            <p class="text-nl2br">{{event.content}}</p>
-                            <p v-show="event.attending_limit > 0">Platos ({{event.attendings.length}}/{{event.attending_limit}})</p>
-                            <hr>
                             <h1 class="text-center">${{event.price}}</h1>
                         </div>
                         <div class="panel-footer text-center">
-                            <a href="#" class="btn btn-primary" @click.prevent="attend" v-if="!attending" v-show="event.attending_limit > event.attendings.length">
-                                Reservar
+                            <a href="#" class="btn btn-success" @click.prevent="attend" v-if="showAttendButton">
+                                Reserva y Paga con Paypal
                             </a>
-                            <a href="#" class="btn btn-danger" @click.prevent="attend" v-else>
-                                Cancelar
+                            <a href="#" class="btn btn-link" @click.prevent="attend" v-if="showCancelButton">
+                                Cancelar reservacion
                             </a>
+                            <a href="#" class="btn btn-primary" @click.prevent="pay" v-if="showPayButton">
+                                Pagar con Paypal
+                            </a>
+                            <span class="alert alert-success" v-if="showPaidMsg">Tu reservacion ya esta lista!!</span>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="panel" v-if="event.attendings.length">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Reservaciones</h3>
-                        </div>
-                        <div class="panel-body">
-                            <ul class="list-group">
-                                <li class="list-group-item" v-for="(attending, index) in event.attendings">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img class="avatar-sm" :src="attending.avatar_url">
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="media-heading">{{attending.name}} <i class="mdi mdi-check-circle text-success" v-if="attending.pivot.approved"></i></h5>
-                                            <a class="text-muted" :href="`mailto:${attending.email}`">{{attending.email}}</a>
-                                            <div class="pull-right" v-if="event.owner.id == user.id">
-                                                <a href="#" class="btn btn-sm btn-primary"
-                                                    @click.prevent="approve(attending.id, index)"
-                                                    v-if="!attending.pivot.approved">
-                                                    Aprobar
-                                                </a>
-                                                <a href="#" class="btn btn-sm btn-danger"
-                                                    @click.prevent="reject(attending.id, index)">
-                                                    Rechazar
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -112,8 +111,11 @@
                     images: [],
                     attendings: []
                 },
-                attending: false,
-                approved: false,
+                showAttendButton: false,
+                showCancelButton: false,
+                showPayButton: false,
+                showPaidMsg: false,
+                showAttendingsList: false,
                 swiperOption: {
                     nextButton: '.swiper-button-next',
                     prevButton: '.swiper-button-prev',
@@ -133,21 +135,42 @@
                 axios.get('/events/'+this.id)
                 .then(response => {
                     this.event = response.data
-                    this.isAttending();
+                    this.showHideButton()
                 });
             },
             attend() {
                 axios.get('/events/attend/'+this.id)
                 .then(response => {
                     this.event.attendings = response.data.attendings;
-                    this.isAttending();
+                    this.showHideButton();
                     if (response.data.attend) {
                         swal({
-                            title: "Reservación exitosa",
-                            text:  "Tu Reservación ha sido enviada a "+this.event.owner.name+", en cuanto sea confirmada recibiras la notificación en tu correo.",
+                            title: "Peticion enviada",
+                            text:  "Tu Reservación ha sido enviada al cocinero "+this.event.owner.name+", en caso de ser aceptada podras terminar tu reservacion pagando el platillo por medio de Paypal.",
+                            type:  "success",
+                        })
+                    } else {
+                        swal({
+                            title: "Reservacion cancelada",
+                            text:  "Tu Reservación ha sido enviada al cocinero "+this.event.owner.name+", en caso de ser aceptada podras terminar tu reservacion pagando el platillo por medio de Paypal.",
                             type:  "success",
                         })
                     }
+                });
+            },
+            pay() {
+                axios.post('/paypal/checkout', this.event)
+                .then(response => {
+                    if (response.data.success) {
+                        location.href = response.data.approvalUrl;
+                    }
+                })
+                .catch(error => {
+                    swal({
+                        title: "Pago fallido",
+                        text:  "Algo salio mal al intentar hacer tu pago, por favor intentalo de nuevo",
+                        type:  "warning",
+                    })
                 });
             },
             approve(userId, index){
@@ -167,22 +190,41 @@
                     this.event.attendings.splice(index, 1);
                     swal({
                         title: "Aprobación rechazada",
-                        text:  "Tu Rechazo ha sido enviado a "+this.event.attendings[index].name+" por correo.",
+                        text:  "Se le notificara al comensal "+this.event.attendings[index].name+" que su peticion fue rechazada",
                         type:  "warning",
                     })
                 });
             },
-            isAttending(){
-                var self = this;
-                self.attending = false;
-                this.event.attendings.forEach(function(v){
-                    if (v.id == self.user.id) {
-                        self.attending = true;
-                        if (v.pivot.approved) {
-                            self.approved = true;
-                        }
+            showHideButton(){
+                if (this.user.id != this.event.owner.id) {
+                    this.showAttendButton = true;
+                    if (this.event.attending_limit > this.event.attendings.length) {
+                        this.showAttendButton = true;
                     }
-                });
+                    if (this.event.attendings.length) {
+                        var self = this;
+                        this.event.attendings.forEach(function(v){
+                            if (self.user.id == v.id) {
+                                self.showAttendButton = false;
+                                self.showCancelButton = true
+                                if (v.pivot.approved) {
+                                    self.showPayButton = true
+                                    self.showCancelButton = false
+                                }
+                                if (v.pivot.paid) {
+                                    self.showPayButton = false
+                                    self.showCancelButton = false
+                                    self.showPaidMsg= true
+                                }
+                            }
+                        });
+                    } else {
+                        this.showCancelButton = false;
+                    }
+
+                } else {
+                    this.showAttendingsList = true;
+                }
             }
         }
     }

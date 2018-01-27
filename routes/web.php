@@ -174,5 +174,6 @@ Route::middleware('auth')->group(function () {
         })->middleware('permission:read-events');
     });
 
-
+    Route::post('/paypal/checkout', 'PaypalController@getCheckout');
+    Route::get('/paypal/status', 'PaypalController@getStatus');
 });

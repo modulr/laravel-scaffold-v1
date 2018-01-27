@@ -5,20 +5,16 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-sm-4">
-
-                    </div>
-                    <div class="col-sm-4 text-center">
+                    <div class="col-xs-6 col-sm-4">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" placeholder="Buscar" v-model="search">
                         </div>
                     </div>
-                    <div class="col-sm-4 text-right">
-                        <a href="#" class="btn btn-link">
+                    <div class="col-xs-6 col-sm-8 text-right">
+                        <!-- <a href="#" class="btn btn-link">
                             <i class="fa fa-fw fa-lg fa-list" aria-hidden="true"></i>
-                        </a>
-                        <span class="separator"></span>
+                        </a> -->
                         <a href="#" class="btn btn-success"
                            v-if="user.hasPermission['create-events']"
                            @click.prevent="newEvent">

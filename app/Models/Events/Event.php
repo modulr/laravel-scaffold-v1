@@ -26,6 +26,6 @@ class Event extends Model
 
     public function attendings()
     {
-        return $this->belongsToMany(\App\User::class)->withPivot('approved');
+        return $this->belongsToMany(\App\User::class)->withPivot('approved', 'paid');
     }
 }
