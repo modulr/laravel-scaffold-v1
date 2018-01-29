@@ -39,7 +39,7 @@ class ProjectController extends Controller
     public function all(Request $request)
     {
         // return Project::with($this->relationships)->where('status', 2)->paginate(10);
-        $query = Project::query();
+        $query = Project::query()->orderBy('created_at', 'desc');;
         $query->where('status', 2);
         if($request->name) {
             $query->where('projects.name', 'LIKE', '%'.$request->name.'%');

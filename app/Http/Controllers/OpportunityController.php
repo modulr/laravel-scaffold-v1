@@ -38,7 +38,7 @@ class OpportunityController extends Controller
 
     public function all(Request $request)
     {
-        $query = Project::query();
+        $query = Project::query()->orderBy('created_at', 'desc');
         $query->where('status', 1);
         if($request->name) {
             $query->where('projects.name', 'LIKE', '%'.$request->name.'%');
@@ -62,9 +62,10 @@ class OpportunityController extends Controller
         $south = clone $query;
         $center = clone $query;
 
-        $high = clone $query;
-        $medium = clone $query;
-        $low = clone $query;        
+        $quoted = clone $query;
+        $in_design = clone $query;
+        $canceled = clone $query;        
+        $new = clone $query;        
 
         $opportunities = $query->paginate(10);
         $opportunities->load($this->relationships);
@@ -74,9 +75,10 @@ class OpportunityController extends Controller
             'north' => $north->where('area_id', 1)->count(),
             'south' => $south->where('area_id', 2)->count(),
             'center' => $center->where('area_id', 3)->count(),
-            'high' => $high->where('priority_id', 1)->count(),
-            'medium' => $medium->where('priority_id', 2)->count(),
-            'low' => $low->where('priority_id', 3)->count()            
+            'quoted' => $quoted->where('opportunity_status_id', 1)->count(),
+            'in_design' => $in_design->where('opportunity_status_id', 2)->count(),
+            'canceled' => $canceled->where('opportunity_status_id', 3)->count(),
+            'new' => $new->where('opportunity_status_id', 4)->count()            
         ]);
     }
 

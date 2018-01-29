@@ -210,10 +210,13 @@ Route::middleware('auth')->group(function () {
     // Widgets
     Route::get('/widget/getMonthOpportunities', 'WidgetController@getMonthOpportunities');
     Route::get('/widget/getOpportunityInsights', 'WidgetController@getOpportunityInsights');
+    Route::get('/widget/getMonthProjects', 'WidgetController@getMonthProjects');
+    Route::get('/widget/getProjectInsights', 'WidgetController@getProjectInsights');
     Route::get('/widget/getMonthQuotes', 'WidgetController@getMonthQuotes');
     Route::get('/widget/getQuoteInsights', 'WidgetController@getQuoteInsights');
     Route::get('/widget/opportunity/charts', 'WidgetController@opportunityCharts');
     Route::get('/widget/quote/charts', 'WidgetController@quoteCharts');
+    Route::get('/widget/project/charts', 'WidgetController@projectCharts');
     // Events
     Route::group(['namespace' => 'Events', 'prefix' => 'events'], function() {
         Route::get('/', 'EventController@index')->middleware('permission:read-events');

@@ -22,7 +22,7 @@ class QuoteController extends Controller
 
   public function all(Request $request)
   {
-    $query = Quote::query();
+    $query = Quote::query()->orderBy('created_at', 'desc');;
 
     if($request->name) {
         $query->where('name', 'LIKE', '%'.$request->name.'%');

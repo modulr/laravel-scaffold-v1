@@ -68,12 +68,12 @@
                         <div class="row">
                             <div class="col-md-2" v-for="(value, key) in insights">
                                 <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">{{ key }}</h3>
-                                </div>
-                                <div class="panel-body">
-                                    {{ value }}
-                                </div>
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">{{ key }}</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <p>{{ value }}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -276,9 +276,10 @@ export default {
             this.insights.North = response.data.north
             this.insights.South = response.data.south
             this.insights.Center = response.data.center
-            this.insights.High = response.data.high
-            this.insights.Medium = response.data.medium
-            this.insights.Low = response.data.low
+            this.insights.Quoted = response.data.quoted
+            this.insights.InDesign = response.data.in_design
+            this.insights.Canceled = response.data.canceled
+            this.insights.New = response.data.new
             this.loading = false;
             });
         },

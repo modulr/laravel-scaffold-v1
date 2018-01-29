@@ -10,10 +10,10 @@
                 <quotes-widget></quotes-widget>
             </div>
         </div>
-        <!-- <div class="row">
+        <div class="row">
             <div class="col-md-12">
                 <projects-widget></projects-widget>
             </div>
-        </div> -->
+        </div>
     </div>
 @endsection

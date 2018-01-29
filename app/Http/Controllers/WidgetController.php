@@ -138,4 +138,65 @@ class WidgetController extends Controller
             'rejected' => $rejectedArray,
         );
     }
+
+    public function projects()
+    {
+        return $projects = Project::all();
+    }
+
+    public function getMonthProjects()
+    {
+        $currentMonth = date('m');
+        $currentYear = date('Y');
+
+        return Project::where('status', 2)
+            ->whereYear('registered_date', $currentYear)
+            ->whereRaw('MONTH(registered_date) = ?', [$currentMonth])
+            ->count();
+    }
+
+    public function getProjectInsights()
+    {
+        $currentYear = date('Y');
+        $approvedProjects = Project::where('status', 2)->whereYear('registered_date', $currentYear)->get();
+        $activeProjects = Project::where('status', 2)->whereYear('registered_date', $currentYear)->get();
+        $rejectedProjects = Project::where('status', 0)->whereYear('registered_date', $currentYear)->get();
+        $allProjects = Project::where('status', 2)->whereYear('registered_date', $currentYear)->get();
+
+        return response()->json([
+            'approved' => $approvedProjects,
+            'active' => $activeProjects,
+            'rejected' => $rejectedProjects,
+            'all' => $allProjects,
+        ]);
+    }
+
+    public function projectCharts()
+    {
+        $activeArray = array();
+        $currentYear = date('Y');
+
+        for ($i = 1; $i <= 12; $i++) {
+            $activeData = Project::where('status', 2)
+                ->whereYear('registered_date', $currentYear)
+                ->whereRaw('MONTH(registered_date) = ?', $i)
+                ->get();
+            $activeArray[$i] = $activeData->count();
+        }
+
+        $rejectedArray = array();
+
+        for ($i = 1; $i <= 12; $i++) {
+            $rejectedData = Project::where('status', 0)
+                ->whereYear('registered_date', $currentYear)
+                ->whereRaw('MONTH(registered_date) = ?', $i)
+                ->get();
+            $rejectedArray[$i] = $rejectedData->count();
+        }
+
+        return array(
+            'active' => $activeArray,
+            'rejected' => $rejectedArray,
+        );
+    }
 }
