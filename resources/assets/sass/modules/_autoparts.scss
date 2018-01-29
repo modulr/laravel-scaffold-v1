@@ -1,41 +1,52 @@
 .autoparts {
-    .table {
-        img {
-            width: 50px;
-            height: 50px;
+    .media {
+        padding: 10px;
+        border-bottom: 1px solid $gray-lighter;
+        &:hover {
+            background-color: $gray-lighter;
+        }
+        .media-left {
+            padding-right: 20px;
+            img {
+                height: 100px;
+                width: 100px;
+            }
         }
     }
 
+
     .modal {
-        .btn-upload {
-            i {
-                margin-right: 10px;
+        .swiper-container {
+            height: 200px;
+            .swiper-slide {
+                img {
+                    width: 100%;
+                }
             }
         }
-        .row.images {
-            padding: 20px;
-            .col-md-4 {
-                padding: 5px;
-            }
+        .swiper-pagination-bullet-active {
+            background: $white;
+        }
+
+        .images {
+            padding: 10px 0;
             .image {
+                margin-right: 10px;
+                display: inline-block;
                 position: relative;
-                height: 80px;
-                overflow: hidden;
-                &:hover {
-                    cursor: move;
-                    .btn-delete {
-                        opacity: 1;
-                    }
+                &last {
+                    margin-right: 0
                 }
                 .btn-delete {
                     position: absolute;
-                    top: 5px;
-                    right: 5px;
+                    top: -8px;
+                    right: -3px;
                     color: inherit;
-                    opacity: 0;
                 }
                 img {
-                    min-width: 100%;
+                    border: 1px solid $gray-lighter;
+                    width: 50px;
+                    height: 50px;
                 }
                 .progress {
                     position: absolute;

@@ -9,10 +9,10 @@
                         <!-- <input type="text" class="form-control" placeholder="Search" v-model="search"> -->
                     </div>
                     <div class="col-sm-8 text-right controls">
-                        <!-- <a href="#" class="btn btn-default">
-                            <i class="fa fa-lg fa-list" aria-hidden="true"></i>
+                        <a href="#" class="btn btn-link"
+                            @click.prevent="showFilters">
+                            <i class="fa fa-sliders fa-lg" aria-hidden="true"></i>
                         </a>
-                        <span class="separator"></span> -->
                         <a href="#" class="btn btn-success"
                             v-if="user.hasPermission['create-autoparts']"
                             @click.prevent="newAutopart">
@@ -24,51 +24,24 @@
             <!-- List Autoparts -->
             <div class="row" v-if="autoparts.data.length">
                 <div class="col-md-12">
-                    <div class="table-responsive table-elevation">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Autopart</th>
-                                    <th>Model</th>
-                                    <th>Price</th>
-                                    <th>Status</th>
-                                    <th>created</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(item, index) in autoparts.data">
-                                    <td @click="editAutopart(item, index)">
-                                        {{item.id}}
-                                    </td>
-                                    <td @click="editAutopart(item, index)">
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img :src="item.images[0].url_thumbnail" v-if="item.images.length">
-                                                <i class="fa fa-camera-retro fa-4x" v-else></i>
-                                            </div>
-                                            <div class="media-body">
-                                                <h4 class="media-heading">{{item.name}}</h4>
-                                                <small class="text-muted">{{item.description}}</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td @click="editAutopart(item, index)">
-                                        <small>{{item.make.name}} - {{item.model.name}} - {{item.year.name}}</small>
-                                    </td>
-                                    <td @click="editAutopart(item, index)">
-                                        ${{item.purchase_price}}<br>
-                                        <strong>${{item.sale_price}}</strong>
-                                    </td>
-                                    <td @click="editAutopart(item, index)">
-                                        {{item.status.name}}
-                                    </td>
-                                    <td @click="editAutopart(item, index)">
-                                        <small>{{item.created_at | moment("LLL")}}</small>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="media" v-for="(item, index) in autoparts.data" @click="editAutopart(item, index)">
+                        <div class="media-left">
+                            <img :src="item.images[0].url_thumbnail" v-if="item.images.length">
+                            <i class="fa fa-camera-retro fa-4x" v-else></i>
+                        </div>
+                        <div class="media-body">
+                            <small class="text-muted pull-right hidden-xs hidden-sm">{{item.created_at | moment("LLL")}}</small>
+                            <h5 class="media-heading">{{item.name}}</h5>
+                            <span v-show="item.description">{{item.description}}<br></span>
+                            <small>{{item.make.name}} - {{item.model.name}} - {{item.year.name}}<br></small>
+                            <span class="lead">${{item.purchase_price}} / <strong>${{item.sale_price}}</strong></span>
+                            <span class="label label-default pull-right" :class="{
+                                'label-primary': item.status_id == 1,
+                                'label-warning': item.status_id == 4,
+                                'label-info': item.status_id == 3,
+                                'label-success': item.status_id == 5,
+                                }">{{item.status.name}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,246 +51,178 @@
                 <p class="lead">Don't exist Autoparts!!</p>
             </div>
         </div>
-        <!-- Modal New Autopart -->
-        <div class="modal right md" id="modalNewAutopart">
+        <!-- Modal Autopart -->
+        <div class="modal right md" id="modalAutopart">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <!-- Modal header -->
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group" :class="{'has-error': error.name}">
-                            <input type="text" class="form-control input-lg" placeholder="Write name Autopart"
-                                v-model="autopartNew.name">
-                            <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-link"
+                                    v-if="user.hasPermission['delete-autoparts'] && autopart.action == 'edit'"
+                                    @click="destroyAutopart"><i class="fa fa-trash fa-lg"></i></button>
+                            <button type="button" class="btn btn-success"
+                                    v-if="user.hasPermission['update-autoparts'] && autopart.action == 'edit'"
+                                    @click="updateAutopart">Save</button>
+                            <button type="button" class="btn btn-success"
+                                    v-if="user.hasPermission['create-autoparts'] && autopart.action == 'new'"
+                                    @click="storeAutopart">Save</button>
                         </div>
-                        <div class="form-group" :class="{'has-error': error.description}">
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <swiper :options="swiperOption" ref="mySwiper" v-if="autopart.action == 'edit'">
+                            <swiper-slide v-for="image in autopart.data.images" :key="image.id">
+                                <div>
+                                    <img :src="image.url">
+                                </div>
+                            </swiper-slide>
+                            <div class="swiper-pagination" slot="pagination"></div>
+                        </swiper>
+                        <draggable class="images" v-model="autopart.data.images" @end="sortImage">
+                            <span class="image" v-for="(image, index) in autopart.data.images">
+                                <img class="img-rounded" :src="image.dataUrl" v-if="image.dataUrl">
+                                <img class="img-rounded" :src="image.url_thumbnail" v-else>
+                                <div class="progress" v-if="image.status">
+                                    <div class="progress-bar"
+                                     :class="{'progress-bar-danger': image.status == 'error'}"
+                                      :style="{width: image.progress+'%'}">
+                                    </div>
+                                </div>
+                                <a href="#" class="btn-delete" @click.prevent="destroyImage(image, index)">
+                                    <i class="fa fa-times-circle"></i>
+                                </a>
+                            </span>
+                            <vue-clip class="vue-clip-photo"
+                                      :options="vueClipOptions"
+                                      :on-sending="sendingImage"
+                                      :on-complete="completeImage"
+                                      v-if="user.hasPermission['create-autoparts']">
+                                <template slot="clip-uploader-action">
+                                    <div class="">
+                                        <div class="dz-message btn btn-link btn-upload">
+                                            <i class="fa fa-photo fa-lg" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </template>
+                            </vue-clip>
+                        </draggable>
+                        <hr>
+                        <div class="form-group" :class="{'has-error': autopart.error.name}">
+                            <input type="text" class="form-control input-lg" placeholder="Write name Autopart"
+                                v-model="autopart.data.name">
+                            <span class="help-block" v-if="autopart.error.name">{{autopart.error.name[0]}}</span>
+                        </div>
+                        <div class="form-group" :class="{'has-error': autopart.error.description}">
                             <textarea class="form-control" rows="3" placeholder="Description"
-                                v-model="autopartNew.description"></textarea>
-                            <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
+                                v-model="autopart.data.description"></textarea>
+                            <span class="help-block" v-if="autopart.error.description">{{autopart.error.description[0]}}</span>
                         </div>
                         <div class="row">
                             <div class="col-xs-4">
-                                <div class="form-group" :class="{'has-error': error.make_id}">
+                                <div class="form-group" :class="{'has-error': autopart.error.make_id}">
                                     <label>Make</label>
                                     <select class="form-control text-capitalize"
-                                        v-model="autopartNew.make_id">
+                                        v-model="autopart.data.make_id">
                                         <option v-for="option in lists.makes" :value="option.id">
                                             {{ option.name }}
                                         </option>
                                     </select>
-                                    <span class="help-block" v-if="error.make_id">{{error.make_id[0]}}</span>
+                                    <span class="help-block" v-if="autopart.error.make_id">{{autopart.error.make_id[0]}}</span>
                                 </div>
                             </div>
                             <div class="col-xs-4">
-                                <div class="form-group" :class="{'has-error': error.model_id}">
+                                <div class="form-group" :class="{'has-error': autopart.error.model_id}">
                                     <label>Model</label>
                                     <select class="form-control text-capitalize"
-                                        v-model="autopartNew.model_id">
+                                        v-model="autopart.data.model_id">
                                         <option v-for="option in lists.models" :value="option.id">
                                             {{ option.name }}
                                         </option>
                                     </select>
-                                    <span class="help-block" v-if="error.model_id">{{error.model_id[0]}}</span>
+                                    <span class="help-block" v-if="autopart.error.model_id">{{autopart.error.model_id[0]}}</span>
                                 </div>
                             </div>
                             <div class="col-xs-4">
-                                <div class="form-group" :class="{'has-error': error.year_id}">
+                                <div class="form-group" :class="{'has-error': autopart.error.year_id}">
                                     <label>Year</label>
                                     <select class="form-control text-capitalize"
-                                        v-model="autopartNew.year_id">
+                                        v-model="autopart.data.year_id">
                                         <option v-for="option in lists.years" :value="option.id">
                                             {{ option.name }}
                                         </option>
                                     </select>
-                                    <span class="help-block" v-if="error.year_id">{{error.year_id[0]}}</span>
+                                    <span class="help-block" v-if="autopart.error.year_id">{{autopart.error.year_id[0]}}</span>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="form-group" :class="{'has-error': autopart.error.status_id}">
+                                    <label>Status</label>
+                                    <select class="form-control text-capitalize"
+                                        v-model="autopart.data.status_id">
+                                        <option v-for="option in lists.status" :value="option.id">
+                                            {{ option.name }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" v-if="autopart.error.status_id">{{autopart.error.status_id[0]}}</span>
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="form-group" :class="{'has-error': error.observations}">
-                            <textarea class="form-control" rows="3" placeholder="Observations"
-                                v-model="autopartNew.observations"></textarea>
-                            <span class="help-block" v-if="error.observations">{{error.observations[0]}}</span>
-                        </div> -->
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <div class="form-group" :class="{'has-error': error.purchase_price}">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-usd fa-lg" aria-hidden="true"></i></span>
-                                        <input type="number" class="form-control" placeholder="Purchase price"
-                                            v-model="autopartNew.purchase_price">
-                                        <span class="help-block" v-if="error.purchase_price">{{error.purchase_price[0]}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-6">
-                                <div class="form-group" :class="{'has-error': error.sale_price}">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-usd fa-lg" aria-hidden="true"></i></span>
-                                        <input type="number" class="form-control" placeholder="Sale price"
-                                            v-model="autopartNew.sale_price">
-                                        <span class="help-block" v-if="error.sale_price">{{error.sale_price[0]}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group" :class="{'has-error': error.status_id}">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-tag fa-lg" aria-hidden="true"></i></span>
-                                <select class="form-control text-capitalize"
-                                    v-model="autopartNew.status_id">
-                                    <option v-for="option in lists.status" :value="option.id">
-                                        {{ option.name }}
-                                    </option>
-                                </select>
-                                <span class="help-block" v-if="error.status_id">{{error.status_id[0]}}</span>
-                            </div>
-                        </div>
-                        <hr>
-                        <vue-clip class="vue-clip-btn"
-                                  :options="optionsImageTemp"
-                                  :on-sending="sendingImageTemp"
-                                  :on-complete="completeImageTemp"
-                                  v-if="user.hasPermission['create-events']">
-                            <template slot="clip-uploader-action">
-                                <div class="">
-                                    <div class="dz-message btn btn-link btn-upload">
-                                        <i class="fa fa-plus fa-lg" aria-hidden="true"></i> Add Images
-                                    </div>
-                                </div>
-                            </template>
-                        </vue-clip>
-                        <draggable class="row images" v-model="autopartNew.images">
-                            <div class="col-xs-6 col-md-4" v-for="(image, index) in autopartNew.images">
-                                <div class="image">
-                                    <img :src="image.dataUrl" v-if="image.dataUrl">
-                                    <img :src="image.url_thumbnail" v-else>
-                                    <div class="progress" v-if="image.status">
-                                        <div class="progress-bar"
-                                            :class="{'progress-bar-danger': image.status == 'error'}"
-                                            :style="{width: image.progress+'%'}">
+                        <fieldset>
+                            <legend>Price</legend>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group" :class="{'has-error': autopart.error.purchase_price}">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-usd fa-lg" aria-hidden="true"></i></span>
+                                            <input type="number" class="form-control" placeholder="Purchase price"
+                                                v-model="autopart.data.purchase_price">
+                                            <span class="help-block" v-if="autopart.error.purchase_price">{{autopart.error.purchase_price[0]}}</span>
                                         </div>
                                     </div>
-                                    <a href="#" class="btn-delete" @click.prevent="destroyImageTemp(index)">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-times fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group" :class="{'has-error': autopart.error.sale_price}">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-usd fa-lg" aria-hidden="true"></i></span>
+                                            <input type="number" class="form-control" placeholder="Sale price"
+                                                v-model="autopart.data.sale_price">
+                                            <span class="help-block" v-if="autopart.error.sale_price">{{autopart.error.sale_price[0]}}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </draggable>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success pull-left"
-                                v-if="user.hasPermission['create-autoparts']"
-                                @click="storeAutopart">Create</button>
-                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
+                        </fieldset>
+                        <fieldset v-if="autopart.action == 'edit'">
+                            <legend>Meta</legend>
+                            <p class="text-muted"><small>Created at </small>{{autopart.data.created_at | moment('lll')}}, <small>by </small>{{autopart.data.creator.name}}</p>
+                        </fieldset>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Modal Edit Event -->
-        <div class="modal right md" id="modalEditEvent">
+        <!-- Modal Autopart -->
+        <div class="modal left sm" id="modalFilters">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <!-- Modal header -->
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-link"
+                                    v-if="user.hasPermission['read-autoparts']"
+                                    @click="applyFilters">Apply</button>
+                        </div>
                     </div>
+                    <!-- Modal body -->
                     <div class="modal-body">
-                        <div class="form-group" :class="{'has-error': error.name}">
-                            <input type="text" class="form-control input-lg" placeholder="Write name event"
-                                v-model="autopartEdit.name">
-                            <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
-                        </div>
-                        <div class="form-group" :class="{'has-error': error.description}">
-                            <textarea class="form-control" rows="3" placeholder="Description"
-                                v-model="autopartEdit.description"></textarea>
-                            <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
-                        </div>
-                        <div class="form-group" :class="{'has-error': error.place}">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" placeholder="Place"
-                                    v-model="autopartEdit.place">
-                                <span class="help-block" v-if="error.place">{{error.place[0]}}</span>
-                            </div>
-                        </div>
-                        <div class="form-group" :class="{'has-error': error.date}">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-calendar-check-o fa-lg" aria-hidden="true"></i></span>
-                                <input type="date" class="form-control" v-model="autopartEdit.date">
-                                <span class="help-block" v-if="error.date">{{error.date[0]}}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <div class="form-group" :class="{'has-error': error.start_time}">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> From</span>
-                                        <input type="time" class="form-control" v-model="autopartEdit.start_time">
-                                        <span class="help-block" v-if="error.start_time">{{error.start_time[0]}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-6">
-                                <div class="form-group" :class="{'has-error': error.end_time}">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> to</span>
-                                        <input type="time" class="form-control" v-model="autopartEdit.end_time">
-                                        <span class="help-block" v-if="error.end_time">{{error.end_time[0]}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <vue-clip class="vue-clip-btn"
-                                  :options="optionsImage"
-                                  :on-sending="sendingImage"
-                                  :on-complete="completeImage"
-                                  v-if="user.hasPermission['update-events']">
-                            <template slot="clip-uploader-action">
-                                <div>
-                                    <div class="dz-message btn btn-link btn-upload">
-                                        <i class="fa fa-plus fa-lg" aria-hidden="true"></i> Add Images
-                                    </div>
-                                </div>
-                            </template>
-                        </vue-clip>
-                        <draggable class="row images" v-model="autopartEdit.images" @end="sortImage">
-                            <div class="col-xs-6 col-md-4" v-for="(image, index) in autopartEdit.images">
-                                <div class="image">
-                                    <img :src="image.dataUrl" v-if="image.dataUrl">
-                                    <img :src="image.url_thumbnail" v-else>
-                                    <div class="progress" v-if="image.status">
-                                        <div class="progress-bar"
-                                             :class="{'progress-bar-danger': image.status == 'error'}"
-                                             :style="{width: image.progress+'%'}"></div>
-                                    </div>
-                                    <a href="#" class="btn-delete" @click.prevent="destroyImage(image, index)">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-times fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
-                        </draggable>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary pull-left"
-                                v-if="user.hasPermission['update-events']"
-                                @click="updateEvent">Save</button>
-                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-default"
-                                v-if="user.hasPermission['delete-events']"
-                                @click="destroyEvent">
-                            <i class="fa fa-trash-o fa-lg"></i>
-                        </button>
+                        <p class="lead">Filters</p>
+                        Comming soon...
                     </div>
                 </div>
             </div>
@@ -327,6 +232,7 @@
 
 <script>
     import moment from 'moment';
+    import { swiper, swiperSlide } from 'vue-awesome-swiper';
     import VueClip from 'vue-clip';
     import draggable from 'vuedraggable'
     import {SnotifyService} from 'vue-snotify';
@@ -337,9 +243,13 @@
                 user: Laravel.user,
                 error: {},
                 search: null,
-                optionsImageTemp: {
+                swiperOption: {
+                    loop: true,
+                    pagination: '.swiper-pagination'
+                },
+                vueClipOptions: {
                     headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                    url: '/api/autoparts/images/upload/temp',
+                    url: this.getVueClipUrl.bind(),
                     paramName: 'file',
                     parallelUploads: 1,
                     maxFilesize: {
@@ -355,42 +265,34 @@
                         message: 'You are uploading an invalid file'
                     },
                 },
-                optionsImage: {
-                    headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                    url: '/api/autoparts/images/upload',
-                    paramName: 'file',
-                    parallelUploads: 1,
-                    maxFilesize: {
-                        limit: 10,
-                        message: '{{filesize}} is greater than the {{maxFilesize}}MB'
-                    },
-                    maxFiles: {
-                        limit: 10,
-                        message: 'You can only upload a max of 10 files'
-                    },
-                    acceptedFiles: {
-                        extensions: ['image/*'],
-                        message: 'You are uploading an invalid file'
-                    },
-                },
-                autoparts: {
-                    data: []
-                },
-                autopartNew: {},
-                autopartEdit: {},
                 lists: {
                     status: [],
                     makes: [],
                     models: [],
                     years: [],
                 },
+                autoparts: {
+                    data: []
+                    // paginate info
+                    // ...
+                },
+                autopart: {
+                    data: {
+                        images: [],
+                        creator: {}
+                    },
+                    action: 'new',
+                    error: {}
+                },
             }
         },
         mounted() {
-            this.getAutoparts();
             this.getLists();
+            this.getAutoparts();
         },
         components: {
+            swiper,
+            swiperSlide,
             draggable,
         },
         methods: {
@@ -398,7 +300,6 @@
                 axios.get('/api/autoparts/all')
                 .then(response => {
                     this.autoparts = response.data
-                    console.log(this.autoparts.data);
                 });
             },
             getLists () {
@@ -419,63 +320,81 @@
                     this.lists.years = response.data;
                 });
             },
+
             newAutopart () {
-                this.autopartNew = {
-                    status_id: 1,
-                    images: [],
+                this.autopart = {
+                    data: {
+                        status_id: 1,
+                        images: [],
+                        creator: {}
+                    },
+                    action: 'new',
+                    error: {}
                 };
-                $('#modalEditEvent').modal('hide');
-                $('#modalNewAutopart').modal('show');
+                this.getVueClipUrl();
+                $('#modalAutopart').modal('show');
             },
             storeAutopart (e) {
                 var btn = $(e.target).button('loading')
-                axios.post('/api/autoparts/store', this.autopartNew)
+                axios.post('/api/autoparts/store', this.autopart.data)
                 .then(response => {
                     this.autoparts.data.unshift(response.data);
-                    this.autopartNew = {};
-                    this.error = {};
+                    this.autopart = {
+                        data: {
+                            images: [],
+                            creator: {}
+                        },
+                        action: 'new',
+                        error: {}
+                    };
                     var btn = $(e.target).button('reset')
-                    $('#modalNewAutopart').modal('hide')
+                    $('#modalAutopart').modal('hide')
                 })
                 .catch(error => {
-                    this.error = error.response.data;
+                    this.autopart.error = error.response.data;
                     var btn = $(e.target).button('reset')
                 });
             },
-            editEvent (event, index) {
-                this.autopartEdit = _.clone(event);
-                this.autopartEdit.index = index;
-                this.autopartEdit.images = [];
-
-                $('#modalEditEvent').modal('show')
-
-                axios.get('/api/events/show/'+event.id)
+            editAutopart (item, index) {
+                axios.get('/api/autoparts/show/'+item.id)
                 .then(response => {
-                    this.autopartEdit.images = response.data.images;
+                    this.autopart.data = response.data;
+                    this.autopart.data.index = index;
+                    this.autopart.action = 'edit';
+                    this.autopart.error = {};
+                    this.getVueClipUrl();
+                    $('#modalAutopart').modal('show')
                 })
                 .catch(error => {
-                    this.error = error.response.data;
+                    this.autopart.error = error.response.data;
                 });
             },
-            updateEvent (e) {
+            updateAutopart (e) {
                 var btn = $(e.target).button('loading')
-                axios.put('/api/events/update/'+this.autopartEdit.id, this.autopartEdit)
+                axios.put('/api/autoparts/update/'+this.autopart.data.id, this.autopart.data)
                 .then(response => {
-                    this.events[this.autopartEdit.index] = response.data;
-                    this.error = {};
+                    this.autoparts.data[this.autopart.data.index] = response.data;
+                    this.autopart = {
+                        data: {
+                            images: [],
+                            creator: {}
+                        },
+                        action: 'new',
+                        error: {}
+                    };
                     var btn = $(e.target).button('reset')
-                    $('#modalEditEvent').modal('hide')
+                    $('#modalAutopart').modal('hide')
                 })
                 .catch(error => {
-                    this.error = error.response.data;
+                    this.autopart.error = error.response.data;
                     var btn = $(e.target).button('reset')
                 });
             },
-            destroyEvent () {
+            destroyAutopart () {
                 var self = this;
                 swal({
                     title: "Are you sure?",
-                    text: "You will not be able to recover this Event!",
+                    text: "You will not be able to recover this Autopart!",
                     type: "warning",
                     showLoaderOnConfirm: true,
                     showCancelButton: true,
@@ -483,78 +402,91 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    axios.delete('/api/events/destroy/' + self.autopartEdit.id)
+                    axios.delete('/api/autoparts/destroy/' + self.autopart.data.id)
                     .then(response => {
-                        self.events.splice(self.autopartEdit.index, 1);
+                        self.autoparts.data.splice(self.autopart.data.index, 1);
                         swal({
                             title: "Deleted!",
-                            text: "The Event has been deleted.",
+                            text: "The Autopart has been deleted.",
                             type: "success",
                             timer: 1000,
                             showConfirmButton: false
                         });
-                        self.error = {};
-                        $('#modalEditEvent').modal('hide');
+                        $('#modalAutopart').modal('hide');
                     })
                     .catch(error => {
-                        self.error = error.response.data;
+                        self.autopart.error = error.response.data;
                     });
                 });
             },
-            sendingImageTemp (file, xhr, formData) {
-                this.autopartNew.images.push(file);
-            },
-            completeImageTemp (file, status, xhr) {
-                if (status == 'success') {
-                    var index = this.autopartNew.images.indexOf(file);
-                    Object.assign(this.autopartNew.images[index], JSON.parse(xhr.response))
+
+            getVueClipUrl: function() {
+                if (this.autopart.action == 'new') {
+                    return '/api/autoparts/images/upload/temp';
                 } else {
-                    SnotifyService.error(JSON.parse(xhr.response).file[0]);
+                    return '/api/autoparts/images/upload';
                 }
             },
-            destroyImageTemp (index) {
-                this.autopartNew.images.splice(index, 1);
-            },
             sendingImage (file, xhr, formData) {
-                this.autopartEdit.images.push(file);
-                formData.append('id', this.autopartEdit.id);
+                this.autopart.data.images.push(file);
+                if (this.autopart.action == 'edit') {
+                    formData.append('id', this.autopart.data.id);
+                }
             },
             completeImage (file, status, xhr) {
                 if (status == 'success') {
-                    var index = this.autopartEdit.images.indexOf(file);
-                    this.autopartEdit.images[index] = JSON.parse(xhr.response);
-                    this.events[this.autopartEdit.index].images.push(JSON.parse(xhr.response));
+                    var index = this.autopart.data.images.indexOf(file);
+                    if (this.autopart.action == 'new') {
+                        Object.assign(this.autopart.data.images[index], JSON.parse(xhr.response))
+                    } else {
+                        this.autopart.data.images[index] = JSON.parse(xhr.response);
+                        this.autoparts.data[this.autopart.data.index].images.push(JSON.parse(xhr.response));
+                    }
                 } else {
                     SnotifyService.error(JSON.parse(xhr.response).file[0]);
                 }
             },
-            sortImage () {
-                axios.post('/api/events/images/sort/' + this.autopartEdit.id, {images:this.autopartEdit.images})
-                .then(response => {
-                    this.events[this.autopartEdit.index].images = response.data;
-                    this.error = {};
-                })
-                .catch(error => {
-                    self.error = error.response.data;
-                });
-            },
             destroyImage (image, index) {
-                axios.delete('/api/events/images/destroy/' + image.id)
-                .then(response => {
-                    var key;
-                    this.events[this.autopartEdit.index].images.forEach(function(v, k){
-                        if (v.id == image.id) {
-                            key = k;
+                if (this.autopart.action == 'new') {
+                    this.autopart.data.images.splice(index, 1);
+                } else {
+                    axios.delete('/api/autoparts/images/destroy/' + image.id)
+                    .then(response => {
+                        if (this.autopart.action == 'edit') {
+                            var key;
+                            this.autoparts.data[this.autopart.data.index].images.forEach(function(v, k){
+                                if (v.id == image.id) {
+                                    key = k;
+                                }
+                            });
+                            this.autoparts.data[this.autopart.data.index].images.splice(key, 1);
                         }
+
+                        this.autopart.data.images.splice(index, 1);
+                        this.autopart.error = {};
+                    })
+                    .catch(error => {
+                        this.autopart.error = error.response.data;
                     });
-                    this.events[this.autopartEdit.index].images.splice(key, 1);
-                    this.autopartEdit.images.splice(index, 1);
-                    this.error = {};
+                }
+            },
+            sortImage () {
+                axios.post('/api/autoparts/images/sort/' + this.autopart.data.id, {images:this.autopart.data.images})
+                .then(response => {
+                    this.autoparts.data[this.autopart.data.index].images = response.data;
                 })
                 .catch(error => {
-                    self.error = error.response.data;
+                    this.autopart.error = error.response.data;
                 });
             },
+
+            showFilters () {
+                $('#modalFilters').modal('show');
+            },
+            applyFilters () {
+
+            }
+
         }
     }
 </script>

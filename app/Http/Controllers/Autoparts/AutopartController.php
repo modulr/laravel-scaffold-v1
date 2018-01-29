@@ -26,7 +26,7 @@ class AutopartController extends Controller
 
     public function show($id)
     {
-        return Autopart::with(['make', 'model', 'year', 'status', 'images' => function ($query) {
+        return Autopart::with(['make', 'model', 'year', 'status', 'creator', 'images' => function ($query) {
                         $query->orderBy('order', 'asc');
                     }])->find($id);
     }
@@ -79,24 +79,26 @@ class AutopartController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string',
-            'place' => 'required|string',
-            'date' => 'required|date|after_or_equal:today',
-            'start_time' => 'required',
-            'end_time' => 'nullable|after_or_equal:start_time',
+            'purchase_price' => 'required|numeric',
+            'sale_price' => 'required|numeric',
+            'make_id' => 'required|integer',
+            'model_id' => 'required|integer',
+            'year_id' => 'required|integer',
+            'status_id' => 'required|integer',
         ]);
 
-        $autopart = Autopart::with('images', 'make', 'model', 'year', 'status')
-                            ->find($id);
+        $autopart = Autopart::find($id);
         $autopart->name = $request->name;
         $autopart->description = $request->description;
-        $autopart->place = $request->place;
-        $autopart->date = $request->date;
-        $autopart->start_time = $request->start_time;
-        $autopart->end_time = $request->end_time;
-        $autopart->attending_limit = $request->attending_limit;
+        $autopart->purchase_price = $request->purchase_price;
+        $autopart->sale_price = $request->sale_price;
+        $autopart->make_id = $request->make_id;
+        $autopart->model_id = $request->model_id;
+        $autopart->year_id = $request->year_id;
+        $autopart->status_id = $request->status_id;
         $autopart->save();
 
-        return $autopart;
+        return $this->show($autopart->id);
     }
 
     public function destroy($id)
