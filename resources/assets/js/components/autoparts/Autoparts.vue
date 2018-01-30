@@ -63,7 +63,7 @@
                         <div class="pull-right">
                             <button type="button" class="btn btn-link"
                                     v-if="user.hasPermission['delete-autoparts'] && autopart.action == 'edit'"
-                                    @click="destroyAutopart"><i class="fa fa-trash fa-lg"></i></button>
+                                    @click="destroyAutopart"><i class="fa fa-trash-o fa-lg"></i></button>
                             <button type="button" class="btn btn-success"
                                     v-if="user.hasPermission['update-autoparts'] && autopart.action == 'edit'"
                                     @click="updateAutopart">Save</button>
