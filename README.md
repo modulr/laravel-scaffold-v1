@@ -15,10 +15,10 @@ You can also try our live [demo](http://app.modulr.io), just sign up and enjoy t
 You have all these modules at your disposal, set your system in your own way and your needs.
 
 - Authentication
+- Dashboard
 - Contacts
 - Events
 - Files
-- Logging Stats
 - News
 - Notifications
 - Profile
