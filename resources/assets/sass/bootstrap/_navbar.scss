@@ -3,6 +3,7 @@
 
     .navbar-brand svg {
         height: 25px;
+        margin-left: 8px;
         margin-top: -5px;
         path{
             -webkit-transition: (all .2s ease);
@@ -66,24 +67,17 @@
     }
 
     .notifications {
-        .dropdown-menu {
-            width: 300px;
+        padding: 0;
+        width: 300px;
+        .notifications-list {
             max-height: 400px;
             overflow: scroll;
-            .media-left{
-                img {
-                    border-radius: 50%;
-                    width: 35px;
-                    height: 35px;
-                    margin-right: 5px;
-                }
-            }
-            .media-right{
-                img {
-                    width: 50px;
-                    height: 50px;
-                }
-            }
+        }
+        a {
+            padding: 10px;
+        }
+        .text-center a {
+            padding: 3px;
         }
     }
 

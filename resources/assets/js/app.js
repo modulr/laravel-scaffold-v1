@@ -27,7 +27,7 @@ Vue.component('notifications', require('./components/layout/Notifications.vue'))
 // Users
 Vue.component('users', require('./components/users/Users.vue'));
 Vue.component('roles', require('./components/users/Roles.vue'));
-// Profile Read
+// Profile
 Vue.component('profileSidebar', require('./components/profile/read/Sidebar.vue'));
 Vue.component('profile', require('./components/profile/read/Profile.vue'));
 Vue.component('profileWork', require('./components/profile/read/Work.vue'));
@@ -45,6 +45,7 @@ Vue.component('profilePasswordEdit', require('./components/profile/edit/Password
 //Vue.component('news', require('./components/News.vue'));
 Vue.component('newsPublish', require('./components/news/NewsPublish.vue'));
 Vue.component('newsList', require('./components/news/NewsList.vue'));
+Vue.component('news', require('./components/news/News.vue'));
 // Tasks
 Vue.component('tasks', require('./components/tasks/Tasks.vue'));
 // Contacts
@@ -84,6 +85,7 @@ Vue.component('projectsWidget', require('./components/widgets/ProjectsWidget.vue
 Vue.component('files-widget', require('./components/files/FilesWidget.vue'));
 // Events
 Vue.component('events', require('./components/events/Events.vue'));
+Vue.component('event', require('./components/events/Event.vue'));
 Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
 //Invoices
 Vue.component('createInvoice', require('./components/projects/detail/CreateInvoice.vue'));

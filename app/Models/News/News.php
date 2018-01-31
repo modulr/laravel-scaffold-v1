@@ -4,11 +4,13 @@ namespace App\Models\News;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Wildside\Userstamps\Userstamps;
 use Illuminate\Support\Facades\Auth;
 
 class News extends Model
 {
     use SoftDeletes;
+    use Userstamps;
 
     protected $dates = ['deleted_at'];
 
@@ -31,11 +33,6 @@ class News extends Model
             return true;
 
         return false;
-    }
-
-    public function user()
-    {
-      return $this->belongsTo(\App\User::class);
     }
 
     public function images()

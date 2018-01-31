@@ -64,7 +64,7 @@ export default {
     methods: {
         updatePassword: function (e) {
             var btn = $(e.target).button('loading')
-            axios.put('/users/updatePassword/'+this.user.id, this.password)
+            axios.put('/api/users/updatePassword/'+this.user.id, this.password)
             .then(response => {
                 this.password = {};
                 this.error = {};

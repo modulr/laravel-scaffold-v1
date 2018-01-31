@@ -50,7 +50,6 @@ class CreateProfilesTable extends Migration
             $table->string('school_name');
             $table->integer('start_year');
             $table->integer('end_year');
-            $table->string('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -65,7 +64,6 @@ class CreateProfilesTable extends Migration
             $table->integer('relation_id')->unsigned();
             $table->foreign('relation_id')->references('id')->on('list_relations');
             $table->date('birthday')->nullable();
-            $table->string('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -76,7 +74,6 @@ class CreateProfilesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('place');
             $table->boolean('currently')->default(0);
-            $table->string('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

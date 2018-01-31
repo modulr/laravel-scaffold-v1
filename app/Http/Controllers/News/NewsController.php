@@ -10,20 +10,20 @@ use App\Http\Helpers\Upload;
 use App\User;
 use App\Models\News\News;
 use App\Models\News\NewsImage;
-use App\Notifications\NewsCreated;
-use App\Notifications\NewsLiked;
-use App\Events\StatusLiked;
+use App\Notifications\NewsNotification;
+//use App\Notifications\NewsLiked;
+//use App\Events\StatusLiked;
 
 class NewsController extends Controller
 {
-    public function index()
-    {
-        return view('news.news');
-    }
-
     public function all()
     {
-        return News::with('user', 'images')->orderBy('id', 'desc')->paginate(10);
+        return News::with('creator', 'images')->orderBy('id', 'desc')->paginate(10);
+    }
+
+    public function show($id)
+    {
+        return News::with(['creator', 'images'])->find($id);
     }
 
     public function store(Request $request)
@@ -52,45 +52,53 @@ class NewsController extends Controller
             'name' => $request->name,
             'video' => $request->video,
             'type' => $request->type,
-            'user_id' => Auth::id(),
             'likes' => [],
         ]);
 
         if ($request->type == 2) { // Image
             if (count($request->images)) {
                 foreach ($request->images as $key => $value) {
-                    $upload = new Upload();
-                    $upload->move($value['path'], 'news/'.$news->id);
-                    NewsImage::create([
-                        'basename' => $value['basename'],
-                        'news_id' => $news->id
-                    ]);
+                    if (isset($value['path'])) {
+                        $upload = new Upload();
+                        $upload->move($value['path'], 'news/'.$news->id)->resize(1024,800);
+                        NewsImage::create([
+                            'basename' => $value['basename'],
+                            'news_id' => $news->id
+                        ]);
+                    }
                 }
             }
         }
 
-        $news = News::with('user', 'images')->find($news->id);
+        $news = News::with('creator', 'images')->find($news->id);
 
         if ($news->type == 1) {
             $message = [
-                'title' => 'Add a post '.$news->name,
-                'data' => $news,
+                'title' => 'add a post '.$news->name,
+                'url' => '/news/'.$news->id,
+                'userName' => $news->creator->name,
+                'userAvatarUrl' => $news->creator->avatar_url,
             ];
         } else if ($news->type == 2) {
             $message = [
-                'title' => 'Add a photo '.$news->name,
-                'data' => $news,
+                'title' => 'add a photo '.$news->name,
+                'url' => '/news/'.$news->id,
+                'userName' => $news->creator->name,
+                'userAvatarUrl' => $news->creator->avatar_url,
+                'imageUrl' => $news->images[0]->url,
             ];
         } else {
             $message = [
-                'title' => 'Add a video '.$news->name,
-                'data' => $news,
+                'title' => 'add a video '.$news->name,
+                'url' => '/news/'.$news->id,
+                'userName' => $news->creator->name,
+                'userAvatarUrl' => $news->creator->avatar_url,
             ];
         }
 
         $users = User::where('id', '<>', Auth::id())->get();
 
-        Notification::send($users, new NewsCreated($news->user, $message));
+        Notification::send($users, new NewsNotification($message));
 
         // event(new StatusLiked([
         //     'user' => Auth::user(),
@@ -127,24 +135,31 @@ class NewsController extends Controller
 
         $news->images ;
 
-        if (!$request->like && ($news->user_id != Auth::id())) {
+        if (!$request->like && ($news->created_by != Auth::id())) {
             if ($news->type == 1) {
                 $message = [
-                    'title' => 'Like your post '.$news->name,
-                    'data' => $news,
+                    'title' => 'like your post '.$news->name,
+                    'url' => '/news/'.$news->id,
+                    'userName' => Auth::user()->name,
+                    'userAvatarUrl' => Auth::user()->avatar_url,
                 ];
             } else if ($news->type == 2) {
                 $message = [
-                    'title' => 'Like your post '.$news->name,
-                    'data' => $news,
+                    'title' => 'like your photo '.$news->name,
+                    'url' => '/news/'.$news->id,
+                    'userName' => Auth::user()->name,
+                    'userAvatarUrl' => Auth::user()->avatar_url,
+                    'imageUrl' => $news->images[0]->url,
                 ];
             } else {
                 $message = [
-                    'title' => 'Like your post '.$news->name,
-                    'data' => $news,
+                    'title' => 'like your video '.$news->name,
+                    'url' => '/news/'.$news->id,
+                    'userName' => Auth::user()->name,
+                    'userAvatarUrl' => Auth::user()->avatar_url,
                 ];
             }
-            $news->user->notify(new NewsLiked($news->user, $message));
+            $news->creator->notify(new NewsNotification($message));
         }
 
         return $news;
@@ -152,8 +167,11 @@ class NewsController extends Controller
 
     public function uploadTemp(Request $request)
     {
+        $this->validate($request, [
+            'file' => 'required|max:10000',
+        ]);
         $upload = new Upload();
-        $uploadData = $upload->uploadTemp($request->file)->resize(1024)->getData();
+        $uploadData = $upload->uploadTemp($request->file)->getData();
         return $uploadData;
     }
 

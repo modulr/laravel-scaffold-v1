@@ -64,14 +64,14 @@
         },
         methods: {
             getTasks: function(){
-                axios.get('/tasks/byUser')
+                axios.get('/api/tasks/byCreator')
                 .then(response => {
                     this.tasks = response.data;
                 });
             },
             storeTask: function () {
                 if (this.taskNew.name) {
-                    axios.post('/tasks/store', this.taskNew)
+                    axios.post('/api/tasks/store', this.taskNew)
                     .then(response => {
                         this.tasks.unshift(response.data);
                         this.taskNew = {};
@@ -79,17 +79,17 @@
                 }
             },
             destroyTask: function (task) {
-                axios.delete('/tasks/destroy/'+task.id)
+                axios.delete('/api/tasks/destroy/'+task.id)
                 .then(response => {
                     this.tasks.splice(this.tasks.indexOf(task), 1);
                 });
             },
             doneTask: function (task) {
                 task.done = !task.done
-                axios.put('/tasks/markDone/'+task.id, task);
+                axios.put('/api/tasks/markDone/'+task.id, task);
             },
             updateOrderTasks: function () {
-                axios.put('/tasks/updateOrder', {tasks:this.tasks});
+                axios.put('/api/tasks/updateOrder', {tasks:this.tasks});
             },
         }
     }

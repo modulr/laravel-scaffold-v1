@@ -5,112 +5,161 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-sm-9">
-                        <a href="#" class="btn btn-success" data-toggle="modal" data-target="#modalNewEvent"
-                           v-if="user.hasPermission['create-events']">
+                    <div class="col-sm-6 links">
+                        <ul class="nav nav-tabs">
+                            <li :class="{active: tabActive == 'events'}"><a href="#" @click.prevent="getEvents">Events</a></li>
+                            <li :class="{active: tabActive == 'myEvents'}"><a href="#" @click.prevent="getMyEvents">My Events</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div class="col-sm-4 controls">
+                        <input type="text" class="form-control" placeholder="Search" v-model="search">
+                    </div> -->
+                    <div class="col-sm-6 text-right controls">
+                        <!-- <a href="#" class="btn btn-default">
+                            <i class="fa fa-lg fa-list" aria-hidden="true"></i>
+                        </a>
+                        <span class="separator"></span> -->
+                        <a href="#" class="btn btn-success"
+                            v-if="user.hasPermission['create-events']"
+                            @click.prevent="newEvent">
                             <i class="fa fa-calendar-plus-o"></i> New Event
                         </a>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search" v-model="search">
-                            <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                        </div>
                     </div>
                 </div>
             </div>
             <!-- List Events -->
-            <div class="row">
-                <div class="col-lg-10 col-lg-offset-1">
-                    <div class="panel panel-default" v-if="events.length">
-                        <div class="panel-body">
-                            <table class="table table-hover">
-                                <tbody>
-                                    <tr v-for="(item, index) in events" >
-                                        <td @click="editEvent(item, index)">
-                                            <div class="media">
-                                                <div class="media-left">
-                                                    <i class="fa fa-calendar fa-4x"></i>
-                                                </div>
-                                                <div class="media-body">
-                                                    <h4 class="media-heading">{{item.name}}</h4>
-                                                    <span class="text-muted">{{item.description}}</span>
-                                                    <div class="event-info">
-                                                        <span v-show="item.place">
-                                                            <small class="text-muted">Place. </small>{{item.place}}
-                                                        </span>
-                                                        <br>
-                                                        <span v-if="item.date">{{item.date | moment('LL')}}.</span>
-                                                        <span v-if="item.start_time">
-                                                            <small class="text-muted">From </small>{{item.date+' '+item.start_time | moment('h:mm a')}}
-                                                        </span>
-                                                        <span v-if="item.end_time">
-                                                            <small class="text-muted">to </small>{{item.date+' '+item.end_time | moment('h:mm a')}}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+            <div class="row" v-if="events.length">
+                <div class="col-xs-12 col-sm-4 col-md-3" v-for="(event, index) in events">
+                    <div class="panel card">
+                        <div class="panel-heading">
+                            <a :href="'/events/'+event.id">
+                                <img :src="event.images[0].url_thumbnail" v-if="event.images.length">
+                            </a>
                         </div>
-                    </div>
-                    <!-- Init Message -->
-                    <div class="init-message" v-else>
-                        <i class="mdi mdi-event" aria-hidden="true"></i>
-                        <p class="lead">Don't exist Events... create one!!</p>
+                        <div class="panel-body">
+                            <a :href="`/profile/${event.creator.id}`">
+                                <img class="avatar-sm" :src="event.creator.avatar_url">
+                            </a>
+                            <h4>{{event.name}}</h4>
+                            <p><i class="fa fa-fw fa-map-marker fa-lg" aria-hidden="true"></i> {{event.place}}</p>
+                            <div v-show="event.date || event.start_time || event.end_time">
+                                <i class="fa fa-fw fa-clock-o fa-lg" aria-hidden="true"></i>
+                                <span v-if="event.date">{{event.date | moment('LL')}}.</span>
+                                <span v-if="event.start_time && !event.end_time">
+                                    <small class="text-muted">At </small>{{'2018-01-01 '+event.start_time | moment('h:mm a')}}
+                                </span>
+                                <span v-if="event.start_time && event.end_time">
+                                    <small class="text-muted">From </small>{{'2018-01-01 '+event.start_time | moment('h:mm a')}}
+                                    <small class="text-muted">to </small>{{'2018-01-01 '+event.end_time | moment('h:mm a')}}
+                                </span>
+                            </div>
+                        </div>
+                        <a href="#" class="btn-edit"
+                            v-if="event.created_by == user.id"
+                            @click.prevent="editEvent(event, index)">
+                            <span class="fa-stack">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
                     </div>
                 </div>
             </div>
+            <!-- Init Message -->
+            <div class="init-message" v-else>
+                <i class="mdi mdi-event" aria-hidden="true"></i>
+                <p class="lead">Don't exist Events!!</p>
+            </div>
         </div>
         <!-- Modal New Event -->
-        <div class="modal right fade" id="modalNewEvent">
+        <div class="modal right md" id="modalNewEvent">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel">New Event</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group" :class="{'has-error': error.name}">
-                            <label>Name *</label>
-                            <input type="text" class="form-control input-lg" v-model="eventNew.name">
+                            <input type="text" class="form-control input-lg" placeholder="Write name event"
+                                v-model="eventNew.name">
                             <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                         </div>
                         <div class="form-group" :class="{'has-error': error.description}">
-                            <label>Description</label>
-                            <textarea class="form-control" rows="3" v-model="eventNew.description"></textarea>
+                            <textarea class="form-control" rows="3" placeholder="Description"
+                                v-model="eventNew.description"></textarea>
                             <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                         </div>
                         <div class="form-group" :class="{'has-error': error.place}">
-                            <label>Place</label>
-                            <input type="text" class="form-control" v-model="eventNew.place">
-                            <span class="help-block" v-if="error.place">{{error.place[0]}}</span>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" placeholder="Place"
+                                    v-model="eventNew.place">
+                                <span class="help-block" v-if="error.place">{{error.place[0]}}</span>
+                            </div>
                         </div>
                         <div class="form-group" :class="{'has-error': error.date}">
-                            <label>Date</label>
-                            <input type="date" class="form-control" v-model="eventNew.date">
-                            <span class="help-block" v-if="error.date">{{error.date[0]}}</span>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar-check-o fa-lg" aria-hidden="true"></i></span>
+                                <input type="date" class="form-control" v-model="eventNew.date">
+                                <span class="help-block" v-if="error.date">{{error.date[0]}}</span>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-6">
-                                <label>Start Time</label>
                                 <div class="form-group" :class="{'has-error': error.start_time}">
-                                    <input type="time" class="form-control" v-model="eventNew.start_time">
-                                    <span class="help-block" v-if="error.start_time">{{error.start_time[0]}}</span>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> From</span>
+                                        <input type="time" class="form-control" v-model="eventNew.start_time">
+                                        <span class="help-block" v-if="error.start_time">{{error.start_time[0]}}</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xs-6">
-                                <label>End Time</label>
                                 <div class="form-group" :class="{'has-error': error.end_time}">
-                                    <input type="time" class="form-control" v-model="eventNew.end_time">
-                                    <span class="help-block" v-if="error.end_time">{{error.end_time[0]}}</span>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> to</span>
+                                        <input type="time" class="form-control" v-model="eventNew.end_time">
+                                        <span class="help-block" v-if="error.end_time">{{error.end_time[0]}}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <hr>
+                        <vue-clip class="vue-clip-btn"
+                                  :options="optionsImageTemp"
+                                  :on-sending="sendingImageTemp"
+                                  :on-complete="completeImageTemp"
+                                  v-if="user.hasPermission['create-events']">
+                            <template slot="clip-uploader-action">
+                                <div class="">
+                                    <div class="dz-message btn btn-link btn-upload">
+                                        <i class="fa fa-plus fa-lg" aria-hidden="true"></i> Add Images
+                                    </div>
+                                </div>
+                            </template>
+                        </vue-clip>
+                        <draggable class="row images" v-model="eventNew.images">
+                            <div class="col-xs-6 col-md-4" v-for="(image, index) in eventNew.images">
+                                <div class="image">
+                                    <img :src="image.dataUrl" v-if="image.dataUrl">
+                                    <img :src="image.url_thumbnail" v-else>
+                                    <div class="progress" v-if="image.status">
+                                        <div class="progress-bar"
+                                            :class="{'progress-bar-danger': image.status == 'error'}"
+                                            :style="{width: image.progress+'%'}">
+                                        </div>
+                                    </div>
+                                    <a href="#" class="btn-delete" @click.prevent="destroyImageTemp(index)">
+                                        <span class="fa-stack">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-times fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </draggable>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success pull-left"
@@ -122,52 +171,93 @@
             </div>
         </div>
         <!-- Modal Edit Event -->
-        <div class="modal right fade" data-backdrop="false" id="modalEditEvent">
+        <div class="modal right md" id="modalEditEvent">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel">Edit Event</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group" :class="{'has-error': error.name}">
-                            <label>Name *</label>
-                            <input type="text" class="form-control input-lg" v-model="eventEdit.name">
+                            <input type="text" class="form-control input-lg" placeholder="Write name event"
+                                v-model="eventEdit.name">
                             <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                         </div>
                         <div class="form-group" :class="{'has-error': error.description}">
-                            <label>Description</label>
-                            <textarea class="form-control" rows="3" v-model="eventEdit.description"></textarea>
+                            <textarea class="form-control" rows="3" placeholder="Description"
+                                v-model="eventEdit.description"></textarea>
                             <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                         </div>
                         <div class="form-group" :class="{'has-error': error.place}">
-                            <label>Place</label>
-                            <input type="text" class="form-control" v-model="eventEdit.place">
-                            <span class="help-block" v-if="error.place">{{error.place[0]}}</span>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" placeholder="Place"
+                                    v-model="eventEdit.place">
+                                <span class="help-block" v-if="error.place">{{error.place[0]}}</span>
+                            </div>
                         </div>
                         <div class="form-group" :class="{'has-error': error.date}">
-                            <label>Date</label>
-                            <input type="date" class="form-control" v-model="eventEdit.date">
-                            <span class="help-block" v-if="error.date">{{error.date[0]}}</span>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar-check-o fa-lg" aria-hidden="true"></i></span>
+                                <input type="date" class="form-control" v-model="eventEdit.date">
+                                <span class="help-block" v-if="error.date">{{error.date[0]}}</span>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-6">
-                                <label>Start Time</label>
                                 <div class="form-group" :class="{'has-error': error.start_time}">
-                                    <input type="time" class="form-control" v-model="eventEdit.start_time">
-                                    <span class="help-block" v-if="error.start_time">{{error.start_time[0]}}</span>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> From</span>
+                                        <input type="time" class="form-control" v-model="eventEdit.start_time">
+                                        <span class="help-block" v-if="error.start_time">{{error.start_time[0]}}</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xs-6">
-                                <label>End Time</label>
                                 <div class="form-group" :class="{'has-error': error.end_time}">
-                                    <input type="time" class="form-control" v-model="eventEdit.end_time">
-                                    <span class="help-block" v-if="error.end_time">{{error.end_time[0]}}</span>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> to</span>
+                                        <input type="time" class="form-control" v-model="eventEdit.end_time">
+                                        <span class="help-block" v-if="error.end_time">{{error.end_time[0]}}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <hr>
+                        <vue-clip class="vue-clip-btn"
+                                  :options="optionsImage"
+                                  :on-sending="sendingImage"
+                                  :on-complete="completeImage"
+                                  v-if="user.hasPermission['update-events']">
+                            <template slot="clip-uploader-action">
+                                <div>
+                                    <div class="dz-message btn btn-link btn-upload">
+                                        <i class="fa fa-plus fa-lg" aria-hidden="true"></i> Add Images
+                                    </div>
+                                </div>
+                            </template>
+                        </vue-clip>
+                        <draggable class="row images" v-model="eventEdit.images" @end="sortImage">
+                            <div class="col-xs-6 col-md-4" v-for="(image, index) in eventEdit.images">
+                                <div class="image">
+                                    <img :src="image.dataUrl" v-if="image.dataUrl">
+                                    <img :src="image.url_thumbnail" v-else>
+                                    <div class="progress" v-if="image.status">
+                                        <div class="progress-bar"
+                                             :class="{'progress-bar-danger': image.status == 'error'}"
+                                             :style="{width: image.progress+'%'}"></div>
+                                    </div>
+                                    <a href="#" class="btn-delete" @click.prevent="destroyImage(image, index)">
+                                        <span class="fa-stack">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-times fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </draggable>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary pull-left"
@@ -187,12 +277,53 @@
 </template>
 
 <script>
+    import moment from 'moment';
+    import VueClip from 'vue-clip';
+    import draggable from 'vuedraggable'
+    import {SnotifyService} from 'vue-snotify';
+
     export default {
         data() {
             return {
                 user: Laravel.user,
                 error: {},
-                search: '',
+                tabActive: 'events',
+                optionsImageTemp: {
+                    headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
+                    url: '/api/events/images/upload/temp',
+                    paramName: 'file',
+                    parallelUploads: 1,
+                    maxFilesize: {
+                        limit: 10,
+                        message: '{{filesize}} is greater than the {{maxFilesize}}MB'
+                    },
+                    maxFiles: {
+                        limit: 10,
+                        message: 'You can only upload a max of 10 files'
+                    },
+                    acceptedFiles: {
+                        extensions: ['image/*'],
+                        message: 'You are uploading an invalid file'
+                    },
+                },
+                optionsImage: {
+                    headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
+                    url: '/api/events/images/upload',
+                    paramName: 'file',
+                    parallelUploads: 1,
+                    maxFilesize: {
+                        limit: 10,
+                        message: '{{filesize}} is greater than the {{maxFilesize}}MB'
+                    },
+                    maxFiles: {
+                        limit: 10,
+                        message: 'You can only upload a max of 10 files'
+                    },
+                    acceptedFiles: {
+                        extensions: ['image/*'],
+                        message: 'You are uploading an invalid file'
+                    },
+                },
                 events: [],
                 eventNew: {},
                 eventEdit: {},
@@ -201,16 +332,36 @@
         mounted() {
             this.getEvents();
         },
+        components: {
+            draggable,
+        },
         methods: {
             getEvents () {
-                axios.get('/events/all')
+                axios.get('/api/events/all')
                 .then(response => {
                     this.events = response.data.data
+                    this.tabActive = 'events'
                 });
+            },
+            getMyEvents () {
+                axios.get('/api/events/byCreator')
+                .then(response => {
+                    this.events = response.data.data
+                    this.tabActive = 'myEvents'
+                });
+            },
+            newEvent () {
+                this.eventNew = {
+                    date: moment().format('YYYY-MM-DD'),
+                    start_time: moment().add(1,'h').startOf('hour').format('HH:mm'),
+                    images: [],
+                };
+                $('#modalEditEvent').modal('hide');
+                $('#modalNewEvent').modal('show');
             },
             storeEvent (e) {
                 var btn = $(e.target).button('loading')
-                axios.post('/events/store', this.eventNew)
+                axios.post('/api/events/store', this.eventNew)
                 .then(response => {
                     this.events.unshift(response.data);
                     this.eventNew = {};
@@ -223,17 +374,26 @@
                     var btn = $(e.target).button('reset')
                 });
             },
-            editEvent (item, index) {
-                this.eventEdit = _.clone(item);
+            editEvent (event, index) {
+                this.eventEdit = _.clone(event);
                 this.eventEdit.index = index;
+                this.eventEdit.images = [];
+
                 $('#modalEditEvent').modal('show')
+
+                axios.get('/api/events/show/'+event.id)
+                .then(response => {
+                    this.eventEdit.images = response.data.images;
+                })
+                .catch(error => {
+                    this.error = error.response.data;
+                });
             },
             updateEvent (e) {
                 var btn = $(e.target).button('loading')
-                axios.put('/events/update/'+this.eventEdit.id, this.eventEdit)
+                axios.put('/api/events/update/'+this.eventEdit.id, this.eventEdit)
                 .then(response => {
                     this.events[this.eventEdit.index] = response.data;
-                    this.eventEdit = {};
                     this.error = {};
                     var btn = $(e.target).button('reset')
                     $('#modalEditEvent').modal('hide')
@@ -255,7 +415,7 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    axios.delete('/events/destroy/' + self.eventEdit.id)
+                    axios.delete('/api/events/destroy/' + self.eventEdit.id)
                     .then(response => {
                         self.events.splice(self.eventEdit.index, 1);
                         swal({
@@ -271,6 +431,61 @@
                     .catch(error => {
                         self.error = error.response.data;
                     });
+                });
+            },
+            sendingImageTemp (file, xhr, formData) {
+                this.eventNew.images.push(file);
+            },
+            completeImageTemp (file, status, xhr) {
+                if (status == 'success') {
+                    console.log(xhr.response);
+                    var index = this.eventNew.images.indexOf(file);
+                    Object.assign(this.eventNew.images[index], JSON.parse(xhr.response))
+                } else {
+                    SnotifyService.error(JSON.parse(xhr.response).file[0]);
+                }
+            },
+            destroyImageTemp (index) {
+                this.eventNew.images.splice(index, 1);
+            },
+            sendingImage (file, xhr, formData) {
+                this.eventEdit.images.push(file);
+                formData.append('id', this.eventEdit.id);
+            },
+            completeImage (file, status, xhr) {
+                if (status == 'success') {
+                    var index = this.eventEdit.images.indexOf(file);
+                    this.eventEdit.images[index] = JSON.parse(xhr.response);
+                    this.events[this.eventEdit.index].images.push(JSON.parse(xhr.response));
+                } else {
+                    SnotifyService.error(JSON.parse(xhr.response).file[0]);
+                }
+            },
+            sortImage () {
+                axios.post('/api/events/images/sort/' + this.eventEdit.id, {images:this.eventEdit.images})
+                .then(response => {
+                    this.events[this.eventEdit.index].images = response.data;
+                    this.error = {};
+                })
+                .catch(error => {
+                    self.error = error.response.data;
+                });
+            },
+            destroyImage (image, index) {
+                axios.delete('/api/events/images/destroy/' + image.id)
+                .then(response => {
+                    var key;
+                    this.events[this.eventEdit.index].images.forEach(function(v, k){
+                        if (v.id == image.id) {
+                            key = k;
+                        }
+                    });
+                    this.events[this.eventEdit.index].images.splice(key, 1);
+                    this.eventEdit.images.splice(index, 1);
+                    this.error = {};
+                })
+                .catch(error => {
+                    self.error = error.response.data;
                 });
             },
         }

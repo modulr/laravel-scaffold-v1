@@ -99,22 +99,22 @@
         },
         props: ['user'],
         mounted() {
-            axios.get('/list/profession')
+            axios.get('/api/list/profile/profession')
             .then(response => {
                 this.list.professions = response.data;
             });
 
-            axios.get('/list/position')
+            axios.get('/api/list/profile/position')
             .then(response => {
                 this.list.positions = response.data;
             });
 
-            axios.get('/list/department')
+            axios.get('/api/list/profile/department')
             .then(response => {
                 this.list.departments = response.data;
             });
 
-            axios.get('/users/all')
+            axios.get('/api/users/all')
             .then(response => {
                 this.list.bosses = response.data;
             });
@@ -122,7 +122,7 @@
         methods: {
             updateWork (e) {
                 var btn = $(e.target).button('loading')
-                axios.put('/profile/work/update/'+this.user.profile_work.id, this.user.profile_work)
+                axios.put('/api/profile/work/update/'+this.user.profile_work.id, this.user.profile_work)
                 .then(response => {
                     this.user.profile_work = response.data;
                     this.error = {};

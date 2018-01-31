@@ -1,12 +1,12 @@
 # Modulr
 
 ### The base for developing awesome projects
-v2 - Laravel, Vuejs & MySQL
+Laravel, Vuejs & MySQL
 
 ## What is it
-Modulr is open source software, made to be easy to use, develop and implement, is a real time application, scalable, adaptable and safety.
+Modulr is a free, open-source Starter kit/Scaffold/Boilerplate a fasted way of building your custom and modular Laravel application that grows with you.
 
-See the [documentation](http://docs.modulr.io) for more details or visit the [project website](https://modulr.io).
+See the [documentation](http://docs.modulr.io) for more details or visit the [project website](http://modulr.io).
 
 You can also try our live [demo](http://app.modulr.io), just sign up and enjoy the experience of modulr [here](http://app.modulr.io)
 
@@ -15,12 +15,15 @@ You can also try our live [demo](http://app.modulr.io), just sign up and enjoy t
 You have all these modules at your disposal, set your system in your own way and your needs.
 
 - Authentication
-- Access & Users
-- Profile
-- News
-- Files
-- Tasks
+- Dashboard
 - Contacts
+- Events
+- Files
+- News
+- Notifications
+- Profile
+- Tasks
+- Users & Access
 
 
 ## Community
@@ -38,4 +41,4 @@ You have all these modules at your disposal, set your system in your own way and
 
 ## License
 
-The [MIT©](https://github.com/modulr/modulr/blob/master/LICENSE) License 2017 - Modulr.
+The [MIT©](https://github.com/modulr/modulr/blob/master/LICENSE) License 2018 - Modulr.

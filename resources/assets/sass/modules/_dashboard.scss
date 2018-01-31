@@ -1,4 +1,11 @@
 .dashboard {
+    .panel {
+        .news {
+            .panel {
+                margin-bottom: 0;
+            }
+        }
+    }
     .panel-dashboard {
         > .panel-heading {
             a {

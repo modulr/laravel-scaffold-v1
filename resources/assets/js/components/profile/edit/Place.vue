@@ -57,7 +57,9 @@ export default {
         storePlace: function (e) {
             var btn = $(e.target).button('loading')
             this.place.user_id = this.user.id;
-            axios.post('/profile/place/store', this.place)
+            if(!this.place.currently)
+                this.place.currently = 0;
+            axios.post('/api/profile/place/store', this.place)
             .then(response => {
                 this.user.profile_place.push(response.data);
                 this.place = {};
@@ -81,7 +83,7 @@ export default {
                 closeOnConfirm: false
             },
             function(){
-                axios.delete('/profile/place/destroy/' + placeId)
+                axios.delete('/api/profile/place/destroy/' + placeId)
                 .then(response => {
                     self.user.profile_place.splice(index, 1);
                     swal({

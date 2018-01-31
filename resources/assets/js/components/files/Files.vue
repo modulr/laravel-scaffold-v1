@@ -5,54 +5,52 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-sm-4">
-                        <vue-clip class="vue-clip-btn"
-                                  :options="uploadFileOptions"
-                                  :on-sending="uploadFileSending"
-                                  :on-complete="uploadFileComplete"
-                                  v-if="user.hasPermission['create-files']">
-                            <template slot="clip-uploader-action">
-                                <span class="dz-message btn btn-success">
-                                    <i class="mdi mdi-file-upload mdi-lg"></i> Upload
-                                </span>
-                            </template>
-                        </vue-clip>
-                        <a href="#" class="btn btn-success"
-                           v-if="user.hasPermission['create-files']"
-                           @click.prevent="newFolder">
-                            <i class="mdi mdi-create-new-folder mdi-lg"></i> New folder
-                        </a>
+                    <div class="col-sm-3 controls">
+                        <input type="text" class="form-control" placeholder="Search" v-model="search">
                     </div>
-                    <div class="col-sm-5 text-right">
+                    <div class="col-sm-9 text-right controls">
                         <div class="btn-group">
                             <button class="btn btn-default" :disabled="!fileCurrent.name"
-                                    @click.prevent="comingSoon"
-                                    v-if="user.hasPermission['update-files']">
+                                @click.prevent="comingSoon"
+                                v-if="user.hasPermission['update-files']">
                                 <i class="fa fa-fw fa-arrows" aria-hidden="true"></i> Move
                             </button>
                             <button class="btn btn-default" :disabled="!fileCurrent.name"
-                                    @click.prevent="comingSoon"
-                                    v-if="user.hasPermission['update-files']">
+                                @click.prevent="comingSoon"
+                                v-if="user.hasPermission['update-files']">
                                 <i class="fa fa-fw fa-clone" aria-hidden="true"></i> Copy
                             </button>
                             <button class="btn btn-default" :disabled="!fileCurrent.name"
-                                    @click.prevent="destroyFile"
-                                    v-if="user.hasPermission['delete-files']">
+                                @click.prevent="destroyFile"
+                                v-if="user.hasPermission['delete-files']">
                                 <i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete
                             </button>
                         </div>
                         <span class="separator"></span>
-                        <a href="#" class="btn btn-link" @click.prevent="toggleLayout">
+                        <a href="#" class="btn btn-default" @click.prevent="toggleLayout">
                             <i class="fa fa-fw fa-lg" aria-hidden="true"
-                               :class="{'fa-list': layout == 'list', 'fa-th-large': layout == 'grid'}"
-                            ></i>
+                                :class="{'fa-list': layout == 'list', 'fa-th-large': layout == 'grid'}">
+                            </i>
                         </a>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search" v-model="search">
-                            <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                        </div>
+                        <span class="separator"></span>
+                        <a href="#" class="btn btn-success"
+                            v-if="user.hasPermission['create-files']"
+                            @click.prevent="newFolder">
+                            <i class="mdi mdi-create-new-folder mdi-lg"></i> New folder
+                        </a>
+                        <vue-clip class="vue-clip-btn"
+                            :options="uploadFileOptions"
+                            :on-sending="uploadFileSending"
+                            :on-complete="uploadFileComplete"
+                            v-if="user.hasPermission['create-files']">
+                            <template slot="clip-uploader-action">
+                                <div>
+                                    <div class="dz-message btn btn-success">
+                                        <i class="mdi mdi-file-upload mdi-lg"></i> Upload
+                                    </div>
+                                </div>
+                            </template>
+                        </vue-clip>
                     </div>
                 </div>
             </div>
@@ -155,7 +153,7 @@
                                         <span v-else>---</span>
                                     </dd>
                                     <dt><i class="fa fa-fw fa-user" aria-hidden="true"></i> Owner</dt>
-                                    <dd>{{fileCurrent.user.name}}</dd>
+                                    <dd>{{fileCurrent.creator.name}}</dd>
                                     <dt><i class="fa fa-fw fa-calendar-check-o" aria-hidden="true"></i> Created</dt>
                                     <dd>{{fileCurrent.created_at | moment('from')}}</dd>
                                     <dt><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Modified</dt>
@@ -196,12 +194,12 @@
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading">{{file.name}}</h4>
-                                <small class="text-muted">{{file.status}}</small>
-                                <div class="progress" @click="file.progress = 0">
-                                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-                                         :aria-valuenow="file.progress"
-                                         :style="{width: file.progress+'%'}">
-                                        <span class="sr-only">{{file.progress}}% Complete</span>
+                                <small class="text-muted" :class="{'text-danger': file.errorMessage.file}">{{file.status}}</small>
+                                <small class="text-danger" v-if="file.errorMessage.file"> - {{file.errorMessage.file[0]}}</small>
+                                <div class="progress" v-if="file.status">
+                                    <div class="progress-bar"
+                                        :class="{'progress-bar-danger': file.status == 'error'}"
+                                        :style="{width: file.progress+'%'}">
                                     </div>
                                 </div>
                             </div>
@@ -254,7 +252,7 @@
                 layout: 'list',
                 uploadFileOptions: {
                     headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                    url: '/files/store',
+                    url: '/api/files/store',
                     paramName: 'file',
                     maxFilesize: {
                         limit: 10,
@@ -281,12 +279,12 @@
 
             if (res[2] == 'folder') {
                 this.folderCurrentId = parseInt(res[3]);
-                axios.get('/files/byUser/' + this.folderCurrentId)
+                axios.get('/api/files/byCreator/' + this.folderCurrentId)
                 .then(response => {
                     this.files = response.data;
                 });
             } else {
-                axios.get('/files/byUser')
+                axios.get('/api/files/byCreator')
                 .then(response => {
                     this.files = response.data;
                 });
@@ -334,7 +332,7 @@
                 $('#modalNewFolder').modal('show');
             },
             storeFolder (e) {
-                axios.post('/files/store', this.folderNew)
+                axios.post('/api/files/store', this.folderNew)
                 .then(response => {
                     this.files.unshift(response.data);
                     this.folderNew = {};
@@ -363,7 +361,7 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    axios.delete('/files/destroy/' + self.fileCurrent.id)
+                    axios.delete('/api/files/destroy/' + self.fileCurrent.id)
                     .then(response => {
                         self.files.splice(self.fileCurrent.index, 1);
                         self.fileCurrent = {};
@@ -393,7 +391,7 @@
                 this.fileCurrent.index = index;
             },
             updateFileName () {
-                axios.put('/files/update/'+this.fileCurrent.id, {name: this.fileCurrent.name})
+                axios.put('/api/files/update/'+this.fileCurrent.id, {name: this.fileCurrent.name})
                 .then(response => {
                     this.files[this.fileCurrent.index].name = response.data.name;
                     this.fileRename = false;

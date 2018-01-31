@@ -1,20 +1,33 @@
 .aside {
-    position: fixed;
-    top: 140px;
-    bottom: 0;
-    width: 320px;
-    z-index: 2;
-
     &.aside-fixed-right {
+        position: fixed;
+        top: 0px;
+        bottom: 0;
+        width: 320px;
         right: -350px;
         &.show {
             right: 0;
         }
     }
     &.aside-fixed-left {
+        position: fixed;
+        top: 0px;
+        bottom: 0;
+        width: 320px;
         left: -350px;
         &.show {
             left: 0;
         }
+    }
+}
+
+@media (max-width: 767px) {
+    .aside {
+        position: fixed;
+        margin-bottom: 0;
+        top: 65px;
+        bottom: 0;
+        width: 100%;
+        right: 0;
     }
 }

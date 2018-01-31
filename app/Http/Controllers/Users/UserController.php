@@ -14,14 +14,25 @@ use App\Models\Profile\ProfileWork;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
-    {
-        return view('users.users');
-    }
-
     public function all()
     {
-        return User::with('roles')->get();
+        return User::get();
+    }
+
+    public function filter(Request $request)
+    {
+        $query = User::query();
+
+        if($request->search) {
+            info($request->search);
+            $query->where('name', 'LIKE', '%'.$request->search.'%');
+        }
+
+        $users = $query->orderBy('id', 'asc')
+                    ->paginate(50);
+        $users->load('roles');
+
+        return $users;
     }
 
     public function store(Request $request)
@@ -45,9 +56,9 @@ class UserController extends Controller
             $user->roles()->attach([$request->role_id]);
         }
 
-        if ($request->avatar_url) {
+        if ($request->avatar_path) {
             $upload = new Upload();
-            $avatar = $upload->move($request->avatar_url, 'avatars/'.$user->id)->getData();
+            $avatar = $upload->move($request->avatar_path, 'avatars/'.$user->id)->getData();
             $request->avatar = $avatar['basename'];
         } else {
             $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
@@ -80,7 +91,7 @@ class UserController extends Controller
             'active' => 'required|boolean'
         ]);
 
-        $user = User::find($id);
+        $user = User::with('roles')->find($id);
 
         if ($user->name != $request->name) {
             $avatar = Avatar::create($request->name)->getImageObject()->encode('png');
@@ -138,16 +149,16 @@ class UserController extends Controller
     public function uploadAvatarTemp(Request $request)
     {
         $upload = new Upload();
-        $avatar = $upload->uploadTemp($request->file('files'))->resize(200, 200)->getData();
-        return ['avatar' => $avatar['basename'], 'avatar_url' => $avatar['path']];
+        $avatar = $upload->uploadTemp($request->file)->resize(200, 200)->getData();
+        return $avatar;
     }
 
-    public function uploadAvatar(Request $request, $id)
+    public function uploadAvatar(Request $request)
     {
         $upload = new Upload();
-        $avatar = $upload->upload($request->file('files'), 'avatars/'.$id)->resize(200, 200)->getData();
+        $avatar = $upload->upload($request->file, 'avatars/'.$request->id)->resize(200, 200)->getData();
 
-        $user = User::find($id);
+        $user = User::find($request->id);
         $user->avatar = $avatar['basename'];
         $user->save();
 

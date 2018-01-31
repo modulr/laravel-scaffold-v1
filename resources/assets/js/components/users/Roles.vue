@@ -1,90 +1,79 @@
 <template>
     <div class="roles">
-        <!-- Header -->
-        <div class="container-fluid header">
-            <div class="row">
-                <div class="col-xs-12">
-                    <ul class="nav nav-tabs header-tabs">
-                        <li><a href="/users">Users</a></li>
-                        <li class="active"><a href="">Roles</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
         <!-- Container -->
         <div class="container-fluid">
+            <!-- Actionbar -->
+            <div class="actionbar">
+                <div class="row">
+                    <div class="col-sm-6 links">
+                        <ul class="nav nav-tabs">
+                            <li><a href="/users">Users</a></li>
+                            <li class="active"><a href="">Roles</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3 controls">
+                        <input type="text" class="form-control" placeholder="Search" v-model="search">
+                    </div>
+                    <div class="col-sm-3 text-right controls">
+                        <a href="#" class="btn btn-success"
+                           v-if="user.hasPermission['create-roles']"
+                           @click.prevent="newRole">
+                            <i class="mdi mdi-group-add mdi-lg"></i> New Role
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- List Roles -->
             <div class="row">
-                <div class="col-lg-10 col-lg-offset-1">
-                    <!-- Actionbar -->
-                    <div class="actionbar">
-                        <div class="row">
-                            <div class="col-sm-9">
-                                <a href="#" class="btn btn-success"
-                                   v-if="user.hasPermission['create-roles']"
-                                   @click.prevent="newRole">
-                                    <i class="mdi mdi-group-add mdi-lg"></i> New Role
-                                </a>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search" v-model="search">
-                                    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-md-12">
+                    <div class="table-responsive table-elevation">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Users</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(role, index) in roles.data">
+                                    <td @click="editRole(role, index)">
+                                        {{role.id}}
+                                    </td>
+                                    <td @click="editRole(role, index)">
+                                        <h4 class="media-heading">{{role.display_name}}</h4>
+                                    </td>
+                                    <td @click="editRole(role, index)">
+                                        {{role.description}}
+                                    </td>
+                                    <td @click="editRole(role, index)">
+                                        {{role.users.length}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <!-- List Roles -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Description</th>
-                                                    <th>Users</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr v-for="(role, index) in filteredRoles">
-                                                    <td @click="editRole(role, index)">
-                                                        {{role.id}}
-                                                    </td>
-                                                    <td @click="editRole(role, index)">
-                                                        {{role.display_name}}
-                                                    </td>
-                                                    <td @click="editRole(role, index)">
-                                                        {{role.description}}
-                                                    </td>
-                                                    <td @click="editRole(role, index)">
-                                                        {{role.users.length}}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <paginate
+                        v-if="roles.last_page>1"
+                        :page-count="roles.last_page"
+                        :click-handler="changePage"
+                        :prev-text="'Prev'"
+                        :next-text="'Next'"
+                        :container-class="'pagination pull-right'">
+                    </paginate>
                 </div>
             </div>
         </div>
         <!-- Modal New Role -->
-        <div class="modal right fade" tabindex="-1" id="modalNewRole">
+        <div class="modal right md" id="modalNewRole">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title">New Role</h4>
-                    </div>
                     <div class="modal-body">
                         <form>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                             <div class="form-group" :class="{'has-error': error.display_name}">
                                 <label>Name *</label>
                                 <input type="text" class="form-control input-lg" required
@@ -130,16 +119,13 @@
             </div>
         </div>
         <!-- Modal Edit Role -->
-        <div class="modal right fade" tabindex="-1" data-backdrop="false" id="modalEditRole">
+        <div class="modal right md" id="modalEditRole">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-body">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Edit Role</h4>
-                    </div>
-                    <div class="modal-body">
                         <form>
                             <div class="form-group" :class="{'has-error': error.display_name}">
                                 <label>Name *</label>
@@ -189,8 +175,19 @@
                                             <tr v-for="item in roleEdit.users">
                                                 <td>{{item.id}}</td>
                                                 <td>
-                                                    <img class="avatar-sm" :src="item.avatar_url">
-                                                    {{item.name}}
+                                                    <div class="media">
+                                                        <div class="media-left">
+                                                            <a :href="`/profile/${item.id}`">
+                                                                <img class="avatar-xs" :src="item.avatar_url">
+                                                            </a>
+                                                        </div>
+                                                        <div class="media-body">
+                                                            <a :href="`/profile/${item.id}`">
+                                                                <h4 class="media-heading">{{item.name}}</h4>
+                                                            </a>
+                                                            <a class="text-muted" :href="`mailto:${item.email}`">{{item.email}}</a>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -219,6 +216,7 @@
 
 <script>
     import swal from 'sweetalert';
+    import Paginate from 'vuejs-paginate';
 
     export default {
         data() {
@@ -226,7 +224,9 @@
                 user: Laravel.user,
                 error: {},
                 search: '',
-                roles: [],
+                roles: {
+                    last_page: 0
+                },
                 roleNew: {},
                 roleEdit: {},
                 lists: {
@@ -238,38 +238,36 @@
             this.getRoles();
             this.getLists();
         },
-        computed: {
-            filteredRoles: function () {
-                var filteredArray = this.roles,
-                    search = this.search;
-
-                if(!search){
-                    return filteredArray;
-                }
-
-                search = search.trim().toLowerCase();
-
-                filteredArray = filteredArray.filter(function(item){
-                    return Object.keys(item).some(function (key) {
-                        return String(item[key]).toLowerCase().indexOf(search) !== -1
-                    })
-                })
-
-                return filteredArray;;
+        components: {
+            Paginate,
+        },
+        watch: {
+            search () {
+                this.getRoles();
             }
         },
         methods: {
-            getRoles () {
-                axios.get('/roles/all')
-                .then(response => {
-                    this.roles = response.data;
-                });
+            getRoles (page) {
+                if (!page) {
+                    axios.get(`/api/roles/filter${this.search ? '?search=' + this.search: ''}`)
+                    .then(response => {
+                        this.roles = response.data;
+                    });
+                } else {
+                    axios.get(`/api/roles/filter?page=${page}${this.search ? '&search=' + this.search: ''}`)
+                    .then(response => {
+                        this.roles = response.data;
+                    });
+                }
             },
             getLists () {
-                axios.get('/permissions/all')
+                axios.get('/api/permissions/all')
                 .then(response => {
                     this.lists.permissions = response.data;
                 });
+            },
+            changePage (page) {
+                this.getRoles(page);
             },
             newRole () {
                 this.roleNew = {};
@@ -283,9 +281,9 @@
             },
             storeRole (e) {
                 var btn = $(e.target).button('loading')
-                axios.post('/roles/store', this.roleNew)
+                axios.post('/api/roles/store', this.roleNew)
                 .then(response => {
-                    this.roles.push(response.data);
+                    this.roles.data.push(response.data);
                     this.roleNew = {};
                     this.error = {};
                     var btn = $(e.target).button('reset')
@@ -297,7 +295,7 @@
                 });
             },
             editRole (role, index) {
-                axios.get('/roles/'+role.id)
+                axios.get('/api/roles/'+role.id)
                 .then(response => {
                     this.roleEdit = response.data;
                     this.roleEdit.index = index;
@@ -306,9 +304,9 @@
             },
             updateRole (e) {
                 var btn = $(e.target).button('loading')
-                axios.put('/roles/update/'+this.roleEdit.id, this.roleEdit)
+                axios.put('/api/roles/update/'+this.roleEdit.id, this.roleEdit)
                 .then(response => {
-                    this.roles[this.roleEdit.index] = response.data;
+                    this.roles.data[this.roleEdit.index] = response.data;
                     this.roleEdit = {};
                     this.error = {};
                     var btn = $(e.target).button('reset')
@@ -331,9 +329,9 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    axios.delete('/roles/destroy/' + self.roleEdit.id)
+                    axios.delete('/api/roles/destroy/' + self.roleEdit.id)
                     .then(response => {
-                        self.roles.splice(self.roleEdit.index, 1);
+                        self.roles.data.splice(self.roleEdit.index, 1);
                         swal({
                             title: "Deleted!",
                             text: "The role has been deleted.",

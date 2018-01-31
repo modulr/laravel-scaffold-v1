@@ -3,9 +3,6 @@
         > tbody > tr:first-child > td {
             border-top-color: transparent;
         }
-        p {
-            margin-bottom: 0;
-        }
     }
 
     .thumbnail {
@@ -13,20 +10,10 @@
         text-align: center;
         .avatar-md {
             margin-top: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
-    }
-}
-
-.modal-contacts {
-    .contact-heading {
-        text-align: center;
-        padding-top: 20px;
-        padding-bottom: 40px;
-        border-bottom: 1px solid $gray-lighter;
-        margin-bottom: 30px;
-    }
-    .contact-body {
-        padding: 0 20px;
+        h4 {
+            margin-bottom: 0;
+        }
     }
 }

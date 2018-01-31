@@ -62,7 +62,7 @@ export default {
     },
     props: ['user'],
     mounted() {
-        axios.get('/list/contact')
+        axios.get('/api/list/profile/contact')
         .then(response => {
             this.list.contacts = response.data;
         });
@@ -71,7 +71,7 @@ export default {
         storeContact: function (e) {
             var btn = $(e.target).button('loading')
             this.contact.user_id = this.user.id;
-            axios.post('/profile/contact/store', this.contact)
+            axios.post('/api/profile/contact/store', this.contact)
             .then(response => {
                 this.user.profile_contact.push(response.data);
                 this.contact.contact = null;
@@ -95,7 +95,7 @@ export default {
                 closeOnConfirm: false
             },
             function(){
-                axios.delete('/profile/contact/destroy/' + contactId)
+                axios.delete('/api/profile/contact/destroy/' + contactId)
                 .then(response => {
                     self.user.profile_contact.splice(index, 1);
                     swal({

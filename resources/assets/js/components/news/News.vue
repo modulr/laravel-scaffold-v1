@@ -1,7 +1,6 @@
 <template>
     <div class="news">
-        <!-- List News -->
-        <div class="panel panel-default" v-for="(item, index) in news">
+        <div class="panel panel-default">
             <div class="panel-heading">
                 <a :href="`/profile/${item.creator.id}`">
                     <img class="avatar-xs" :src="item.creator.avatar_url" alt="">
@@ -13,7 +12,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#" @click.prevent="destroyNews(item.id, index)">
+                            <a href="#" @click.prevent="destroyNews(item.id)">
                             <i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete</a>
                         </li>
                     </ul>
@@ -42,32 +41,19 @@
                 <small class="text-muted pull-right">{{item.created_at | moment('from')}}</small>
             </div>
         </div>
-        <!-- Init Message  -->
-        <div class="init-message" v-if="news.length == 0">
-            <i class="mdi mdi-whatshot" aria-hidden="true"></i>
-            <p class="lead">Don't exist News!!</p>
-        </div>
-        <!-- Loading -->
-        <infinite-loading @infinite="loadNews" ref="infiniteLoading">
-            <span slot="no-results"></span>
-            <span slot="no-more"></span>
-        </infinite-loading>
     </div>
 </template>
 
 <script>
-    import swal from 'sweetalert';
     import { swiper, swiperSlide } from 'vue-awesome-swiper';
-    import InfiniteLoading from 'vue-infinite-loading';
-    import EventBus from './event-bus';
 
     export default {
         data() {
             return {
                 user: Laravel.user,
-                news: [],
-                pagination: {
-                    current_page: 0
+                item: {
+                    creator: {},
+                    images: [],
                 },
                 swiperOption: {
                     pagination : '.swiper-pagination',
@@ -75,31 +61,22 @@
                 },
             }
         },
-        mounted() {
-            EventBus.$on('add-news', this.addNews);
-        },
+        props: ['id'],
         components: {
             swiper,
             swiperSlide,
-            InfiniteLoading,
+        },
+        mounted() {
+            this.getNews();
         },
         methods: {
-            addNews (item) {
-                this.news.unshift(item)
-            },
-            loadNews ($state) {
-                var page = Number(this.pagination.current_page) + 1;
-
-                axios.get('/api/news/all?page='+ page)
+            getNews() {
+                axios.get('/api/news/show/'+this.id)
                 .then(response => {
-                    this.news = this.news.concat(response.data.data);
-                    this.pagination = response.data
-                    $state.loaded();
-                    if (!this.pagination.next_page_url)
-                        $state.complete();
+                    this.item = response.data
                 });
             },
-            destroyNews (id, index) {
+            destroyNews (id) {
                 var self = this;
                 swal({
                     title: "Are you sure?",
@@ -113,7 +90,7 @@
                 function(){
                     axios.delete('/api/news/destroy/' + id)
                     .then(response => {
-                        self.news.splice(index, 1);
+                        self.news = {};
                         swal({
                             title: "Deleted!",
                             text: "Your news has been deleted.",
@@ -122,6 +99,7 @@
                             showConfirmButton: false
                         });
                         self.error = {};
+                        location.href = '/news';
                     })
                     .catch(error => {
                         self.error = error.response.data;

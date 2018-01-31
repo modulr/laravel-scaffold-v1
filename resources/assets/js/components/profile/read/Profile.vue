@@ -13,7 +13,7 @@
                         <dl>
                             <dd>Birthday</dd>
                             <dt v-if="user.profile_personal.birthday">
-                                {{user.profile_personal.birthday | moment('from')}}
+                                {{user.profile_personal.birthday | moment('LL')}}
                             </dt>
                         </dl>
                         <dl>
@@ -116,7 +116,7 @@
                 <dl v-for="(family, index) in user.profile_family">
                     <dt>{{family.name}} - {{family.relation.title}}</dt>
                     <dd>
-                        {{family.gender.title}} - {{family.birthday | moment('from')}}
+                        {{family.gender.title}} - {{family.birthday | moment('LL')}}
                         <span class="text-muted" v-show="family.description"> / {{family.description}}</span>
                     </dd>
                 </dl>

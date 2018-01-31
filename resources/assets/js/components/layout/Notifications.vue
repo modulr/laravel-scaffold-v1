@@ -1,21 +1,22 @@
 <template>
-    <div class="notifications">
+    <div>
         <!-- List -->
-        <a href="notifications" v-for="item in notifications">
-            <div class="media">
-                <div class="media-left">
-                    <img class="media-object" :src="item.data.user.avatar_url">
+        <li v-for="notification in notifications">
+            <a :href="notification.data.message.url">
+                <div class="media">
+                    <div class="media-left">
+                        <img class="media-object avatar-xs" :src="notification.data.message.userAvatarUrl">
+                    </div>
+                    <div class="media-body">
+                        <h6 class="media-heading">{{ notification.data.message.userName }} <span>{{ notification.data.message.title }}</span></h6>
+                        <small class="text-muted">{{ notification.created_at | moment('from') }}</small>
+                    </div>
+                    <div class="media-right" v-if="notification.data.message.imageUrl">
+                        <img class="media-object" :src="notification.data.message.imageUrl">
+                    </div>
                 </div>
-                <div class="media-body">
-                    <h4 class="media-heading">{{ item.data.user.name }}</h4>
-                    {{ item.data.message.title }}
-                </div>
-                <div class="media-right" v-if="item.data.message.data.type == 2">
-                    <img class="media-object" :src="item.data.message.data.images[0].url">
-                </div>
-            </div>
-            <hr>
-        </a>
+            </a>
+        </li>
 
         <!-- Init Message  -->
         <div class="init-message" v-if="notifications.length == 0">
@@ -29,26 +30,8 @@
 export default {
     data() {
         return {
-            notifications: Laravel.notifications,
+            notifications: Laravel.notifications
         }
     }
 }
 </script>
-
-<style lang="scss">
-.media {
-    .media-left{
-        img {
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-        }
-    }
-    .media-right{
-        img {
-            width: 70px;
-            height: 70px;
-        }
-    }
-}
-</style>

@@ -8,11 +8,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 
-class NewsCreated extends Notification
+class NewsNotification extends Notification
 {
     use Queueable;
 
-    private $user;
     private $message;
 
     /**
@@ -20,9 +19,8 @@ class NewsCreated extends Notification
      *
      * @return void
      */
-    public function __construct($user, $message)
+    public function __construct($message)
     {
-        $this->user = $user;
         $this->message = $message;
     }
 
@@ -46,7 +44,6 @@ class NewsCreated extends Notification
     public function toArray($notifiable)
     {
         return [
-            'user' => $this->user,
             'message' => $this->message
         ];
     }
@@ -60,7 +57,6 @@ class NewsCreated extends Notification
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-                'user' => $this->user,
                 'message' => $this->message
             ]);
     }

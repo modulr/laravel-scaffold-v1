@@ -163,34 +163,14 @@
                         </ul>
                     </li>
                     <!-- Notifications -->
-                    <li class="dropdown notifications">
+                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" @click="markAsRead">
                             <i class="fa fa-bell fa-lg"></i>
                             <span class="label label-danger" v-show="unReadNotifications.length>0">{{unReadNotifications.length}}</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li>
-                                <a href="notifications" v-for="item in notifications">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img :src="item.data.user.avatar_url">
-                                        </div>
-                                        <div class="media-body">
-                                            <h6 class="media-heading">{{item.data.user.name}}</h6>
-                                            {{item.data.message.title}}
-                                        </div>
-                                        <div class="media-right" v-if="item.data.message.data.type == 2">
-                                            <img class="media-object" :src="item.data.message.data.images[0].url">
-                                        </div>
-                                    </div>
-                                    <hr>
-                                </a>
-                                <!-- Init Message  -->
-                                <div class="init-message" v-if="notifications.length == 0">
-                                    <i class="fa fa-bell" aria-hidden="true"></i>
-                                    <p class="lead">Don't have notifications</p>
-                                </div>
-                            </li>
+                        <ul class="dropdown-menu dropdown-menu-right notifications">
+                            <li class="dropdown-header">Notifications</li>
+                            <notifications class="notifications-list"></notifications>
                             <li class="text-center">
                                 <a href="/notifications"><small>View all notifications</small></a>
                             </li>
@@ -262,24 +242,25 @@
                 this.activeLink = res[1];
             }
 
-            Notification.requestPermission();
-
             Echo.private('App.User.' + this.user.id)
                 .notification((e) => {
-
                     this.notifications.unshift({data:e});
                     this.unReadNotifications.unshift({data:e});
 
-                    if (Notification.permission === "granted") {
-                        var options = {
-                            body: e.message.title,
-                            icon: e.user.avatar_url,
+                    Notification.requestPermission().then(function(result) {
+                        if (result === "granted") {
+                            var options = {
+                                body: e.message.title,
+                                icon: '/img/icon/favicon-96x96.png',
+                                badge: '/img/icon/favicon-16x16.png',
+                                image: e.message.userAvatarUrl,
+                            }
+                            if (e.message.imageUrl) {
+                                options.image = e.message.imageUrl;
+                            }
+                            new Notification(e.message.userName, options);
                         }
-                        if (e.message.data.type == 2) {
-                            options.image = e.message.data.images[0].url;
-                        }
-                        new Notification(e.user.name, options);
-                    }
+                    });
                 });
 
             // Echo.channel('news')
@@ -302,7 +283,7 @@
                 });
             },
             markAsRead: function () {
-                axios.get('/dashboard/markAsRead')
+                axios.get('/notifications/markAsRead')
                 .then(response => {
                     this.unReadNotifications = [];
                 });

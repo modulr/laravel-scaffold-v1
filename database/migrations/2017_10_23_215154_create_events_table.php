@@ -14,16 +14,27 @@ class CreateEventsTable extends Migration
     public function up()
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->date('date')->nullable();
-            $table->text('place')->nullable();
-            $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
-            $table->json('attendees');
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->increments('id')->comment = "The event ID";
+            $table->string('name')->comment = "Event name";
+            $table->text('description')->nullable()->comment = "Long-form description";
+            $table->text('place')->nullable()->comment = "Event Place information";
+            $table->date('date')->nullable()->comment = "Event day";
+            $table->time('start_time')->nullable()->comment = "Start time";
+            $table->time('end_time')->nullable()->comment = "End time, if one has been set";
+            $table->integer('attending_limit')->nullable()->comment = "Attending limit";
+            $table->unsignedInteger('created_by')->nullable()->default(null);
+            $table->unsignedInteger('updated_by')->nullable()->default(null);
+            $table->unsignedInteger('deleted_by')->nullable()->default(null);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('event_images', function (Blueprint $table) {
+            $table->increments('id')->comment = "The image ID";
+            $table->text('basename')->nullable()->comment = "The disk name of image";
+            $table->integer('order')->comment = "Order show the image";
+            $table->integer('event_id')->unsigned()->comment = "Event to belongs";
+            $table->foreign('event_id')->references('id')->on('events');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -36,6 +47,7 @@ class CreateEventsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('event_images');
         Schema::dropIfExists('events');
     }
 }

@@ -56,12 +56,12 @@
 
             if (res[2] == 'folder') {
                 this.folderCurrentId = parseInt(res[3]);
-                axios.get('/files/byUser/' + this.folderCurrentId)
+                axios.get('/api/files/byCreator/' + this.folderCurrentId)
                 .then(response => {
                     this.files = response.data;
                 });
             } else {
-                axios.get('/files/byUser')
+                axios.get('/api/files/byCreator')
                 .then(response => {
                     this.files = response.data;
                 });

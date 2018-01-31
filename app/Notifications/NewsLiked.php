@@ -12,7 +12,6 @@ class NewsLiked extends Notification
 {
     use Queueable;
 
-    private $user;
     private $message;
 
     /**
@@ -20,9 +19,8 @@ class NewsLiked extends Notification
      *
      * @return void
      */
-    public function __construct($user, $message)
+    public function __construct($message)
     {
-        $this->user = $user;
         $this->message = $message;
     }
 
@@ -46,7 +44,6 @@ class NewsLiked extends Notification
     public function toArray($notifiable)
     {
         return [
-            'user' => $this->user,
             'message' => $this->message
         ];
     }
@@ -60,7 +57,6 @@ class NewsLiked extends Notification
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-                'user' => $this->user,
                 'message' => $this->message
             ]);
     }

@@ -1,3 +1,24 @@
+.modal-body,
+.modal-body {
+    .modal-avatar {
+        text-align: center;
+        border-bottom: 1px solid $gray-lighter;
+        margin-bottom: 30px;
+        min-height: 140px;
+        h4 {
+            margin-bottom: 0;
+        }
+        a {
+            display: block;
+            margin-bottom: 20px;
+        }
+    }
+    .modal-padding {
+        padding: 0 20px;
+    }
+}
+
+
 .modal-open {
     overflow: inherit;
 }
@@ -7,49 +28,54 @@
     margin: auto;
     width: 40%;
     height: 100%;
-    -webkit-transform: translate3d(0%, 0, 0);
-        -ms-transform: translate3d(0%, 0, 0);
-         -o-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0);
 }
 
 .modal.left .modal-content,
 .modal.right .modal-content {
     height: 100%;
-    overflow-y: auto;
+    //overflow-y: auto;
 }
 
 .modal.left .modal-body,
 .modal.right .modal-body {
-    //padding: 15px 15px 80px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
 }
 
-/*Left*/
-.modal.left.fade .modal-dialog{
-    left: -35px;
-    -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
-       -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
-         -o-transition: opacity 0.3s linear, left 0.3s ease-out;
-            transition: opacity 0.3s linear, left 0.3s ease-out;
+.modal.left .modal-footer,
+.modal.right .modal-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 
-.modal.left.fade.in .modal-dialog{
+
+
+.modal.left.in .modal-dialog{
     left: 0;
 }
 
-/*Right*/
-.modal.right {
-    left: auto;
-}
-
-.modal.right.fade .modal-dialog {
-    right: -50px;
-    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
-       -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
-         -o-transition: opacity 0.3s linear, right 0.3s ease-out;
-            transition: opacity 0.3s linear, right 0.3s ease-out;
-}
-
-.modal.right.fade.in .modal-dialog {
+.modal.right.in .modal-dialog {
     right: 0;
+}
+
+
+.modal.sm .modal-dialog {
+    width: 30%;
+}
+
+.modal.md .modal-dialog {
+    width: 50%;
+}
+
+.modal.lg .modal-dialog {
+    width: 100%;
+}
+
+
+@media (max-width: 767px) {
+    .modal.sm .modal-dialog,
+    .modal.md .modal-dialog {
+        width: 100%;
+    }
 }

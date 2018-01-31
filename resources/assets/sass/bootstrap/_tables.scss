@@ -10,6 +10,24 @@
         }
     }
     margin-bottom: 0;
+
+    th {
+        text-transform: uppercase;
+    }
+    .media {
+        display: inline-block;
+    }
+    .media-left {
+        padding-right: 15px;
+    }
+    .media-body {
+        width: inherit;
+    }
+    .media-heading {
+        font-size: 16px;
+        margin-bottom: -5px;
+    }
+
     td:last-child .btn-group {
         opacity: 0;
     }
@@ -41,4 +59,14 @@
             }
         }
     }
+}
+
+.table-elevation {
+    background-color: $white;
+    border-radius: 2px;
+    @include box-shadow(0 1px 4px rgba(0,0,0,.3));
+}
+
+.pagination {
+    margin: 10px 0 0 0;
 }
