@@ -22,7 +22,7 @@ class QuoteController extends Controller
 
   public function all(Request $request)
   {
-    $query = Quote::query()->orderBy('created_at', 'desc');;
+    $query = Quote::query();
 
     if($request->name) {
         $query->where('name', 'LIKE', '%'.$request->name.'%');
@@ -45,7 +45,7 @@ class QuoteController extends Controller
     $quotesApprove = clone $query;
     $quotesSent = clone $query;
     $quotesRefuse = clone $query;
-    $quotes = $query->paginate(10);
+    $quotes = $query->orderBy('created_at', 'desc')->paginate(10);
     $quotes->load($this->relationships);
     return response()->json([
         'quotes' => $quotes,

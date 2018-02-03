@@ -38,7 +38,7 @@ class OpportunityController extends Controller
 
     public function all(Request $request)
     {
-        $query = Project::query()->orderBy('created_at', 'desc');
+        $query = Project::query();
         $query->where('status', 1);
         if($request->name) {
             $query->where('projects.name', 'LIKE', '%'.$request->name.'%');
@@ -67,7 +67,7 @@ class OpportunityController extends Controller
         $canceled = clone $query;        
         $new = clone $query;        
 
-        $opportunities = $query->paginate(10);
+        $opportunities = $query->orderBy('created_at', 'desc')->paginate(10);
         $opportunities->load($this->relationships);
         // return $opportunities;
         return response()->json([
