@@ -78,6 +78,9 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="pull-right">
+                                <p>Displaying <b>{{pagination.from}}</b> - <b>{{pagination.to}}</b> out of <b>{{pagination.total}}</b> records</p>
+                            </div>
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -162,17 +165,19 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <paginate
-                                :page-count="pagination.last_page"
-                                :margin-pages="2"
-                                :page-range="2"
-                                :initial-page="pagination.current_page - 1"
-                                :container-class="'ui pagination menu'"
-                                :page-link-class="'item'"
-                                :prev-link-class="'item'"
-                                :next-link-class="'item'"
-                                :click-handler="clickCallback">
-                            </paginate>
+                            <div class="pull-left">
+                                <paginate
+                                    :page-count="pagination.last_page"
+                                    :margin-pages="2"
+                                    :page-range="2"
+                                    :initial-page="pagination.current_page - 1"
+                                    :container-class="'ui pagination menu'"
+                                    :page-link-class="'item'"
+                                    :prev-link-class="'item'"
+                                    :next-link-class="'item'"
+                                    :click-handler="clickCallback">
+                                </paginate>
+                            </div>
                         </div>                        
                     </div>
                 </div>
@@ -221,6 +226,9 @@ export default {
             },
             pagination : {
                 current_page: 1,
+                total: '',
+                from: '',
+                to: '',
                 // last_page: 1
             },
             insights : {}
@@ -272,6 +280,9 @@ export default {
                     this.list.status = response.data;
                 });
             this.pagination.last_page = response.data.opportunities.last_page
+            this.pagination.total = response.data.opportunities.total
+            this.pagination.from = response.data.opportunities.from
+            this.pagination.to = response.data.opportunities.to
             this.opportunities = response.data.opportunities.data;
             this.insights.North = response.data.north
             this.insights.South = response.data.south

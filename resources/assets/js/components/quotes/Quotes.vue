@@ -120,6 +120,9 @@
               </div>
             </div>
             <div class="row">
+              <div class="pull-right">
+                  <p>Displaying <b>{{pagination.from}}</b> - <b>{{pagination.to}}</b> out of <b>{{pagination.total}}</b> records</p>
+              </div>
               <table class="table table-hover">
                 <thead>
                   <tr>
@@ -178,17 +181,19 @@
                   </tr>
                 </tbody>
               </table>
-              <paginate
-                :page-count="pagination.last_page"
-                :margin-pages="2"
-                :page-range="2"
-                :initial-page="pagination.current_page - 1"
-                :container-class="'ui pagination menu'"
-                :page-link-class="'item'"
-                :prev-link-class="'item'"
-                :next-link-class="'item'"
-                :click-handler="clickCallback">
-              </paginate>
+              <div class="pull-left">
+                  <paginate
+                    :page-count="pagination.last_page"
+                    :margin-pages="2"
+                    :page-range="2"
+                    :initial-page="pagination.current_page - 1"
+                    :container-class="'ui pagination menu'"
+                    :page-link-class="'item'"
+                    :prev-link-class="'item'"
+                    :next-link-class="'item'"
+                    :click-handler="clickCallback">
+                  </paginate>
+              </div>
             </div>
           </div>
         </div>
@@ -245,6 +250,9 @@ export default {
       },
       pagination : {
         current_page: 1,
+        total: '',
+        from: '',
+        to: '',
         // last_page: 1
       },
       insights : {}
@@ -309,6 +317,9 @@ export default {
       axios.get(`/quote/all?page=${page}${this.search ? '&name=' + this.search: ''}${this.sort.customer ? '&customer=' + this.sort.customer.id : ''}${this.sort.project ? '&project=' + this.sort.project.id : ''}${this.sort.status ? '&status=' + this.sort.status.id : ''}${this.sort.service ? '&service=' + this.sort.service.id : ''}`)
         .then(response => {
           this.pagination.last_page = response.data.quotes.last_page
+          this.pagination.total = response.data.quotes.total
+          this.pagination.from = response.data.quotes.from
+          this.pagination.to = response.data.quotes.to
           this.quotes = response.data.quotes.data
           this.insights.total = response.data.quotes.total
           this.insights.amountMXN = response.data.amountMXN
