@@ -8,7 +8,7 @@
                 <div class="col-md-2">
                     <div class="col-md-12 filters">
                         <h4 class="heading">Filters</h4>
-                        <a href="#" class="pull-right" @click.prevent="getAll">Search</a>
+                        <a href="#" class="pull-right" @click.prevent="search">Search</a>
                         <a href="#" class="pull-right" @click.prevent="clearFilters">Clear</a>
                         <div class="row">
                             <div class="card search col-xs-12">
@@ -301,6 +301,10 @@ export default {
                 area: [],
                 total: '',
             }
+            this.getAll()
+        },
+        search () {
+            this.current_page = 1
             this.getAll()
         }
     }

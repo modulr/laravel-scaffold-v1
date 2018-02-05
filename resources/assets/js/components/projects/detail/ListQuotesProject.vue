@@ -84,7 +84,7 @@
 
         <quotes-attachment :type="type" :quotes="quotes" :quote="quote" class="modal fade" id="myModalFile"></quotes-attachment>
         <create-invoice :project="project" :list="list" :invoices="invoices" :invoice="invoice" :quotes="quotes" class="modal right fade" id="modalAdd"></create-invoice>        
-        <!-- <quotes-invoice-list :invoices="invoices"></quotes-invoice-list> -->
+        <quote-invoice-list :invoices="invoices" class="modal fade" id="myModalInvoices"></quote-invoice-list>
     </div>
 </template>
 
@@ -258,6 +258,7 @@ export default {
         },
         viewInvoices (quote) {
             this.invoices = quote.invoices
+            $('#myModalInvoices').modal('show');
         }
     }
 }

@@ -28,7 +28,7 @@ class InvoiceController extends Controller
         'amount' => $request->amount,
         'description' => $request->description,          
         'name' => $request->name,
-        'basename' => $request->basename]);
+        'basename' => $request->basename])->load('quotes');
         
         foreach (explode(",", $request->quotes) as $id) {               
             DB::table('invoice_quote')->insert([

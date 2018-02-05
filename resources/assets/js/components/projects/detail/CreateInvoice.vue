@@ -98,7 +98,7 @@ export default {
         },
         addingParams (file, xhr, formData) {
             formData.append('amount', this.invoice.amount);
-            formData.append('currency', this.invoice.currency);
+            // formData.append('currency', this.invoice.currency);
             formData.append('description', this.invoice.description);
             let quotes = this.invoice.quotes.map(item => item.id)            
             formData.append('quotes', quotes);

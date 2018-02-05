@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade" id="myModalFile">
+  <div class="modal fade" id="myModalInvoices">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

@@ -13,7 +13,7 @@
                 <div class="col-md-2">
                     <div class="col-md-12 filters">
                         <h4 class="heading">Filters</h4>
-                        <a href="#" class="pull-right" @click.prevent="getAll">Search</a>
+                        <a href="#" class="pull-right" @click.prevent="search">Search</a>
                         <br>
                         <a href="#" class="pull-right" @click.prevent="clearFilters">Clear</a>
                         <div class="row">
@@ -330,6 +330,10 @@ export default {
                 status: [],
                 total: '',
             }
+            this.getAll()
+        },
+        search () {
+            this.current_page = 1
             this.getAll()
         }
     }
