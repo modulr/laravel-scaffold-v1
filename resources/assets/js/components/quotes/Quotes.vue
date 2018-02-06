@@ -13,6 +13,7 @@
           <div class="col-md-12 filters">
               <h4 class="heading">Filters</h4>
               <a href="#" class="pull-right" @click.prevent="searchQuotes">Search</a>
+              <br>
               <a href="#" class="pull-right" @click.prevent="clearFilters">Clear</a>
               <div class="row">
                 <div class="card search col-xs-12">
