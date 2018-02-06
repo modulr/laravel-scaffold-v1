@@ -13,17 +13,15 @@ class AutopartsListsTableSeeder extends Seeder
     {
         // Status
         DB::table('autopart_status')->insert([
-            ['name' => 'Activa'],
-            ['name' => 'Desactiva'],
-            ['name' => 'Separada'],
-            ['name' => 'Pendiente'],
-            ['name' => 'Vendida'],
+            ['name' => 'Available'],
+            ['name' => 'Not available'],
+            ['name' => 'Separated'],
+            ['name' => 'Sold'],
         ]);
         // Makes
         DB::table('autopart_list_makes')->insert([
             ['name' => 'BMW'],
             ['name' => 'Audi'],
-            ['name' => 'Mercedes'],
         ]);
         // Models
         DB::table('autopart_list_models')->insert([
