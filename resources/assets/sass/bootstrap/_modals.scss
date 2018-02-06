@@ -28,12 +28,16 @@
     margin: auto;
     width: 40%;
     height: 100%;
+    -webkit-transform: translate3d(0%, 0, 0);
+    -ms-transform: translate3d(0%, 0, 0);
+    -o-transform: translate3d(0%, 0, 0);
+    transform: translate3d(0%, 0, 0);
 }
 
 .modal.left .modal-content,
 .modal.right .modal-content {
     height: 100%;
-    //overflow-y: auto;
+    overflow-y: auto;
 }
 
 .modal.left .modal-body,
@@ -49,16 +53,44 @@
     width: 100%;
 }
 
-
-
-.modal.left.in .modal-dialog{
+/*Left*/
+.modal.left.in .modal-dialog {
     left: 0;
+}
+
+.modal.left.fade .modal-dialog {
+    left: -35px;
+    -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, left 0.3s ease-out;
+    transition: opacity 0.3s linear, left 0.3s ease-out;
+}
+
+.modal.left.fade.in .modal-dialog {
+    left: 0;
+}
+
+/*Right*/
+
+.modal.right {
+    left: auto;
+}
+
+.modal.right.fade .modal-dialog {
+    right: -50px;
+    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+    transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+
+.modal.right.fade.in .modal-dialog {
+    right: 0;
 }
 
 .modal.right.in .modal-dialog {
     right: 0;
 }
-
 
 .modal.sm .modal-dialog {
     width: 30%;
