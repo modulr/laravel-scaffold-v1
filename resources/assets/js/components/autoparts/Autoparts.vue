@@ -34,11 +34,11 @@
                             <h5 class="media-heading">{{item.name}}</h5>
                             <span>{{item.make.name}} - {{item.model.name}} - {{item.year.name}}<br></span>
                             <span class="lead">${{item.purchase_price}} / <strong>${{item.sale_price}}</strong></span>
-                            <span class="label label-default pull-right" :class="{
+                            <span class="label pull-right" :class="{
                                 'label-primary': item.status_id == 1,
-                                'label-warning': item.status_id == 4,
+                                'label-default': item.status_id == 2,
                                 'label-info': item.status_id == 3,
-                                'label-success': item.status_id == 5,
+                                'label-success': item.status_id == 4,
                                 }">{{item.status.name}}</span>
                         </div>
                     </div>
