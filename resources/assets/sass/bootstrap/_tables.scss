@@ -1,5 +1,7 @@
 .table {
     background-color: #ffffff;
+    display: block;
+    overflow-x: auto;
     thead {
         text-transform: uppercase;
         tr {
@@ -69,4 +71,10 @@
 
 .pagination {
     margin: 10px 0 0 0;
+}
+
+@media screen and (max-width: 768px) {
+    // .table {
+    //     white-space: nowrap;
+    // }
 }
