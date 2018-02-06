@@ -10,8 +10,7 @@ class Quote extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name', 'description', 'owner_id', 'designer_id', 'salesman_id', 'project_id', 'customer_id',
-                          'request_date','delivery_date','close_date','amount','status_id', 'service_id', 'currency_id'];
+    protected $fillable = ['name', 'description', 'owner_id', 'designer_id', 'salesman_id', 'project_id', 'customer_id', 'request_date', 'delivery_date', 'close_date', 'amount','status_id', 'service_id', 'currency_id'];
 
     public function designer()
     {
@@ -60,7 +59,7 @@ class Quote extends Model
 
     public function invoices() 
     {
-        return $this->belongsToMany(\App\Models\Invoices\Invoice::class);        
+        return $this->belongsToMany(\App\Models\Invoices\Invoice::class)->withPivot('amount');        
     }
 
 }

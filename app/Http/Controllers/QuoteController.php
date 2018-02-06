@@ -61,6 +61,7 @@ class QuoteController extends Controller
   public function show($id)
   {
       $q = Quote::with($this->relationships)->find($id);
+
       return $q;
   }
 
@@ -90,8 +91,9 @@ class QuoteController extends Controller
         'status_id' => 1,
         'service_id'=> $request->service,
         'currency_id' => $request->currency])->load($this->relationships);
-      return $quote;
-  }
+
+        return $quote;
+    }
 
   public function update(Request $request, $id)
   {
