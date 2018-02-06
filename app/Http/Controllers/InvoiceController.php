@@ -18,28 +18,46 @@ class InvoiceController extends Controller
         //     'description' => 'required'
         // ]);          
 
-        $upload = $this->upload($request->file);
-        $request->name = $request->file->getClientOriginalName();
-        $request->basename = $upload['basename'];
-        $request->extension = $upload['extension'];
+        // $upload = $this->upload($request->file);
+        // $request->name = $request->file->getClientOriginalName();
+        // $request->basename = $upload['basename'];
+        // $request->extension = $upload['extension'];
 
         $invoice = Invoice::create([
         'owner_id' => Auth::id(),
         'amount' => $request->amount,
         'description' => $request->description,          
-        'name' => $request->name,
-        'basename' => $request->basename])->load('quotes');
-        
-        foreach (explode(",", $request->quotes) as $id) {               
+        'name' => "dummy",
+        'basename' => "dummy"]);
+        // 'name' => $request->name,
+        // 'basename' => $request->basename]);
+                
+        foreach ($request->quotes as $quote) {                           
             DB::table('invoice_quote')->insert([
-                ['invoice_id' => $invoice->id, 'quote_id' => $id, 'amount' => 120.20]
+                ['invoice_id' => $invoice->id, 'quote_id' => $quote['id'], 'amount' => $quote['invoice_amount']]
             ]);
         }      
 
-        return $invoice;
+        return $invoice->load("quotes");
         // $data = $request->all();
 
         // return response()->json($data);
+    }
+
+    public function updateFile(Request $request)
+    {
+        // $upload = $this->upload($request->file);
+        // $request->name = $request->file->getClientOriginalName();
+        // $request->basename = $upload['basename'];
+        // $request->extension = $upload['extension'];
+        $q = Invoice::find($request->invoice_id);
+        // $q->name = $request->name;
+        // $q->basename = $request->basename;
+        // $q->save();
+        // return $request->invoice_id;
+        $data = $request->all();
+
+        return response()->json($data);
     }
 
     private function upload($file)

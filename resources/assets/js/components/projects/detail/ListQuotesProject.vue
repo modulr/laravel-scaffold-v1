@@ -29,6 +29,7 @@
                                     <th>Designer</th>
                                     <th>Salesman</th>
                                     <th>Amount</th>
+                                    <th>Invoiced</th>
                                     <th>Currency</th>
                                     <th>Request Date</th>
                                     <th>Delivery Date</th>
@@ -44,6 +45,7 @@
                                     <td> {{ quote.designer.name }} </td>
                                     <td> {{ quote.salesman.name }} </td>
                                     <td> {{ quote.amount | currency }} </td>
+                                    <td> {{ totalInvoices(quote) | currency }} </td>
                                     <td> {{ quote.currency.title }} </td>
                                     <td> {{ quote.request_date | date }} </td>
                                     <td> {{ quote.delivery_date | date }} </td>
@@ -245,6 +247,13 @@ export default {
                             self.error = error.response.data;
                         });
                 });
+        },
+        totalInvoices (quote) {
+            let total = 0.00
+            quote.invoices.forEach(item => {
+                total += parseFloat(item.pivot.amount)
+            })
+            return quote.amount - total            
         },
         clearFilters: function () {
             this.sort = {

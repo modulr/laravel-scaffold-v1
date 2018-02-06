@@ -23,6 +23,6 @@ class Invoice extends Model
 
     public function quotes() 
     {
-        return $this->belongsToMany(\App\Models\Quotes\Quote::class);
+        return $this->belongsToMany(\App\Models\Quotes\Quote::class)->withPivot('amount');
     }
 }

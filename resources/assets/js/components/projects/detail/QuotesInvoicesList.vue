@@ -13,6 +13,7 @@
                         <thead>
                             <th>Id</th>
                             <th>Name</th>
+                            <th>Amount</th>
                             <th></th>
                         </thead>
                         <tbody>
@@ -24,6 +25,7 @@
                                     {{a.description}}
                                 </a>
                             </td>
+                            <td>{{a.pivot.amount | currency}}</td>
                             <td>
                                 <a href="#">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
