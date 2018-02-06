@@ -1,0 +1,29 @@
+.multiselect {
+    &.multiselect--active {
+        z-index: 3;
+    }
+    .multiselect__select {
+        padding: 4px 0;
+        width: 10px;
+    }
+    .multiselect__tags {
+        border: none;
+        padding: 8px 20px 0 0;
+        .multiselect__input {
+            padding-bottom: 8px;
+        }
+    }
+
+    .multiselect__content-wrapper {
+        border-top: 1px solid #e8e8e8;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    &.multiselect--above {
+        .multiselect__content-wrapper {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom: 1px solid #e8e8e8;
+        }
+    }
+}

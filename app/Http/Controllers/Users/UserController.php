@@ -24,7 +24,6 @@ class UserController extends Controller
         $query = User::query();
 
         if($request->search) {
-            info($request->search);
             $query->where('name', 'LIKE', '%'.$request->search.'%');
         }
 

@@ -11,7 +11,7 @@
                     <div class="col-sm-8 text-right controls">
                         <a href="#" class="btn btn-link"
                             @click.prevent="showFilters">
-                            <i class="fa fa-sliders fa-lg" aria-hidden="true"></i>
+                            <i class="fa fa-sliders fa-lg" aria-hidden="true"></i> Filters
                         </a>
                         <a href="#" class="btn btn-success"
                             v-if="user.hasPermission['create-autoparts']"
@@ -27,13 +27,12 @@
                     <div class="media" v-for="(item, index) in autoparts.data" @click="editAutopart(item, index)">
                         <div class="media-left">
                             <img :src="item.images[0].url_thumbnail" v-if="item.images.length">
-                            <i class="fa fa-camera-retro fa-4x" v-else></i>
+                            <i class="fa fa-picture-o fa-5x" v-else></i>
                         </div>
                         <div class="media-body">
                             <small class="text-muted pull-right hidden-xs hidden-sm">{{item.created_at | moment("LLL")}}</small>
                             <h5 class="media-heading">{{item.name}}</h5>
-                            <span v-show="item.description">{{item.description}}<br></span>
-                            <small>{{item.make.name}} - {{item.model.name}} - {{item.year.name}}<br></small>
+                            <span>{{item.make.name}} - {{item.model.name}} - {{item.year.name}}<br></span>
                             <span class="lead">${{item.purchase_price}} / <strong>${{item.sale_price}}</strong></span>
                             <span class="label label-default pull-right" :class="{
                                 'label-primary': item.status_id == 1,
@@ -93,26 +92,30 @@
                                     </div>
                                 </div>
                                 <a href="#" class="btn-delete" @click.prevent="destroyImage(image, index)">
-                                    <i class="fa fa-times-circle"></i>
+                                    <span class="fa-stack">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                                    </span>
                                 </a>
                             </span>
-                            <vue-clip class="vue-clip-photo"
-                                      :options="vueClipOptions"
-                                      :on-sending="sendingImage"
-                                      :on-complete="completeImage"
-                                      v-if="user.hasPermission['create-autoparts']">
-                                <template slot="clip-uploader-action">
-                                    <div class="">
-                                        <div class="dz-message btn btn-link btn-upload">
-                                            <i class="fa fa-photo fa-lg" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-                                </template>
-                            </vue-clip>
                         </draggable>
+                        <vue-clip class="vue-clip-photo"
+                                  :options="vueClipOptions"
+                                  :on-sending="sendingImage"
+                                  :on-complete="completeImage"
+                                  v-if="user.hasPermission['create-autoparts']">
+                            <template slot="clip-uploader-action">
+                                <div class="">
+                                    <div class="dz-message btn btn-link btn-upload">
+                                        <i class="fa fa-photo fa-lg" aria-hidden="true"></i>
+                                        <span v-show="autopart.data.images.length == 0"> ADD PHOTOS</span>
+                                    </div>
+                                </div>
+                            </template>
+                        </vue-clip>
                         <hr>
                         <div class="form-group" :class="{'has-error': autopart.error.name}">
-                            <input type="text" class="form-control input-lg" placeholder="Write name Autopart"
+                            <input type="text" class="form-control input-lg" placeholder="Name autopart"
                                 v-model="autopart.data.name">
                             <span class="help-block" v-if="autopart.error.name">{{autopart.error.name[0]}}</span>
                         </div>
@@ -124,39 +127,48 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <div class="form-group" :class="{'has-error': autopart.error.make_id}">
-                                    <label>Make</label>
-                                    <select class="form-control text-capitalize"
-                                        v-model="autopart.data.make_id">
-                                        <option v-for="option in lists.makes" :value="option.id">
-                                            {{ option.name }}
-                                        </option>
-                                    </select>
+                                    <multiselect v-model="autopart.data.make" :options="lists.makes" track-by="id" label="name" placeholder="Make"></multiselect>
                                     <span class="help-block" v-if="autopart.error.make_id">{{autopart.error.make_id[0]}}</span>
                                 </div>
                             </div>
                             <div class="col-xs-4">
                                 <div class="form-group" :class="{'has-error': autopart.error.model_id}">
-                                    <label>Model</label>
-                                    <select class="form-control text-capitalize"
-                                        v-model="autopart.data.model_id">
-                                        <option v-for="option in lists.models" :value="option.id">
-                                            {{ option.name }}
-                                        </option>
-                                    </select>
+                                    <multiselect v-model="autopart.data.model"  :options="filteredModels" track-by="id" label="name" placeholder="Model"></multiselect>
                                     <span class="help-block" v-if="autopart.error.model_id">{{autopart.error.model_id[0]}}</span>
                                 </div>
                             </div>
                             <div class="col-xs-4">
                                 <div class="form-group" :class="{'has-error': autopart.error.year_id}">
-                                    <label>Year</label>
-                                    <select class="form-control text-capitalize"
-                                        v-model="autopart.data.year_id">
-                                        <option v-for="option in lists.years" :value="option.id">
-                                            {{ option.name }}
-                                        </option>
-                                    </select>
+                                    <multiselect v-model="autopart.data.year" :options="lists.years" track-by="id" label="name" placeholder="Year"></multiselect>
                                     <span class="help-block" v-if="autopart.error.year_id">{{autopart.error.year_id[0]}}</span>
                                 </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <fieldset>
+                                    <legend>Price</legend>
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <div class="form-group" :class="{'has-error': autopart.error.purchase_price}">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-usd fa-lg" aria-hidden="true"></i></span>
+                                                    <input type="number" class="form-control input-lg" placeholder="Purchase"
+                                                        v-model="autopart.data.purchase_price">
+                                                    <span class="help-block" v-if="autopart.error.purchase_price">{{autopart.error.purchase_price[0]}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <div class="form-group" :class="{'has-error': autopart.error.sale_price}">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-usd fa-lg" aria-hidden="true"></i></span>
+                                                    <input type="number" class="form-control input-lg" placeholder="Sale"
+                                                        v-model="autopart.data.sale_price">
+                                                    <span class="help-block" v-if="autopart.error.sale_price">{{autopart.error.sale_price[0]}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
                             </div>
                             <div class="col-xs-12">
                                 <div class="form-group" :class="{'has-error': autopart.error.status_id}">
@@ -170,41 +182,18 @@
                                     <span class="help-block" v-if="autopart.error.status_id">{{autopart.error.status_id[0]}}</span>
                                 </div>
                             </div>
-                        </div>
-                        <fieldset>
-                            <legend>Price</legend>
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <div class="form-group" :class="{'has-error': autopart.error.purchase_price}">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-usd fa-lg" aria-hidden="true"></i></span>
-                                            <input type="number" class="form-control" placeholder="Purchase price"
-                                                v-model="autopart.data.purchase_price">
-                                            <span class="help-block" v-if="autopart.error.purchase_price">{{autopart.error.purchase_price[0]}}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="form-group" :class="{'has-error': autopart.error.sale_price}">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-usd fa-lg" aria-hidden="true"></i></span>
-                                            <input type="number" class="form-control" placeholder="Sale price"
-                                                v-model="autopart.data.sale_price">
-                                            <span class="help-block" v-if="autopart.error.sale_price">{{autopart.error.sale_price[0]}}</span>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col-xs-12">
+                                <fieldset v-if="autopart.action == 'edit'">
+                                    <legend>Meta</legend>
+                                    <p class="text-muted"><small>Created at </small>{{autopart.data.created_at | moment('lll')}}, <small>by </small>{{autopart.data.creator.name}}</p>
+                                </fieldset>
                             </div>
-                        </fieldset>
-                        <fieldset v-if="autopart.action == 'edit'">
-                            <legend>Meta</legend>
-                            <p class="text-muted"><small>Created at </small>{{autopart.data.created_at | moment('lll')}}, <small>by </small>{{autopart.data.creator.name}}</p>
-                        </fieldset>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Modal Autopart -->
+        <!-- Modal Filters -->
         <div class="modal left sm" id="modalFilters">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -216,13 +205,28 @@
                         <div class="pull-right">
                             <button type="button" class="btn btn-link"
                                     v-if="user.hasPermission['read-autoparts']"
+                                    @click="clearFilters">Clear</button>
+                            <button type="button" class="btn btn-link"
+                                    v-if="user.hasPermission['read-autoparts']"
                                     @click="applyFilters">Apply</button>
                         </div>
                     </div>
                     <!-- Modal body -->
                     <div class="modal-body">
                         <p class="lead">Filters</p>
-                        Comming soon...
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <multiselect v-model="filters.make" :options="lists.makes" track-by="id" label="name" placeholder="Make"></multiselect>
+                                </div>
+                                <div class="form-group">
+                                    <multiselect v-model="filters.model" :options="filteredFiltersModels" track-by="id" label="name" placeholder="Model"></multiselect>
+                                </div>
+                                <div class="form-group">
+                                    <multiselect v-model="filters.year" :options="lists.years" track-by="id" label="name" placeholder="Year"></multiselect>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -236,20 +240,24 @@
     import VueClip from 'vue-clip';
     import draggable from 'vuedraggable'
     import {SnotifyService} from 'vue-snotify';
+    import Multiselect from 'vue-multiselect'
 
     export default {
         data() {
             return {
                 user: Laravel.user,
-                error: {},
-                search: null,
+                filters: {
+                    make: {},
+                    model: {},
+                    year: {},
+                },
                 swiperOption: {
                     loop: true,
                     pagination: '.swiper-pagination'
                 },
                 vueClipOptions: {
                     headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                    url: this.getVueClipUrl.bind(),
+                    url: this.setVueClipUrl.bind(),
                     paramName: 'file',
                     parallelUploads: 1,
                     maxFilesize: {
@@ -278,6 +286,9 @@
                 },
                 autopart: {
                     data: {
+                        make: {},
+                        model: {},
+                        year: {},
                         images: [],
                         creator: {}
                     },
@@ -286,14 +297,41 @@
                 },
             }
         },
-        mounted() {
-            this.getLists();
-            this.getAutoparts();
-        },
         components: {
             swiper,
             swiperSlide,
             draggable,
+            Multiselect,
+        },
+        mounted () {
+            this.getLists();
+            this.getAutoparts();
+        },
+        computed: {
+            filteredModels: function () {
+                var filteredArray = this.lists.models,
+                    makeId = this.autopart.data.make.id;
+                if(!makeId){
+                    return filteredArray;
+                }
+                filteredArray = filteredArray.filter(function(item){
+                    return String(item.make_id).indexOf(makeId) !== -1
+                })
+                return filteredArray;;
+            },
+            filteredFiltersModels: function () {
+                var filteredArray = this.lists.models;
+                if (this.filters.make) {
+                    var makeId = this.filters.make.id;
+                } else {
+                    return filteredArray;
+                }
+                this.filters.model = {}
+                filteredArray = filteredArray.filter(function(item){
+                    return String(item.make_id).indexOf(makeId) !== -1
+                })
+                return filteredArray;;
+            }
         },
         methods: {
             getAutoparts () {
@@ -324,23 +362,32 @@
             newAutopart () {
                 this.autopart = {
                     data: {
+                        make: {},
+                        model: {},
+                        year: {},
                         status_id: 1,
                         images: [],
-                        creator: {}
+                        creator: {},
                     },
                     action: 'new',
                     error: {}
                 };
-                this.getVueClipUrl();
+                this.setVueClipUrl();
                 $('#modalAutopart').modal('show');
             },
             storeAutopart (e) {
                 var btn = $(e.target).button('loading')
+                this.autopart.data.make_id = this.autopart.data.make ? this.autopart.data.make.id : null;
+                this.autopart.data.model_id = this.autopart.data.model ? this.autopart.data.model.id : null;
+                this.autopart.data.year_id = this.autopart.data.year ? this.autopart.data.year.id : null;
                 axios.post('/api/autoparts/store', this.autopart.data)
                 .then(response => {
                     this.autoparts.data.unshift(response.data);
                     this.autopart = {
                         data: {
+                            make: {},
+                            model: {},
+                            year: {},
                             images: [],
                             creator: {}
                         },
@@ -362,7 +409,7 @@
                     this.autopart.data.index = index;
                     this.autopart.action = 'edit';
                     this.autopart.error = {};
-                    this.getVueClipUrl();
+                    this.setVueClipUrl();
                     $('#modalAutopart').modal('show')
                 })
                 .catch(error => {
@@ -371,11 +418,17 @@
             },
             updateAutopart (e) {
                 var btn = $(e.target).button('loading')
+                this.autopart.data.make_id = this.autopart.data.make ? this.autopart.data.make.id : null;
+                this.autopart.data.model_id = this.autopart.data.model ? this.autopart.data.model.id : null;
+                this.autopart.data.year_id = this.autopart.data.year ? this.autopart.data.year.id : null;
                 axios.put('/api/autoparts/update/'+this.autopart.data.id, this.autopart.data)
                 .then(response => {
                     this.autoparts.data[this.autopart.data.index] = response.data;
                     this.autopart = {
                         data: {
+                            make: {},
+                            model: {},
+                            year: {},
                             images: [],
                             creator: {}
                         },
@@ -412,6 +465,17 @@
                             timer: 1000,
                             showConfirmButton: false
                         });
+                        this.autopart = {
+                            data: {
+                                make: {},
+                                model: {},
+                                year: {},
+                                images: [],
+                                creator: {}
+                            },
+                            action: 'new',
+                            error: {}
+                        };
                         $('#modalAutopart').modal('hide');
                     })
                     .catch(error => {
@@ -420,7 +484,7 @@
                 });
             },
 
-            getVueClipUrl: function() {
+            setVueClipUrl: function() {
                 if (this.autopart.action == 'new') {
                     return '/api/autoparts/images/upload/temp';
                 } else {
@@ -481,12 +545,26 @@
             },
 
             showFilters () {
-                $('#modalFilters').modal('show');
+                $('#modalFilters').modal('show')
             },
-            applyFilters () {
-
+            applyFilters (e) {
+                var btn = $(e.target).button('loading')
+                axios.post('/api/autoparts/filter', this.filters)
+                .then(response => {
+                    this.autoparts = response.data
+                    var btn = $(e.target).button('reset')
+                    $('#modalFilters').modal('hide')
+                });
+            },
+            clearFilters: function() {
+                this.filters = {
+                    make: {},
+                    model: {},
+                    year: {},
+                },
+                this.getAutoparts()
+                $('#modalFilters').modal('hide')
             }
-
         }
     }
 </script>

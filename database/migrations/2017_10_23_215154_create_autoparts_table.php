@@ -24,6 +24,8 @@ class CreateAutopartsTable extends Migration
         Schema::create('autopart_list_models', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->integer('make_id')->unsigned();
+            $table->foreign('make_id')->references('id')->on('autopart_list_makes');
             $table->softDeletes();
         });
 

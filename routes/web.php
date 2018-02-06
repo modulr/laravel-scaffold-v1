@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
         });
         Route::group(['prefix' => 'api/autoparts'], function() {
             Route::get('/all', 'AutopartController@all')->middleware('permission:read-autoparts');
+            Route::post('/filter', 'AutopartController@filter')->middleware('permission:read-autoparts');
             Route::get('/show/{id}', 'AutopartController@show')->middleware('permission:read-autoparts');
             Route::post('/store', 'AutopartController@store')->middleware('permission:create-autoparts');
             Route::put('/update/{id}', 'AutopartController@update')->middleware('permission:update-autoparts');

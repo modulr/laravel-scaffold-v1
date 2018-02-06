@@ -21,7 +21,30 @@ class AutopartController extends Controller
                             $query->orderBy('order', 'asc');
                         }])
                         ->orderBy('id', 'desc')
-                        ->paginate(20);
+                        ->paginate(50);
+    }
+
+    public function filter(Request $request)
+    {
+        $query = Autopart::query();
+
+        if ($request->make)
+            $query->where('make_id', $request->make['id']);
+
+        if ($request->model)
+            $query->where('model_id', $request->model['id']);
+
+        if ($request->year)
+            $query->where('year_id', $request->year['id']);
+
+        $autoparts = $query->orderBy('id', 'desc')
+                        ->paginate(50);
+
+        $autoparts->load(['make', 'model', 'year', 'status', 'images' => function ($query) {
+                            $query->orderBy('order', 'asc');
+                        }]);
+
+        return $autoparts;
     }
 
     public function show($id)
