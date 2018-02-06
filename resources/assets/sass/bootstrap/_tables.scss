@@ -1,7 +1,5 @@
 .table {
     background-color: #ffffff;
-    display: block;
-    overflow-x: auto;
     thead {
         text-transform: uppercase;
         tr {
@@ -61,6 +59,11 @@
             }
         }
     }
+}
+
+.bigger-table {
+    display: block;
+    overflow-x: auto;
 }
 
 .table-elevation {

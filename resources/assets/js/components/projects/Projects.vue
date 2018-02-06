@@ -70,7 +70,7 @@
                             <div class="pull-right">
                                 <p>Displaying <b>{{pagination.from}}</b> - <b>{{pagination.to}}</b> out of <b>{{pagination.total}}</b> records</p>
                             </div>
-                            <table class="table table-hover">
+                            <table class="table table-hover bigger-table">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
