@@ -21,39 +21,18 @@
                                     <span>Dashboard</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'news'}" v-if="user.hasPermission['read-news']">
-                                <a href="/news">
-                                    <i class="mdi mdi-whatshot mdi-3x"></i>
+                            <li :class="{'active': activeLink == 'platillos'}" v-if="user.hasPermission['read-news']">
+                                <a href="/platillos">
+                                    <i class="mdi mdi-local-dining mdi-3x"></i>
                                     <br>
-                                    <span>News</span>
+                                    <span>Quiero comer</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'tasks'}" v-if="user.hasPermission['read-tasks']">
-                                <a href="/tasks">
-                                    <i class="mdi mdi-assignment mdi-3x"></i>
+                            <li :class="{'active': activeLink == 'mis_platillos'}" v-if="user.hasPermission['read-tasks']">
+                                <a href="/mis_platillos">
+                                    <i class="mdi mdi-room-service mdi-3x"></i>
                                     <br>
-                                    <span>Tasks</span>
-                                </a>
-                            </li>
-                            <li :class="{'active': activeLink == 'files'}" v-if="user.hasPermission['read-files']">
-                                <a href="/files">
-                                    <i class="mdi mdi-folder mdi-3x"></i>
-                                    <br>
-                                    <span>Files</span>
-                                </a>
-                            </li>
-                            <li :class="{'active': activeLink == 'contacts'}" v-if="user.hasPermission['read-contacts']">
-                                <a href="/contacts">
-                                    <i class="mdi mdi-contacts mdi-3x"></i>
-                                    <br>
-                                    <span>Contacts</span>
-                                </a>
-                            </li>
-                            <li :class="{'active': activeLink == 'events'}" v-if="user.hasPermission['read-events']">
-                                <a href="/events">
-                                    <i class="mdi mdi-event mdi-3x"></i>
-                                    <br>
-                                    <span>Events</span>
+                                    <span>Quiero cocinar</span>
                                 </a>
                             </li>
                             <hr>
