@@ -24,7 +24,7 @@
                 </div>
             </div>
             <!-- List Events -->
-            <div class="row">
+            <div class="row row-events">
                 <div class="col-xs-12 col-sm-4 col-md-3" v-if="events.length" v-for="(item, index) in events">
                     <div class="panel card">
                         <div class="panel-heading">

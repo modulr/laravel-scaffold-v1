@@ -83,7 +83,7 @@ class EventController extends Controller
             }
         }
 
-        return Event::with(['owner', 'images' => function ($query) {
+        return Event::with(['owner', 'attendings', 'images' => function ($query) {
                             $query->orderBy('order', 'asc');
                         }])->find($event->id);
     }
