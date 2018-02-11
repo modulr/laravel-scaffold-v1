@@ -1,8 +1,7 @@
 <template lang="html">
     <div class="project">
-        <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
-        <!-- Actions Buttons -->
-        <div class="project-content">
+        <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>        
+        <div class="project-content">            
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{project.name}}</h3>
@@ -67,7 +66,7 @@ export default {
     data() {
         return {
             loading: false,
-            error: {},
+            error: {}            
         }
     },
     props: ['project'],

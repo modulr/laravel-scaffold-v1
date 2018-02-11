@@ -4,11 +4,16 @@
         <div class="wrapper" v-if="!loading">
             <div class="row">                
                 <div class="col-sm-12">
+                    <a href="#" class="btn btn-default pull-right" @click.prevent="toggleLayout">
+                        <i class="fa fa-lg" aria-hidden="true"
+                            :class="{'fa-list': layout == 'list', 'fa-th-large': layout == 'grid'}">
+                        </i>
+                    </a>
                     <a href="#" class="btn btn-primary pull-right" @click.prevent="add">
                         <i class="mdi mdi-person-add mdi-lg"></i> New Invoice
                     </a>
                 </div>                
-            </div>
+            </div>            
             <br>
             <!-- List -->
             <div class="row">
@@ -20,7 +25,7 @@
                 </div>
                 <div class="col-md-12" v-if="quotes.length != 0">
                     <div class="col-md-12">
-                        <table class="table table-hover">
+                        <table class="table table-hover" v-if="layout == 'list'">
                             <thead>
                                 <tr>
                                     <th>Id</th>
@@ -78,6 +83,85 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div v-else>
+                            <div class="panel panel-default"  v-for="(quote, index) in quotes">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">{{quote.name}}</h3>                                    
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <dl>
+                                                <dd>Designer</dd>
+                                                <dt>
+                                                    <a :href="'/profile/'+quote.designer.id">{{quote.designer.name}}</a>
+                                                </dt>
+                                            </dl>
+                                            <dl>
+                                                <dd>Request Date</dd>
+                                                <dt>{{quote.request_date | date}}</dt>
+                                            </dl>
+                                            <dl>
+                                                <dd>Delivery Date</dd>
+                                                <dt>{{quote.delivery_date | date}}</dt>
+                                            </dl>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <dl>
+                                                <dd>Salesman</dd>
+                                                <dt>
+                                                    <a :href="'/profile/'+quote.salesman.id">{{quote.salesman.name}}</a>
+                                                </dt>
+                                            </dl>
+                                            <dl>
+                                                <dd>Amount</dd>
+                                                <dt>
+                                                    {{ quote.amount | currency }}
+                                                </dt>
+                                            </dl>
+                                            <dl>
+                                                <dd>Status</dd>
+                                                <dt>{{quote.status.title}}</dt>
+                                            </dl>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <dl>
+                                                <dd>Invoices</dd>
+                                                <dt>{{quote.invoices.length}}</dt>
+                                            </dl>
+                                            <dl>
+                                                <dd>Invoiced</dd>
+                                                <dt>{{ totalInvoices(quote) | currency }}</dt>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <th>Id</th>
+                                                    <th>Name</th>
+                                                    <th>Amount</th> 
+                                                    <th>Percentage</th>                                                   
+                                                </thead>
+                                                <tbody>
+                                                <tr v-for="(invoice,index) in quote.invoices">
+                                                    <td>{{ index + 1}}</td>
+                                                    <td>
+                                                        {{invoice.description}}
+                                                    </td>
+                                                    <td>{{invoice.pivot.amount | currency}}</td>
+                                                    <td>
+                                                        {{ percentage(quote.amount, invoice.pivot.amount) }} %
+                                                    </td>                                                    
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 </div>
@@ -126,6 +210,7 @@ export default {
             },
             error: {},
             type: '2',
+            layout: 'list',
         }
     },
     components: {
@@ -253,7 +338,11 @@ export default {
             quote.invoices.forEach(item => {
                 total += parseFloat(item.pivot.amount)
             })
-            return quote.amount - total            
+            return total            
+        },
+        percentage (quoteAmount, invoiceAmount) {
+            let percentage = (invoiceAmount * 100) / quoteAmount
+            return percentage.toFixed(2)
         },
         clearFilters: function () {
             this.sort = {
@@ -268,6 +357,9 @@ export default {
         viewInvoices (quote) {
             this.invoices = quote.invoices
             $('#myModalInvoices').modal('show');
+        },
+        toggleLayout () {
+            this.layout == 'list' ? this.layout = 'grid' : this.layout = 'list';            
         }
     }
 }
