@@ -40,6 +40,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/' , function () {
                 return view('autoparts.autoparts');
             })->middleware('permission:read-autoparts');
+            Route::get('/config' , function () {
+                return view('autoparts.config');
+            })->middleware('permission:create-autoparts');
             Route::get('/{id}' , function ($id) {
                 return view('autoparts.autopart', ['id' => $id]);
             })->middleware('permission:read-autoparts');
@@ -59,8 +62,18 @@ Route::middleware('auth')->group(function () {
             // Lists
             Route::group(['prefix' => 'list'], function() {
                 Route::get('/makes', 'AutopartController@makes')->middleware('permission:read-autoparts');
+                Route::get('/makesFull', 'AutopartController@makesFull')->middleware('permission:read-autoparts');
+                Route::post('/makes/store', 'AutopartController@storeMake')->middleware('permission:create-autoparts');
+                Route::delete('/makes/destroy/{id}', 'AutopartController@destroyMake')->middleware('permission:delete-autoparts');
+                Route::put('/makes/order', 'AutopartController@orderMake')->middleware('permission:update-autoparts');
                 Route::get('/models', 'AutopartController@models')->middleware('permission:read-autoparts');
+                Route::post('/models/store', 'AutopartController@storeModel')->middleware('permission:create-autoparts');
+                Route::delete('/models/destroy/{id}', 'AutopartController@destroyModel')->middleware('permission:delete-autoparts');
+                Route::put('/models/order', 'AutopartController@orderModel')->middleware('permission:update-autoparts');
                 Route::get('/years', 'AutopartController@years')->middleware('permission:read-autoparts');
+                Route::post('/years/store', 'AutopartController@storeYear')->middleware('permission:create-autoparts');
+                Route::delete('/years/destroy/{id}', 'AutopartController@destroyYear')->middleware('permission:delete-autoparts');
+                Route::put('/years/order', 'AutopartController@orderYear')->middleware('permission:update-autoparts');
                 Route::get('/status', 'AutopartController@status')->middleware('permission:read-autoparts');
             });
         });

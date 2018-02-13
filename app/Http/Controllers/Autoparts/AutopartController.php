@@ -129,7 +129,7 @@ class AutopartController extends Controller
         return Autopart::destroy($id);
     }
 
-
+    // Images
     public function uploadImageTemp(Request $request)
     {
         $this->validate($request, [
@@ -173,6 +173,7 @@ class AutopartController extends Controller
         return AutopartImage::destroy($id);
     }
 
+    // Lists
     public function status()
     {
         return AutopartStatus::get();
@@ -180,16 +181,116 @@ class AutopartController extends Controller
 
     public function makes()
     {
-        return AutopartListMakes::get();
+        return AutopartListMakes::orderBy('order')->get();
+    }
+
+    public function makesFull()
+    {
+        return AutopartListMakes::with(['models' => function ($query) {
+            $query->orderBy('order');
+        }])->orderBy('order')->get();
     }
 
     public function models()
     {
-        return AutopartListModels::get();
+        return AutopartListModels::orderBy('order')->get();
     }
 
     public function years()
     {
-        return AutopartListYears::get();
+        return AutopartListYears::orderBy('order', 'desc')->get();
+    }
+
+    public function storeMake(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string'
+        ]);
+
+        $maxOrder = AutopartListMakes::max('order') + 1;
+
+        return AutopartListMakes::create([
+            'name' => $request->name,
+            'order' => $maxOrder
+        ]);
+    }
+
+    public function destroyMake($id)
+    {
+        return AutopartListMakes::destroy($id);
+    }
+
+    public function orderMake(Request $request)
+    {
+        $order = 0;
+        foreach ($request->all() as $key => $v) {
+            $order++;
+            AutopartListMakes::where('id', $v['id'])
+                            ->update(['order' => $order]);
+        }
+        return $order;
+    }
+
+    public function storeModel(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string',
+            'makeId' => 'required|integer'
+        ]);
+
+        $maxOrder = AutopartListModels::max('order') + 1;
+
+        return AutopartListModels::create([
+            'name' => $request->name,
+            'make_id' => $request->makeId,
+            'order' => $maxOrder
+        ]);
+    }
+
+    public function destroyModel($id)
+    {
+        return AutopartListModels::destroy($id);
+    }
+
+    public function orderModel(Request $request)
+    {
+        $order = 0;
+        foreach ($request->all() as $key => $v) {
+            $order++;
+            AutopartListModels::where('id', $v['id'])
+                            ->update(['order' => $order]);
+        }
+        return $order;
+    }
+
+    public function storeYear(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string'
+        ]);
+
+        $maxOrder = AutopartListYears::max('order') + 1;
+
+        return AutopartListYears::create([
+            'name' => $request->name,
+            'order' => $maxOrder
+        ]);
+    }
+
+    public function destroyYear($id)
+    {
+        return AutopartListYears::destroy($id);
+    }
+
+    public function orderYear(Request $request)
+    {
+        $order = AutopartListYears::count() + 1;
+        foreach ($request->all() as $key => $v) {
+            $order--;
+            AutopartListYears::where('id', $v['id'])
+                            ->update(['order' => $order]);
+        }
+
+        return $order;
     }
 }

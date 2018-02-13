@@ -17,6 +17,11 @@ class CreateAutopartsListsTable extends Migration
         Schema::create('autopart_list_makes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->integer('order')->comment = "Order show the makes";
+            $table->unsignedInteger('created_by')->nullable()->default(null);
+            $table->unsignedInteger('updated_by')->nullable()->default(null);
+            $table->unsignedInteger('deleted_by')->nullable()->default(null);
+            $table->timestamps();
             $table->softDeletes();
         });
 
@@ -26,6 +31,11 @@ class CreateAutopartsListsTable extends Migration
             $table->string('name');
             $table->integer('make_id')->unsigned();
             $table->foreign('make_id')->references('id')->on('autopart_list_makes');
+            $table->integer('order')->comment = "Order show the models";
+            $table->unsignedInteger('created_by')->nullable()->default(null);
+            $table->unsignedInteger('updated_by')->nullable()->default(null);
+            $table->unsignedInteger('deleted_by')->nullable()->default(null);
+            $table->timestamps();
             $table->softDeletes();
         });
 
@@ -33,6 +43,11 @@ class CreateAutopartsListsTable extends Migration
         Schema::create('autopart_list_years', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->integer('order')->comment = "Order show the years";
+            $table->unsignedInteger('created_by')->nullable()->default(null);
+            $table->unsignedInteger('updated_by')->nullable()->default(null);
+            $table->unsignedInteger('deleted_by')->nullable()->default(null);
+            $table->timestamps();
             $table->softDeletes();
         });
 

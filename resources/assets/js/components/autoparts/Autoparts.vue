@@ -9,6 +9,9 @@
                         <!-- <input type="text" class="form-control" placeholder="Search" v-model="search"> -->
                     </div>
                     <div class="col-sm-8 text-right controls">
+                        <a href="/autoparts/config" class="btn btn-link">
+                            <i class="fa fa-cog fa-lg" aria-hidden="true"></i> Config
+                        </a>
                         <a href="#" class="btn btn-link"
                             @click.prevent="showFilters">
                             <i class="fa fa-sliders fa-lg" aria-hidden="true"></i> Filters
@@ -127,19 +130,19 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <div class="form-group" :class="{'has-error': autopart.error.make_id}">
-                                    <multiselect v-model="autopart.data.make" :options="lists.makes" track-by="id" label="name" placeholder="Make"></multiselect>
+                                    <multiselect v-model="autopart.data.make" :options="lists.makes" track-by="id" label="name" selectLabel="" placeholder="Make"></multiselect>
                                     <span class="help-block" v-if="autopart.error.make_id">{{autopart.error.make_id[0]}}</span>
                                 </div>
                             </div>
                             <div class="col-xs-4">
                                 <div class="form-group" :class="{'has-error': autopart.error.model_id}">
-                                    <multiselect v-model="autopart.data.model"  :options="filteredModels" track-by="id" label="name" placeholder="Model"></multiselect>
+                                    <multiselect v-model="autopart.data.model"  :options="filteredModels" track-by="id" label="name" selectLabel="" placeholder="Model"></multiselect>
                                     <span class="help-block" v-if="autopart.error.model_id">{{autopart.error.model_id[0]}}</span>
                                 </div>
                             </div>
                             <div class="col-xs-4">
                                 <div class="form-group" :class="{'has-error': autopart.error.year_id}">
-                                    <multiselect v-model="autopart.data.year" :options="lists.years" track-by="id" label="name" placeholder="Year"></multiselect>
+                                    <multiselect v-model="autopart.data.year" :options="lists.years" track-by="id" label="name" selectLabel="" placeholder="Year"></multiselect>
                                     <span class="help-block" v-if="autopart.error.year_id">{{autopart.error.year_id[0]}}</span>
                                 </div>
                             </div>
@@ -217,13 +220,13 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="form-group">
-                                    <multiselect v-model="filters.make" :options="lists.makes" track-by="id" label="name" placeholder="Make"></multiselect>
+                                    <multiselect v-model="filters.make" :options="lists.makes" track-by="id" label="name" selectLabel="" placeholder="Make"></multiselect>
                                 </div>
                                 <div class="form-group">
-                                    <multiselect v-model="filters.model" :options="filteredFiltersModels" track-by="id" label="name" placeholder="Model"></multiselect>
+                                    <multiselect v-model="filters.model" :options="filteredFiltersModels" track-by="id" label="name" selectLabel="" placeholder="Model"></multiselect>
                                 </div>
                                 <div class="form-group">
-                                    <multiselect v-model="filters.year" :options="lists.years" track-by="id" label="name" placeholder="Year"></multiselect>
+                                    <multiselect v-model="filters.year" :options="lists.years" track-by="id" label="name" selectLabel="" placeholder="Year"></multiselect>
                                 </div>
                             </div>
                         </div>

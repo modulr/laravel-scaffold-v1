@@ -16,7 +16,6 @@
         }
     }
 
-
     .modal {
         .swiper-container {
             // height: 200px;
@@ -62,6 +61,17 @@
                         border-radius: 0;
                     }
                 }
+            }
+        }
+    }
+
+    &.config {
+        .list-group {
+            .mdi-more-vert {
+                cursor: move;
+            }
+            .fa-chevron-down {
+                margin-left: 20px;
             }
         }
     }
