@@ -3,7 +3,7 @@
         <!-- Container -->
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-sm-7">
                     <h4>Makes & Models Lists</h4>
                     <hr>
                     <div class="form-group">
@@ -14,43 +14,41 @@
                             </span>
                         </div>
                     </div>
-                    <ul class="list-group">
-                        <draggable v-model="lists.makes" @end="updateMakesOrder">
-                            <li class="list-group-item" v-for="(make, index) in lists.makes" :key="make.id">
-                                <a href="#" class="pull-right text-muted" data-toggle="collapse" aria-expanded="false" :data-target="'#collapse'+make.id">
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                                <a href="#" class="pull-right" @click.prevent="destroyMake(make, index)">
-                                    <i class="fa fa-trash-o"></i>
-                                </a>
-                                <i class="mdi mdi-more-vert"></i>
-                                {{make.name}}
-                                <ul class="list-group collapse" :id="'collapse'+make.id">
-                                    <li>
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="Model" v-model="make.newModel">
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-default" type="button" @click="storeModel($event, make)">Add</button>
-                                                </span>
-                                            </div>
+                    <draggable element="ul" class="list-group" id="accordion" v-model="lists.makes" @end="updateMakesOrder">
+                        <li class="list-group-item" v-for="(make, index) in lists.makes" :key="make.id">
+                            <a class="pull-right text-muted" data-toggle="collapse" data-parent="#accordion" :href="'#collapse'+make.id">
+                                <i class="fa fa-chevron-down"></i>
+                            </a>
+                            <a href="#" class="pull-right" @click.prevent="destroyMake(make, index)">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                            <i class="mdi mdi-more-vert"></i>
+                            {{make.name}}
+                            <ul class="list-group collapse" :id="'collapse'+make.id">
+                                <li>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Model" v-model="make.newModel">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button" @click="storeModel($event, make)">Add</button>
+                                            </span>
                                         </div>
+                                    </div>
+                                </li>
+                                <draggable v-model="make.models" @end="updateModelsOrder(make.id)">
+                                    <li class="list-group-item" v-for="(model, index) in make.models" :key="model.id">
+                                        <a href="#" class="pull-right" @click.prevent="destroyModel(model, index)">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                        <i class="mdi mdi-more-vert"></i>
+                                        {{model.name}}
                                     </li>
-                                    <draggable v-model="make.models" @end="updateModelsOrder(make.id)">
-                                        <li class="list-group-item" v-for="(model, index) in make.models" :key="model.id">
-                                            <a href="#" class="pull-right" @click.prevent="destroyModel(model, index)">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                            <i class="mdi mdi-more-vert"></i>
-                                            {{model.name}}
-                                        </li>
-                                    </draggable>
-                                </ul>
-                            </li>
-                        </draggable>
-                    </ul>
+                                </draggable>
+                            </ul>
+                        </li>
+                    </draggable>
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                     <h4>Years List</h4>
                     <hr>
                     <div class="form-group">
@@ -61,17 +59,15 @@
                             </span>
                         </div>
                     </div>
-                    <ul class="list-group">
-                        <draggable v-model="lists.years" @end="updateYearsOrder">
-                            <li class="list-group-item" v-for="(year, index) in lists.years"  :key="year.id">
-                                <a href="#" class="pull-right" @click.prevent="destroyYear(year, index)">
-                                    <i class="fa fa-trash-o"></i>
-                                </a>
-                                <i class="mdi mdi-more-vert"></i>
-                                {{year.name}}
-                            </li>
-                        </draggable>
-                    </ul>
+                    <draggable element="ul" class="list-group" v-model="lists.years" @end="updateYearsOrder">
+                        <li class="list-group-item" v-for="(year, index) in lists.years"  :key="year.id">
+                            <a href="#" class="pull-right" @click.prevent="destroyYear(year, index)">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                            <i class="mdi mdi-more-vert"></i>
+                            {{year.name}}
+                        </li>
+                    </draggable>
                 </div>
             </div>
         </div>
