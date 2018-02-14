@@ -67,12 +67,18 @@
 
     &.config {
         ul.list-group {
-            .mdi-more-vert {
-                cursor: move;
-                margin-right: 10px;
-            }
-            .fa-chevron-down {
-                margin-left: 20px;
+            .list-group-item {
+                padding-left: 35px;
+                .handle {
+                    position: absolute;
+                    top:0;
+                    left:0;
+                    padding: 15px 14px;
+                    cursor: move;
+                }
+                .fa-chevron-down {
+                    margin-left: 20px;
+                }
             }
         }
     }

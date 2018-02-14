@@ -10,7 +10,7 @@
                         <input type="text" class="form-control" placeholder="Make" v-model="newMake.name" @keyup.enter="storeMake">
                         <span class="help-block" v-if="newMake.error.name">{{newMake.error.name[0]}}</span>
                     </div>
-                    <draggable class="list-group" id="accordion" v-model="lists.makes" element="ul" :options="{handle:'.mdi-more-vert'}" @end="updateMakesOrder">
+                    <draggable class="list-group" id="accordion" v-model="lists.makes" element="ul" :options="{handle:'.handle'}" @end="updateMakesOrder">
                         <li class="list-group-item" v-for="(make, index) in lists.makes" :key="make.id">
                             <a class="pull-right text-muted" data-toggle="collapse" data-parent="#accordion" :href="'#collapse'+make.id">
                                 <i class="fa fa-chevron-down"></i>
@@ -18,7 +18,7 @@
                             <a href="#" class="text-muted pull-right" @click.prevent="destroyMake(make, index)">
                                 <i class="fa fa-trash-o"></i>
                             </a>
-                            <i class="mdi mdi-more-vert"></i>
+                            <span class="handle">::</span>
                             {{make.name}} <small>({{make.models.length}})</small>
                             <ul class="list-group collapse" :id="'collapse'+make.id">
                                 <hr>
@@ -26,12 +26,12 @@
                                     <input type="text" class="form-control" placeholder="Model" v-model="make.newModel" @keyup.enter="storeModel(make)">
                                     <span class="help-block" v-if="make.error">{{make.error.name[0]}}</span>
                                 </div>
-                                <draggable v-model="make.models" :options="{handle:'.mdi-more-vert'}" @end="updateModelsOrder(make.id)">
+                                <draggable v-model="make.models" :options="{handle:'.handle'}" @end="updateModelsOrder(make.id)">
                                     <li class="list-group-item" v-for="(model, index) in make.models" :key="model.id">
                                         <a href="#" class="text-muted pull-right" @click.prevent="destroyModel(model, index)">
                                             <i class="fa fa-trash-o"></i>
                                         </a>
-                                        <i class="mdi mdi-more-vert"></i>
+                                        <span class="handle">::</span>
                                         {{model.name}}
                                     </li>
                                 </draggable>
@@ -46,12 +46,12 @@
                         <input type="text" class="form-control" placeholder="Year" v-model="newYear.name" @keyup.enter="storeYear">
                         <span class="help-block" v-if="newYear.error.name">{{newYear.error.name[0]}}</span>
                     </div>
-                    <draggable element="ul" class="list-group" v-model="lists.years" :options="{handle:'.mdi-more-vert'}" @end="updateYearsOrder">
+                    <draggable element="ul" class="list-group" v-model="lists.years" :options="{handle:'.handle'}" @end="updateYearsOrder">
                         <li class="list-group-item" v-for="(year, index) in lists.years"  :key="year.id">
                             <a href="#" class="text-muted pull-right" @click.prevent="destroyYear(year, index)">
                                 <i class="fa fa-trash-o"></i>
                             </a>
-                            <i class="mdi mdi-more-vert"></i>
+                            <span class="handle">::</span>
                             {{year.name}}
                         </li>
                     </draggable>
