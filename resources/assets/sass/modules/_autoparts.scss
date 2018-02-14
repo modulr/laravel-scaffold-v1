@@ -66,9 +66,10 @@
     }
 
     &.config {
-        .list-group {
+        ul.list-group {
             .mdi-more-vert {
                 cursor: move;
+                margin-right: 10px;
             }
             .fa-chevron-down {
                 margin-left: 20px;

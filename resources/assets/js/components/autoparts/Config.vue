@@ -6,38 +6,29 @@
                 <div class="col-sm-7">
                     <h4>Makes & Models Lists</h4>
                     <hr>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Make" v-model="newMake.data.name">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" @click="storeMake">Add</button>
-                            </span>
-                        </div>
+                    <div class="form-group" :class="{'has-error': newMake.error.name}">
+                        <input type="text" class="form-control" placeholder="Make" v-model="newMake.name" @keyup.enter="storeMake">
+                        <span class="help-block" v-if="newMake.error.name">{{newMake.error.name[0]}}</span>
                     </div>
-                    <draggable element="ul" class="list-group" id="accordion" v-model="lists.makes" @end="updateMakesOrder">
+                    <draggable class="list-group" id="accordion" v-model="lists.makes" element="ul" :options="{handle:'.mdi-more-vert'}" @end="updateMakesOrder">
                         <li class="list-group-item" v-for="(make, index) in lists.makes" :key="make.id">
                             <a class="pull-right text-muted" data-toggle="collapse" data-parent="#accordion" :href="'#collapse'+make.id">
                                 <i class="fa fa-chevron-down"></i>
                             </a>
-                            <a href="#" class="pull-right" @click.prevent="destroyMake(make, index)">
+                            <a href="#" class="text-muted pull-right" @click.prevent="destroyMake(make, index)">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                             <i class="mdi mdi-more-vert"></i>
-                            {{make.name}}
+                            {{make.name}} <small>({{make.models.length}})</small>
                             <ul class="list-group collapse" :id="'collapse'+make.id">
-                                <li>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Model" v-model="make.newModel">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button" @click="storeModel($event, make)">Add</button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <draggable v-model="make.models" @end="updateModelsOrder(make.id)">
+                                <hr>
+                                <div class="form-group" :class="{'has-error': make.error}">
+                                    <input type="text" class="form-control" placeholder="Model" v-model="make.newModel" @keyup.enter="storeModel(make)">
+                                    <span class="help-block" v-if="make.error">{{make.error.name[0]}}</span>
+                                </div>
+                                <draggable v-model="make.models" :options="{handle:'.mdi-more-vert'}" @end="updateModelsOrder(make.id)">
                                     <li class="list-group-item" v-for="(model, index) in make.models" :key="model.id">
-                                        <a href="#" class="pull-right" @click.prevent="destroyModel(model, index)">
+                                        <a href="#" class="text-muted pull-right" @click.prevent="destroyModel(model, index)">
                                             <i class="fa fa-trash-o"></i>
                                         </a>
                                         <i class="mdi mdi-more-vert"></i>
@@ -51,17 +42,13 @@
                 <div class="col-sm-5">
                     <h4>Years List</h4>
                     <hr>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Year" v-model="newYear.data.name">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" @click="storeYear">Add</button>
-                            </span>
-                        </div>
+                    <div class="form-group" :class="{'has-error': newYear.error.name}">
+                        <input type="text" class="form-control" placeholder="Year" v-model="newYear.name" @keyup.enter="storeYear">
+                        <span class="help-block" v-if="newYear.error.name">{{newYear.error.name[0]}}</span>
                     </div>
-                    <draggable element="ul" class="list-group" v-model="lists.years" @end="updateYearsOrder">
+                    <draggable element="ul" class="list-group" v-model="lists.years" :options="{handle:'.mdi-more-vert'}" @end="updateYearsOrder">
                         <li class="list-group-item" v-for="(year, index) in lists.years"  :key="year.id">
-                            <a href="#" class="pull-right" @click.prevent="destroyYear(year, index)">
+                            <a href="#" class="text-muted pull-right" @click.prevent="destroyYear(year, index)">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                             <i class="mdi mdi-more-vert"></i>
@@ -84,11 +71,9 @@ export default {
                 years: []
             },
             newMake: {
-                data: {},
                 error: {}
             },
             newYear: {
-                data: {},
                 error: {}
             }
         }
@@ -103,31 +88,27 @@ export default {
         getLists () {
             axios.get('/api/autoparts/list/makesFull')
             .then(response => {
-                this.lists.makes = response.data;
-            });
+                this.lists.makes = response.data
+            })
             axios.get('/api/autoparts/list/years')
             .then(response => {
-                this.lists.years = response.data;
-            });
+                this.lists.years = response.data
+            })
         },
-        storeMake (e) {
-            var btn = $(e.target).button('loading')
-            axios.post('/api/autoparts/list/makes/store', this.newMake.data)
+        storeMake () {
+            axios.post('/api/autoparts/list/makes/store', this.newMake)
             .then(response => {
-                this.lists.makes.push(response.data);
+                this.lists.makes.push(response.data)
                 this.newMake = {
-                    data: {},
                     error: {}
-                };
-                var btn = $(e.target).button('reset')
+                }
             })
             .catch(error => {
-                this.newMake.error = error.response.data;
-                var btn = $(e.target).button('reset')
-            });
+                this.newMake.error = error.response.data
+            })
         },
         destroyMake (make, index) {
-            var self = this;
+            var self = this
             swal({
                 title: "Are you sure?",
                 text: "You will not be able to recover this Make!",
@@ -140,36 +121,33 @@ export default {
             function(){
                 axios.delete('/api/autoparts/list/makes/destroy/' + make.id)
                 .then(response => {
-                    self.lists.makes.splice(index, 1);
+                    self.lists.makes.splice(index, 1)
                     swal({
                         title: "Deleted!",
                         text: "The Make has been deleted.",
                         type: "success",
                         timer: 1000,
                         showConfirmButton: false
-                    });
-                });
-            });
+                    })
+                })
+            })
         },
         updateMakesOrder: function () {
-            axios.put('/api/autoparts/list/makes/order', this.lists.makes);
+            axios.put('/api/autoparts/list/makes/order', this.lists.makes)
         },
-        storeModel (e, make) {
-            var btn = $(e.target).button('loading')
+        storeModel (make) {
             axios.post('/api/autoparts/list/models/store', {name:make.newModel, makeId:make.id})
             .then(response => {
-                make.models.push(response.data);
-                make.newModel = null;
-                make.error = null;
-                var btn = $(e.target).button('reset')
+                make.models.push(response.data)
+                make.newModel = null
+                make.error = null
             })
             .catch(error => {
-                make.error = error.response.data;
-                var btn = $(e.target).button('reset')
-            });
+                make.error = error.response.data
+            })
         },
         destroyModel (model, index) {
-            var self = this;
+            var self = this
             swal({
                 title: "Are you sure?",
                 text: "You will not be able to recover this Model!",
@@ -186,16 +164,16 @@ export default {
                         if (val.id == model.make_id) {
                             val.models.splice(index, 1)
                         }
-                    });
+                    })
                     swal({
                         title: "Deleted!",
                         text: "The Model has been deleted.",
                         type: "success",
                         timer: 1000,
                         showConfirmButton: false
-                    });
-                });
-            });
+                    })
+                })
+            })
         },
         updateModelsOrder: function (makeId) {
             var models = [];
@@ -203,27 +181,23 @@ export default {
                 if (val.id == makeId) {
                     models = val.models
                 }
-            });
-            axios.put('/api/autoparts/list/models/order', models);
+            })
+            axios.put('/api/autoparts/list/models/order', models)
         },
-        storeYear (e) {
-            var btn = $(e.target).button('loading')
-            axios.post('/api/autoparts/list/years/store', this.newYear.data)
+        storeYear () {
+            axios.post('/api/autoparts/list/years/store', this.newYear)
             .then(response => {
-                this.lists.years.unshift(response.data);
+                this.lists.years.unshift(response.data)
                 this.newYear = {
-                    data: {},
                     error: {}
-                };
-                var btn = $(e.target).button('reset')
+                }
             })
             .catch(error => {
                 this.newYear.error = error.response.data;
-                var btn = $(e.target).button('reset')
-            });
+            })
         },
         destroyYear (year, index) {
-            var self = this;
+            var self = this
             swal({
                 title: "Are you sure?",
                 text: "You will not be able to recover this Year!",
@@ -236,19 +210,19 @@ export default {
             function(){
                 axios.delete('/api/autoparts/list/years/destroy/' + year.id)
                 .then(response => {
-                    self.lists.years.splice(index, 1);
+                    self.lists.years.splice(index, 1)
                     swal({
                         title: "Deleted!",
                         text: "The Year has been deleted.",
                         type: "success",
                         timer: 1000,
                         showConfirmButton: false
-                    });
-                });
-            });
+                    })
+                })
+            })
         },
         updateYearsOrder: function () {
-            axios.put('/api/autoparts/list/years/order', this.lists.years);
+            axios.put('/api/autoparts/list/years/order', this.lists.years)
         },
     }
 }
