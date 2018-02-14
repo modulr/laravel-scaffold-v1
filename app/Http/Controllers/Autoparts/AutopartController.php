@@ -209,10 +209,12 @@ class AutopartController extends Controller
 
         $maxOrder = AutopartListMakes::max('order') + 1;
 
-        return AutopartListMakes::create([
+        $make = AutopartListMakes::create([
             'name' => $request->name,
             'order' => $maxOrder
         ]);
+
+        return AutopartListMakes::with('models')->find($make->id);
     }
 
     public function destroyMake($id)
@@ -266,7 +268,7 @@ class AutopartController extends Controller
     public function storeYear(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string'
+            'name' => 'required|integer'
         ]);
 
         $maxOrder = AutopartListYears::max('order') + 1;

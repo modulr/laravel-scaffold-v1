@@ -559,13 +559,15 @@
                     $('#modalFilters').modal('hide')
                 });
             },
-            clearFilters: function() {
+            clearFilters: function(e) {
+                var btn = $(e.target).button('loading')
                 this.filters = {
                     make: {},
                     model: {},
                     year: {},
                 },
                 this.getAutoparts()
+                var btn = $(e.target).button('reset')
                 $('#modalFilters').modal('hide')
             }
         }

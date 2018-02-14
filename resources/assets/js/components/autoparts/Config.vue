@@ -96,16 +96,18 @@ export default {
             })
         },
         storeMake () {
-            axios.post('/api/autoparts/list/makes/store', this.newMake)
-            .then(response => {
-                this.lists.makes.push(response.data)
-                this.newMake = {
-                    error: {}
-                }
-            })
-            .catch(error => {
-                this.newMake.error = error.response.data
-            })
+            if (this.newMake.name) {
+                axios.post('/api/autoparts/list/makes/store', this.newMake)
+                .then(response => {
+                    this.lists.makes.push(response.data)
+                    this.newMake = {
+                        error: {}
+                    }
+                })
+                .catch(error => {
+                    this.newMake.error = error.response.data
+                })
+            }
         },
         destroyMake (make, index) {
             var self = this
@@ -136,15 +138,17 @@ export default {
             axios.put('/api/autoparts/list/makes/order', this.lists.makes)
         },
         storeModel (make) {
-            axios.post('/api/autoparts/list/models/store', {name:make.newModel, makeId:make.id})
-            .then(response => {
-                make.models.push(response.data)
-                make.newModel = null
-                make.error = null
-            })
-            .catch(error => {
-                make.error = error.response.data
-            })
+            if (make.newModel) {
+                axios.post('/api/autoparts/list/models/store', {name:make.newModel, makeId:make.id})
+                .then(response => {
+                    make.models.push(response.data)
+                    make.newModel = null
+                    make.error = null
+                })
+                .catch(error => {
+                    make.error = error.response.data
+                })
+            }
         },
         destroyModel (model, index) {
             var self = this
@@ -185,16 +189,18 @@ export default {
             axios.put('/api/autoparts/list/models/order', models)
         },
         storeYear () {
-            axios.post('/api/autoparts/list/years/store', this.newYear)
-            .then(response => {
-                this.lists.years.unshift(response.data)
-                this.newYear = {
-                    error: {}
-                }
-            })
-            .catch(error => {
-                this.newYear.error = error.response.data;
-            })
+            if (this.newYear.name) {
+                axios.post('/api/autoparts/list/years/store', this.newYear)
+                .then(response => {
+                    this.lists.years.unshift(response.data)
+                    this.newYear = {
+                        error: {}
+                    }
+                })
+                .catch(error => {
+                    this.newYear.error = error.response.data;
+                })
+            }
         },
         destroyYear (year, index) {
             var self = this
