@@ -41,13 +41,13 @@
                         <div class="col-xs-4">
                             <dl>
                                 <dd>Customer</dd>
-                                <dt v-if="project.client.customer"><a :href="'/clients'">{{project.client.customer.name}}</a></dt>
-                                <dt v-else>No existe este registro.</dt>
+                                <dt v-if="project.client"><a :href="'/clients'">{{project.client.customer.name}}</a></dt>
+                                <dt v-else>Data not available.</dt>
                             </dl>
                             <dl>
                                 <dd>Client</dd>
                                 <dt v-if="project.client"><a :href="'/clients'">{{project.client.name}}</a></dt>
-                                <dt v-else>No existe este registro.</dt>
+                                <dt v-else>Data not available.</dt>
                             </dl>
                         </div>
                     </div>
