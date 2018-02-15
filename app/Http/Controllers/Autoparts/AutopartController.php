@@ -11,6 +11,8 @@ use App\Models\Autoparts\AutopartListMakes;
 use App\Models\Autoparts\AutopartListModels;
 use App\Models\Autoparts\AutopartListYears;
 use App\Http\Helpers\Upload;
+use QrCode;
+use Storage;
 
 
 class AutopartController extends Controller
@@ -77,6 +79,9 @@ class AutopartController extends Controller
             'year_id' => $request->year_id,
             'status_id' => $request->status_id,
         ]);
+
+        $qr = QrCode::format('png')->size(200)->generate($autopart->id);
+        Storage::put('autoparts/'.$autopart->id.'/qr/'.$autopart->id.'.png', $qr);
 
         if (count($request->images)) {
             $upload = new Upload();

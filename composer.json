@@ -12,7 +12,8 @@
         "laravolt/avatar": "^1.8",
         "pusher/pusher-php-server": "^2.0",
         "santigarcor/laratrust": "5.0.*",
-        "wildside/userstamps": "^0.4.0"
+        "wildside/userstamps": "^0.4.0",
+        "simplesoftwareio/simple-qrcode": "~2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

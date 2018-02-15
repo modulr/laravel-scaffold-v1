@@ -5,6 +5,7 @@ namespace App\Models\Autoparts;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Wildside\Userstamps\Userstamps;
+use Storage;
 
 class Autopart extends Model
 {
@@ -12,12 +13,17 @@ class Autopart extends Model
     use Userstamps;
 
     protected $dates = ['deleted_at'];
-
     protected $guarded = ['id'];
+    protected $appends = ['qr'];
 
     public function images()
     {
         return $this->hasMany(AutopartImage::class);
+    }
+
+    public function getQrAttribute()
+    {
+        return Storage::url('autoparts/'.$this->id.'/qr/'.$this->id.'.png');
     }
 
     public function make()

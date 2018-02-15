@@ -64,6 +64,11 @@
                         </button>
                         <div class="pull-right">
                             <button type="button" class="btn btn-link"
+                                    v-if="user.hasPermission['read-autoparts'] && autopart.action == 'edit'"
+                                    @click="printQR(autopart.data.qr)">
+                                    <i class="fa fa-qrcode fa-lg"></i>
+                            </button>
+                            <button type="button" class="btn btn-link"
                                     v-if="user.hasPermission['delete-autoparts'] && autopart.action == 'edit'"
                                     @click="destroyAutopart"><i class="fa fa-trash-o fa-lg"></i></button>
                             <button type="button" class="btn btn-success"
@@ -408,6 +413,7 @@
             editAutopart (item, index) {
                 axios.get('/api/autoparts/show/'+item.id)
                 .then(response => {
+                    console.log(response);
                     this.autopart.data = response.data;
                     this.autopart.data.index = index;
                     this.autopart.action = 'edit';
@@ -486,8 +492,21 @@
                     });
                 });
             },
+            printQR (qr) {
+                var content =
+                `<html>
+                    <head></head>
+                    <body onload="window.focus(); window.print(); window.close();">
+                        <img src="${qr}">
+                    </body>
+                </html>`
 
-            setVueClipUrl: function() {
+                var myWindow = window.open()
+                myWindow.document.write(content)
+                myWindow.document.close();
+            },
+
+            setVueClipUrl () {
                 if (this.autopart.action == 'new') {
                     return '/api/autoparts/images/upload/temp';
                 } else {
@@ -559,7 +578,7 @@
                     $('#modalFilters').modal('hide')
                 });
             },
-            clearFilters: function(e) {
+            clearFilters (e) {
                 var btn = $(e.target).button('loading')
                 this.filters = {
                     make: {},
