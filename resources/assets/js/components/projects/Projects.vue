@@ -94,7 +94,8 @@
                                             <a class="heading" :href="'/projects/'+item.id+'/get'">
                                                 <strong>{{item.name}}</strong>
                                             </a>
-                                            <span class="text-muted">{{item.client.customer.name}}</span>
+                                            <span class="text-muted" v-if="item.client">{{item.client.customer.name}}</span>
+                                            <span class="text-muted" v-else></span>
                                         </td>
                                         <td>
                                             {{item.start_date | date}}
