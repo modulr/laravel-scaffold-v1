@@ -13,13 +13,17 @@
                             <i class="fa fa-cog fa-lg" aria-hidden="true"></i> Config
                         </a>
                         <a href="#" class="btn btn-link"
+                            @click.prevent="showQRSearch">
+                            <i class="fa fa-qrcode fa-lg" aria-hidden="true"></i> Search
+                        </a>
+                        <a href="#" class="btn btn-link"
                             @click.prevent="showFilters">
                             <i class="fa fa-sliders fa-lg" aria-hidden="true"></i> Filters
                         </a>
                         <a href="#" class="btn btn-success"
                             v-if="user.hasPermission['create-autoparts']"
                             @click.prevent="newAutopart">
-                            <i class="fa fa-car"></i> New Autopart
+                            <i class="fa fa-car"></i> New
                         </a>
                     </div>
                 </div>
@@ -27,7 +31,7 @@
             <!-- List Autoparts -->
             <div class="row" v-if="autoparts.data.length">
                 <div class="col-md-12">
-                    <div class="media" v-for="(item, index) in autoparts.data" @click="editAutopart(item, index)">
+                    <div class="media" v-for="(item, index) in autoparts.data" @click="editAutopart(item.id, index)">
                         <div class="media-left">
                             <img :src="item.images[0].url_thumbnail" v-if="item.images.length">
                             <i class="fa fa-picture-o fa-5x" v-else></i>
@@ -66,7 +70,7 @@
                             <button type="button" class="btn btn-link"
                                     v-if="user.hasPermission['read-autoparts'] && autopart.action == 'edit'"
                                     @click="printQR(autopart.data.qr)">
-                                    <i class="fa fa-qrcode fa-lg"></i>
+                                    <i class="fa fa-print fa-lg"></i>
                             </button>
                             <button type="button" class="btn btn-link"
                                     v-if="user.hasPermission['delete-autoparts'] && autopart.action == 'edit'"
@@ -239,16 +243,31 @@
                 </div>
             </div>
         </div>
+        <!-- Modal QR Search -->
+        <div class="modal fade" id="modalQRSearch">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <qrcode-reader @decode="onDecode" :paused="qrPaused">
+                            <div class="qr-scanner-back"></div>
+                            <div class="qr-scanner"></div>
+                        </qrcode-reader>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-    import moment from 'moment';
-    import { swiper, swiperSlide } from 'vue-awesome-swiper';
-    import VueClip from 'vue-clip';
+    import moment from 'moment'
+    import { swiper, swiperSlide } from 'vue-awesome-swiper'
+    import VueClip from 'vue-clip'
     import draggable from 'vuedraggable'
-    import {SnotifyService} from 'vue-snotify';
+    import {SnotifyService} from 'vue-snotify'
     import Multiselect from 'vue-multiselect'
+    import { QrcodeReader } from 'vue-qrcode-reader'
 
     export default {
         data() {
@@ -281,6 +300,7 @@
                         message: 'You are uploading an invalid file'
                     },
                 },
+                qrPaused: true,
                 lists: {
                     status: [],
                     makes: [],
@@ -310,10 +330,11 @@
             swiperSlide,
             draggable,
             Multiselect,
+            QrcodeReader
         },
         mounted () {
-            this.getLists();
-            this.getAutoparts();
+            this.getLists()
+            this.getAutoparts()
         },
         computed: {
             filteredModels: function () {
@@ -410,16 +431,18 @@
                     var btn = $(e.target).button('reset')
                 });
             },
-            editAutopart (item, index) {
-                axios.get('/api/autoparts/show/'+item.id)
+            editAutopart (id, index) {
+                this.qrPaused = true
+                axios.get('/api/autoparts/show/'+id)
                 .then(response => {
-                    console.log(response);
-                    this.autopart.data = response.data;
-                    this.autopart.data.index = index;
-                    this.autopart.action = 'edit';
-                    this.autopart.error = {};
-                    this.setVueClipUrl();
+                    this.autopart.data = response.data
+                    this.autopart.data.index = index
+                    this.autopart.action = 'edit'
+                    this.autopart.error = {}
+                    this.setVueClipUrl()
+                    this.qrPaused = false
                     $('#modalAutopart').modal('show')
+                    $('#modalQRSearch').modal('hide')
                 })
                 .catch(error => {
                     this.autopart.error = error.response.data;
@@ -492,6 +515,7 @@
                     });
                 });
             },
+
             printQR (qr) {
                 var content =
                 `<html>
@@ -504,6 +528,14 @@
                 var myWindow = window.open()
                 myWindow.document.write(content)
                 myWindow.document.close();
+            },
+            showQRSearch () {
+                this.qrPaused = false
+                $('#modalQRSearch').modal('show')
+            },
+            onDecode (id) {
+                console.log(id);
+                this.editAutopart(id, 0)
             },
 
             setVueClipUrl () {
@@ -583,7 +615,7 @@
                 this.filters = {
                     make: {},
                     model: {},
-                    year: {},
+                    year: {}
                 },
                 this.getAutoparts()
                 var btn = $(e.target).button('reset')

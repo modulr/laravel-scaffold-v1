@@ -63,6 +63,24 @@
                 }
             }
         }
+
+        .qr-scanner-back {
+            background-color: rgba(0, 0, 0, .1);
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+        }
+        .qr-scanner {
+            background-color: rgba(255, 255, 255, .1);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 200px;
+            width: 200px;
+            transform: translate(-50%, -50%);
+        }
     }
 
     &.config {
