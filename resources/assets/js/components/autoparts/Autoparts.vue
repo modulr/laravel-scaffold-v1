@@ -83,7 +83,9 @@
                     </div>
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <swiper :options="swiperOption" ref="mySwiper" v-if="autopart.action == 'edit'">
+                        <swiper :options="swiperOption" ref="mySwiper"
+                            v-if="autopart.action == 'edit'"
+                            v-show="autopart.data.images.length > 0">
                             <swiper-slide v-for="image in autopart.data.images" :key="image.id">
                                 <div>
                                     <img :src="image.url">
@@ -115,12 +117,12 @@
                                   :on-complete="completeImage"
                                   v-if="user.hasPermission['create-autoparts']">
                             <template slot="clip-uploader-action">
-                                <div class="">
+
                                     <div class="dz-message btn btn-link btn-upload">
                                         <i class="fa fa-photo fa-lg" aria-hidden="true"></i>
                                         <span v-show="autopart.data.images.length == 0"> ADD PHOTOS</span>
                                     </div>
-                                </div>
+
                             </template>
                         </vue-clip>
                         <hr>
@@ -433,6 +435,7 @@
                 this.qrPaused = true
                 axios.get('/api/autoparts/show/'+id)
                 .then(response => {
+                    console.log(response);
                     this.autopart.data = response.data
                     this.autopart.data.index = index
                     this.autopart.action = 'edit'
@@ -532,7 +535,6 @@
                 $('#modalQRSearch').modal('show')
             },
             onDecode (id) {
-                console.log(id);
                 this.editAutopart(id, 0)
             },
 
