@@ -5,18 +5,18 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-sm-12 text-right controls">
+                    <div class="col-xs-12 text-right controls">
                         <!-- <input type="text" class="form-control" placeholder="Search" v-model="search"> -->
                         <a href="/autoparts/config" class="btn btn-link">
-                            <i class="fa fa-cog fa-lg" aria-hidden="true"></i> Config
+                            <i class="fa fa-cog fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Config</span>
                         </a>
                         <a href="#" class="btn btn-link"
                             @click.prevent="showQRSearch">
-                            <i class="fa fa-qrcode fa-lg" aria-hidden="true"></i> Search
+                            <i class="fa fa-qrcode fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Search</span>
                         </a>
                         <a href="#" class="btn btn-link"
                             @click.prevent="showFilters">
-                            <i class="fa fa-sliders fa-lg" aria-hidden="true"></i> Filters
+                            <i class="fa fa-sliders fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Filters</span>
                         </a>
                         <a href="#" class="btn btn-success"
                             v-if="user.hasPermission['create-autoparts']"
