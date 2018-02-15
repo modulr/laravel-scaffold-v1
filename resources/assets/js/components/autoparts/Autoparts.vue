@@ -5,10 +5,8 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-sm-4 controls">
+                    <div class="col-sm-12 text-right controls">
                         <!-- <input type="text" class="form-control" placeholder="Search" v-model="search"> -->
-                    </div>
-                    <div class="col-sm-8 text-right controls">
                         <a href="/autoparts/config" class="btn btn-link">
                             <i class="fa fa-cog fa-lg" aria-hidden="true"></i> Config
                         </a>
