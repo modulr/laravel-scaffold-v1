@@ -20,7 +20,8 @@
                             <label class="col-sm-3 control-label">Customer</label>
                             <div class="col-sm-9">
                                 <p class="form-control-static">
-                                    <small class="text-mute">{{project.client.customer.name}}</small>
+                                    <small class="text-mute" v-if="project.client">{{project.client.customer.name}}</small>
+                                    <small class="text-mute" v-else>Data not available.</small>
                                 </p>
                             </div>
                         </div>                        
@@ -58,7 +59,7 @@
                                     url="/invoices/file" :use-font-awesome=true
                                     :use-custom-dropzone-options=true :dropzoneOptions="dzOptions"
                                     v-on:vdropzone-sending="addingParams"
-                                    v-on:vdropzone-success="uploadSuccess">                                    
+                                    v-on:vdropzone-success="uploadSuccess">               
                                 </dropzone>
                             </div>
                         </div>                         -->

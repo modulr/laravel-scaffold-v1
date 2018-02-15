@@ -42,11 +42,13 @@
                         <div class="col-xs-4">
                             <dl>
                                 <dd>Customer</dd>
-                                <dt><a :href="'/clients'">{{opportunity.client.customer.name}}</a></dt>
+                                <dt v-if="opportunity.client"><a :href="'/clients'">{{opportunity.client.customer.name}}</a></dt>
+                                <dt v-else>Data not available.</dt>
                             </dl>
                             <dl>
                                 <dd>Client</dd>
-                                <dt><a :href="'/clients'">{{opportunity.client.name}}</a></dt>
+                                <dt v-if="opportunity.client"><a :href="'/clients'">{{opportunity.client.name}}</a></dt>
+                                <dt v-else>Data not available.</dt>
                             </dl>
                         </div>
                     </div>
