@@ -29,6 +29,9 @@
     <meta name="msapplication-wide310x150logo" content="{{ asset('img/icon/widetile.png') }}"/>
     <meta name="msapplication-square310x310logo" content="{{ asset('img/icon/largetile.png') }}"/>
 
+    <!-- Manifest -->
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
@@ -40,6 +43,36 @@
             'notifications' => (Auth::user()) ? Auth::user()->notifications : [],
             'unReadNotifications' => (Auth::user()) ? Auth::user()->unReadNotifications : [],
         ]) !!};
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js')
+                .then(function(registration) {
+                    // Registration was successful
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    // registration failed :(
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+            window.addEventListener('beforeinstallprompt', function(e) {
+                // beforeinstallprompt Event fired
+
+                // e.userChoice will return a Promise.
+                // For more details read: https://developers.google.com/web/fundamentals/getting-started/primers/promises
+                e.userChoice.then(function(choiceResult) {
+
+                    console.log(choiceResult.outcome);
+
+                    if(choiceResult.outcome == 'dismissed') {
+                        console.log('User cancelled home screen install');
+                    }
+                    else {
+                        console.log('User added to home screen');
+                    }
+                });
+            });
+        }
     </script>
 </head>
 <body>
