@@ -11,7 +11,7 @@
                             <i class="fa fa-cog fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Config</span>
                         </a>
                         <a href="#" class="btn btn-link"
-                            @click.prevent="showQRSearch">
+                            @click.prevent="showSearchQR">
                             <i class="fa fa-qrcode fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Search</span>
                         </a>
                         <a href="#" class="btn btn-link"
@@ -244,14 +244,15 @@
             </div>
         </div>
         <!-- Modal QR Search -->
-        <div class="modal fade" id="modalQRSearch">
+        <div class="modal fade" id="modalSearchQR">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <qrcode-reader @decode="onDecode" :paused="qrPaused">
+                        <qrcode-reader @decode="searchQR" :paused="pausedQR">
                             <div class="qr-scanner-back"></div>
-                            <div class="qr-scanner"></div>
+                            <div class="qr-scanner"><em></em><span></span></div>
+                            <p class="qr-error text-danger" v-if="this.autopart.error.qr">{{this.autopart.error.qr[0]}}</p>
                         </qrcode-reader>
                     </div>
                 </div>
@@ -300,7 +301,7 @@
                         message: 'You are uploading an invalid file'
                     },
                 },
-                qrPaused: true,
+                pausedQR: true,
                 lists: {
                     status: [],
                     makes: [],
@@ -432,18 +433,14 @@
                 });
             },
             editAutopart (id, index) {
-                this.qrPaused = true
                 axios.get('/api/autoparts/show/'+id)
                 .then(response => {
-                    console.log(response);
                     this.autopart.data = response.data
                     this.autopart.data.index = index
                     this.autopart.action = 'edit'
                     this.autopart.error = {}
                     this.setVueClipUrl()
-                    this.qrPaused = false
                     $('#modalAutopart').modal('show')
-                    $('#modalQRSearch').modal('hide')
                 })
                 .catch(error => {
                     this.autopart.error = error.response.data;
@@ -451,12 +448,12 @@
             },
             updateAutopart (e) {
                 var btn = $(e.target).button('loading')
-                this.autopart.data.make_id = this.autopart.data.make ? this.autopart.data.make.id : null;
-                this.autopart.data.model_id = this.autopart.data.model ? this.autopart.data.model.id : null;
-                this.autopart.data.year_id = this.autopart.data.year ? this.autopart.data.year.id : null;
+                this.autopart.data.make_id = this.autopart.data.make ? this.autopart.data.make.id : null
+                this.autopart.data.model_id = this.autopart.data.model ? this.autopart.data.model.id : null
+                this.autopart.data.year_id = this.autopart.data.year ? this.autopart.data.year.id : null
                 axios.put('/api/autoparts/update/'+this.autopart.data.id, this.autopart.data)
                 .then(response => {
-                    this.autoparts.data[this.autopart.data.index] = response.data;
+                    this.autoparts.data[this.autopart.data.index] = response.data
                     this.autopart = {
                         data: {
                             make: {},
@@ -530,12 +527,35 @@
                 myWindow.document.write(content)
                 myWindow.document.close();
             },
-            showQRSearch () {
-                this.qrPaused = false
-                $('#modalQRSearch').modal('show')
+            showSearchQR () {
+                this.pausedQR = false
+                $('#modalSearchQR').modal('show')
             },
-            onDecode (id) {
-                this.editAutopart(id, 0)
+            searchQR (id) {
+                this.pausedQR = true
+                axios.get('/api/autoparts/show/'+id)
+                .then(response => {
+                    if (response.data) {
+                        this.autopart.data = response.data
+                        this.autoparts.data.forEach(function(val, index){
+                            if (val.id == this.autopart.data.id) {
+                                this.autopart.data.index = index
+                            }
+                        }, this)
+                        this.autopart.action = 'edit'
+                        this.autopart.error = {}
+                        this.setVueClipUrl()
+                        $('#modalSearchQR').modal('hide')
+                        $('#modalAutopart').modal('show')
+                    } else {
+                        this.autopart.error.qr = ['The Autopart do not exist!']
+                        this.pausedQR = false
+                    }
+
+                })
+                .catch(error => {
+                    this.autopart.error = error.response.data
+                });
             },
 
             setVueClipUrl () {
