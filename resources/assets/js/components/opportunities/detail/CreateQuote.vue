@@ -20,7 +20,7 @@
                             <label class="col-sm-3 control-label">Customer</label>
                             <div class="col-sm-9">
                                 <p class="form-control-static">
-                                    <small class="text-mute" v-if="project.client">{{project.client.customer.name}}</small>
+                                    <small class="text-mute" v-if="opportunity.client">{{opportunity.client.customer.name}}</small>
                                     <small class="text-mute" v-else>Data not available.</small>
                                 </p>
                             </div>
