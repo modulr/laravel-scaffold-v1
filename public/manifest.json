@@ -1,0 +1,14 @@
+{
+  "name": "Share The Bread",
+  "short_name": "STB",
+  "icons": [
+    {
+      "src": "img/logos/stb.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }],
+  "start_url": "/index.php",
+  "display": "standalone",
+  "background_color": "#fcb03f",
+  "theme_color": "#fdc066"
+}
