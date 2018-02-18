@@ -21,7 +21,7 @@ return array(
          *
          * Available options are 'sandbox' or 'live'
          */
-        'mode' => env('PAYPAL_MODE', 'sandbox'),
+        'mode' => env('PAYPAL_MODE', 'live'),
 
         // Specify the max connection attempt (3000 = 3 seconds)
         'http.ConnectionTimeOut' => 3000,
