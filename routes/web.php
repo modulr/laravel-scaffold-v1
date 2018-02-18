@@ -251,11 +251,12 @@ Route::middleware('auth')->group(function () {
     // Quotes
     Route::get('/quote', 'QuoteController@index');
     Route::get('/quote/all', 'QuoteController@all');
+    Route::get('/quote/month', 'QuoteController@quotesPerMonth');
     Route::get('/quote/{id}', 'QuoteController@show');
     Route::post('/quote/store', 'QuoteController@store');
     Route::put('/quote/update/{id}', 'QuoteController@update');
     Route::delete('/quote/destroy/{id}', 'QuoteController@destroy');
-    Route::get('/quote/status/all', 'QuoteController@getStatus');
+    Route::get('/quote/status/all', 'QuoteController@getStatus');    
 
     // Attachments
     Route::post('/attachments/store', 'AttachmentController@store');

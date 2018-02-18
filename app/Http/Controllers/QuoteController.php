@@ -8,6 +8,7 @@ use Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\Quotes\Quote;
 use App\Models\Lists\ListStatusQuote;
+use App\Models\Commissions\RangeOfCommission;
 class QuoteController extends Controller
 {
     public function __construct()
@@ -126,5 +127,45 @@ class QuoteController extends Controller
   {
       return ListStatusQuote::all();
   }
+
+  public function quotesPerMonth(Request $request)
+  {
+    $query = Quote::query();
+    $commissionQuery = RangeOfCommission::query();    
+    // $query->where('status', '!=', 4); todas las cotizaciones que no esten rechazadas
+    $query->whereRaw('MONTH(request_date) = ?', [$request->month]);
+    if($request->designer) {
+        $query->where('designer_id', $request->designer);
+        $commissionQuery->where('type', 1);
+    }
+    if($request->salesman) {
+        $query->where('salesman_id', $request->salesman);
+        $commissionQuery->where('type', 2);
+    }
+    $total = 0.00;
+    $quotes = $query->get()->load($this->relationships);
+    foreach ($quotes as $quote) {               
+        $total += $quote['currency']['exchange_rate'] * $quote['amount'];
+    }
+
+    $commissionQuery->where('lower_limit', '<=', $total)
+        ->where('upper_limit', '>=', $total);
+    $range_commission = $commissionQuery->get();
+    // $range_commission = RageOfCommission::where('lower_limit', '<=', $total)
+    //                                     ->where('upper_limit', '>=', $total)->get();
+    
+    // return DB::table('rage_of_commissions')->where([
+    //     ['lower_limit', '>=', 12999],
+    //     ['upper_limit', '<=', 12999],
+    // ])->get();
+                                    
+
+    return response()->json([
+        'quotes' => $quotes,
+        'total' => $total,
+        'commission_title' => $range_commission[0]->title,
+        'commission_percentage' => $range_commission[0]->percentage
+    ]);
+  } 
 
 }

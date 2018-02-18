@@ -42,15 +42,15 @@
                         <div class="form-group" :class="{'has-error': error.service}">
                             <label class="col-sm-3 control-label required">Quotes</label>
                             <div class="col-sm-9">
-                                <multiselect v-model="invoice.quotes" track-by="name" label="name" :options="quotes" placeholder="Select a Quote" :multiple="true"></multiselect>
-                                <span class="help-block" v-if="error.service">{{error.service[0]}}</span>
+                                <multiselect v-model="invoice.quotes" track-by="name" label="name" :options="listQuotes" placeholder="Select a Quote" :multiple="true"></multiselect>                                
                             </div>
                         </div>
                         <div class="form-group" v-for="(item,index) in invoice.quotes">
                             <label class="col-sm-3 control-label required">Amount for {{item.name}} </label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control input-lg" placeholder="Amount" required v-model="invoice.quotes[index].invoice_amount">
-                                <span class="help-block" v-if="totalQuotes">El total de los importes debe coincider con el total de la factura</span>                                
+                                <span class="help-block" v-if="totalQuotes">El total de los importes debe coincidir con el total de la factura</span>                                
+                                <span class="help-block" v-if="invoice.quotes[index].remainder < invoice.quotes[index].invoice_amount">El total asignado a la cotización no puede ser mayor al restante por facturar: {{ invoice.quotes[index].remainder }}</span>                                
                             </div>                            
                         </div>
                         <!-- <div class="form-group">
@@ -68,7 +68,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" @click="store">Add</button>
-                </div>
+                </div>                
             </div>
         </div>
     </div>
@@ -78,7 +78,7 @@ import moment from 'moment';
 import Multiselect from 'vue-multiselect';
 import Dropzone from 'vue2-dropzone';
 export default {
-    props: ['list', 'invoice', 'project', 'quotes'],
+    props: ['list', 'project', 'quotes'],
     components: {
         Multiselect,
         Dropzone
@@ -91,7 +91,8 @@ export default {
                 headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
                 autoProcessQueue: false
             },       
-            isValid: false  
+            isValid: false,
+            invoice: {}  
         }
     },
     computed: {
@@ -107,6 +108,12 @@ export default {
                 this.isValid = false
                 return false
             }
+        },
+        listQuotes () {
+            let listQuotes = this.quotes.filter((quote) => {
+                return (quote.amount - quote.invoiced) !== 0;
+            })
+            return listQuotes
         }
     },
     methods : {        
@@ -130,6 +137,7 @@ export default {
                     .then(response => {
                         this.$parent.quotes = response.data.quotes.data
                         console.log(this.$parent.quotes)
+                        this.invoice = {}
                         // this.loadingQuotes = false
                     });
                     // this.$refs.myVueDropzoneInvoice.processQueue()
