@@ -82,6 +82,13 @@
                                     <span>Dashboard</span>
                                 </a>
                             </li>
+                            <li :class="{'active': activeLink == 'autoparts'}" v-if="user.hasPermission['read-autoparts']">
+                                <a href="/autoparts">
+                                    <i class="mdi mdi-directions-car mdi-3x"></i>
+                                    <br>
+                                    <span>Autoparts</span>
+                                </a>
+                            </li>
                             <li :class="{'active': activeLink == 'news'}" v-if="user.hasPermission['read-news']">
                                 <a href="/news">
                                     <i class="mdi mdi-whatshot mdi-3x"></i>

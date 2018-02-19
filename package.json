@@ -33,6 +33,8 @@
     "vue-clip": "^1.0.0",
     "vue-infinite-loading": "^2.1.3",
     "vue-moment": "^2.1.0",
+    "vue-multiselect": "^2.0.8",
+    "vue-qrcode-reader": "^0.7.1",
     "vue-snotify": "^1.1.0",
     "vuedraggable": "^2.14.1",
     "vuejs-paginate": "^1.5.0",

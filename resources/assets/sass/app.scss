@@ -17,6 +17,9 @@
 // vue-notify
 @import "~vue-snotify/styles/material";
 
+// multiselect
+@import "~vue-multiselect/dist/vue-multiselect.min.css";
+
 // Variables
 @import "node_modules/bootswatch/paper/_variables";
 @import "variables";
@@ -49,10 +52,12 @@
 @import 'components/switch';
 @import 'components/vue-clip';
 @import 'components/widgets';
+@import 'components/multiselect';
 
 
 // Modules
 @import 'modules/auth';
+@import 'modules/autoparts';
 @import 'modules/contacts';
 @import 'modules/dashboard';
 @import 'modules/events';

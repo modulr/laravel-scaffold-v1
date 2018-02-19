@@ -14,6 +14,17 @@
     }
 }
 
+.vue-clip-photo {
+    display: inline-block;
+    border: 2px dashed $gray-light;
+    div {
+        display: inline-block;
+    }
+    .dz-message{
+        padding: 12px 13px;
+    }
+}
+
 .vue-clip-queue {
     .media-left {
         .media-object {
