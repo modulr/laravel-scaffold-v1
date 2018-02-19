@@ -163,6 +163,7 @@
                                                     <th>Name</th>
                                                     <th>Amount</th> 
                                                     <th>Percentage Of Quote</th>
+                                                    <th>Status</th>
                                                     <th>{{quote.designer.name}}</th>
                                                     <th>{{quote.salesman.name}}</th>                                                    
                                                 </thead>
@@ -175,6 +176,9 @@
                                                     <td>{{invoice.pivot.amount | currency}}</td>
                                                     <td>
                                                         {{ percentageOfInvoicePerQuote(quote.amount, invoice.pivot.amount) }} %
+                                                    </td>
+                                                    <td>
+                                                        {{invoice.invocie_status.name}}
                                                     </td>
                                                     <td v-if="designers[quote.designer_id]"> 
                                                         {{ totalOfCommissionForEmployeePerInvoice(invoice.pivot.amount, designers[quote.designer_id].commission_percentage) | currency}} 

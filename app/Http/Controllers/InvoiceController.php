@@ -12,25 +12,15 @@ use Storage;
 class InvoiceController extends Controller
 {
     public function store(Request $request)
-    {
-        // $this->validate($request, [
-        //     'amount' => 'required',
-        //     'description' => 'required'
-        // ]);          
-
-        // $upload = $this->upload($request->file);
-        // $request->name = $request->file->getClientOriginalName();
-        // $request->basename = $upload['basename'];
-        // $request->extension = $upload['extension'];
+    {        
 
         $invoice = Invoice::create([
         'owner_id' => Auth::id(),
         'amount' => $request->amount,
-        'description' => $request->description,          
+        'description' => $request->description,
+        'invoice_status_id' => $request->invoice_status_id,        
         'name' => "dummy",
-        'basename' => "dummy"]);
-        // 'name' => $request->name,
-        // 'basename' => $request->basename]);
+        'basename' => "dummy"]);        
                 
         foreach ($request->quotes as $quote) {                           
             DB::table('invoice_quote')->insert([
@@ -42,6 +32,11 @@ class InvoiceController extends Controller
         // $data = $request->all();
 
         // return response()->json($data);
+    }
+
+    public function all(Request $request)
+    {
+        return Invoice::with('invocie_status')->get();
     }
 
     public function updateFile(Request $request)

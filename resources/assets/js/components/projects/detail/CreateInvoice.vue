@@ -119,28 +119,16 @@ export default {
     methods : {        
         store (e) {                        
             var btn = $(e.target).button('loading')
+            this.invoice.invoice_status_id = 1
             axios.post('/invoices/store', this.invoice)
-                .then(response => {                    
-                    // console.log(response)
-                    // this.invoice.quotes.forEach(item => {
-                    //     this.$parent.quotes.map(quote => {
-                    //         if (quote.id === item.id) {
-                    //             console.log("InvoiceQuote: " + item.id)
-                    //             console.log("ParentQuote: " + quote.id)                                
-                    //             quote.invoices.push(response.data)
-                    //         }
-                    //     })                
-                    // })
-                    // this.$parent.invoice = response.data
+                .then(response => {                                        
                     this.error = {};
                     axios.get(`/quote/all?project=${this.project.id}`)
                     .then(response => {
                         this.$parent.quotes = response.data.quotes.data
                         console.log(this.$parent.quotes)
-                        this.invoice = {}
-                        // this.loadingQuotes = false
-                    });
-                    // this.$refs.myVueDropzoneInvoice.processQueue()
+                        this.invoice = {}                        
+                    });                    
                     var btn = $(e.target).button('reset')
                     $('#modalAdd').modal('hide');
                 })

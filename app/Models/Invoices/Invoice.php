@@ -12,7 +12,7 @@ class Invoice extends Model
     
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['amount', 'description', 'name', 'basename', 'owner_id'];
+    protected $fillable = ['amount', 'description', 'name', 'basename', 'owner_id', 'invoice_status_id'];
 
     protected $appends = ['url'];
 
@@ -24,5 +24,10 @@ class Invoice extends Model
     public function quotes() 
     {
         return $this->belongsToMany(\App\Models\Quotes\Quote::class)->withPivot('amount');
+    }
+
+    public function invocie_status()
+    {
+        return $this->belongsTo(ListInvoiceStatus::class, 'invoice_status_id');
     }
 }
