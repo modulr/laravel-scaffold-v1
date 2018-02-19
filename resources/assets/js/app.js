@@ -60,6 +60,9 @@ Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
 // Autoparts
 Vue.component('autoparts', require('./components/autoparts/Autoparts.vue'));
 Vue.component('config', require('./components/autoparts/Config.vue'));
+// Students
+Vue.component('students-register', require('./components/students/Register.vue'));
+
 
 const app = new Vue({
     el: '#app'

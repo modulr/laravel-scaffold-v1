@@ -12,8 +12,8 @@
 */
 
 Route::get('/', function () {
-    //return view('welcome');
-    return redirect('login');
+    return view('welcome');
+    //return redirect('login');
 });
 //Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home', function () {
@@ -21,6 +21,22 @@ Route::get('/home', function () {
 });
 
 Auth::routes();
+
+// Students
+Route::group(['namespace' => 'Students'], function() {
+    Route::group(['prefix' => 'api/students'], function() {
+        Route::post('/register', 'StudentController@register');
+        // Lists
+        Route::group(['prefix' => 'lists'], function() {
+            Route::get('/certificates', 'StudentController@certificates');
+            Route::get('/genders', 'StudentController@genders');
+            Route::get('/paymentMethods', 'StudentController@paymentMethods');
+            Route::get('/positions', 'StudentController@positions');
+            Route::get('/stores', 'StudentController@stores');
+            Route::get('/studies', 'StudentController@studies');
+        });
+    });
+});
 
 Route::middleware('auth')->group(function () {
     // Dashboard
@@ -195,6 +211,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/position', 'ProfileListController@position');
         Route::get('/department', 'ProfileListController@department');
     });
+
+
 
     // Tasks
     Route::group(['namespace' => 'Tasks'], function() {
