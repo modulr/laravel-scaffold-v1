@@ -9,9 +9,15 @@
             min-width: 120px;
             padding-right: 20px;
             text-align: center;
+            position: relative;
             img {
                 height: 100px;
                 width: 100px;
+            }
+            .label {
+                position: absolute;
+                right: 15px;
+                bottom: 10px;
             }
         }
     }
@@ -140,14 +146,6 @@
     &.config {
         ul.list-group {
             .list-group-item {
-                padding-left: 35px;
-                .handle {
-                    position: absolute;
-                    top:0;
-                    left:0;
-                    padding: 15px 14px;
-                    cursor: move;
-                }
                 .fa-chevron-down {
                     margin-left: 20px;
                 }

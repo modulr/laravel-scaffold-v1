@@ -10,34 +10,32 @@
                         <input type="text" class="form-control" placeholder="Make" v-model="newMake.name" @keyup.enter="storeMake">
                         <span class="help-block" v-if="newMake.error.name">{{newMake.error.name[0]}}</span>
                     </div>
-                    <draggable class="list-group" id="accordion" v-model="lists.makes" element="ul" :options="{handle:'.handle'}" @end="updateMakesOrder">
-                        <li class="list-group-item" v-for="(make, index) in lists.makes" :key="make.id">
+                    <ul class="list-group" id="accordion">
+                        <li class="list-group-item" v-for="(make, index) in sortedMakes" :key="make.id">
+                            {{make.name}} <small>({{make.models.length}})</small>
                             <a class="pull-right text-muted" data-toggle="collapse" data-parent="#accordion" :href="'#collapse'+make.id">
                                 <i class="fa fa-chevron-down"></i>
                             </a>
                             <a href="#" class="text-muted pull-right" @click.prevent="destroyMake(make, index)">
                                 <i class="fa fa-trash-o"></i>
                             </a>
-                            <span class="handle">::</span>
-                            {{make.name}} <small>({{make.models.length}})</small>
                             <ul class="list-group collapse" :id="'collapse'+make.id">
                                 <hr>
                                 <div class="form-group" :class="{'has-error': make.error}">
                                     <input type="text" class="form-control" placeholder="Model" v-model="make.newModel" @keyup.enter="storeModel(make)">
                                     <span class="help-block" v-if="make.error">{{make.error.name[0]}}</span>
                                 </div>
-                                <draggable v-model="make.models" :options="{handle:'.handle'}" @end="updateModelsOrder(make.id)">
+                                <ul class="list-group">
                                     <li class="list-group-item" v-for="(model, index) in make.models" :key="model.id">
+                                        {{model.name}}
                                         <a href="#" class="text-muted pull-right" @click.prevent="destroyModel(model, index)">
                                             <i class="fa fa-trash-o"></i>
                                         </a>
-                                        <span class="handle">::</span>
-                                        {{model.name}}
                                     </li>
-                                </draggable>
+                                </ul>
                             </ul>
                         </li>
-                    </draggable>
+                    </ul>
                 </div>
                 <div class="col-sm-5">
                     <h4>Years List</h4>
@@ -46,15 +44,14 @@
                         <input type="text" class="form-control" placeholder="Year" v-model="newYear.name" @keyup.enter="storeYear">
                         <span class="help-block" v-if="newYear.error.name">{{newYear.error.name[0]}}</span>
                     </div>
-                    <draggable element="ul" class="list-group" v-model="lists.years" :options="{handle:'.handle'}" @end="updateYearsOrder">
-                        <li class="list-group-item" v-for="(year, index) in lists.years"  :key="year.id">
+                    <ul class="list-group">
+                        <li class="list-group-item" v-for="(year, index) in sortedYears"  :key="year.id">
+                            {{year.name}}
                             <a href="#" class="text-muted pull-right" @click.prevent="destroyYear(year, index)">
                                 <i class="fa fa-trash-o"></i>
                             </a>
-                            <span class="handle">::</span>
-                            {{year.name}}
                         </li>
-                    </draggable>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -62,7 +59,6 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
 export default {
     data() {
         return {
@@ -78,11 +74,52 @@ export default {
             }
         }
     },
-    components: {
-        draggable
-    },
     mounted () {
         this.getLists()
+    },
+    computed: {
+        sortedMakes () {
+            return this.lists.makes.sort(function(a, b) {
+                if (a.models.length) {
+                    return a.models.sort(function(a, b) {
+                        var nameA = a.name.toUpperCase();
+                        var nameB = b.name.toUpperCase();
+                        if (nameA < nameB) {
+                            return -1;
+                        }
+                        if (nameA > nameB) {
+                            return 1;
+                        }
+                        // names must be equal
+                        return 0;
+                    });
+                }
+                var nameA = a.name.toUpperCase();
+                var nameB = b.name.toUpperCase();
+                if (nameA < nameB) {
+                    return -1;
+                }
+                if (nameA > nameB) {
+                    return 1;
+                }
+                // names must be equal
+                return 0;
+            });
+        },
+        sortedYears () {
+            return this.lists.years.sort(function(a, b) {
+                var nameA = a.name.toUpperCase();
+                var nameB = b.name.toUpperCase();
+                if (nameA > nameB) {
+                    return -1;
+                }
+                if (nameA < nameB) {
+                    return 1;
+                }
+                // names must be equal
+                return 0;
+            });
+        }
     },
     methods: {
         getLists () {
@@ -134,9 +171,6 @@ export default {
                 })
             })
         },
-        updateMakesOrder: function () {
-            axios.put('/api/autoparts/list/makes/order', this.lists.makes)
-        },
         storeModel (make) {
             if (make.newModel) {
                 axios.post('/api/autoparts/list/models/store', {name:make.newModel, makeId:make.id})
@@ -179,20 +213,11 @@ export default {
                 })
             })
         },
-        updateModelsOrder: function (makeId) {
-            var models = [];
-            this.lists.makes.forEach(function(val){
-                if (val.id == makeId) {
-                    models = val.models
-                }
-            })
-            axios.put('/api/autoparts/list/models/order', models)
-        },
         storeYear () {
             if (this.newYear.name) {
                 axios.post('/api/autoparts/list/years/store', this.newYear)
                 .then(response => {
-                    this.lists.years.unshift(response.data)
+                    this.lists.years.push(response.data)
                     this.newYear = {
                         error: {}
                     }
@@ -226,10 +251,7 @@ export default {
                     })
                 })
             })
-        },
-        updateYearsOrder: function () {
-            axios.put('/api/autoparts/list/years/order', this.lists.years)
-        },
+        }
     }
 }
 </script>

@@ -31,20 +31,36 @@
                 <div class="col-md-12">
                     <div class="media" v-for="(item, index) in autoparts.data" @click="editAutopart(item.id, index)">
                         <div class="media-left">
+                            <span class="label pull-right" :class="{
+                                'label-success': item.origin_id == 1,
+                                'label-info': item.origin_id == 2,
+                                'label-primary': item.origin_id == 3
+                                }">
+                                {{item.origin.name}}
+                            </span>
                             <img :src="item.images[0].url_thumbnail" v-if="item.images.length">
                             <i class="fa fa-picture-o fa-5x" v-else></i>
                         </div>
                         <div class="media-body">
-                            <small class="text-muted pull-right hidden-xs hidden-sm">{{item.created_at | moment("LLL")}}</small>
-                            <h5 class="media-heading">{{item.name}}</h5>
-                            <span>{{item.make.name}} - {{item.model.name}} - {{item.year.name}}<br></span>
-                            <span class="lead">${{item.purchase_price}} / <strong>${{item.sale_price}}</strong></span>
+                            <h5 class="media-heading">{{item.id}} {{item.name}}</h5>
+                            <span>
+                                {{item.make.name}} - {{item.model.name}} -
+                                <span v-for="(year, index) in item.years">
+                                    {{year.name}}<span v-if="index+1 < item.years.length">, </span>
+                                </span>
+                            </span>
+                            <br>
+                            <span class="lead">
+                                {{item.purchase_price | currency}} / <strong>{{item.sale_price | currency}}</strong>
+                            </span>
                             <span class="label pull-right" :class="{
                                 'label-primary': item.status_id == 1,
                                 'label-default': item.status_id == 2,
                                 'label-info': item.status_id == 3,
-                                'label-success': item.status_id == 4,
-                                }">{{item.status.name}}</span>
+                                'label-success': item.status_id == 4
+                                }">
+                                {{item.status.name}}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -117,12 +133,12 @@
                                   :on-complete="completeImage"
                                   v-if="user.hasPermission['create-autoparts']">
                             <template slot="clip-uploader-action">
-
+                                <div>
                                     <div class="dz-message btn btn-link btn-upload">
                                         <i class="fa fa-photo fa-lg" aria-hidden="true"></i>
                                         <span v-show="autopart.data.images.length == 0"> ADD PHOTOS</span>
                                     </div>
-
+                                </div>
                             </template>
                         </vue-clip>
                         <hr>
@@ -132,27 +148,30 @@
                             <span class="help-block" v-if="autopart.error.name">{{autopart.error.name[0]}}</span>
                         </div>
                         <div class="form-group" :class="{'has-error': autopart.error.description}">
-                            <textarea class="form-control" rows="3" placeholder="Description"
+                            <textarea class="form-control" rows="2" placeholder="Description"
                                 v-model="autopart.data.description"></textarea>
                             <span class="help-block" v-if="autopart.error.description">{{autopart.error.description[0]}}</span>
                         </div>
                         <div class="row">
-                            <div class="col-xs-4">
+                            <div class="col-xs-6">
                                 <div class="form-group" :class="{'has-error': autopart.error.make_id}">
-                                    <multiselect v-model="autopart.data.make" :options="lists.makes" track-by="id" label="name" selectLabel="" placeholder="Make"></multiselect>
+                                    <multiselect v-model="autopart.data.make" :options="lists.makes" track-by="id" label="name"
+                                        selectLabel="" placeholder="Make"></multiselect>
                                     <span class="help-block" v-if="autopart.error.make_id">{{autopart.error.make_id[0]}}</span>
                                 </div>
                             </div>
-                            <div class="col-xs-4">
+                            <div class="col-xs-6">
                                 <div class="form-group" :class="{'has-error': autopart.error.model_id}">
-                                    <multiselect v-model="autopart.data.model"  :options="filteredModels" track-by="id" label="name" selectLabel="" placeholder="Model"></multiselect>
+                                    <multiselect v-model="autopart.data.model" :options="filteredModels" track-by="id" label="name"
+                                        selectLabel="" placeholder="Model"></multiselect>
                                     <span class="help-block" v-if="autopart.error.model_id">{{autopart.error.model_id[0]}}</span>
                                 </div>
                             </div>
-                            <div class="col-xs-4">
-                                <div class="form-group" :class="{'has-error': autopart.error.year_id}">
-                                    <multiselect v-model="autopart.data.year" :options="lists.years" track-by="id" label="name" selectLabel="" placeholder="Year"></multiselect>
-                                    <span class="help-block" v-if="autopart.error.year_id">{{autopart.error.year_id[0]}}</span>
+                            <div class="col-xs-12">
+                                <div class="form-group" :class="{'has-error': autopart.error.years}">
+                                    <multiselect v-model="autopart.data.years" :options="lists.years" track-by="id" label="name"
+                                        selectLabel="" placeholder="Years" :multiple="true" :close-on-select="false"></multiselect>
+                                    <span class="help-block" v-if="autopart.error.years">{{autopart.error.years[0]}}</span>
                                 </div>
                             </div>
                             <div class="col-xs-12">
@@ -161,28 +180,34 @@
                                     <div class="row">
                                         <div class="col-xs-6">
                                             <div class="form-group" :class="{'has-error': autopart.error.purchase_price}">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-usd fa-lg" aria-hidden="true"></i></span>
-                                                    <input type="number" class="form-control input-lg" placeholder="Purchase"
-                                                        v-model="autopart.data.purchase_price">
-                                                    <span class="help-block" v-if="autopart.error.purchase_price">{{autopart.error.purchase_price[0]}}</span>
-                                                </div>
+                                                <label>Purchase</label>
+                                                <money class="form-control input-lg" v-model="autopart.data.purchase_price" v-bind="money"></money>
+                                                <span class="help-block" v-if="autopart.error.purchase_price">{{autopart.error.purchase_price[0]}}</span>
                                             </div>
                                         </div>
                                         <div class="col-xs-6">
                                             <div class="form-group" :class="{'has-error': autopart.error.sale_price}">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-usd fa-lg" aria-hidden="true"></i></span>
-                                                    <input type="number" class="form-control input-lg" placeholder="Sale"
-                                                        v-model="autopart.data.sale_price">
-                                                    <span class="help-block" v-if="autopart.error.sale_price">{{autopart.error.sale_price[0]}}</span>
-                                                </div>
+                                                <label>Sale</label>
+                                                <money class="form-control input-lg" v-model="autopart.data.sale_price" v-bind="money"></money>
+                                                <span class="help-block" v-if="autopart.error.sale_price">{{autopart.error.sale_price[0]}}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </fieldset>
                             </div>
-                            <div class="col-xs-12">
+                            <div class="col-xs-6">
+                                <div class="form-group" :class="{'has-error': autopart.error.origin_id}">
+                                    <label>Origin</label>
+                                    <select class="form-control text-capitalize"
+                                        v-model="autopart.data.origin_id">
+                                        <option v-for="option in lists.origins" :value="option.id">
+                                            {{ option.name }}
+                                        </option>
+                                    </select>
+                                    <span class="help-block" v-if="autopart.error.origin_id">{{autopart.error.origin_id[0]}}</span>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
                                 <div class="form-group" :class="{'has-error': autopart.error.status_id}">
                                     <label>Status</label>
                                     <select class="form-control text-capitalize"
@@ -194,9 +219,9 @@
                                     <span class="help-block" v-if="autopart.error.status_id">{{autopart.error.status_id[0]}}</span>
                                 </div>
                             </div>
-                            <div class="col-xs-12">
-                                <fieldset v-if="autopart.action == 'edit'">
-                                    <legend>Meta</legend>
+                            <div class="col-xs-12" v-if="autopart.action == 'edit'">
+                                <fieldset>
+                                    <legend>Activity</legend>
                                     <p class="text-muted"><small>Created at </small>{{autopart.data.created_at | moment('lll')}}, <small>by </small>{{autopart.data.creator.name}}</p>
                                 </fieldset>
                             </div>
@@ -229,13 +254,16 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="form-group">
-                                    <multiselect v-model="filters.make" :options="lists.makes" track-by="id" label="name" selectLabel="" placeholder="Make"></multiselect>
+                                    <multiselect v-model="filters.make" :options="lists.makes" track-by="id" label="name"
+                                        selectLabel="" placeholder="Make"></multiselect>
                                 </div>
                                 <div class="form-group">
-                                    <multiselect v-model="filters.model" :options="filteredFiltersModels" track-by="id" label="name" selectLabel="" placeholder="Model"></multiselect>
+                                    <multiselect v-model="filters.model" :options="filteredFiltersModels" track-by="id" label="name"
+                                        selectLabel="" placeholder="Model"></multiselect>
                                 </div>
                                 <div class="form-group">
-                                    <multiselect v-model="filters.year" :options="lists.years" track-by="id" label="name" selectLabel="" placeholder="Year"></multiselect>
+                                    <multiselect v-model="filters.years" :options="lists.years" track-by="id" label="name"
+                                        selectLabel="" placeholder="Years" :multiple="true" :close-on-select="false"></multiselect>
                                 </div>
                             </div>
                         </div>
@@ -269,16 +297,12 @@
     import {SnotifyService} from 'vue-snotify'
     import Multiselect from 'vue-multiselect'
     import { QrcodeReader } from 'vue-qrcode-reader'
+    import money from 'v-money'
+    import Vue2Filters from 'vue2-filters'
 
     export default {
         data() {
             return {
-                user: Laravel.user,
-                filters: {
-                    make: {},
-                    model: {},
-                    year: {},
-                },
                 swiperOption: {
                     loop: true,
                     pagination: '.swiper-pagination'
@@ -301,12 +325,26 @@
                         message: 'You are uploading an invalid file'
                     },
                 },
+                money: {
+                    decimal: '.',
+                    thousands: ',',
+                    prefix: '$ ',
+                    precision: 2,
+                    masked: false
+                },
                 pausedQR: true,
+                user: Laravel.user,
+                filters: {
+                    make: {},
+                    model: {},
+                    years: [],
+                },
                 lists: {
-                    status: [],
                     makes: [],
                     models: [],
-                    years: [],
+                    origins: [],
+                    status: [],
+                    years: []
                 },
                 autoparts: {
                     data: []
@@ -317,7 +355,7 @@
                     data: {
                         make: {},
                         model: {},
-                        year: {},
+                        years: [],
                         images: [],
                         creator: {}
                     },
@@ -338,29 +376,31 @@
             this.getAutoparts()
         },
         computed: {
-            filteredModels: function () {
-                var filteredArray = this.lists.models,
-                    makeId = this.autopart.data.make.id;
-                if(!makeId){
-                    return filteredArray;
+            filteredModels () {
+                var filteredArray = this.lists.models
+                this.autopart.data.model = {}
+
+                if (this.autopart.data.make && this.autopart.data.make.id) {
+                    var makeId = this.autopart.data.make.id
+                    filteredArray = filteredArray.filter(function(item){
+                        return String(item.make_id).indexOf(makeId) !== -1
+                    })
                 }
-                filteredArray = filteredArray.filter(function(item){
-                    return String(item.make_id).indexOf(makeId) !== -1
-                })
+
                 return filteredArray;;
             },
-            filteredFiltersModels: function () {
-                var filteredArray = this.lists.models;
-                if (this.filters.make) {
-                    var makeId = this.filters.make.id;
-                } else {
-                    return filteredArray;
-                }
+            filteredFiltersModels () {
+                var filteredArray = this.lists.models
                 this.filters.model = {}
-                filteredArray = filteredArray.filter(function(item){
-                    return String(item.make_id).indexOf(makeId) !== -1
-                })
-                return filteredArray;;
+
+                if (this.filters.make && this.filters.make.id) {
+                    var makeId = this.filters.make.id
+                    filteredArray = filteredArray.filter(function(item){
+                        return String(item.make_id).indexOf(makeId) !== -1
+                    })
+                }
+
+                return filteredArray
             }
         },
         methods: {
@@ -371,22 +411,26 @@
                 });
             },
             getLists () {
-                axios.get('/api/autoparts/list/status')
-                .then(response => {
-                    this.lists.status = response.data;
-                });
                 axios.get('/api/autoparts/list/makes')
                 .then(response => {
-                    this.lists.makes = response.data;
-                });
+                    this.lists.makes = response.data
+                })
                 axios.get('/api/autoparts/list/models')
                 .then(response => {
-                    this.lists.models = response.data;
-                });
+                    this.lists.models = response.data
+                })
+                axios.get('/api/autoparts/list/origins')
+                .then(response => {
+                    this.lists.origins = response.data
+                })
+                axios.get('/api/autoparts/list/status')
+                .then(response => {
+                    this.lists.status = response.data
+                })
                 axios.get('/api/autoparts/list/years')
                 .then(response => {
-                    this.lists.years = response.data;
-                });
+                    this.lists.years = response.data
+                })
             },
 
             newAutopart () {
@@ -394,8 +438,9 @@
                     data: {
                         make: {},
                         model: {},
-                        year: {},
+                        origin_id: 1,
                         status_id: 1,
+                        years: [],
                         images: [],
                         creator: {},
                     },
@@ -409,7 +454,6 @@
                 var btn = $(e.target).button('loading')
                 this.autopart.data.make_id = this.autopart.data.make ? this.autopart.data.make.id : null;
                 this.autopart.data.model_id = this.autopart.data.model ? this.autopart.data.model.id : null;
-                this.autopart.data.year_id = this.autopart.data.year ? this.autopart.data.year.id : null;
                 axios.post('/api/autoparts/store', this.autopart.data)
                 .then(response => {
                     this.autoparts.data.unshift(response.data);
@@ -417,7 +461,7 @@
                         data: {
                             make: {},
                             model: {},
-                            year: {},
+                            years: [],
                             images: [],
                             creator: {}
                         },
@@ -450,7 +494,7 @@
                 var btn = $(e.target).button('loading')
                 this.autopart.data.make_id = this.autopart.data.make ? this.autopart.data.make.id : null
                 this.autopart.data.model_id = this.autopart.data.model ? this.autopart.data.model.id : null
-                this.autopart.data.year_id = this.autopart.data.year ? this.autopart.data.year.id : null
+
                 axios.put('/api/autoparts/update/'+this.autopart.data.id, this.autopart.data)
                 .then(response => {
                     this.autoparts.data[this.autopart.data.index] = response.data
@@ -458,7 +502,7 @@
                         data: {
                             make: {},
                             model: {},
-                            year: {},
+                            years: [],
                             images: [],
                             creator: {}
                         },
@@ -499,7 +543,7 @@
                             data: {
                                 make: {},
                                 model: {},
-                                year: {},
+                                years: [],
                                 images: [],
                                 creator: {}
                             },
@@ -622,8 +666,18 @@
                 $('#modalFilters').modal('show')
             },
             applyFilters (e) {
+                var years = []
+                if (this.filters.years.length) {
+                    this.filters.years.forEach(function(val){
+                        years.push(val.id)
+                    })
+                }
                 var btn = $(e.target).button('loading')
-                axios.post('/api/autoparts/filter', this.filters)
+                axios.post('/api/autoparts/filter',{
+                    make: this.filters.make,
+                    model: this.filters.model,
+                    years: years
+                })
                 .then(response => {
                     this.autoparts = response.data
                     var btn = $(e.target).button('reset')
@@ -635,7 +689,7 @@
                 this.filters = {
                     make: {},
                     model: {},
-                    year: {}
+                    years: []
                 },
                 this.getAutoparts()
                 var btn = $(e.target).button('reset')

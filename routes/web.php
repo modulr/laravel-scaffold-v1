@@ -70,11 +70,12 @@ Route::middleware('auth')->group(function () {
                 Route::post('/models/store', 'AutopartController@storeModel')->middleware('permission:create-autoparts');
                 Route::delete('/models/destroy/{id}', 'AutopartController@destroyModel')->middleware('permission:delete-autoparts');
                 Route::put('/models/order', 'AutopartController@orderModel')->middleware('permission:update-autoparts');
+                Route::get('/origins', 'AutopartController@origins')->middleware('permission:read-autoparts');
+                Route::get('/status', 'AutopartController@status')->middleware('permission:read-autoparts');
                 Route::get('/years', 'AutopartController@years')->middleware('permission:read-autoparts');
                 Route::post('/years/store', 'AutopartController@storeYear')->middleware('permission:create-autoparts');
                 Route::delete('/years/destroy/{id}', 'AutopartController@destroyYear')->middleware('permission:delete-autoparts');
                 Route::put('/years/order', 'AutopartController@orderYear')->middleware('permission:update-autoparts');
-                Route::get('/status', 'AutopartController@status')->middleware('permission:read-autoparts');
             });
         });
     });

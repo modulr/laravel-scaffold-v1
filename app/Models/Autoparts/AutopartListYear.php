@@ -4,9 +4,8 @@ namespace App\Models\Autoparts;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AutopartStatus extends Model
+class AutopartListYear extends Model
 {
-    protected $table = 'autopart_status';
-
     protected $guarded = ['id'];
+    public $timestamps = false;
 }
