@@ -152,6 +152,13 @@
                                     <span>Projects</span>
                                 </a>
                             </li>
+                            <li :class="{'active': activeLink == 'invoices'}">
+                                <a href="/invoices">
+                                    <i class="mdi mdi-description mdi-3x"></i>
+                                    <br>
+                                    <span>Invoices</span>
+                                </a>
+                            </li>
                             <hr>
                             <li :class="{'active': activeLink == 'users'}" v-if="user.hasPermission['read-users']">
                                 <a href="/users">

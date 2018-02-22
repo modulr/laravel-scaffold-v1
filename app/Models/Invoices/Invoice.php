@@ -21,6 +21,11 @@ class Invoice extends Model
         return Storage::url('files/'.$this->owner_id.'/invoices/'.$this->basename);
     }
 
+    public function owner()
+    {
+        return $this->belongsTo(\App\User::class);
+    }
+
     public function quotes() 
     {
         return $this->belongsToMany(\App\Models\Quotes\Quote::class)->withPivot('amount');

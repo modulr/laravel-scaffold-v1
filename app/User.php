@@ -110,6 +110,11 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Quotes\Quote::class);
     }
 
+    public function invoices()
+    {
+        return $this->hasMany(\App\Models\Invoices\Invoice::class);
+    }
+
     public function comment()
     {
         return $this->hasOne(\App\Models\Comments\ProjectComment::class);

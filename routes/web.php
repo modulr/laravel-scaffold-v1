@@ -291,9 +291,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/widget/quote/charts', 'WidgetController@quoteCharts');
     Route::get('/widget/project/charts', 'WidgetController@projectCharts');
 
-    //Invoices    
+    //Invoices
+    Route::get('/invoices', 'InvoiceController@index');
     Route::get('/invoices/all', 'InvoiceController@all');
     Route::get('/invoices/{id}', 'InvoiceController@show');
     Route::post('/invoices/store', 'InvoiceController@store');
     Route::post('/invoices/file', 'InvoiceController@updateFile');
+    Route::get('/invoices/list/owners', 'InvoiceController@listOwners');
 });

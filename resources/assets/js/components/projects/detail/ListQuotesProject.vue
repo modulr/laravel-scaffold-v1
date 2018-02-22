@@ -19,6 +19,7 @@
             <div class="row">
                 <!-- No items found -->
                 <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loadingQuotes"></vue-simple-spinner>
+                <h3>Quotes</h3>
                 <div v-if="!loadingQuotes">
                     <div class="col-md-12" v-if="quotes.length == 0">
                     <h3>No quotes found.</h3>
@@ -86,7 +87,7 @@
                         <div v-else>
                             <div class="panel panel-default"  v-for="(quote, index) in quotes">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">{{quote.name}}</h3>                                    
+                                    <h3 class="panel-title">{{quote.name}}</h3>           
                                 </div>
                                 <div class="panel-body">
                                     <div class="row">
@@ -157,6 +158,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
+                                            <h6>Invoices</h6>
                                             <table class="table table-hover">
                                                 <thead>
                                                     <th>Id</th>

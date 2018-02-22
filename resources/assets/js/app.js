@@ -88,6 +88,8 @@ Vue.component('events', require('./components/events/Events.vue'));
 Vue.component('event', require('./components/events/Event.vue'));
 Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
 //Invoices
+Vue.component('invoices', require('./components/invoices/Invoices.vue'));
+Vue.component('invoice', require('./components/invoices/detail/Invoice.vue'));
 Vue.component('createInvoice', require('./components/projects/detail/CreateInvoice.vue'));
 Vue.component('quoteInvoiceList', require('./components/projects/detail/QuotesInvoicesList.vue'));
 
