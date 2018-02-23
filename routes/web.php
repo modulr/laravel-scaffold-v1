@@ -32,8 +32,10 @@ Route::group(['namespace' => 'Students'], function() {
             Route::get('/genders', 'StudentController@genders');
             Route::get('/paymentMethods', 'StudentController@paymentMethods');
             Route::get('/positions', 'StudentController@positions');
-            Route::get('/stores', 'StudentController@stores');
             Route::get('/studies', 'StudentController@studies');
+            Route::get('/states', 'StudentController@states');
+            Route::get('/cities/{stateId}', 'StudentController@cities');
+            Route::get('/stores/{cityId}', 'StudentController@stores');
         });
     });
 });

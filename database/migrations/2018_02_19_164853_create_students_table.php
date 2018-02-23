@@ -24,7 +24,7 @@ class CreateStudentsTable extends Migration
             $table->foreign('study_id')->references('id')->on('student_list_studies');
             $table->integer('position_id')->unsigned()->nullable();
             $table->foreign('position_id')->references('id')->on('student_list_positions');
-            $table->string('years_of_seniority')->comment = "years of seniority in position";
+            $table->string('years_in_position')->comment = "years in position";
             $table->integer('certificate_id')->unsigned()->nullable();
             $table->foreign('certificate_id')->references('id')->on('student_list_certificates');
             $table->integer('payment_method_id')->unsigned()->nullable();
@@ -32,6 +32,8 @@ class CreateStudentsTable extends Migration
 
             $table->string('phone')->comment = "Student phone";
             $table->string('cellphone')->comment = "Student cellphone";
+            $table->string('email')->comment = "Student email";
+
             $table->integer('store_id')->unsigned()->nullable();
             $table->foreign('store_id')->references('id')->on('student_list_stores');
 

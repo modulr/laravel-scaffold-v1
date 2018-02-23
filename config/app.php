@@ -180,7 +180,8 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Laravolt\Avatar\ServiceProvider::class,
         Laratrust\LaratrustServiceProvider::class,
-        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -234,7 +235,8 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Avatar'    => Laravolt\Avatar\Facade::class,
         'Laratrust'   => Laratrust\LaratrustFacade::class,
-        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

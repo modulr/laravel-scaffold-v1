@@ -8,18 +8,3 @@ label.required::after {
 .input-lg {
     font-size: 24px !important;
 }
-
-fieldset {
-    border-top: 1px solid $gray-lighter;
-    padding: 20px 0;
-    margin: 20px 0;
-    legend {
-        text-align: center;
-        border: 0;
-        margin: 10px 0;
-        padding: 0 10px;
-        font-size: 12px;
-        color: $gray-light;
-        width: auto;
-    }
-}

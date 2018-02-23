@@ -9,8 +9,10 @@ use App\Models\Students\StudentListCertificate;
 use App\Models\Students\StudentListGender;
 use App\Models\Students\StudentListPaymentMethod;
 use App\Models\Students\StudentListPosition;
-use App\Models\Students\StudentListStore;
 use App\Models\Students\StudentListStudy;
+use App\Models\Students\StudentListState;
+use App\Models\Students\StudentListCity;
+use App\Models\Students\StudentListStore;
 
 class StudentController extends Controller
 {
@@ -23,11 +25,12 @@ class StudentController extends Controller
             'gender_id' => 'required|integer',
             'study_id' => 'required|integer',
             'position_id' => 'required|integer',
-            'years_of_seniority' => 'required|integer',
+            'years_in_position' => 'required|integer',
             'certificate_id' => 'required|integer',
             'payment_method_id' => 'required|integer',
             'cellphone' => 'required|string',
             'phone' => 'required|string',
+            'email' => 'required|string|email|confirmed',
             'store_id' => 'required|integer',
         ]);
 
@@ -38,11 +41,12 @@ class StudentController extends Controller
             'gender_id' => $request->gender_id,
             'study_id' => $request->study_id,
             'position_id' => $request->position_id,
-            'years_of_seniority' => $request->years_of_seniority,
+            'years_in_position' => $request->years_in_position,
             'certificate_id' => $request->certificate_id,
             'payment_method_id' => $request->payment_method_id,
             'cellphone' => $request->cellphone,
             'phone' => $request->phone,
+            'email' => $request->email,
             'store_id' => $request->store_id,
         ]);
     }
@@ -67,13 +71,23 @@ class StudentController extends Controller
         return StudentListPosition::get();
     }
 
-    public function stores()
-    {
-        return StudentListStore::get();
-    }
-
     public function studies()
     {
         return StudentListStudy::get();
+    }
+
+    public function states()
+    {
+        return StudentListState::get();
+    }
+
+    public function cities($stateId)
+    {
+        return StudentListCity::where('state_id', $stateId)->get();
+    }
+
+    public function stores($cityId)
+    {
+        return StudentListStore::where('city_id', $cityId)->get();
     }
 }

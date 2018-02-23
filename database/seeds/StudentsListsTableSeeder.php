@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class StudentsListsTableSeeder extends Seeder
 {
@@ -40,11 +42,6 @@ class StudentsListsTableSeeder extends Seeder
             ['name' => 'Otro']
         ]);
 
-        DB::table('student_list_stores')->insert([
-            ['name' => 'Tienda 1'],
-            ['name' => 'Tienda 2']
-        ]);
-
         DB::table('student_list_studies')->insert([
             ['name' => 'Sin estudios'],
             ['name' => 'Primaria'],
@@ -54,5 +51,37 @@ class StudentsListsTableSeeder extends Seeder
             ['name' => 'Universitario'],
             ['name' => 'Maestría']
         ]);
+
+        // student_list_states & student_list_cities
+        $result = Excel::load(storage_path('app/public/states_cities.csv'), function($reader) {
+            $reader->noHeading();
+        }, 'ISO-8859-1')->get();
+
+        $id = null;
+        foreach ($result as $key => $row) {
+            if ($key != 0) {
+                //info($row[0].' '.$row[1].' '.$row[2].' '.$row[4]);
+                if ($row[0] != $id) {
+                    $id = $row[0];
+                    $stateId = DB::table('student_list_states')->insertGetId([
+                        'name' => $row[1],
+                        'short_name' => $row[2]
+                    ]);
+                    DB::table('student_list_cities')->insert([
+                        'name' => $row[4],
+                        'leader_name' => $row[6],
+                        'state_id' => $stateId
+                    ]);
+                } else {
+                    DB::table('student_list_cities')->insert([
+                        'name' => $row[4],
+                        'leader_name' => $row[6],
+                        'state_id' => $stateId
+                    ]);
+                }
+            }
+        }
+
+        // student_list_stores
     }
 }

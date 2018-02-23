@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-md-8">
                     <p>Formato de registro de alta de alumno para participar en la Universidad Construrama. Cada nuevo Construrama tiene acceso a tres Diplomados de Capacitación.</p>
-                    <p>Información de Inscripción cualquier duda favor de contactar a uconstrurama@cemex.com</p>
+                    <p>Información de Inscripción cualquier duda favor de contactar a <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a></p>
                 </div>
             </div>
             <br><br><br>
@@ -67,11 +67,11 @@
                         </select>
                         <span class="help-block" v-if="student.error.position_id">{{student.error.position_id[0]}}</span>
                     </div>
-                    <div class="form-group" :class="{'has-error': student.error.years_of_seniority}">
+                    <div class="form-group" :class="{'has-error': student.error.years_in_position}">
                         <label><span class="text-danger">*</span> Años de antiguedad en el puesto</label>
                         <input type="number" class="form-control"
-                            v-model="student.data.years_of_seniority">
-                        <span class="help-block" v-if="student.error.years_of_seniority">{{student.error.years_of_seniority[0]}}</span>
+                            v-model="student.data.years_in_position">
+                        <span class="help-block" v-if="student.error.years_in_position">{{student.error.years_in_position[0]}}</span>
                     </div>
                     <div class="form-group" :class="{'has-error': student.error.certificate_id}">
                         <label><span class="text-danger">*</span> Diplomado al que Aplica</label>
@@ -110,13 +110,25 @@
                             v-model="student.data.cellphone">
                         <span class="help-block" v-if="student.error.cellphone">{{student.error.cellphone[0]}}</span>
                     </div>
-                </div>
-                <div class="col-md-6">
                     <div class="form-group" :class="{'has-error': student.error.phone}">
                         <label><span class="text-danger">*</span> Teléfono Fijo</label>
                         <input type="string" class="form-control"
                             v-model="student.data.phone">
                         <span class="help-block" v-if="student.error.phone">{{student.error.phone[0]}}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" :class="{'has-error': student.error.email}">
+                        <label><span class="text-danger">*</span> Correo electrónico</label>
+                        <input type="email" class="form-control"
+                            v-model="student.data.email">
+                        <span class="help-block" v-if="student.error.email">{{student.error.email[0]}}</span>
+                    </div>
+                    <div class="form-group" :class="{'has-error': student.error.email_confirmation}">
+                        <label><span class="text-danger">*</span> Confirma correo electrónico</label>
+                        <input type="email" class="form-control"
+                            v-model="student.data.email_confirmation">
+                        <span class="help-block" v-if="student.error.email_confirmation">{{student.error.email_confirmation[0]}}</span>
                     </div>
                 </div>
             </div>
@@ -126,9 +138,35 @@
                     <h4>Informacón Construrama</h4>
                     <br>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <div class="form-group" :class="{'has-error': student.error.state_id}">
+                        <label><span class="text-danger">*</span> Estado</label>
+                        <select class="form-control text-capitalize"
+                            v-model="student.data.state_id">
+                            <option v-for="option in lists.states"
+                                :value="option.id">
+                                {{ option.name }}
+                            </option>
+                        </select>
+                        <span class="help-block" v-if="student.error.state_id">{{student.error.state_id[0]}}</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" :class="{'has-error': student.error.city_id}">
+                        <label><span class="text-danger">*</span> Ciudad</label>
+                        <select class="form-control text-capitalize"
+                            v-model="student.data.city_id">
+                            <option v-for="option in this.lists.cities"
+                                :value="option.id">
+                                {{ option.name }} - {{ option.leader_name }}
+                            </option>
+                        </select>
+                        <span class="help-block" v-if="student.error.city_id">{{student.error.city_id[0]}}</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="form-group" :class="{'has-error': student.error.store_id}">
-                        <label><span class="text-danger">*</span> Construrama</label>
+                        <label><span class="text-danger">*</span> Construrama ({{this.lists.stores.length}})</label>
                         <select class="form-control text-capitalize"
                             v-model="student.data.store_id">
                             <option v-for="option in lists.stores"
@@ -140,19 +178,20 @@
                     </div>
                 </div>
             </div>
-            <hr>
+            <br><br>
             <div class="row">
                 <div class="col-md-12 text-right">
                     <button type="button" class="btn btn-success"
                             @click="registerStudent">Guardar</button>
                 </div>
             </div>
-            <br><br>
+            <br><br><br>
         </div>
     </div>
 </template>
 
 <script>
+import swal from 'sweetalert';
 export default {
     data() {
         return {
@@ -161,8 +200,10 @@ export default {
                 genders: [],
                 paymentMethods: [],
                 positions: [],
-                stores: [],
-                studies: []
+                studies: [],
+                states: [],
+                cities: [],
+                stores: []
             },
             student: {
                 data: {},
@@ -172,6 +213,24 @@ export default {
     },
     mounted () {
         this.getLists()
+    },
+    watch: {
+        'student.data.state_id' (val) {
+            if (val) {
+                axios.get('/api/students/lists/cities/' + val)
+                .then(response => {
+                    this.lists.cities = response.data
+                })
+            }
+        },
+        'student.data.city_id' (val) {
+            if (val) {
+                axios.get('/api/students/lists/stores/' + val)
+                .then(response => {
+                    this.lists.stores = response.data
+                })
+            }
+        }
     },
     methods: {
         getLists () {
@@ -191,13 +250,13 @@ export default {
             .then(response => {
                 this.lists.positions = response.data
             })
-            axios.get('/api/students/lists/stores')
-            .then(response => {
-                this.lists.stores = response.data
-            })
             axios.get('/api/students/lists/studies')
             .then(response => {
                 this.lists.studies = response.data
+            })
+            axios.get('/api/students/lists/states')
+            .then(response => {
+                this.lists.states = response.data
             })
         },
         registerStudent (e) {
@@ -209,6 +268,7 @@ export default {
                     error: {}
                 };
                 var btn = $(e.target).button('reset')
+                swal("Registro Exitoso", "Tu registro se realizo de manera exitosa", "success")
             })
             .catch(error => {
                 this.student.error = error.response.data;
