@@ -45,6 +45,9 @@ class CreateAutopartsTable extends Migration
             $table->integer('order')->comment = "Order show the image";
             $table->integer('autopart_id')->unsigned()->comment = "Autopart to belongs";
             $table->foreign('autopart_id')->references('id')->on('autoparts');
+            $table->unsignedInteger('created_by')->nullable()->default(null);
+            $table->unsignedInteger('updated_by')->nullable()->default(null);
+            $table->unsignedInteger('deleted_by')->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -65,8 +68,9 @@ class CreateAutopartsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('autopart_years');
-        Schema::dropIfExists('autopart_images');
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('autoparts');
+        Schema::dropIfExists('autopart_images');
+        Schema::dropIfExists('autopart_year');
     }
 }

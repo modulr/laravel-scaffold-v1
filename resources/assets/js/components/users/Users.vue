@@ -86,11 +86,13 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <label class="switch">
-                            <input type="checkbox" v-model="userNew.active">
-                            <span class="slider round"></span>
-                        </label>
-                        <span class="switch-text">Active</span>
+                        <div class="switch">
+                            <label class="switch-label">
+                                <input type="checkbox" v-model="userNew.active">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="switch-text">Active</span>
+                        </div>
                     </div>
                     <div class="modal-body">
                         <div class="modal-avatar">
@@ -165,11 +167,13 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <label class="switch">
-                            <input type="checkbox" v-model="userEdit.active">
-                            <span class="slider round"></span>
-                        </label>
-                        <span class="switch-text">Active</span>
+                        <div class="switch">
+                            <label class="switch-label">
+                                <input type="checkbox" v-model="userEdit.active">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="switch-text">Active</span>
+                        </div>
                     </div>
                     <div class="modal-body">
                         <div class="modal-avatar">

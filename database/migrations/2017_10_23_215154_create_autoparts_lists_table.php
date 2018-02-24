@@ -16,6 +16,11 @@ class CreateAutopartsListsTable extends Migration
         Schema::create('autopart_list_makes', function (Blueprint $table) {
             $table->increments('id')->comment = "The make ID";
             $table->string('name')->comment = "Name make";
+            $table->unsignedInteger('created_by')->nullable()->default(null);
+            $table->unsignedInteger('updated_by')->nullable()->default(null);
+            $table->unsignedInteger('deleted_by')->nullable()->default(null);
+            $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('autopart_list_models', function (Blueprint $table) {
@@ -23,22 +28,44 @@ class CreateAutopartsListsTable extends Migration
             $table->string('name')->comment = "Name model";
             $table->integer('make_id')->unsigned();
             $table->foreign('make_id')->references('id')->on('autopart_list_makes');
-        });
-
-        Schema::create('autopart_list_origins', function (Blueprint $table) {
-            $table->increments('id')->comment = "The origin ID";
-            $table->string('name')->unique()->comment = "Name origin";
-        });
-
-        Schema::create('autopart_list_status', function (Blueprint $table) {
-            $table->increments('id')->comment = "The status ID";
-            $table->string('name')->unique()->comment = "Name status";
+            $table->unsignedInteger('created_by')->nullable()->default(null);
+            $table->unsignedInteger('updated_by')->nullable()->default(null);
+            $table->unsignedInteger('deleted_by')->nullable()->default(null);
+            $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('autopart_list_years', function (Blueprint $table) {
             $table->increments('id')->comment = "The year ID";
             $table->string('name')->comment = "Name year";
+            $table->unsignedInteger('created_by')->nullable()->default(null);
+            $table->unsignedInteger('updated_by')->nullable()->default(null);
+            $table->unsignedInteger('deleted_by')->nullable()->default(null);
+            $table->timestamps();
+            $table->softDeletes();
         });
+
+        Schema::create('autopart_list_origins', function (Blueprint $table) {
+            $table->increments('id')->comment = "The origin ID";
+            $table->string('name')->unique()->comment = "Name origin";
+            $table->unsignedInteger('created_by')->nullable()->default(null);
+            $table->unsignedInteger('updated_by')->nullable()->default(null);
+            $table->unsignedInteger('deleted_by')->nullable()->default(null);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('autopart_list_status', function (Blueprint $table) {
+            $table->increments('id')->comment = "The status ID";
+            $table->string('name')->unique()->comment = "Name status";
+            $table->unsignedInteger('created_by')->nullable()->default(null);
+            $table->unsignedInteger('updated_by')->nullable()->default(null);
+            $table->unsignedInteger('deleted_by')->nullable()->default(null);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+
     }
 
     /**
@@ -48,10 +75,11 @@ class CreateAutopartsListsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('autopart_list_makes');
         Schema::dropIfExists('autopart_list_models');
+        Schema::dropIfExists('autopart_list_years');
         Schema::dropIfExists('autopart_list_origins');
         Schema::dropIfExists('autopart_list_status');
-        Schema::dropIfExists('autopart_list_years');
     }
 }

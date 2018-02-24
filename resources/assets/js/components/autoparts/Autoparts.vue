@@ -83,7 +83,7 @@
                         <div class="pull-right">
                             <button type="button" class="btn btn-link"
                                     v-if="user.hasPermission['read-autoparts'] && autopart.action == 'edit'"
-                                    @click="printQR(autopart.data.qr)">
+                                    @click="printQR(autopart.data)">
                                     <i class="fa fa-print fa-lg"></i>
                             </button>
                             <button type="button" class="btn btn-link"
@@ -156,14 +156,14 @@
                             <div class="col-xs-6">
                                 <div class="form-group" :class="{'has-error': autopart.error.make_id}">
                                     <multiselect v-model="autopart.data.make" :options="lists.makes" track-by="id" label="name"
-                                        selectLabel="" placeholder="Make"></multiselect>
+                                        selectLabel="" placeholder="Make" @remove="autopart.data.make={}"></multiselect>
                                     <span class="help-block" v-if="autopart.error.make_id">{{autopart.error.make_id[0]}}</span>
                                 </div>
                             </div>
                             <div class="col-xs-6">
                                 <div class="form-group" :class="{'has-error': autopart.error.model_id}">
                                     <multiselect v-model="autopart.data.model" :options="filteredModels" track-by="id" label="name"
-                                        selectLabel="" placeholder="Model"></multiselect>
+                                        selectLabel="" placeholder="Model" @remove="autopart.data.model={}"></multiselect>
                                     <span class="help-block" v-if="autopart.error.model_id">{{autopart.error.model_id[0]}}</span>
                                 </div>
                             </div>
@@ -175,7 +175,7 @@
                                 </div>
                             </div>
                             <div class="col-xs-12">
-                                <fieldset>
+                                <fieldset class="separator">
                                     <legend>Price</legend>
                                     <div class="row">
                                         <div class="col-xs-6">
@@ -220,7 +220,7 @@
                                 </div>
                             </div>
                             <div class="col-xs-12" v-if="autopart.action == 'edit'">
-                                <fieldset>
+                                <fieldset class="separator">
                                     <legend>Activity</legend>
                                     <p class="text-muted"><small>Created at </small>{{autopart.data.created_at | moment('lll')}}, <small>by </small>{{autopart.data.creator.name}}</p>
                                 </fieldset>
@@ -250,23 +250,56 @@
                     </div>
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <p class="lead">Filters</p>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group">
-                                    <multiselect v-model="filters.make" :options="lists.makes" track-by="id" label="name"
-                                        selectLabel="" placeholder="Make"></multiselect>
-                                </div>
-                                <div class="form-group">
-                                    <multiselect v-model="filters.model" :options="filteredFiltersModels" track-by="id" label="name"
-                                        selectLabel="" placeholder="Model"></multiselect>
-                                </div>
-                                <div class="form-group">
-                                    <multiselect v-model="filters.years" :options="lists.years" track-by="id" label="name"
-                                        selectLabel="" placeholder="Years" :multiple="true" :close-on-select="false"></multiselect>
+                        <fieldset class="separator">
+                            <legend>Filters</legend>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <multiselect v-model="filters.make" :options="lists.makes" track-by="id" label="name"
+                                            selectLabel="" placeholder="Make" @remove="filters.make={}"></multiselect>
+                                    </div>
+                                    <div class="form-group">
+                                        <multiselect v-model="filters.model" :options="filteredFiltersModels" track-by="id" label="name"
+                                            selectLabel="" placeholder="Model" @remove="filters.model={}"></multiselect>
+                                    </div>
+                                    <div class="form-group">
+                                        <multiselect v-model="filters.years" :options="lists.years" track-by="id" label="name"
+                                            selectLabel="" placeholder="Years" :multiple="true" :close-on-select="false"></multiselect>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </fieldset>
+                        <fieldset class="separator">
+                            <legend>Status</legend>
+                            <div class="switch switch-block">
+                                <label class="switch-label">
+                                    <input type="checkbox" v-model="filters.available">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="switch-text">Available</span>
+                            </div>
+                            <div class="switch switch-block">
+                                <label class="switch-label">
+                                    <input type="checkbox" v-model="filters.notAvailable">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="switch-text">Not Available</span>
+                            </div>
+                            <div class="switch switch-block">
+                                <label class="switch-label">
+                                    <input type="checkbox" v-model="filters.separated">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="switch-text">Separated</span>
+                            </div>
+                            <div class="switch switch-block">
+                                <label class="switch-label">
+                                    <input type="checkbox" v-model="filters.sold">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="switch-text">Sold</span>
+                            </div>
+                        </fieldset>
                     </div>
                 </div>
             </div>
@@ -277,10 +310,10 @@
                 <div class="modal-content">
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <qrcode-reader @decode="searchQR" :paused="pausedQR">
+                        <qrcode-reader @decode="searchQR" v-if="showQRSearch">
                             <div class="qr-scanner-back"></div>
                             <div class="qr-scanner"><em></em><span></span></div>
-                            <p class="qr-error text-danger" v-if="this.autopart.error.qr">{{this.autopart.error.qr[0]}}</p>
+                            <p class="qr-error text-danger">{{errorQRSearch}}</p>
                         </qrcode-reader>
                     </div>
                 </div>
@@ -332,12 +365,17 @@
                     precision: 2,
                     masked: false
                 },
-                pausedQR: true,
+                showQRSearch: false,
+                errorQRSearch: '',
                 user: Laravel.user,
                 filters: {
                     make: {},
                     model: {},
                     years: [],
+                    available: true,
+                    notAvailable: true,
+                    separated: true,
+                    sold: true
                 },
                 lists: {
                     makes: [],
@@ -374,31 +412,32 @@
         mounted () {
             this.getLists()
             this.getAutoparts()
+            $('#modalSearchQR').on('hidden.bs.modal', this.hideSearchQR)
         },
         computed: {
             filteredModels () {
                 var filteredArray = this.lists.models
-                this.autopart.data.model = {}
 
-                if (this.autopart.data.make && this.autopart.data.make.id) {
-                    var makeId = this.autopart.data.make.id
-                    filteredArray = filteredArray.filter(function(item){
-                        return String(item.make_id).indexOf(makeId) !== -1
-                    })
-                }
+                if (this.autopart.data.make.id != this.autopart.data.model.make_id)
+                    this.autopart.data.model = {}
+
+                var makeId = this.autopart.data.make.id
+                filteredArray = filteredArray.filter(function(item) {
+                    return String(item.make_id).indexOf(makeId) !== -1
+                })
 
                 return filteredArray;;
             },
             filteredFiltersModels () {
                 var filteredArray = this.lists.models
-                this.filters.model = {}
 
-                if (this.filters.make && this.filters.make.id) {
-                    var makeId = this.filters.make.id
-                    filteredArray = filteredArray.filter(function(item){
-                        return String(item.make_id).indexOf(makeId) !== -1
-                    })
-                }
+                if (this.filters.make.id != this.filters.model.make_id)
+                    this.filters.model = {}
+
+                var makeId = this.filters.make.id
+                filteredArray = filteredArray.filter(function(item)  {
+                    return String(item.make_id).indexOf(makeId) !== -1
+                })
 
                 return filteredArray
             }
@@ -558,12 +597,27 @@
                 });
             },
 
-            printQR (qr) {
+            printQR (autopart) {
                 var content =
                 `<html>
-                    <head></head>
+                    <head>
+                        <style>
+                            h1 {
+                                font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+                                display:inline-block;
+                                font-size: 150px;
+                                padding: 0;
+                                margin: 0;
+                            }
+                        </style>
+                    </head>
                     <body onload="window.focus(); window.print(); window.close();">
-                        <img src="${qr}">
+                        <table>
+                            <tr>
+                                <td><img src="${autopart.qr}"></td>
+                                <td><h1>${autopart.id}</h1></td>
+                            </tr>
+                        </table>
                     </body>
                 </html>`
 
@@ -572,11 +626,14 @@
                 myWindow.document.close();
             },
             showSearchQR () {
-                this.pausedQR = false
+                this.showQRSearch = true
                 $('#modalSearchQR').modal('show')
             },
+            hideSearchQR () {
+                this.errorQRSearch = ''
+                this.showQRSearch = false
+            },
             searchQR (id) {
-                this.pausedQR = true
                 axios.get('/api/autoparts/show/'+id)
                 .then(response => {
                     if (response.data) {
@@ -592,8 +649,7 @@
                         $('#modalSearchQR').modal('hide')
                         $('#modalAutopart').modal('show')
                     } else {
-                        this.autopart.error.qr = ['The Autopart do not exist!']
-                        this.pausedQR = false
+                        this.errorQRSearch = 'The Autopart do not exist!'
                     }
 
                 })
@@ -676,7 +732,11 @@
                 axios.post('/api/autoparts/filter',{
                     make: this.filters.make,
                     model: this.filters.model,
-                    years: years
+                    years: years,
+                    available: this.filters.available,
+                    notAvailable: this.filters.notAvailable,
+                    separated: this.filters.separated,
+                    sold: this.filters.sold
                 })
                 .then(response => {
                     this.autoparts = response.data
@@ -689,7 +749,11 @@
                 this.filters = {
                     make: {},
                     model: {},
-                    years: []
+                    years: [],
+                    available: true,
+                    notAvailable: true,
+                    separated: true,
+                    sold: true
                 },
                 this.getAutoparts()
                 var btn = $(e.target).button('reset')

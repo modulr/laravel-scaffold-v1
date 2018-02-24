@@ -44,12 +44,33 @@ class AutopartController extends Controller
             });
         }
 
+        $status = [];
+
+        info($request);
+
+        if ($request->available)
+            array_push($status, 1);
+
+        if ($request->notAvailable)
+            array_push($status, 2);
+
+        if ($request->separated)
+            array_push($status, 3);
+
+        if ($request->sold)
+            array_push($status, 4);
+
+        if (count($status))
+            $query->whereIn('status_id', $status);
+
         $autoparts = $query->orderBy('id', 'desc')
                         ->paginate(50);
 
         $autoparts->load(['make', 'model', 'years', 'origin', 'status', 'images' => function ($query) {
                             $query->orderBy('order', 'asc');
                         }]);
+
+        info($query->toSql());
 
         return $autoparts;
     }

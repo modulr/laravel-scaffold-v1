@@ -1,4 +1,18 @@
 .switch {
+  &.switch-block {
+    display: block;
+    margin-bottom: 15px;
+    .switch-label {
+      float: right;
+    }
+    .switch-text {
+      margin-left: 0;
+    }
+  }
+}
+
+
+.switch-label {
   position: relative;
   display: inline-block;
   width: 40px;
@@ -6,7 +20,7 @@
   margin-bottom: -7px;
 }
 
-.switch input {display:none;}
+.switch-label input {display:none;}
 
 .slider {
   position: absolute;

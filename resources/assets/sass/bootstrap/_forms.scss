@@ -9,7 +9,7 @@ label.required::after {
     font-size: 24px !important;
 }
 
-fieldset {
+fieldset.separator {
     border-top: 1px solid $gray-lighter;
     padding: 20px 0;
     margin: 20px 0;
