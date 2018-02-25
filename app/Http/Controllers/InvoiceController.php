@@ -72,11 +72,6 @@ class InvoiceController extends Controller
         // return response()->json($data);
     }
 
-    public function all(Request $request)
-    {
-        return Invoice::with('invocie_status')->get();
-    }
-
     public function updateFile(Request $request)
     {
         $upload = $this->upload($request->file);
@@ -95,10 +90,10 @@ class InvoiceController extends Controller
     private function upload($file)
     {
         $path = $file->store('files/'.Auth::id().'/invoices');
-  
+
         $infoFile = pathinfo($path);
         Storage::put('files/'.Auth::id().'/'.$infoFile['basename'], $file);
-  
+
         return $infoFile;
     }
 

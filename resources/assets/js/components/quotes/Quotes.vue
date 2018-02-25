@@ -141,7 +141,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(quote, index) in quotes">
+                  <tr v-for="(quote, index) in quotes" :key="quote.id">
                     <td> {{ quote.id }} </td>
                     <td> {{ quote.name }} </td>
                     <td>
