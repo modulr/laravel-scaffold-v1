@@ -296,6 +296,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/invoices/all', 'InvoiceController@all');
     Route::get('/invoices/{id}', 'InvoiceController@show');
     Route::post('/invoices/store', 'InvoiceController@store');
-    Route::post('/invoices/file', 'InvoiceController@updateFile');
+    Route::post('/invoices/file/temp', 'InvoiceController@uploadImageTemp');
     Route::get('/invoices/list/owners', 'InvoiceController@listOwners');
 });

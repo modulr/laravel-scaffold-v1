@@ -8,6 +8,7 @@ use Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\Invoices\Invoice;
 use Storage;
+use App\Http\Helpers\Upload;
 
 class InvoiceController extends Controller
 {
@@ -56,45 +57,34 @@ class InvoiceController extends Controller
         'owner_id' => Auth::id(),
         'amount' => $request->amount,
         'description' => $request->description,
-        'invoice_status_id' => $request->invoice_status_id,        
-        'name' => "dummy",
-        'basename' => "dummy"]);        
+        'invoice_status_id' => 1,        
+        'name' => $request->name,
+        'basename' => $request->basename]);        
                 
         foreach ($request->quotes as $quote) {                           
             DB::table('invoice_quote')->insert([
                 ['invoice_id' => $invoice->id, 'quote_id' => $quote['id'], 'amount' => $quote['invoice_amount']]
             ]);
-        }      
+        }
+
+        if ($request->pathFile) {
+            $upload = new Upload();
+            $upload->move($request->pathFile, 'files/'.Auth::id().'/invoices/'.$invoice->id)
+                    ->getData();
+        }
 
         return $invoice->load($this->relationships);
-        // $data = $request->all();
-
-        // return response()->json($data);
     }
 
-    public function updateFile(Request $request)
+    // Images
+    public function uploadImageTemp(Request $request)
     {
-        $upload = $this->upload($request->file);
-        $request->name = $request->file->getClientOriginalName();
-        $request->basename = $upload['basename'];
-        $request->extension = $upload['extension'];
-        $q = Invoice::find($request->invoice_id);
-        $q->name = $request->name;
-        $q->basename = $request->basename;
-        $q->save();
-        $data = $request->all();
-
-        return response()->json($data);
-    }
-
-    private function upload($file)
-    {
-        $path = $file->store('files/'.Auth::id().'/invoices');
-
-        $infoFile = pathinfo($path);
-        Storage::put('files/'.Auth::id().'/'.$infoFile['basename'], $file);
-
-        return $infoFile;
+        $this->validate($request, [
+            'file' => 'required|max:10000',
+        ]);
+        $upload = new Upload();
+        $uploadData = $upload->uploadTemp($request->file)->getData();
+        return $uploadData;
     }
 
     /**

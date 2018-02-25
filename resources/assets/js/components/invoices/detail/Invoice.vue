@@ -25,6 +25,12 @@
                   <a :href="'/profile/'+invoice.owner.id">{{invoice.owner.name}}</a>
                 </dt>
               </dl>
+              <dl>
+                <dd>File</dd>
+                <dt>
+                  <a :href="invoice.url" target="_blank">Inspect File</a>
+                </dt>
+              </dl>
             </div>
             <div class="col-xs-4">
               <dl>

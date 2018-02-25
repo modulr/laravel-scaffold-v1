@@ -18,7 +18,7 @@ class Invoice extends Model
 
     public function getUrlAttribute()
     {
-        return Storage::url('files/'.$this->owner_id.'/invoices/'.$this->basename);
+        return Storage::url('files/'.$this->owner_id.'/invoices/'.$this->id.'/'.$this->basename);
     }
 
     public function owner()

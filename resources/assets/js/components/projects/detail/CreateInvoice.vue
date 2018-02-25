@@ -53,16 +53,15 @@
                                 <span class="help-block" v-if="invoice.quotes[index].remainder < invoice.quotes[index].invoice_amount">El total asignado a la cotización no puede ser mayor al restante por facturar: {{ invoice.quotes[index].remainder }}</span>                                
                             </div>                            
                         </div>
-                        <!-- <div class="form-group">
+                        <div class="form-group">
                             <div class="col-md-12">
-                                <dropzone id="myVueDropzoneInvoice" ref="myVueDropzoneInvoice"
-                                    url="/invoices/file" :use-font-awesome=true
+                                <dropzone id="invoiceTempDropzone" ref="invoiceTempDropzone"
+                                    url="/invoices/file/temp" :use-font-awesome=true
                                     :use-custom-dropzone-options=true :dropzoneOptions="dzOptions"
-                                    v-on:vdropzone-sending="addingParams"
-                                    v-on:vdropzone-success="uploadSuccess">               
+                                    v-on:vdropzone-success="uploadSuccess">
                                 </dropzone>
                             </div>
-                        </div>                         -->
+                        </div>                        
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -88,11 +87,12 @@ export default {
             error: {},
             dzOptions: {
                 acceptedFileTypes: '.pdf',
-                headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                autoProcessQueue: false
+                headers: {'X-CSRF-TOKEN': Laravel.csrfToken}
             },       
             isValid: false,
-            invoice: {}  
+            invoice: {
+                images: []
+            },
         }
     },
     computed: {
@@ -126,7 +126,6 @@ export default {
                     axios.get(`/quote/all?project=${this.project.id}`)
                     .then(response => {
                         this.$parent.quotes = response.data.quotes.data
-                        console.log(this.$parent.quotes)
                         this.invoice = {}                        
                     });                    
                     var btn = $(e.target).button('reset')
@@ -134,29 +133,13 @@ export default {
                 })
                 .catch(error => {
                     this.error = error.response.data;
-                    console.log(error.response.data);
                     var btn = $(e.target).button('reset')
                 });      
         },
-        addingParams (file, xhr, formData) {
-            formData.append('invoice_id', this.invoice.id);
-            // formData.append('currency', this.invoice.currency);
-            // formData.append('description', this.invoice.description);
-            // let quotes = this.invoice.quotes.map(item => item.id)            
-            // formData.append('quotes', quotes);
-            // console.log('agregando...')
-        },        
         uploadSuccess (file, response) {
-            console.log(response)
-            console.log("enviado")
-            // this.invoice.quotes.forEach(item => {
-            //     this.$parent.quotes.map(quote => {
-            //         if (quote.id === item.id) {
-            //             quote.invoices.push(response)
-            //         }
-            //     })                
-            // })
-            $('#modalAdd').modal('hide')
+            this.invoice.pathFile = response.path
+            this.invoice.basename = response.basename
+            this.invoice.name = response.name
         },
     }
 }
