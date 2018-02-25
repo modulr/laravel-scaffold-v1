@@ -144,9 +144,15 @@
                   <tr v-for="(quote, index) in quotes">
                     <td> {{ quote.id }} </td>
                     <td> {{ quote.name }} </td>
-                    <td> {{ quote.project.name }} </td>
-                    <td> {{ quote.designer.name }} </td>
-                    <td> {{ quote.salesman.name }} </td>
+                    <td>
+                      <span v-if="quote.project">{{ quote.project.name }}</span>
+                    </td>
+                    <td>
+                      <span v-if="quote.designer">{{ quote.designer.name }}</span>
+                    </td>
+                    <td>
+                      <span v-if="quote.salesman">{{ quote.salesman.name }}</span>
+                    </td>
                     <td> {{ quote.amount | currency }} </td>
                     <td> {{ quote.currency.title }} </td>
                     <td> {{ quote.request_date | date }} </td>
