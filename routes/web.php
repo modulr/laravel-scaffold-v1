@@ -77,6 +77,14 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/years/destroy/{id}', 'AutopartController@destroyYear')->middleware('permission:delete-autoparts');
                 Route::put('/years/order', 'AutopartController@orderYear')->middleware('permission:update-autoparts');
             });
+            // Comments
+            Route::group(['prefix' => 'comments'], function() {
+                Route::get('/all', 'CommentController@index');
+                Route::get('/show/{id}', 'CommentController@show');
+                Route::get('/store', 'CommentController@store');
+                Route::get('/update/{id}', 'CommentController@update');
+                Route::get('/destroy/{id}', 'CommentController@destroy');
+            });
         });
     });
 

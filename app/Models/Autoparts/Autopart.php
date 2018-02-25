@@ -50,4 +50,9 @@ class Autopart extends Model
     {
         return $this->belongsToMany(AutopartListYear::class, 'autopart_year', 'autopart_id', 'year_id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

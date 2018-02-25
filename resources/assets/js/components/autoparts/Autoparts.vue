@@ -219,6 +219,19 @@
                                     <span class="help-block" v-if="autopart.error.status_id">{{autopart.error.status_id[0]}}</span>
                                 </div>
                             </div>
+                            <div class="col-xs-12">
+                                <fieldset>
+                                    <legend>Comments</legend>
+                                </fieldset>
+                                <div class="media">
+                                    <pre>{{autopart.comments[0]}}</pre>
+                                    <img class="mr-3" src="" alt="Generic placeholder image">
+                                    <div class="media-body">
+                                        <h5 class="mt-0">Media heading</h5>
+                                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-xs-12" v-if="autopart.action == 'edit'">
                                 <fieldset>
                                     <legend>Activity</legend>
@@ -357,6 +370,7 @@
                         model: {},
                         years: [],
                         images: [],
+                        comments: [],
                         creator: {}
                     },
                     action: 'new',
