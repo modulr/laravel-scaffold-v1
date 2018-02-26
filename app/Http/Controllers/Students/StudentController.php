@@ -16,6 +16,19 @@ use App\Models\Students\StudentListStore;
 
 class StudentController extends Controller
 {
+    public function all()
+    {
+        return Student::with(
+                'certificate',
+                'gender',
+                'paymentMethod',
+                'position',
+                'store',
+                'study')
+            ->latest()
+            ->get();
+    }
+
     public function register (Request $request)
     {
         $this->validate($request, [

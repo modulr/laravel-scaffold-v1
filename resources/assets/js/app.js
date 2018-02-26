@@ -62,6 +62,7 @@ Vue.component('autoparts', require('./components/autoparts/Autoparts.vue'));
 Vue.component('config', require('./components/autoparts/Config.vue'));
 // Students
 Vue.component('students-register', require('./components/students/Register.vue'));
+Vue.component('students-list', require('./components/students/List.vue'));
 
 
 const app = new Vue({

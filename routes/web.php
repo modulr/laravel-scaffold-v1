@@ -52,6 +52,13 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/notifications/markAsRead', 'NotificationController@markAsRead');
 
+    // Students
+    Route::group(['namespace' => 'Students'], function() {
+        Route::group(['prefix' => 'api/students'], function() {
+            Route::get('/all', 'StudentController@all');
+        });
+    });
+
     // Autoparts
     Route::group(['namespace' => 'Autoparts'], function() {
         Route::group(['prefix' => 'autoparts'], function() {

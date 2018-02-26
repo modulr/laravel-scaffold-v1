@@ -14,32 +14,32 @@ class Student extends Model
     protected $dates = ['deleted_at'];
     protected $guarded = ['id'];
 
-    public function certificates()
+    public function certificate()
     {
         return $this->belongsTo(StudentListCertificate::class);
     }
 
-    public function genders()
+    public function gender()
     {
         return $this->belongsTo(StudentListGender::class);
     }
 
-    public function paymentMethods()
+    public function paymentMethod()
     {
         return $this->belongsTo(StudentListPaymentMethod::class);
     }
 
-    public function positions()
+    public function position()
     {
         return $this->belongsTo(StudentListPosition::class);
     }
 
-    public function stores()
+    public function store()
     {
         return $this->belongsTo(StudentListStore::class);
     }
 
-    public function studies()
+    public function study()
     {
         return $this->belongsTo(StudentListStudy::class);
     }
