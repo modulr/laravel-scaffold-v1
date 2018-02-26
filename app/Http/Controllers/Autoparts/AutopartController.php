@@ -46,8 +46,6 @@ class AutopartController extends Controller
 
         $status = [];
 
-        info($request);
-
         if ($request->available)
             array_push($status, 1);
 
@@ -69,8 +67,6 @@ class AutopartController extends Controller
         $autoparts->load(['make', 'model', 'years', 'origin', 'status', 'images' => function ($query) {
                             $query->orderBy('order', 'asc');
                         }]);
-
-        info($query->toSql());
 
         return $autoparts;
     }
