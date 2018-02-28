@@ -32,13 +32,13 @@ class StudentsListsTableSeeder extends Seeder
         ]);
 
         DB::table('student_list_positions')->insert([
-            ['name' => 'Administrativo'],
-            ['name' => 'Director'],
-            ['name' => 'Gerente o Administrador'],
-            ['name' => 'Jefe de Área'],
             ['name' => 'Operativo'],
+            ['name' => 'Administrativo'],
+            ['name' => 'Representante de Ventas o Asesor de Ventas'],
+            ['name' => 'Jefe De Área'],
+            ['name' => 'Gerente o Administrador'],
+            ['name' => 'Director'],
             ['name' => 'Propietario'],
-            ['name' => 'Representante de Ventas / Asesor de Ventas'],
             ['name' => 'Otro']
         ]);
 
@@ -47,7 +47,7 @@ class StudentsListsTableSeeder extends Seeder
             ['name' => 'Primaria'],
             ['name' => 'Secundaria'],
             ['name' => 'Preparatoria'],
-            ['name' => 'Técniico'],
+            ['name' => 'Técnico'],
             ['name' => 'Universitario'],
             ['name' => 'Maestría']
         ]);
@@ -63,6 +63,9 @@ class StudentsListsTableSeeder extends Seeder
                 //info($row[0].' '.$row[1].' '.$row[2].' '.$row[4]);
                 if ($row[0] != $id) {
                     $id = $row[0];
+                    if ($id == 15) {
+                        $row[1] = 'Edo. de México';
+                    }
                     $stateId = DB::table('student_list_states')->insertGetId([
                         'name' => $row[1],
                         'short_name' => $row[2]
@@ -123,7 +126,10 @@ class StudentsListsTableSeeder extends Seeder
                     'city_id' => $cityId,
                     'state_id' => $stateId,
                     'phone' => $row[15],
+                    'store_phone' => null,
+                    'store_email' => null,
 
+                    'holding_name' => 'por llenar',
                     'holding' => $row[0],
                     'rso' => $row[1],
                     'business_name' => $row[2],

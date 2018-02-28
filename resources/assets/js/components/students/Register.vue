@@ -7,8 +7,8 @@
                     <img src="img/logos/logo-universidad-construrama.png" class="img-responsive" alt="">
                 </div>
                 <div class="col-md-8">
-                    <p>Formato de registro de alta de alumno para participar en la Universidad Construrama. Cada nuevo Construrama tiene acceso a tres Diplomados de Capacitación.</p>
-                    <p>Información de Inscripción cualquier duda favor de contactar a <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a></p>
+                    <p>Formato de Pre-registro para participar en la Universidad Construrama</p>
+                    <p>Información o dudas favor de contactar a <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a></p>
                 </div>
             </div>
             <br><br><br>
@@ -100,20 +100,18 @@
             <br><hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h4>Informacón de contacto</h4>
+                    <h4>Información de contacto</h4>
                     <br>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group" :class="{'has-error': student.error.cellphone}">
                         <label><span class="text-danger">*</span> Teléfono Celular</label>
-                        <input type="string" class="form-control"
-                            v-model="student.data.cellphone">
+                        <the-mask class="form-control" v-model="student.data.cellphone" :mask="['(###) #######']" />
                         <span class="help-block" v-if="student.error.cellphone">{{student.error.cellphone[0]}}</span>
                     </div>
                     <div class="form-group" :class="{'has-error': student.error.phone}">
                         <label><span class="text-danger">*</span> Teléfono Fijo</label>
-                        <input type="string" class="form-control"
-                            v-model="student.data.phone">
+                        <the-mask class="form-control" v-model="student.data.phone" :mask="['(###) #######']" />
                         <span class="help-block" v-if="student.error.phone">{{student.error.phone[0]}}</span>
                     </div>
                 </div>
@@ -136,6 +134,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h4>Informacón Construrama</h4>
+                    <p>Si no encuentras tu tienda Construrama contactar a <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a></p>
                     <br>
                 </div>
                 <div class="col-md-4">
@@ -171,10 +170,25 @@
                             v-model="student.data.store_id">
                             <option v-for="option in lists.stores"
                                 :value="option.id">
-                                {{ option.name }}
+                                {{ option.name }} - {{option.street}}
                             </option>
                         </select>
                         <span class="help-block" v-if="student.error.store_id">{{student.error.store_id[0]}}</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" :class="{'has-error': student.error.store_phone}">
+                        <label><span class="text-danger">*</span> Teléfono</label>
+                        <the-mask class="form-control" v-model="student.data.store_phone" :mask="['(###) #######']" />
+                        <span class="help-block" v-if="student.error.store_phone">{{student.error.store_phone[0]}}</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" :class="{'has-error': student.error.store_email}">
+                        <label><span class="text-danger">*</span> Correo electrónico</label>
+                        <input type="email" class="form-control"
+                            v-model="student.data.store_email">
+                        <span class="help-block" v-if="student.error.store_email">{{student.error.store_email[0]}}</span>
                     </div>
                 </div>
             </div>
@@ -191,7 +205,8 @@
 </template>
 
 <script>
-import swal from 'sweetalert';
+import swal from 'sweetalert'
+import TheMask from 'vue-the-mask'
 export default {
     data() {
         return {
@@ -268,7 +283,12 @@ export default {
                     error: {}
                 };
                 var btn = $(e.target).button('reset')
-                swal("Registro Exitoso", "Tu registro se realizo de manera exitosa", "success")
+                swal({
+                    title: 'Registro Exitoso',
+                    text: `Validaremos tu información<br>Arranque de cursos 7 de Mayo de 2018<br>Cualquier duda contáctanos en <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a>`,
+                    html: true,
+                    type: 'success'
+                })
             })
             .catch(error => {
                 this.student.error = error.response.data;

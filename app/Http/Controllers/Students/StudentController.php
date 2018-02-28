@@ -38,14 +38,22 @@ class StudentController extends Controller
             'gender_id' => 'required|integer',
             'study_id' => 'required|integer',
             'position_id' => 'required|integer',
-            'years_in_position' => 'required|integer',
+            'years_in_position' => 'required|numeric|min:1|max:30',
             'certificate_id' => 'required|integer',
             'payment_method_id' => 'required|integer',
-            'cellphone' => 'required|string',
-            'phone' => 'required|string',
+            'cellphone' => 'required|string|min:10|max:10',
+            'phone' => 'required|string|min:10|max:10',
             'email' => 'required|string|email|confirmed',
             'store_id' => 'required|integer',
+            'store_phone' => 'required|string|min:10|max:10',
+            'store_email' => 'required|string|email',
         ]);
+
+
+        $store = StudentListStore::find($request->store_id);
+        $store->store_phone = $request->store_phone;
+        $store->store_email = $request->store_email;
+        $store->save();
 
         return Student::create([
             'name' => $request->name,

@@ -16,26 +16,31 @@ class CreateStudentsListsTable extends Migration
         Schema::create('student_list_certificates', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->timestamps();
             $table->softDeletes();
         });
         Schema::create('student_list_genders', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->timestamps();
             $table->softDeletes();
         });
         Schema::create('student_list_payment_methods', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->timestamps();
             $table->softDeletes();
         });
         Schema::create('student_list_positions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->timestamps();
             $table->softDeletes();
         });
         Schema::create('student_list_studies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->timestamps();
             $table->softDeletes();
         });
 
@@ -43,6 +48,7 @@ class CreateStudentsListsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('short_name');
+            $table->timestamps();
             $table->softDeletes();
         });
         Schema::create('student_list_cities', function (Blueprint $table) {
@@ -51,6 +57,7 @@ class CreateStudentsListsTable extends Migration
             $table->string('leader_name')->nullable();
             $table->integer('state_id')->unsigned()->nullable();
             $table->foreign('state_id')->references('id')->on('student_list_states');
+            $table->timestamps();
             $table->softDeletes();
         });
         Schema::create('student_list_stores', function (Blueprint $table) {
@@ -66,7 +73,10 @@ class CreateStudentsListsTable extends Migration
             $table->integer('state_id')->unsigned()->nullable();
             $table->foreign('state_id')->references('id')->on('student_list_states');
             $table->string('phone');
+            $table->string('store_phone')->nullable();
+            $table->string('store_email')->nullable();
 
+            $table->string('holding_name');
             $table->integer('holding');
             $table->integer('rso');
             $table->string('business_name');
@@ -76,6 +86,7 @@ class CreateStudentsListsTable extends Migration
             $table->string('seller_name');
             $table->string('seller_email');
 
+            $table->timestamps();
             $table->softDeletes();
         });
     }
@@ -87,6 +98,7 @@ class CreateStudentsListsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('student_list_certificates');
         Schema::dropIfExists('student_list_genders');
         Schema::dropIfExists('student_list_payment_methods');
