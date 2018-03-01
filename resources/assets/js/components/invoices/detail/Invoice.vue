@@ -35,7 +35,7 @@
             <div class="col-xs-4">
               <dl>
                 <dd>Amount</dd>
-                <dt>{{invoice.amount}}</dt>
+                <dt>{{invoice.amount | currency}}</dt>
               </dl>
             </div>
           </div>

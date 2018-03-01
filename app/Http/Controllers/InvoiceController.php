@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\Invoices\Invoice;
+use App\Models\Invoices\ListInvoiceStatus;
 use Storage;
 use App\Http\Helpers\Upload;
 
@@ -33,6 +34,10 @@ class InvoiceController extends Controller
         // $query->where('status', 2);
         if($request->owner) {
             $query->whereIn('owner_id', explode(",",$request->owner));
+        }
+
+        if($request->status) {
+            $query->whereIn('invoice_status_id', explode(",",$request->status));
         }
 
         $invoices = $query->orderBy('created_at', 'desc')->paginate(10);
@@ -99,5 +104,15 @@ class InvoiceController extends Controller
                     ->select('users.name', 'users.id')
                     ->distinct()
                     ->get();
+    }
+
+    /**
+      * Get a list of status.
+      *
+      * @return \Illuminate\Http\Response
+      */
+    public function listStatus()
+    {
+        return ListInvoiceStatus::all();
     }
 }

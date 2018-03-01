@@ -31,7 +31,7 @@ class Invoice extends Model
         return $this->belongsToMany(\App\Models\Quotes\Quote::class)->withPivot('amount');
     }
 
-    public function invocie_status()
+    public function invoice_status()
     {
         return $this->belongsTo(ListInvoiceStatus::class, 'invoice_status_id');
     }

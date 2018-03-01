@@ -180,7 +180,7 @@
                                                         {{ percentageOfInvoicePerQuote(quote.amount, invoice.pivot.amount) }} %
                                                     </td>
                                                     <td>
-                                                        {{invoice.invocie_status.name}}
+                                                        {{invoice.invoice_status.name}}
                                                     </td>
                                                     <td v-if="designers[quote.designer_id]"> 
                                                         {{ totalOfCommissionForEmployeePerInvoice(invoice.pivot.amount, designers[quote.designer_id].commission_percentage) | currency}} 

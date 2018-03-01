@@ -14,6 +14,10 @@
                             <p class="title"><small>Owner</small></p>
                             <multiselect v-model="sort.owner" track-by="name" label="name" :options="list.owners" placeholder="Select a owner" :multiple="true"></multiselect>
                         </div>
+                        <div class="card col-xs-12">
+                            <p class="title"><small>Status</small></p>
+                            <multiselect v-model="sort.status" track-by="name" label="name" :options="list.status" placeholder="Select a status" :multiple="true"></multiselect>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,7 +57,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        {{item.amount }}
+                                        {{item.amount | currency}}
                                         <br>
                                     </td>
                                     <td>
@@ -98,10 +102,15 @@
                 </div>
             </div>
         </div>
+
+        <!-- Invoice quote -->
+        <invoice-edit :list="list" :invoice="invoice" class="modal right fade" id="modalEdit"></invoice-edit>
     </div>
 </template>
 
 <script>
+import InvoiceEdit from './Edit.vue';
+
 import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
@@ -111,19 +120,23 @@ import Multiselect from 'vue-multiselect';
 export default {
     data() {
         return {
+            error: '',
             loading: false,
             newCustomer: false,
             invoices: [],
             invoice: {
                 area: {},
-                user: {}
+                user: {},
+                status: {}
             },
             sort: {
-                owner: []
+                owner: [],
+                status: []
             },
             search: '',
             list: {
                 owners: [],
+                status: []
             },
             pagination: {
                 current_page: 1,
@@ -156,12 +169,19 @@ export default {
             var page = Number(this.pagination.current_page);
             this.loading = true;
             axios.get(
-                    `/invoices/all?page=${page}${this.search ? '&name=' + this.search: ''}${(this.sort.owner && this.sort.owner.length > 0) ? '&owner=' + this.sort.owner.map(item => item.id) : ''}`
+                    `/invoices/all?page=${page}
+                    ${this.search ? '&name=' + this.search: ''}
+                    ${(this.sort.owner && this.sort.owner.length > 0) ? '&owner=' + this.sort.owner.map(item => item.id) : ''}
+                    ${(this.sort.status && this.sort.status.length > 0) ? 'status=' + this.sort.status.map(item => item.id) : ''}`
                 )
                 .then(response => {
                     axios.get('/invoices/list/owners')
                     .then(response => {
                         this.list.owners = response.data;
+                    });
+                    axios.get('/invoices/list/status')
+                    .then(response => {
+                        this.list.status = response.data;
                     });
                     this.pagination.last_page = response.data.invoices.last_page
                     this.pagination.total = response.data.invoices.total
