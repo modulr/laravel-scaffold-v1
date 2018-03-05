@@ -2,6 +2,12 @@
     <div class="students">
         <div class="container-fluid">
             <div class="row">
+                <div class="col-md-12 text-right">
+                    <a href="#" class="btn btn-default">
+                        <i class="fa fa-file-excel-o"></i>
+                        exportar
+                    </a>
+                </div>
                 <div class="col-md-12">
                     <div class="table-responsive">
                         <table class="table table-hover">
@@ -15,8 +21,10 @@
                                     <th>Nivel de Estudio Actual</th>
                                     <th>Puesto Actual</th>
                                     <th>Años de antiguedad en el puesto</th>
-                                    <th>Diplomado al que Aplica</th>
                                     <th>Forma de pago</th>
+                                    <th>Diplomado al que Aplica</th>
+                                    <th>Ha cursado</th>
+                                    <th>Usuario</th>
                                     <th>Teléfono Celular</th>
                                     <th>Teléfono Fijo</th>
                                     <th>Correo electrónico</th>
@@ -33,8 +41,13 @@
                                     <td>{{item.study.name}}</td>
                                     <td>{{item.position.name}}</td>
                                     <td>{{item.years_in_position}}</td>
-                                    <td>{{item.certificate.name}}</td>
                                     <td>{{item.payment_method.name}}</td>
+                                    <td>{{item.certificate.name}}</td>
+                                    <td>
+                                        <span v-if="item.have_studied">Si</span>
+                                        <span v-else>No</span>
+                                    </td>
+                                    <td>{{item.username}}</td>
                                     <td>{{item.phone}}</td>
                                     <td>{{item.cellphone}}</td>
                                     <td>{{item.email}}</td>

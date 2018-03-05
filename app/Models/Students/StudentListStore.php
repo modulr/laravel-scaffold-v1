@@ -11,4 +11,9 @@ class StudentListStore extends Model
 
     protected $dates = ['deleted_at'];
     protected $guarded = ['id'];
+
+    public function advisor()
+    {
+        return $this->belongsTo(\App\User::class);
+    }
 }

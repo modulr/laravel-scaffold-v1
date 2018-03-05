@@ -43,8 +43,6 @@
                             v-model="student.data.birthday">
                         <span class="help-block" v-if="student.error.birthday">{{student.error.birthday[0]}}</span>
                     </div>
-                </div>
-                <div class="col-md-6">
                     <div class="form-group" :class="{'has-error': student.error.study_id}">
                         <label><span class="text-danger">*</span> Nivel de Estudio Actual</label>
                         <select class="form-control text-capitalize"
@@ -56,6 +54,8 @@
                         </select>
                         <span class="help-block" v-if="student.error.study_id">{{student.error.study_id[0]}}</span>
                     </div>
+                </div>
+                <div class="col-md-6">
                     <div class="form-group" :class="{'has-error': student.error.position_id}">
                         <label><span class="text-danger">*</span> Puesto Actual</label>
                         <select class="form-control text-capitalize"
@@ -73,6 +73,17 @@
                             v-model="student.data.years_in_position">
                         <span class="help-block" v-if="student.error.years_in_position">{{student.error.years_in_position[0]}}</span>
                     </div>
+                    <div class="form-group" :class="{'has-error': student.error.payment_method_id}">
+                        <label><span class="text-danger">*</span> Forma de pago</label>
+                        <select class="form-control text-capitalize"
+                            v-model="student.data.payment_method_id">
+                            <option v-for="option in lists.paymentMethods"
+                                :value="option.id">
+                                {{ option.name }}
+                            </option>
+                        </select>
+                        <span class="help-block" v-if="student.error.payment_method_id">{{student.error.payment_method_id[0]}}</span>
+                    </div>
                     <div class="form-group" :class="{'has-error': student.error.certificate_id}">
                         <label><span class="text-danger">*</span> Diplomado al que Aplica</label>
                         <select class="form-control text-capitalize"
@@ -84,16 +95,17 @@
                         </select>
                         <span class="help-block" v-if="student.error.certificate_id">{{student.error.certificate_id[0]}}</span>
                     </div>
-                    <div class="form-group" :class="{'has-error': student.error.payment_method_id}">
-                        <label><span class="text-danger">*</span> Forma de pago</label>
-                        <select class="form-control text-capitalize"
-                            v-model="student.data.payment_method_id">
-                            <option v-for="option in lists.paymentMethods"
-                                :value="option.id">
-                                {{ option.name }}
-                            </option>
-                        </select>
-                        <span class="help-block" v-if="student.error.payment_method_id">{{student.error.payment_method_id[0]}}</span>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model="student.data.have_studied"> ¿Has cursado algún diplomado en la Universidad Construrama?
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" v-show="student.data.have_studied">
+                        <label>¿Cual fue tu nombre de usuario?</label>
+                        <input type="text" class="form-control"
+                            v-model="student.data.username">
                     </div>
                 </div>
             </div>
@@ -275,7 +287,9 @@ export default {
             })
         },
         registerStudent (e) {
-            var btn = $(e.target).button('loading')
+            if (!this.student.data.have_studied)
+                this.student.data.have_studied = false;
+
             axios.post('/api/students/register', this.student.data)
             .then(response => {
                 this.student = {

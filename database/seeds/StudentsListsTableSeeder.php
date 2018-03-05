@@ -53,12 +53,12 @@ class StudentsListsTableSeeder extends Seeder
         ]);
 
         // student_list_states & student_list_cities
-        $result = Excel::load(storage_path('app/public/states_cities.csv'), function($reader) {
+        $statesCities = Excel::load(storage_path('app/public/states_cities.csv'), function($reader) {
             $reader->noHeading();
         }, 'ISO-8859-1')->get();
 
         $id = null;
-        foreach ($result as $key => $row) {
+        foreach ($statesCities as $key => $row) {
             if ($key != 0) {
                 //info($row[0].' '.$row[1].' '.$row[2].' '.$row[4]);
                 if ($row[0] != $id) {
@@ -85,13 +85,77 @@ class StudentsListsTableSeeder extends Seeder
             }
         }
 
-        // student_list_stores
-        $result = Excel::load(storage_path('app/public/stores.xlsx'), function($reader) {
+        // Advisors
+        $advisors = Excel::load(storage_path('app/public/asesores.xlsx'), function($reader) {
             $reader->noHeading();
         })->get();
 
-        foreach ($result as $key => $row) {
+        foreach ($advisors as $key => $row) {
+            if ($key == 0) {
+                $user = App\User::create([
+                    'name' => 'Fabiola Avila',
+                    'email' => 'claudiafabiola.avila@ext.cemex.com',
+                    'password' => Hash::make('favila53'),
+                    'active' => 1,
+                    'avatar' => 'avatar.png'
+                ]);
+
+                $user->roles()->attach([1]);
+
+                $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
+                Storage::put('avatars/'.$user->id.'/avatar.png', $avatar);
+            }
+
+            if ($key != 0 && $row[0] != '') {
+
+                $name = explode(' ', $row[0]);
+
+                if (count($name) > 4) {
+                    foreach ($name as $key => $value) {
+                        if (strtolower($value) == 'de' || strtolower($value) == 'la') {
+                             unset($name[$key]);
+                        }
+                    }
+                    $name = array_values($name);
+                }
+
+                if (count($name) == 3) {
+                    $lastName = $name[1];
+                } else {
+                    $lastName = $name[2];
+                }
+
+                $a = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'ß', 'à', 'á', 'â', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ', 'Ā', 'ā', 'Ă', 'ă', 'Ą', 'ą', 'Ć', 'ć', 'Ĉ', 'ĉ', 'Ċ', 'ċ', 'Č', 'č', 'Ď', 'ď', 'Đ', 'đ', 'Ē', 'ē', 'Ĕ', 'ĕ', 'Ė', 'ė', 'Ę', 'ę', 'Ě', 'ě', 'Ĝ', 'ĝ', 'Ğ', 'ğ', 'Ġ', 'ġ', 'Ģ', 'ģ', 'Ĥ', 'ĥ', 'Ħ', 'ħ', 'Ĩ', 'ĩ', 'Ī', 'ī', 'Ĭ', 'ĭ', 'Į', 'į', 'İ', 'ı', 'Ĳ', 'ĳ', 'Ĵ', 'ĵ', 'Ķ', 'ķ', 'Ĺ', 'ĺ', 'Ļ', 'ļ', 'Ľ', 'ľ', 'Ŀ', 'ŀ', 'Ł', 'ł', 'Ń', 'ń', 'Ņ', 'ņ', 'Ň', 'ň', 'ŉ', 'Ō', 'ō', 'Ŏ', 'ŏ', 'Ő', 'ő', 'Œ', 'œ', 'Ŕ', 'ŕ', 'Ŗ', 'ŗ', 'Ř', 'ř', 'Ś', 'ś', 'Ŝ', 'ŝ', 'Ş', 'ş', 'Š', 'š', 'Ţ', 'ţ', 'Ť', 'ť', 'Ŧ', 'ŧ', 'Ũ', 'ũ', 'Ū', 'ū', 'Ŭ', 'ŭ', 'Ů', 'ů', 'Ű', 'ű', 'Ų', 'ų', 'Ŵ', 'ŵ', 'Ŷ', 'ŷ', 'Ÿ', 'Ź', 'ź', 'Ż', 'ż', 'Ž', 'ž', 'ſ', 'ƒ', 'Ơ', 'ơ', 'Ư', 'ư', 'Ǎ', 'ǎ', 'Ǐ', 'ǐ', 'Ǒ', 'ǒ', 'Ǔ', 'ǔ', 'Ǖ', 'ǖ', 'Ǘ', 'ǘ', 'Ǚ', 'ǚ', 'Ǜ', 'ǜ', 'Ǻ', 'ǻ', 'Ǽ', 'ǽ', 'Ǿ', 'ǿ', 'Ά', 'ά', 'Έ', 'έ', 'Ό', 'ό', 'Ώ', 'ώ', 'Ί', 'ί', 'ϊ', 'ΐ', 'Ύ', 'ύ', 'ϋ', 'ΰ', 'Ή', 'ή');
+                $b = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 's', 'a', 'a', 'a', 'a', 'a', 'a', 'ae', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'D', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'IJ', 'ij', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'l', 'l', 'N', 'n', 'N', 'n', 'N', 'n', 'n', 'O', 'o', 'O', 'o', 'O', 'o', 'OE', 'oe', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'S', 's', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 'y', 'Y', 'Z', 'z', 'Z', 'z', 'Z', 'z', 's', 'f', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i', 'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'A', 'a', 'AE', 'ae', 'O', 'o', 'Α', 'α', 'Ε', 'ε', 'Ο', 'ο', 'Ω', 'ω', 'Ι', 'ι', 'ι', 'ι', 'Υ', 'υ', 'υ', 'υ', 'Η', 'η');
+
+                $pass = strtolower(str_replace($a, $b, substr($name[0], 0, 1).$lastName.rand(10, 99)));
+
+                info($pass);
+
+                $user = App\User::create([
+                    'name' => $row[0],
+                    'email' => $row[1],
+                    'password' => Hash::make($pass),
+                    'active' => 1,
+                    'avatar' => 'avatar.png'
+                ]);
+
+                $user->roles()->attach([2]);
+
+                $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
+                Storage::put('avatars/'.$user->id.'/avatar.png', $avatar);
+
+            }
+        }
+
+        // student_list_stores
+        $stores = Excel::load(storage_path('app/public/stores3.xlsx'), function($reader) {
+            $reader->noHeading();
+        })->get();
+
+        foreach ($stores as $key => $row) {
             if ($key != 0) {
+
                 $state = DB::table('student_list_states')->where('name', 'like', '%'.$row[14].'%')->first();
                 if (!$state) {
                     //info(', notFoundStates , '.$row[7].', '.$row[14].', '.$row[12]);
@@ -111,10 +175,14 @@ class StudentsListsTableSeeder extends Seeder
                             ->first();
                 if (!$city) {
                     info(', notFoundCities , '.$row[7].', '.$row[14].', '.$row[12]);
-                    $cityId = 1;
+                    if ($row[7] == '65006202') {
+                        $cityId = 41;
+                    }
                 } else {
                     $cityId = $city->id;
                 }
+
+                $user = DB::table('users')->where('email', 'like', '%'.$row[16].'%')->first();
 
                 DB::table('student_list_stores')->insert([
                     'store_id' => $row[7],
@@ -129,15 +197,14 @@ class StudentsListsTableSeeder extends Seeder
                     'store_phone' => null,
                     'store_email' => null,
 
-                    'holding_name' => 'por llenar',
+                    'holding_name' => $row[17],
                     'holding' => $row[0],
                     'rso' => $row[1],
                     'business_name' => $row[2],
                     'rfc' => $row[3],
                     'region' => $row[4],
                     'management' => $row[5],
-                    'seller_name' => $row[6],
-                    'seller_email' => 'por llenar'
+                    'advisor_id' => $user->id
                 ]);
             }
         }
