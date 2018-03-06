@@ -94,7 +94,7 @@ class StudentController extends Controller
         ]);
 
         Mail::to($store->advisor->email)
-            ->send(new StudentRegistered($student));
+            ->send(new StudentRegistered($student, $store->advisor));
 
         return response()->json(['data' => 'ok']);
     }

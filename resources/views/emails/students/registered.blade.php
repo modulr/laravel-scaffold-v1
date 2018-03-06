@@ -1,12 +1,25 @@
 @component('mail::message')
-# Nuevo Registro
 
-El estudiante **_{{$student->name}} {{$student->last_name}}_** se ha registrado al sistema e indico que su sucursal es **_{{$student->store->name}}_**, por favor revisa el registro del estudiante y da tu aprovacion.
+Estimado **_{{$user->name}}_**,
 
-@component('mail::button', ['url' => url("/student/{$student->id}")])
+Se ha registrado un participante en el diplomado **_{{$student->certificate->name}}_** de la Universidad Construrama,
+
+Tienda: **_{{$student->store->name}}_**<br>
+Región: **_{{$student->store->region}}_**<br>
+Gerencia: **_{{$student->store->management}}_**<br>
+
+Requerimos de tu apoyo para validar la información por lo cual te solicitamos ingreses con tu usuario y contraseña a la liga para liberar la inscripción de dichos participantes.
+
+Si hay alguna corrección de los datos proporcionados por el participante te pedimos que la realices en la plataforma.
+
+Cualquier incidencia para darle seguimiento a esta solicitud de inscripción te pedimos nos contactes a uconstrurama@cemex.com
+
+
+@component('mail::button', ['url' => url("/students/{$student->id}")])
 Ver registro
 @endcomponent
 
-Thanks,<br>
+Saludos,<br>
 {{ config('app.name') }}
+
 @endcomponent
