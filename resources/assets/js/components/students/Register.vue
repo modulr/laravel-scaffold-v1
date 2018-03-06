@@ -145,7 +145,7 @@
             <br><hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h4>Informacón Construrama</h4>
+                    <h4>Información Construrama</h4>
                     <p>Si no encuentras tu tienda Construrama contactar a <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a></p>
                     <br>
                 </div>

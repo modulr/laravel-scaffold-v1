@@ -31,7 +31,6 @@ class StudentRegistered extends Mailable
      */
     public function build()
     {
-        return $this->from('no-reply@uconstrurama.com')
-                    ->markdown('emails.students.registered');
+        return $this->markdown('emails.students.registered');
     }
 }
