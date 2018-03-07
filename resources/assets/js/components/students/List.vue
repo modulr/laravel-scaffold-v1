@@ -53,8 +53,8 @@
                                         <span v-else>No</span>
                                     </td>
                                     <td @click="editStudent(item.id)">{{item.username}}</td>
-                                    <td @click="editStudent(item.id)">{{item.phone}}</td>
                                     <td @click="editStudent(item.id)">{{item.cellphone}}</td>
+                                    <td @click="editStudent(item.id)">{{item.phone}}</td>
                                     <td @click="editStudent(item.id)">{{item.email}}</td>
                                     <td @click="editStudent(item.id)">{{item.store.name}}</td>
                                 </tr>
