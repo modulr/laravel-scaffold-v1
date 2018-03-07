@@ -442,7 +442,7 @@ export default {
             })
         },
         registerStudent (e) {
-            var btn = $(e.target).button('loading')
+            $(e.target).button('loading')
 
             if (!this.student.data.have_studied)
                 this.student.data.have_studied = false;
@@ -459,11 +459,11 @@ export default {
                     html: true,
                     type: 'success'
                 })
-                btn.button('reset')
+                $(e.target).button('reset')
             })
             .catch(error => {
                 this.student.error = error.response.data;
-                btn.button('reset')
+                $(e.target).button('reset')
             });
         }
     }

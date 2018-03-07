@@ -4,13 +4,13 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-md-6 controls">
+                    <div class="col-xs-6 controls">
                         <a href="/students" class="btn btn-default">
                             <i class="fa fa-list"></i>
                             Estudiantes
                         </a>
                     </div>
-                    <div class="col-md-6 controls text-right">
+                    <div class="col-xs-6 controls text-right">
                         <button type="button" class="btn btn-success"
                                 @click="updateStudent">Guardar</button>
                     </div>
@@ -21,7 +21,7 @@
                     <h4>Información General</h4>
                     <br>
                 </div>
-                <div class="col-md-4 text-right">
+                <div class="col-md-12 text-right">
                     <span class="switch-text">Verificar</span>
                     <label class="switch">
                         <input type="checkbox" v-model="student.data.verified">
@@ -299,20 +299,20 @@ export default {
             });
         },
         updateStudent (e) {
-            var btn = $(e.target).button('loading')
+            $(e.target).button('loading')
             axios.put('/api/students/update/'+this.student.data.id, this.student.data)
             .then(response => {
                 this.student.error = {};
-                btn.button('reset')
                 swal({
                     title: 'Registro Actualizado',
                     text: '¡El registro se actualizo correctamente!',
                     type: 'success'
                 })
+                $(e.target).button('reset')
             })
             .catch(error => {
                 this.student.error = error.response.data;
-                btn.button('reset')
+                $(e.target).button('reset')
             });
         }
     }

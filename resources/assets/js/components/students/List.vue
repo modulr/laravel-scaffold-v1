@@ -90,8 +90,10 @@ export default {
             location.href = `/students/${studentId}`
         },
         exportStudents () {
+            $(e.target).button('loading')
             axios.get('/api/students/export')
             .then(response => {
+                $(e.target).button('reset')
                 location.href = response.data;
             });
         }
