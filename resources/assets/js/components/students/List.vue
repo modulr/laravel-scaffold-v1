@@ -1,13 +1,18 @@
 <template lang="html">
     <div class="students">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12 text-right">
-                    <a href="#" class="btn btn-default">
-                        <i class="fa fa-file-excel-o"></i>
-                        exportar
-                    </a>
+            <!-- Actionbar -->
+            <div class="actionbar">
+                <div class="row">
+                    <div class="col-md-12 controls text-right">
+                        <a href="#" class="btn btn-default">
+                            <i class="fa fa-file-excel-o"></i>
+                            exportar
+                        </a>
+                    </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
                         <table class="table table-hover">

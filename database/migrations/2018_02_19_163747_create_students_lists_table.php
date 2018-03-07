@@ -54,7 +54,7 @@ class CreateStudentsListsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('leader_name')->nullable();
-            $table->integer('state_id')->unsigned()->nullable();
+            $table->integer('state_id')->unsigned();
             $table->foreign('state_id')->references('id')->on('student_list_states');
             $table->timestamps();
             $table->softDeletes();
@@ -67,13 +67,13 @@ class CreateStudentsListsTable extends Migration
             $table->string('number');
             $table->string('colony');
             $table->string('cp');
-            $table->integer('city_id')->unsigned()->nullable();
+            $table->integer('city_id')->unsigned();
             $table->foreign('city_id')->references('id')->on('student_list_cities');
             $table->integer('state_id')->unsigned();
             $table->foreign('state_id')->references('id')->on('student_list_states');
             $table->string('phone');
-            $table->string('store_phone')->nullable();
-            $table->string('store_email')->nullable();
+            $table->string('store_phone')->nullable()->default(null);
+            $table->string('store_email')->nullable()->default(null);
             $table->string('holding_name');
             $table->integer('holding');
             $table->integer('rso');
@@ -81,7 +81,7 @@ class CreateStudentsListsTable extends Migration
             $table->string('rfc');
             $table->string('region');
             $table->string('management');
-            $table->integer('advisor_id')->unsigned()->nullable();
+            $table->integer('advisor_id')->unsigned();
             $table->foreign('advisor_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();

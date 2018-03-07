@@ -104,6 +104,19 @@ class StudentsListsTableSeeder extends Seeder
 
                 $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
                 Storage::put('avatars/'.$user->id.'/avatar.png', $avatar);
+
+                $user = App\User::create([
+                    'name' => 'Miguel Torres',
+                    'email' => 'miguelangel.torresrs@cemex.com',
+                    'password' => Hash::make('mtorres63'),
+                    'active' => 1,
+                    'avatar' => 'avatar.png'
+                ]);
+
+                $user->roles()->attach([1]);
+
+                $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
+                Storage::put('avatars/'.$user->id.'/avatar.png', $avatar);
             }
 
             if ($key != 0 && $row[0] != '') {
@@ -149,7 +162,7 @@ class StudentsListsTableSeeder extends Seeder
         }
 
         // student_list_stores
-        $stores = Excel::load(storage_path('app/public/stores3.xlsx'), function($reader) {
+        $stores = Excel::load(storage_path('app/public/stores5.xlsx'), function($reader) {
             $reader->noHeading();
         })->get();
 
@@ -169,15 +182,40 @@ class StudentsListsTableSeeder extends Seeder
                 $city = DB::table('student_list_cities')
                             ->join('student_list_states', 'student_list_states.id', '=', 'student_list_cities.state_id')
                             ->select('student_list_cities.*', 'student_list_states.name as state')
-                            ->where('student_list_cities.name', 'like', '%'.$row[12].'%')
-                            ->orWhere('student_list_cities.leader_name', 'like', '%'.$row[12].'%')
                             ->where('student_list_cities.state_id', $stateId)
-                            ->first();
+                            ->where(function ($query) use ($row) {
+                                $query->where('student_list_cities.name', 'like', $row[12])
+                                    ->orWhere('student_list_cities.leader_name', 'like', $row[12]);
+                            })->first();
+
+
                 if (!$city) {
-                    info(', notFoundCities , '.$row[7].', '.$row[14].', '.$row[12]);
-                    if ($row[7] == '65006202') {
-                        $cityId = 41;
-                    }
+                    $city = DB::table('student_list_cities')
+                                ->join('student_list_states', 'student_list_states.id', '=', 'student_list_cities.state_id')
+                                ->select('student_list_cities.*', 'student_list_states.name as state')
+                                ->where('student_list_cities.state_id', $stateId)
+                                ->where(function ($query) use ($row) {
+                                    $query->where('student_list_cities.name', 'like', '%'.$row[12].'%')
+                                        ->orWhere('student_list_cities.leader_name', 'like', '%'.$row[12].'%');
+                                })->first();
+                }
+
+                //info(count($city).' - '.$city.' - '.$stateId.' - '.$row[12]);
+
+                if (!$city) {
+                    //info(', notFoundCities , '.$row[7].', '.$row[14].', '.$row[12]);
+                    // if ($row[7] == '65006202') {
+                    //     $cityId = 41;
+                    // }
+                    // if ($row[7] == '65015840') {
+                    //     $cityId = 2174;
+                    // }
+                    // if ($row[7] == '66426775') {
+                    //     $cityId = 1;
+                    // }
+                    // if ($row[7] == '66350992') {
+                    //     $cityId = 1;
+                    // }
                 } else {
                     $cityId = $city->id;
                 }
@@ -194,8 +232,8 @@ class StudentsListsTableSeeder extends Seeder
                     'city_id' => $cityId,
                     'state_id' => $stateId,
                     'phone' => $row[15],
-                    'store_phone' => null,
-                    'store_email' => null,
+                    //'store_phone' => null,
+                    //'store_email' => null,
 
                     'holding_name' => $row[17],
                     'holding' => $row[0],
