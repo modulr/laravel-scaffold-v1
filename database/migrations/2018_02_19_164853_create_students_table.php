@@ -39,6 +39,8 @@ class CreateStudentsTable extends Migration
             $table->integer('store_id')->unsigned();
             $table->foreign('store_id')->references('id')->on('student_list_stores');
 
+            $table->boolean('verified')->default(false)->comment = "Is verified the student info?";
+
             $table->unsignedInteger('created_by')->nullable()->default(null);
             $table->unsignedInteger('updated_by')->nullable()->default(null);
             $table->unsignedInteger('deleted_by')->nullable()->default(null);

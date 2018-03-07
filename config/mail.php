@@ -60,11 +60,6 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Construrama'),
     ],
 
-    'to' => [
-        'address' => 'claudiafabiola.avila@ext.cemex.com',
-        'name' => 'Fabiola'
-    ],
-
     /*
     |--------------------------------------------------------------------------
     | E-Mail Encryption Protocol

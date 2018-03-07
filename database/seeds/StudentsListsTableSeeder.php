@@ -90,6 +90,7 @@ class StudentsListsTableSeeder extends Seeder
             $reader->noHeading();
         })->get();
 
+        $x = 0;
         foreach ($advisors as $key => $row) {
             if ($key == 0) {
                 $user = App\User::create([
@@ -143,12 +144,56 @@ class StudentsListsTableSeeder extends Seeder
 
                 $pass = strtolower(str_replace($a, $b, substr($name[0], 0, 1).$lastName.rand(10, 99)));
 
-                info($pass);
+                $passwords = [
+                    'yarriaga90',
+                    'jvazquez84',
+                    'rvelasco81',
+                    'llopez35',
+                    'schavez59',
+                    'gprado34',
+                    'evilla49',
+                    'ravila11',
+                    'eramirez38',
+                    'onepomuceno26',
+                    'epastrana63',
+                    'mpartida93',
+                    'pmorales58',
+                    'vzambrano51',
+                    'rchavez69',
+                    'acarrillo60',
+                    'smedina40',
+                    'epineiro50',
+                    'ymendoza79',
+                    'epena35',
+                    'ncastillo76',
+                    'dhiguera16',
+                    'aromano71',
+                    'groman97',
+                    'pbandres67',
+                    'agarcia42',
+                    'jlopez99',
+                    'jespinoza98',
+                    'slopez32',
+                    'cfranco65',
+                    'mgomez14',
+                    'atorres23',
+                    'arojas50',
+                    'malvarado86',
+                    'amota48',
+                    'ogomez99',
+                    'arios20',
+                    'lloyda88',
+                    'jgarza10',
+                    'mlara49',
+                    'acordova14'
+                ];
+
+                //info($pass.' - '.$passwords[$x++]);
 
                 $user = App\User::create([
                     'name' => $row[0],
                     'email' => $row[1],
-                    'password' => Hash::make($pass),
+                    'password' => Hash::make($passwords[$x++]),
                     'active' => 1,
                     'avatar' => 'avatar.png'
                 ]);
