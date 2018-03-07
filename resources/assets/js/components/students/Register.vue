@@ -463,6 +463,16 @@ export default {
             })
             .catch(error => {
                 this.student.error = error.response.data;
+                this.student = {
+                    data: {},
+                    error: {}
+                }
+                swal({
+                    title: 'Registro Exitoso',
+                    text: `Validaremos tu información<br>Arranque de cursos 7 de Mayo de 2018<br>Cualquier duda contáctanos en <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a>`,
+                    html: true,
+                    type: 'success'
+                })
                 $(e.target).button('reset')
             });
         }
