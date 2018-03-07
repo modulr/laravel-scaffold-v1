@@ -37,8 +37,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item in students.data">
-                                    <td @click="editStudent(item.id)">{{item.id}}</td>
+                                <tr v-for="(item, index) in students.data" :class="{'success': item.verified}">
+                                    <td @click="editStudent(item.id)">{{index+1}}</td>
                                     <td @click="editStudent(item.id)">{{item.name}}</td>
                                     <td @click="editStudent(item.id)">{{item.last_name}}</td>
                                     <td @click="editStudent(item.id)">{{item.gender.name}}</td>

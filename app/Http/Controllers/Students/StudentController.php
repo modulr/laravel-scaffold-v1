@@ -164,9 +164,10 @@ class StudentController extends Controller
     {
         $students = $this->all();
 
+        $x = 0;
         foreach ($students as $key => $value) {
             $data[] = [
-                'ID' => $value->id,
+                'ID' => $x+1,
                 'Nombre' => $value->name,
                 'Apellido' => $value->last_name,
                 'Sexo' => $value->gender->name,
