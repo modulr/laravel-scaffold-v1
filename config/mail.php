@@ -61,8 +61,8 @@ return [
     ],
 
     'to' => [
-        'address' => 'miguelangel.torresrs@cemex.com',
-        'name' => 'Miguel'
+        'address' => 'claudiafabiola.avila@ext.cemex.com',
+        'name' => 'Fabiola'
     ],
 
     /*
