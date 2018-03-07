@@ -5,7 +5,7 @@
             <div class="actionbar">
                 <div class="row">
                     <div class="col-md-12 controls text-right">
-                        <a href="#" class="btn btn-default">
+                        <a href="#" class="btn btn-default" @click.prevent="exportStudents">
                             <i class="fa fa-file-excel-o"></i>
                             exportar
                         </a>
@@ -38,25 +38,25 @@
                             </thead>
                             <tbody>
                                 <tr v-for="item in students.data">
-                                    <td>{{item.id}}</td>
-                                    <td>{{item.name}}</td>
-                                    <td>{{item.last_name}}</td>
-                                    <td>{{item.gender.name}}</td>
-                                    <td>{{item.birthday}}</td>
-                                    <td>{{item.study.name}}</td>
-                                    <td>{{item.position.name}}</td>
-                                    <td>{{item.years_in_position}}</td>
-                                    <td>{{item.payment_method.name}}</td>
-                                    <td>{{item.certificate.name}}</td>
-                                    <td>
+                                    <td @click="editStudent(item.id)">{{item.id}}</td>
+                                    <td @click="editStudent(item.id)">{{item.name}}</td>
+                                    <td @click="editStudent(item.id)">{{item.last_name}}</td>
+                                    <td @click="editStudent(item.id)">{{item.gender.name}}</td>
+                                    <td @click="editStudent(item.id)">{{item.birthday}}</td>
+                                    <td @click="editStudent(item.id)">{{item.study.name}}</td>
+                                    <td @click="editStudent(item.id)">{{item.position.name}}</td>
+                                    <td @click="editStudent(item.id)">{{item.years_in_position}}</td>
+                                    <td @click="editStudent(item.id)">{{item.payment_method.name}}</td>
+                                    <td @click="editStudent(item.id)">{{item.certificate.name}}</td>
+                                    <td @click="editStudent(item.id)">
                                         <span v-if="item.have_studied">Si</span>
                                         <span v-else>No</span>
                                     </td>
-                                    <td>{{item.username}}</td>
-                                    <td>{{item.phone}}</td>
-                                    <td>{{item.cellphone}}</td>
-                                    <td>{{item.email}}</td>
-                                    <td>{{item.store.name}}</td>
+                                    <td @click="editStudent(item.id)">{{item.username}}</td>
+                                    <td @click="editStudent(item.id)">{{item.phone}}</td>
+                                    <td @click="editStudent(item.id)">{{item.cellphone}}</td>
+                                    <td @click="editStudent(item.id)">{{item.email}}</td>
+                                    <td @click="editStudent(item.id)">{{item.store.name}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -73,8 +73,6 @@ export default {
         return {
             students: {
                 data: []
-                // paginate info
-                // ...
             }
         }
     },
@@ -86,6 +84,15 @@ export default {
             axios.get('/api/students/all')
             .then(response => {
                 this.students.data = response.data
+            });
+        },
+        editStudent (studentId) {
+            location.href = `/students/${studentId}`
+        },
+        exportStudents () {
+            axios.get('/api/students/export')
+            .then(response => {
+                location.href = response.data;
             });
         }
     }

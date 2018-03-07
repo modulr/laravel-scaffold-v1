@@ -15,6 +15,9 @@ Si hay alguna corrección de los datos proporcionados por el participante te ped
 Cualquier incidencia para darle seguimiento a esta solicitud de inscripción te pedimos nos contactes a uconstrurama@cemex.com
 
 
+@component('mail::button', ['url' => url("/students/{$student->id}")])
+Ver registro
+@endcomponent
 
 
 Saludos,<br>

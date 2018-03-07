@@ -442,6 +442,8 @@ export default {
             })
         },
         registerStudent (e) {
+            var btn = $(e.target).button('loading')
+
             if (!this.student.data.have_studied)
                 this.student.data.have_studied = false;
 
@@ -451,7 +453,7 @@ export default {
                     data: {},
                     error: {}
                 };
-                var btn = $(e.target).button('reset')
+                btn.button('reset')
                 swal({
                     title: 'Registro Exitoso',
                     text: `Validaremos tu información<br>Arranque de cursos 7 de Mayo de 2018<br>Cualquier duda contáctanos en <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a>`,
@@ -461,7 +463,7 @@ export default {
             })
             .catch(error => {
                 this.student.error = error.response.data;
-                var btn = $(e.target).button('reset')
+                btn.button('reset')
             });
         }
     }

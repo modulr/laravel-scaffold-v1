@@ -43,7 +43,8 @@ Route::group(['namespace' => 'Students'], function() {
 Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard' , function () {
-        return view('dashboard');
+        //return view('dashboard');
+        return redirect('students');
     });
 
     // Notifications
@@ -54,8 +55,19 @@ Route::middleware('auth')->group(function () {
 
     // Students
     Route::group(['namespace' => 'Students'], function() {
+        Route::group(['prefix' => 'students'], function() {
+            Route::get('/' , function () {
+                return view('students.list');
+            });
+            Route::get('/{id}' , function ($id) {
+                return view('students.edit', ['id' => $id]);
+            });
+        });
         Route::group(['prefix' => 'api/students'], function() {
             Route::get('/all', 'StudentController@all');
+            Route::get('/show/{id}', 'StudentController@show');
+            Route::put('/update/{id}', 'StudentController@update');
+            Route::get('/export', 'StudentController@export');
         });
     });
 
