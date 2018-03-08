@@ -12,6 +12,16 @@ class StudentListStore extends Model
     protected $dates = ['deleted_at'];
     protected $guarded = ['id'];
 
+    public function city()
+    {
+        return $this->belongsTo(StudentListCity::class);
+    }
+
+    public function state()
+    {
+        return $this->belongsTo(StudentListState::class);
+    }
+    
     public function advisor()
     {
         return $this->belongsTo(\App\User::class);

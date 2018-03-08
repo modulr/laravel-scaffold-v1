@@ -52,7 +52,7 @@ class StudentController extends Controller
 
     public function show ($id)
     {
-        return Student::with('store')->find($id);
+        return Student::with('store.advisor')->find($id);
     }
 
     public function register (Request $request)
@@ -76,6 +76,11 @@ class StudentController extends Controller
             'store_phone' => 'required|string|min:10|max:10',
             'store_email' => 'required|string|email'
         ]);
+
+        $student = Student::where('email', $request->email)->where('certificate_id', $request->certificate_id)->first();
+
+        if ($student)
+            return response()->json(['data' => 'duplicated'], 400);
 
 
         $store = StudentListStore::find($request->store_id);

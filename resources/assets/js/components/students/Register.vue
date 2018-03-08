@@ -462,10 +462,15 @@ export default {
                 $(e.target).button('reset')
             })
             .catch(error => {
+                this.student.data = {};
                 this.student.error = error.response.data;
-                this.student = {
-                    data: {},
-                    error: {}
+                if (error.response.status == 400) {
+                    swal({
+                        title: 'Registro Fallido',
+                        text: `El correo electronico ya fue registrado anteriormente<br>Si tienes dudas contáctanos en <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a>`,
+                        html: true,
+                        type: 'error'
+                    })
                 }
                 swal({
                     title: 'Registro Exitoso',
@@ -473,6 +478,14 @@ export default {
                     html: true,
                     type: 'success'
                 })
+                // if (error.response.status == 500) {
+                //     swal({
+                //         title: 'Registro Fallido',
+                //         text: `Ocurrio un problema al momento de registrarte<br>Intentalo de nuevo, si el problema persiste contáctanos en <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a>`,
+                //         html: true,
+                //         type: 'error'
+                //     })
+                // }
                 $(e.target).button('reset')
             });
         }

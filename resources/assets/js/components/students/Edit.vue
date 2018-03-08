@@ -213,6 +213,73 @@
                         <span class="help-block" v-if="student.error.store_email">{{student.error.store_email[0]}}</span>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Numero Tienda</label>
+                        <p class="form-control">{{student.data.store.store_id}}</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Telefono</label>
+                        <p class="form-control">{{student.data.store.phone}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Calle</label>
+                        <p class="form-control">{{student.data.store.street}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Numero</label>
+                        <p class="form-control">{{student.data.store.number}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Colonia</label>
+                        <p class="form-control">{{student.data.store.colony}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>CP</label>
+                        <p class="form-control">{{student.data.store.cp}}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Holding</label>
+                        <p class="form-control">{{student.data.store.holding}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Nobre Holding</label>
+                        <p class="form-control">{{student.data.store.holding_name}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Region</label>
+                        <p class="form-control">{{student.data.store.region}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Gerencia</label>
+                        <p class="form-control">{{student.data.store.management}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Asesor</label>
+                        <p class="form-control">{{student.data.store.advisor.name}}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>RSO</label>
+                        <p class="form-control">{{student.data.store.rso}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>RFC</label>
+                        <p class="form-control">{{student.data.store.rfc}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre Comercial</label>
+                        <p class="form-control">{{student.data.store.business_name}}</p>
+                    </div>
+                </div>
             </div>
             <br><br><br>
         </div>
@@ -236,7 +303,11 @@ export default {
             },
             student: {
                 data: {
-                    store: {}
+                    store: {
+                        city: {},
+                        state: {},
+                        advisor: {}
+                    }
                 },
                 error: {}
             }
