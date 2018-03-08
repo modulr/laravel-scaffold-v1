@@ -80,10 +80,7 @@
 
 <script>
     import ProfileSidebarEdit from './Sidebar.vue';
-
-    import {Snotify} from 'vue-snotify';
-    import {SnotifyService} from 'vue-snotify';
-    Vue.use(Snotify)
+    import Snotify from 'vue-snotify';
 
     export default {
         data() {
@@ -127,7 +124,7 @@
                     this.user.profile_work = response.data;
                     this.error = {};
                     var btn = $(e.target).button('reset')
-                    SnotifyService.success('The work has been saved success!');
+                    this.$snotify.success('The work has been saved success!');
                 })
                 .catch(error => {
                     this.error = error.response.data;

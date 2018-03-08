@@ -40,26 +40,7 @@ Vue.component('profileFamilyEdit', require('./components/profile/edit/Family.vue
 Vue.component('profilePlaceEdit', require('./components/profile/edit/Place.vue'));
 Vue.component('profileWorkEdit', require('./components/profile/edit/Work.vue'));
 Vue.component('profilePasswordEdit', require('./components/profile/edit/Password.vue'));
-// News
-//Vue.component('news', require('./components/News.vue'));
-Vue.component('newsPublish', require('./components/news/NewsPublish.vue'));
-Vue.component('newsList', require('./components/news/NewsList.vue'));
-Vue.component('news', require('./components/news/News.vue'));
-// Tasks
-Vue.component('tasks', require('./components/tasks/Tasks.vue'));
-// Contacts
-Vue.component('contacts', require('./components/contacts/Contacts.vue'));
-Vue.component('contacts-widget', require('./components/contacts/ContactsWidget.vue'));
-// Files
-Vue.component('files', require('./components/files/Files.vue'));
-Vue.component('files-widget', require('./components/files/FilesWidget.vue'));
-// Events
-Vue.component('events', require('./components/events/Events.vue'));
-Vue.component('event', require('./components/events/Event.vue'));
-Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
-// Autoparts
-Vue.component('autoparts', require('./components/autoparts/Autoparts.vue'));
-Vue.component('config', require('./components/autoparts/Config.vue'));
+
 // Students
 Vue.component('students-register', require('./components/students/Register.vue'));
 Vue.component('students-list', require('./components/students/List.vue'));

@@ -35,7 +35,6 @@
     "vue-moment": "^2.1.0",
     "vue-multiselect": "^2.0.8",
     "vue-qrcode-reader": "^0.7.1",
-    "vue-snotify": "^3.0.3",
     "vue-the-mask": "^0.11.1",
     "vuedraggable": "^2.14.1",
     "vuejs-paginate": "^1.5.0",
