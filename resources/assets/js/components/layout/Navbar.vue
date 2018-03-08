@@ -150,7 +150,7 @@
                 </ul>
             </div>
         </div>
-        <vue-snotify></vue-snotify>
+        <!-- <vue-snotify></vue-snotify> -->
     </div>
 </template>
 

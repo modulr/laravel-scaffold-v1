@@ -80,7 +80,7 @@
 </template>
 
 <script>
-    import Snotify from 'vue-snotify';
+    //import Snotify from 'vue-snotify';
 
     export default {
         data() {
@@ -112,7 +112,7 @@
                     this.user.profile_personal = response.data;
                     this.error = {};
                     var btn = $(e.target).button('reset')
-                    this.$snotify.success('The profile has been saved success!')
+                    //this.$snotify.success('The profile has been saved success!')
                 })
                 .catch(error => {
                     this.error = error.response.data;

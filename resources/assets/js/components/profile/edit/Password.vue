@@ -49,7 +49,7 @@
 <script>
 import ProfileSidebarEdit from './Sidebar.vue';
 
-import Snotify from 'vue-snotify';
+//import Snotify from 'vue-snotify';
 
 export default {
     data() {
@@ -67,7 +67,7 @@ export default {
                 this.password = {};
                 this.error = {};
                 var btn = $(e.target).button('reset')
-                this.$snotify.success('The password has been changed success!');
+                //this.$snotify.success('The password has been changed success!');
             })
             .catch(error => {
                 this.error = error.response.data;
