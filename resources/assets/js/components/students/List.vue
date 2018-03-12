@@ -89,7 +89,7 @@ export default {
         editStudent (studentId) {
             location.href = `/students/${studentId}`
         },
-        exportStudents () {
+        exportStudents (e) {
             $(e.target).button('loading')
             axios.get('/api/students/export')
             .then(response => {
