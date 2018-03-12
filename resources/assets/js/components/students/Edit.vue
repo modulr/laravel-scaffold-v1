@@ -250,7 +250,7 @@
                         <p class="form-control">{{student.data.store.holding}}</p>
                     </div>
                     <div class="form-group">
-                        <label>Nobre Holding</label>
+                        <label>Nombre Holding</label>
                         <p class="form-control">{{student.data.store.holding_name}}</p>
                     </div>
                     <div class="form-group">
