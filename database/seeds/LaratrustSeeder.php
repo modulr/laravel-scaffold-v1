@@ -61,7 +61,7 @@ class LaratrustSeeder extends Seeder
             ]);
 
             $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
-            Storage::put('avatars/'.$user->id.'/avatar.png', $avatar);
+            Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
 
             \App\Models\Profile\ProfilePersonal::create([
                 'user_id' => $user->id
@@ -98,7 +98,7 @@ class LaratrustSeeder extends Seeder
                     ]);
 
                     $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
-                    Storage::put('avatars/'.$user->id.'/avatar.png', $avatar);
+                    Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
 
                     $permissions = [];
 

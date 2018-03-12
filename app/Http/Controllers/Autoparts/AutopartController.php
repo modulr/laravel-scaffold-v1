@@ -111,7 +111,7 @@ class AutopartController extends Controller
         }
 
         $qr = QrCode::format('png')->size(200)->margin(1)->generate($autopart->id);
-        Storage::put('autoparts/'.$autopart->id.'/qr/'.$autopart->id.'.png', $qr);
+        Storage::put('autoparts/'.$autopart->id.'/qr/'.$autopart->id.'.png', (string) $qr);
 
         if (count($request->images)) {
             $upload = new Upload();

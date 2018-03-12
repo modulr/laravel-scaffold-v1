@@ -16,7 +16,7 @@ class FakerDataSeeder extends Seeder
             ->each(function ($u) {
 
                 $avatar = Avatar::create($u->name)->getImageObject()->encode('png');
-                Storage::put('avatars/'.$u->id.'/avatar.png', $avatar);
+                Storage::put('avatars/'.$u->id.'/avatar.png', (string) $avatar);
 
                 $u->profilePersonal()->save(factory(App\Models\Profile\ProfilePersonal::class)->make());
                 $u->profileContact()->saveMany(factory(App\Models\Profile\ProfileContact::class, 3)->make());
