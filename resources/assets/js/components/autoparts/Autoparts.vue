@@ -307,6 +307,12 @@
         <!-- Modal QR Search -->
         <div class="modal fade" id="modalSearchQR">
             <div class="modal-dialog">
+                <!-- Modal header -->
+                <div class="modal-header">
+                    <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="modal-content">
                     <!-- Modal body -->
                     <div class="modal-body">
@@ -602,20 +608,52 @@
                 `<html>
                     <head>
                         <style>
-                            h1 {
+                            @page { margin: 0cm }
+                            html, body {
+                                width: 86mm;
+                                height: 60mm;
                                 font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
-                                display:inline-block;
-                                font-size: 150px;
+                                margin: .10em;
                                 padding: 0;
-                                margin: 0;
                             }
+                            table {
+                                width: 100%;
+                            }
+                            span {
+                                font-size:.7em;
+                            }
+                            img {
+                                heigth:3em;
+                                width:3em;
+                            }
+                            .origin {
+                                color: #fff;
+                                background-color: #f00;
+                                font-size:.5em;
+                                padding: .10em .5em;
+                            }
+                            .number {
+                                font-size:7.5em;
+                                line-height:.65em;
+                            }
+
                         </style>
                     </head>
                     <body onload="window.focus(); window.print(); window.close();">
                         <table>
                             <tr>
                                 <td><img src="${autopart.qr}"></td>
-                                <td><h1>${autopart.id}</h1></td>
+                                <td>
+                                    <span class="origin">${autopart.origin.name}</span>
+                                    <br>
+                                    <span>${autopart.make.name}</span>
+                                    <span>${autopart.model.name}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span class="number">${autopart.id}</span>
+                                </td>
                             </tr>
                         </table>
                     </body>

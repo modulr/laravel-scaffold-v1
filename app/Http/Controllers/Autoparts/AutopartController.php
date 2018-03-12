@@ -110,7 +110,7 @@ class AutopartController extends Controller
             $autopart->years()->attach($yearsIds);
         }
 
-        $qr = QrCode::format('png')->size(200)->generate($autopart->id);
+        $qr = QrCode::format('png')->size(200)->margin(1)->generate($autopart->id);
         Storage::put('autoparts/'.$autopart->id.'/qr/'.$autopart->id.'.png', $qr);
 
         if (count($request->images)) {
