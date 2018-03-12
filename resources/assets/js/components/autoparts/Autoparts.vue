@@ -307,13 +307,14 @@
         <!-- Modal QR Search -->
         <div class="modal fade" id="modalSearchQR">
             <div class="modal-dialog">
-                <!-- Modal header -->
-                <div class="modal-header">
-                    <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
                 <div class="modal-content">
+                    <!-- Modal header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <p class="modal-title">Scan the QR code</p>
+                    </div>
                     <!-- Modal body -->
                     <div class="modal-body">
                         <qrcode-reader @decode="searchQR" v-if="showQRSearch">
