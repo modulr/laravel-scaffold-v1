@@ -13,7 +13,8 @@
         "pusher/pusher-php-server": "^2.0",
         "santigarcor/laratrust": "5.0.*",
         "wildside/userstamps": "^0.4.0",
-        "simplesoftwareio/simple-qrcode": "~2"
+        "simplesoftwareio/simple-qrcode": "~2",
+        "league/flysystem-aws-s3-v3": "~1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
