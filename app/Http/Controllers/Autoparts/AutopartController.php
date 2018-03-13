@@ -265,7 +265,13 @@ class AutopartController extends Controller
 
     public function destroyMake($id)
     {
-        return AutopartListMake::destroy($id);
+        $inUse = Autopart::where('make_id', $id)->first();
+
+        if (!$inUse) {
+            return AutopartListMake::destroy($id);
+        } else {
+            return response()->json(['data' => 'constraint'], 400);
+        }
     }
 
     public function storeModel(Request $request)
@@ -283,7 +289,13 @@ class AutopartController extends Controller
 
     public function destroyModel($id)
     {
-        return AutopartListModel::destroy($id);
+        $inUse = Autopart::where('model_id', $id)->first();
+
+        if (!$inUse) {
+            return AutopartListModel::destroy($id);
+        } else {
+            return response()->json(['data' => 'constraint'], 400);
+        }
     }
 
     public function storeYear(Request $request)
@@ -299,6 +311,12 @@ class AutopartController extends Controller
 
     public function destroyYear($id)
     {
-        return AutopartListYear::destroy($id);
+        $inUse = AutopartYear::where('year_id', $id)->first();
+
+        if (!$inUse) {
+            return AutopartListYear::destroy($id);
+        } else {
+            return response()->json(['data' => 'constraint'], 400);
+        }
     }
 }

@@ -81,13 +81,13 @@ export default {
         sortedMakes () {
             return this.lists.makes.sort(function(a, b) {
                 if (a.models.length) {
-                    return a.models.sort(function(a, b) {
-                        var nameA = a.name.toUpperCase();
-                        var nameB = b.name.toUpperCase();
-                        if (nameA < nameB) {
+                    a.models.sort(function(x, y) {
+                        var nameX = x.name.toUpperCase();
+                        var nameY = y.name.toUpperCase();
+                        if (nameX < nameY) {
                             return -1;
                         }
-                        if (nameA > nameB) {
+                        if (nameX > nameY) {
                             return 1;
                         }
                         // names must be equal
@@ -169,6 +169,13 @@ export default {
                         showConfirmButton: false
                     })
                 })
+                .catch(error => {
+                    swal({
+                        title: "Not Deleted!",
+                        text: "The Make was not deleted, because it is in use.",
+                        type: "warning",
+                    })
+                })
             })
         },
         storeModel (make) {
@@ -211,6 +218,13 @@ export default {
                         showConfirmButton: false
                     })
                 })
+                .catch(error => {
+                    swal({
+                        title: "Not Deleted!",
+                        text: "The Model was not deleted, because it is in use.",
+                        type: "warning",
+                    })
+                })
             })
         },
         storeYear () {
@@ -248,6 +262,13 @@ export default {
                         type: "success",
                         timer: 1000,
                         showConfirmButton: false
+                    })
+                })
+                .catch(error => {
+                    swal({
+                        title: "Not Deleted!",
+                        text: "The Year was not deleted, because it is in use.",
+                        type: "warning",
                     })
                 })
             })

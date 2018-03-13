@@ -48,6 +48,6 @@ class Autopart extends Model
 
     public function years()
     {
-        return $this->belongsToMany(AutopartListYear::class, 'autopart_year', 'autopart_id', 'year_id');
+        return $this->belongsToMany(AutopartListYear::class, 'autopart_years', 'autopart_id', 'year_id');
     }
 }

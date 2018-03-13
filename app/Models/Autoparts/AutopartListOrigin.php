@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AutopartListOrigin extends Model
 {
     use SoftDeletes;
-    protected $dates = ['deleted_at'];
 
+    protected $dates = ['deleted_at'];
     protected $guarded = ['id'];
 }
