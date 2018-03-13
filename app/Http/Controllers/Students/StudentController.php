@@ -188,7 +188,7 @@ class StudentController extends Controller
                 'Teléfono Celular' => $value->cellphone,
                 'Teléfono Fijo' => $value->phone,
                 'Correo electrónico' => $value->email,
-                'Numero Tienda' => $value->store_id,
+                'Numero Tienda' => $value->store->store_id,
                 'Construrama' => $value->store->name,
                 'Estado' => $value->store->state->name,
                 'Ciudad' => $value->store->city->name,
