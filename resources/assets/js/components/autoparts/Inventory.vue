@@ -1,11 +1,14 @@
 <template lang="html">
-    <div class="autoparts">
+    <div>
         <!-- Container -->
         <div class="container-fluid">
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-xs-12 text-right controls">
+                    <div class="col-xs-6">
+                        <h5>Inventory</h5>
+                    </div>
+                    <div class="col-xs-6 text-right controls">
                         <!-- <input type="text" class="form-control" placeholder="Search" v-model="search"> -->
                         <a href="#" class="btn btn-link"
                             @click.prevent="showFilters">
@@ -24,7 +27,7 @@
                 </div>
             </div>
             <!-- List Autoparts -->
-            <div class="row" v-if="autoparts.data.length">
+            <div class="row autoparts-list" v-if="autoparts.data.length">
                 <div class="col-md-12">
                     <div class="media" v-for="(item, index) in autoparts.data" @click="editAutopart(item.id, index)">
                         <div class="media-left">
@@ -71,7 +74,7 @@
             </div>
         </div>
         <!-- Modal Autopart -->
-        <div class="modal right md" id="modalAutopart">
+        <div class="modal right md autoparts-item" id="modalAutopart">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <!-- Modal header -->
@@ -304,7 +307,7 @@
             </div>
         </div>
         <!-- Modal QR Search -->
-        <div class="modal fade" id="modalSearchQR">
+        <div class="modal fade autoparts-qr" id="modalSearchQR">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <!-- Modal header -->

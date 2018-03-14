@@ -59,7 +59,7 @@ Vue.component('event', require('./components/events/Event.vue'));
 Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
 // Autoparts
 Vue.component('autoparts-sales-list', require('./components/autoparts/sales/List.vue'));
-Vue.component('autoparts-sales-view', require('./components/autoparts/sales/View.vue'));
+Vue.component('autoparts-sales-item', require('./components/autoparts/sales/Item.vue'));
 Vue.component('autoparts-sales-filters', require('./components/autoparts/sales/Filters.vue'));
 Vue.component('autoparts-sales-search-qr', require('./components/autoparts/sales/SearchQr.vue'));
 Vue.component('autoparts-inventory', require('./components/autoparts/Inventory.vue'));

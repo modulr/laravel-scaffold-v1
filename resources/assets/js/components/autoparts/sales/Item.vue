@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="autoparts-view">
+    <div>
         <span class="label" :class="{
             'label-primary': autopart.status_id == 1,
             'label-default': autopart.status_id == 2,
@@ -63,6 +63,8 @@
         <hr>
         <p>Description</p>
         <p class="text-muted">{{autopart.description}}</p>
+        <hr>
+        <p>ID: <strong>{{autopart.id}}</strong></p>
         <fieldset class="separator">
             <legend>Activity</legend>
             <p class="text-muted">

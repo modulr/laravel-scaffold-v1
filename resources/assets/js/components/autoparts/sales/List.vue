@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="autoparts">
+    <div>
         <!-- Container -->
         <div class="container-fluid">
             <!-- Actionbar -->
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <!-- List Autoparts -->
-            <div class="row" v-if="autoparts.data.length">
+            <div class="row autoparts-list" v-if="autoparts.data.length">
                 <div class="col-md-12">
                     <div class="media" v-for="(item, index) in autoparts.data"
                         @click="showAutopart(item)">
@@ -72,17 +72,16 @@
             </div>
         </div>
         <!-- Modal Autopart -->
-        <div class="modal right md" id="modalAutopart">
+        <div class="modal right md autoparts-item" id="modalAutopart">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <p class="modal-title lead pull-right">ID: <strong>{{autopart.id}}</strong></p>
                     </div>
                     <div class="modal-body">
-                        <autoparts-sales-view :model="autopart" @updateStatus="updateStatus"></autoparts-sales-view>
+                        <autoparts-sales-item :model="autopart" @updateStatus="updateStatus"></autoparts-sales-item>
                     </div>
                 </div>
             </div>
@@ -96,7 +95,7 @@
             </div>
         </div>
         <!-- Modal Search QR -->
-        <div class="modal fade" id="modalSearchQR">
+        <div class="modal fade autoparts-qr" id="modalSearchQR">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -117,7 +116,7 @@
 <script>
 import AutopartsSalesFilters from './Filters.vue'
 import AutopartsSalesSearchQr from './SearchQr.vue'
-import AutopartsSalesView from './View.vue'
+import AutopartsSalesItem from './Item.vue'
 export default {
     data () {
         return {
