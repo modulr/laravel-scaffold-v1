@@ -25,7 +25,8 @@ Auth::routes();
 Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard' , function () {
-        return view('dashboard');
+        return redirect('autoparts/sales');
+        //return view('dashboard');
     });
 
     // Notifications
@@ -87,6 +88,7 @@ Route::middleware('auth')->group(function () {
             });
         });
     });
+    require __DIR__ . '/autopartes/autopartes.php';
 
     // Contacts
     Route::group(['namespace' => 'Contacts'], function() {

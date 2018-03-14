@@ -1,59 +1,37 @@
-<template>
-    <div class="autoparts">
+<template lang="html">
+    <div>
         <!-- Container -->
         <div class="container-fluid">
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-xs-12 text-right controls">
+                    <div class="col-xs-6">
+                        <h5>Inventory</h5>
+                    </div>
+                    <div class="col-xs-6 text-right controls">
                         <!-- <input type="text" class="form-control" placeholder="Search" v-model="search"> -->
-                        <a href="/autoparts/config" class="btn btn-link">
-                            <i class="fa fa-cog fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Config</span>
-                        </a>
-                        <a href="#" class="btn btn-link"
-                            @click.prevent="showSearchQR">
-                            <i class="fa fa-qrcode fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Search</span>
-                        </a>
-                        <a href="#" class="btn btn-link"
+                        <a href="#" class="btn btn-default"
                             @click.prevent="showFilters">
                             <i class="fa fa-sliders fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Filters</span>
+                        </a>
+                        <a href="#" class="btn btn-default"
+                            @click.prevent="showSearchQR">
+                            <i class="fa fa-qrcode fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Search</span>
                         </a>
                         <a href="#" class="btn btn-success"
                             v-if="user.hasPermission['create-autoparts']"
                             @click.prevent="newAutopart">
-                            <i class="fa fa-car"></i> New
+                            <i class="fa fa-plus"></i> <span class="hidden-xs">New</span>
                         </a>
                     </div>
                 </div>
             </div>
             <!-- List Autoparts -->
-            <div class="row" v-if="autoparts.data.length">
+            <div class="row autoparts-list" v-if="autoparts.data.length">
                 <div class="col-md-12">
                     <div class="media" v-for="(item, index) in autoparts.data" @click="editAutopart(item.id, index)">
                         <div class="media-left">
-                            <span class="label pull-right" :class="{
-                                'label-success': item.origin_id == 1,
-                                'label-info': item.origin_id == 2,
-                                'label-primary': item.origin_id == 3
-                                }">
-                                {{item.origin.name}}
-                            </span>
-                            <img :src="item.images[0].url_thumbnail" v-if="item.images.length">
-                            <i class="fa fa-picture-o fa-5x" v-else></i>
-                        </div>
-                        <div class="media-body">
-                            <h5 class="media-heading">{{item.id}} {{item.name}}</h5>
-                            <span>
-                                {{item.make.name}} - {{item.model.name}} -
-                                <span v-for="(year, index) in item.years">
-                                    {{year.name}}<span v-if="index+1 < item.years.length">, </span>
-                                </span>
-                            </span>
-                            <br>
-                            <span class="lead">
-                                {{item.purchase_price | currency}} / <strong>{{item.sale_price | currency}}</strong>
-                            </span>
-                            <span class="label pull-right" :class="{
+                            <span class="label" :class="{
                                 'label-primary': item.status_id == 1,
                                 'label-default': item.status_id == 2,
                                 'label-info': item.status_id == 3,
@@ -61,6 +39,40 @@
                                 }">
                                 {{item.status.name}}
                             </span>
+                            <img class="img-rounded" :src="item.images[0].url_thumbnail"
+                                v-if="item.images.length">
+                            <div class="img-rounded" v-else>
+                                <i class="fa fa-picture-o fa-5x"></i>
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                                {{item.name}}
+                                <span class="pull-right hidden-xs">
+                                    ID: <strong>{{item.id}}</strong>
+                                </span>
+                            </h5>
+                            <p class="text-muted">
+                                {{item.make.name}} - {{item.model.name}} -
+                                <span v-for="(year, index) in item.years">
+                                    {{year.name}}<span v-if="index+1 < item.years.length">, </span>
+                                </span>
+                                <small class="text-muted pull-right hidden-xs">
+                                    <small>Created at </small>
+                                    {{item.created_at | moment('lll')}},
+                                    <small>by </small>{{item.creator.name}}
+                                </small>
+                            </p>
+                            <h5>
+                                {{item.sale_price | currency}}
+                                <small class="pull-right" :class="{
+                                    'text-success': item.origin_id == 1,
+                                    'text-info': item.origin_id == 2,
+                                    'text-primary': item.origin_id == 3
+                                    }">
+                                    {{item.origin.name}}
+                                </small>
+                            </h5>
                         </div>
                     </div>
                 </div>
@@ -72,7 +84,7 @@
             </div>
         </div>
         <!-- Modal Autopart -->
-        <div class="modal right md" id="modalAutopart">
+        <div class="modal right md autoparts-item" id="modalAutopart">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <!-- Modal header -->
@@ -81,12 +93,12 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <div class="pull-right">
-                            <button type="button" class="btn btn-link"
+                            <button type="button" class="btn btn-default"
                                     v-if="user.hasPermission['read-autoparts'] && autopart.action == 'edit'"
                                     @click="printQR(autopart.data)">
                                     <i class="fa fa-print fa-lg"></i>
                             </button>
-                            <button type="button" class="btn btn-link"
+                            <button type="button" class="btn btn-default"
                                     v-if="user.hasPermission['delete-autoparts'] && autopart.action == 'edit'"
                                     @click="destroyAutopart"><i class="fa fa-trash-o fa-lg"></i></button>
                             <button type="button" class="btn btn-success"
@@ -233,6 +245,10 @@
                                 </div>
                             </div>
                             <div class="col-xs-12" v-if="autopart.action == 'edit'">
+                                <hr>
+                                <div class="form-group">
+                                    <p class="form-control-static">ID: <strong>{{autopart.data.id}}</strong></p>
+                                </div>
                                 <fieldset class="separator">
                                     <legend>Activity</legend>
                                     <p class="text-muted"><small>Created at </small>{{autopart.data.created_at | moment('lll')}}, <small>by </small>{{autopart.data.creator.name}}</p>
@@ -318,9 +334,16 @@
             </div>
         </div>
         <!-- Modal QR Search -->
-        <div class="modal fade" id="modalSearchQR">
+        <div class="modal fade autoparts-qr" id="modalSearchQR">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <!-- Modal header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <p class="modal-title">Scan the QR code</p>
+                    </div>
                     <!-- Modal body -->
                     <div class="modal-body">
                         <qrcode-reader @decode="searchQR" v-if="showQRSearch">
@@ -616,20 +639,52 @@
                 `<html>
                     <head>
                         <style>
-                            h1 {
+                            @page { margin: 0cm }
+                            html, body {
+                                width: 86mm;
+                                height: 60mm;
                                 font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
-                                display:inline-block;
-                                font-size: 150px;
+                                margin: .10em;
                                 padding: 0;
-                                margin: 0;
                             }
+                            table {
+                                width: 100%;
+                            }
+                            span {
+                                font-size:.7em;
+                            }
+                            img {
+                                heigth:3em;
+                                width:3em;
+                            }
+                            .origin {
+                                color: #fff;
+                                background-color: #f00;
+                                font-size:.5em;
+                                padding: .10em .5em;
+                            }
+                            .number {
+                                font-size:7.5em;
+                                line-height:.65em;
+                            }
+
                         </style>
                     </head>
                     <body onload="window.focus(); window.print(); window.close();">
                         <table>
                             <tr>
                                 <td><img src="${autopart.qr}"></td>
-                                <td><h1>${autopart.id}</h1></td>
+                                <td>
+                                    <span class="origin">${autopart.origin.name}</span>
+                                    <br>
+                                    <span>${autopart.make.name}</span>
+                                    <span>${autopart.model.name}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span class="number">${autopart.id}</span>
+                                </td>
                             </tr>
                         </table>
                     </body>
@@ -743,7 +798,7 @@
                     })
                 }
                 var btn = $(e.target).button('loading')
-                axios.post('/api/autoparts/filter',{
+                axios.post('/api/autoparts/filter', {
                     make: this.filters.make,
                     model: this.filters.model,
                     years: years,

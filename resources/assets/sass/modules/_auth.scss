@@ -35,11 +35,10 @@
         > div {
             width: 80%;
             .logo {
-                margin-bottom: 20px;
+                margin-bottom: 60px;
                 text-align: center;
-                svg, img {
-                    max-width: 200px;
-                    max-height: 100px;
+                img {
+                    max-height: 40px;
                 }
             }
             form {

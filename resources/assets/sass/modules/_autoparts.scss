@@ -1,40 +1,60 @@
-.autoparts {
+.autoparts-list {
     .media {
-        padding: 10px;
+        padding: 10px 8px 20px;
         border-bottom: 1px solid $gray-lighter;
         &:hover {
             background-color: $gray-lighter;
         }
         .media-left {
-            min-width: 120px;
-            padding-right: 20px;
-            text-align: center;
             position: relative;
-            img {
-                height: 100px;
-                width: 100px;
-            }
             .label {
                 position: absolute;
-                right: 15px;
-                bottom: 10px;
+                right: 20px;
+                bottom: -3px;
+            }
+            .img-rounded {
+                background-color: $white;
+                margin-right: 15px;
+                text-align: center;
+                height: 100px;
+                width: 100px;
+                i {
+                    font-size: 5em;
+                    margin-top: .25em;
+                }
+            }
+
+        }
+        .media-body {
+            h5 small {
+                font-size: 12px;
+                margin-top: 8px;
             }
         }
     }
+}
 
-    .modal {
+.autoparts-item {
+    .modal-body {
+        > div {
+            position: relative;
+        }
+        .label {
+            position: absolute;
+            right: -3px;
+            top: -3px;
+            z-index: 2;
+        }
         .swiper-container {
-            // height: 200px;
-            margin-bottom: 15px;
+            margin-bottom: 25px;
             .swiper-slide {
                 text-align: center;
                 img {
-                    // width: 100%;
+                    max-width: 100%;
                     height: 250px;
                 }
             }
         }
-
         .images {
             padding: 10px 0;
             display: inline;
@@ -69,89 +89,109 @@
                 }
             }
         }
-
-        .qrcode-reader {
-            min-height: 195px;
-            .qr-scanner-back {
-                background-color: rgba(0, 0, 0, .2);
-                position: absolute;
-                height: 100%;
-                width: 100%;
-                top: 0;
-                left: 0;
-            }
-            .qr-scanner {
-                background-color: rgba(255, 255, 255, .1);
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                height: 200px;
-                width: 200px;
-                transform: translate(-50%, -50%);
-
-                span {
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    width: 100%;
-                    height: 2px;
-                    background-color: rgba(76, 183, 250, .5);
-                    animation: scanning 3s infinite;
-                }
-                @keyframes scanning {
-                    50% {
-                        transform: translateY(198px);
-                    }
-                }
-                &:before,  &:after, em:after, em:before {
-                    border-color: $gray;
-                    content: "";
-                    position: absolute;
-                    width: 25px;
-                    height: 25px;
-                    border-style: solid;
-                    border-width: 0px;
-                }
-                &:before {
-                    left: 0;
-                    top: 0;
-                    border-left-width: 1px;
-                    border-top-width: 1px;
-                }
-                &:after {
-                    right: 0;
-                    top: 0;
-                    border-right-width: 1px;
-                    border-top-width: 1px;
-                }
-                em:before {
-                    left: 0;
-                    bottom: 0;
-                    border-left-width: 1px;
-                    border-bottom-width: 1px;
-                }
-                em:after {
-                    right: 0;
-                    bottom: 0;
-                    border-right-width: 1px;
-                    border-bottom-width: 1px;
-                }
-            }
-            .qr-error {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+        .img-rounded {
+            background-color: $white;
+            text-align: center;
+            height: 250px;
+            width: 100%;
+            margin-bottom: 25px;
+            i {
+                font-size: 14em;
+                margin-top: .2em;
             }
         }
+        h4 small {
+            font-size: 12px;
+            margin-top: 8px;
+            margin-right: 5px;
+        }
     }
+}
 
-    &.config {
-        ul.list-group {
-            .list-group-item {
-                .fa-chevron-down {
-                    margin-left: 20px;
+.autoparts-qr {
+    .qrcode-reader {
+        min-height: 195px;
+        .qr-scanner-back {
+            background-color: rgba(0, 0, 0, .2);
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+        }
+        .qr-scanner {
+            background-color: rgba(255, 255, 255, .1);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 200px;
+            width: 200px;
+            transform: translate(-50%, -50%);
+
+            span {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 2px;
+                background-color: rgba(254, 174, 59, .5);
+                animation: scanning 3s infinite;
+            }
+            @keyframes scanning {
+                50% {
+                    transform: translateY(198px);
                 }
+            }
+            &:before,  &:after, em:after, em:before {
+                border-color: $gray;
+                content: "";
+                position: absolute;
+                width: 25px;
+                height: 25px;
+                border-style: solid;
+                border-width: 0px;
+            }
+            &:before {
+                left: 0;
+                top: 0;
+                border-left-width: 1px;
+                border-top-width: 1px;
+            }
+            &:after {
+                right: 0;
+                top: 0;
+                border-right-width: 1px;
+                border-top-width: 1px;
+            }
+            em:before {
+                left: 0;
+                bottom: 0;
+                border-left-width: 1px;
+                border-bottom-width: 1px;
+            }
+            em:after {
+                right: 0;
+                bottom: 0;
+                border-right-width: 1px;
+                border-bottom-width: 1px;
+            }
+        }
+        .qr-error {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 18px;
+        }
+    }
+}
+
+.autoparts-lists {
+    ul.list-group {
+        .list-group-item {
+            .fa-chevron-down {
+                margin-left: 20px;
             }
         }
     }

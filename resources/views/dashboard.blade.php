@@ -3,21 +3,6 @@
 @section('content')
     <div class="container-fluid dashboard">
         <div class="row">
-            @permission('read-news')
-            <div class="col-md-4">
-                <div class="panel panel-default panel-dashboard">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            News
-                            <a href="/news" class="pull-right">View all</a>
-                        </h3>
-                    </div>
-                    <div style="height:400px; overflow-y:scroll;">
-                        <news-list></news-list>
-                    </div>
-                </div>
-            </div>
-            @endpermission
             @permission('read-tasks')
             <div class="col-md-4">
                 <div class="panel panel-default panel-dashboard">
@@ -29,6 +14,21 @@
                     </div>
                     <div class="panel-body" style="height:400px; overflow-y:scroll;">
                         <tasks></tasks>
+                    </div>
+                </div>
+            </div>
+            @endpermission
+            @permission('read-news')
+            <div class="col-md-4">
+                <div class="panel panel-default panel-dashboard">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            News
+                            <a href="/news" class="pull-right">View all</a>
+                        </h3>
+                    </div>
+                    <div style="height:400px; overflow-y:scroll;">
+                        <news-list></news-list>
                     </div>
                 </div>
             </div>

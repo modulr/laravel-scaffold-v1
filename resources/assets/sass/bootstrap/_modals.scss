@@ -55,6 +55,10 @@
     width: 100%;
 }
 
+.modal-backdrop {
+    background-color: $white;
+}
+
 
 @media (max-width: 767px) {
     .modal.sm .modal-dialog,

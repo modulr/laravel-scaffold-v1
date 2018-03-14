@@ -4,21 +4,27 @@
         <div class="container-fluid">
             <!-- Actionbar -->
             <div class="actionbar">
+                <div class="form-group input-lg search" :class="{'active': active}">
+                    <input type="text" class="form-control" placeholder="Search" v-model="search">
+                    <button type="button" class="close" aria-label="Close"
+                        @click="toggleSearchBtn(false)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="row">
-                    <div class="col-sm-6 links">
-                        <ul class="nav nav-tabs">
-                            <li><a href="/users">Users</a></li>
-                            <li class="active"><a href="">Roles</a></li>
-                        </ul>
+                    <div class="col-xs-6 links">
+                        <h5>Roles</h5>
                     </div>
-                    <div class="col-sm-3 controls">
-                        <input type="text" class="form-control" placeholder="Search" v-model="search">
-                    </div>
-                    <div class="col-sm-3 text-right controls">
+                    <div class="col-xs-6 text-right controls">
+                        <a href="#" class="btn btn-link"
+                            @click="toggleSearchBtn(true)">
+                            <i class="mdi mdi-search mdi-lg"></i>
+                        </a>
                         <a href="#" class="btn btn-success"
                            v-if="user.hasPermission['create-roles']"
                            @click.prevent="newRole">
-                            <i class="mdi mdi-group-add mdi-lg"></i> New Role
+                            <i class="mdi mdi-group-add mdi-lg"></i>
+                            <span class="hidden-xs">New Role</span>
                         </a>
                     </div>
                 </div>
@@ -26,34 +32,6 @@
             <!-- List Roles -->
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-responsive table-elevation">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Users</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(role, index) in roles.data">
-                                    <td @click="editRole(role, index)">
-                                        {{role.id}}
-                                    </td>
-                                    <td @click="editRole(role, index)">
-                                        <h4 class="media-heading">{{role.display_name}}</h4>
-                                    </td>
-                                    <td @click="editRole(role, index)">
-                                        {{role.description}}
-                                    </td>
-                                    <td @click="editRole(role, index)">
-                                        {{role.users.length}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
                     <paginate
                         v-if="roles.last_page>1"
                         :page-count="roles.last_page"
@@ -62,6 +40,31 @@
                         :next-text="'Next'"
                         :container-class="'pagination pull-right'">
                     </paginate>
+                    <div>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="hidden-xs">ID</th>
+                                    <th>Role</th>
+                                    <th class="hidden-xs">Users</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(role, index) in roles.data">
+                                    <td class="hidden-xs" @click="editRole(role, index)">
+                                        {{role.id}}
+                                    </td>
+                                    <td @click="editRole(role, index)">
+                                        <h4 class="media-heading">{{role.display_name}}</h4>
+                                        <small class="text-muted">{{role.description}}</small>
+                                    </td>
+                                    <td class="hidden-xs" @click="editRole(role, index)">
+                                        {{role.users.length}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,11 +72,18 @@
         <div class="modal right md" id="modalNewRole">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success"
+                                    @click="storeRole"
+                                    v-if="user.hasPermission['create-roles']">Create</button>
+                        </div>
+                    </div>
                     <div class="modal-body">
                         <form>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
                             <div class="form-group" :class="{'has-error': error.display_name}">
                                 <label>Name *</label>
                                 <input type="text" class="form-control input-lg" required
@@ -82,7 +92,7 @@
                             </div>
                             <div class="form-group" :class="{'has-error': error.description}">
                                 <label>Description</label>
-                                <textarea class="form-control" rows="3" v-model="roleNew.description"></textarea>
+                                <textarea class="form-control" rows="2" v-model="roleNew.description"></textarea>
                                 <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                             </div>
                             <br>
@@ -106,14 +116,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <hr>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success pull-left"
-                                @click="storeRole"
-                                v-if="user.hasPermission['create-roles']">Create</button>
-                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -122,10 +125,22 @@
         <div class="modal right md" id="modalEditRole">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <div class="modal-header">
+                        <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-default"
+                                    @click="destroyRole"
+                                    v-if="user.hasPermission['delete-roles']">
+                                <i class="fa fa-trash-o fa-lg"></i>
+                            </button>
+                            <button type="button" class="btn btn-primary"
+                                    @click="updateRole"
+                                    v-if="user.hasPermission['update-roles']">Save</button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
                         <form>
                             <div class="form-group" :class="{'has-error': error.display_name}">
                                 <label>Name *</label>
@@ -135,7 +150,7 @@
                             </div>
                             <div class="form-group" :class="{'has-error': error.description}">
                                 <label>Description</label>
-                                <textarea class="form-control" rows="3" v-model="roleEdit.description"></textarea>
+                                <textarea class="form-control" rows="2" v-model="roleEdit.description"></textarea>
                                 <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                             </div>
                             <br>
@@ -164,49 +179,25 @@
                                     </table>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="users">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="item in roleEdit.users">
-                                                <td>{{item.id}}</td>
-                                                <td>
-                                                    <div class="media">
-                                                        <div class="media-left">
-                                                            <a :href="`/profile/${item.id}`">
-                                                                <img class="avatar-xs" :src="item.avatar_url">
-                                                            </a>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <a :href="`/profile/${item.id}`">
-                                                                <h4 class="media-heading">{{item.name}}</h4>
-                                                            </a>
-                                                            <a class="text-muted" :href="`mailto:${item.email}`">{{item.email}}</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="media" v-for="item in roleEdit.users">
+                                        <div class="media-left">
+                                            <a :href="`/profile/${item.id}`">
+                                                <img class="avatar-xs" :src="item.avatar_url">
+                                            </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a :href="`/profile/${item.id}`">
+                                                {{item.name}}
+                                            </a>
+                                            <br>
+                                            <small class="text-muted">
+                                                {{item.email}}
+                                            </small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <hr>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary pull-left"
-                                @click="updateRole"
-                                v-if="user.hasPermission['update-roles']">Save</button>
-                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-default"
-                                @click="destroyRole"
-                                v-if="user.hasPermission['delete-roles']">
-                            <i class="fa fa-trash-o fa-lg"></i>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -224,6 +215,7 @@
                 user: Laravel.user,
                 error: {},
                 search: '',
+                active: false,
                 roles: {
                     last_page: 0
                 },
@@ -247,6 +239,14 @@
             }
         },
         methods: {
+            toggleSearchBtn (active) {
+                this.search = null
+                if (active) {
+                    this.active = active
+                } else {
+                    this.active = active
+                }
+            },
             getRoles (page) {
                 if (!page) {
                     axios.get(`/api/roles/filter${this.search ? '?search=' + this.search: ''}`)

@@ -52,7 +52,7 @@ class CreateAutopartsTable extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('autopart_year', function (Blueprint $table) {
+        Schema::create('autopart_years', function (Blueprint $table) {
             $table->integer('autopart_id')->unsigned()->comment = "Autopart to belongs";
             $table->foreign('autopart_id')->references('id')->on('autoparts');
             $table->integer('year_id')->unsigned()->comment = "Year to belongs";
@@ -71,6 +71,6 @@ class CreateAutopartsTable extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('autoparts');
         Schema::dropIfExists('autopart_images');
-        Schema::dropIfExists('autopart_year');
+        Schema::dropIfExists('autopart_years');
     }
 }
