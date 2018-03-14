@@ -1,6 +1,7 @@
 .actionbar {
     border-bottom: 1px solid $gray-lighter;
     margin-bottom: 20px;
+    position: relative;
     h5 {
         margin: 7px 0;
     }
@@ -16,6 +17,27 @@
         .nav-tabs > li > a {
             font-size: 14px;
             padding-bottom: 12px;
+        }
+    }
+    .search {
+        position: absolute;
+        width: 100%;
+        background-color: $body-bg;
+        outline: 5px solid $body-bg;
+        padding: 0;
+        z-index: 2;
+        display: none;
+        &.active {
+            display: block;
+        }
+        .close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            span {
+                line-height: 30px;
+                background-color: $body-bg;
+            }
         }
     }
     .controls {

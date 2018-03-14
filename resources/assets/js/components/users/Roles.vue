@@ -4,21 +4,27 @@
         <div class="container-fluid">
             <!-- Actionbar -->
             <div class="actionbar">
+                <div class="form-group input-lg search" :class="{'active': active}">
+                    <input type="text" class="form-control" placeholder="Search" v-model="search">
+                    <button type="button" class="close" aria-label="Close"
+                        @click="toggleSearchBtn(false)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="row">
                     <div class="col-sm-6 links">
                         <h5>Roles</h5>
                     </div>
-                    <div class="col-xs-6 col-sm-3 controls">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="mdi mdi-search mdi-lg"></i></span>
-                            <input type="text" class="form-control" placeholder="Search" v-model="search">
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-sm-3 text-right controls">
+                    <div class="col-xs-6 text-right controls">
+                        <a href="#" class="btn btn-link"
+                            @click="toggleSearchBtn(true)">
+                            <i class="mdi mdi-search mdi-lg"></i>
+                        </a>
                         <a href="#" class="btn btn-success"
                            v-if="user.hasPermission['create-roles']"
                            @click.prevent="newRole">
-                            <i class="mdi mdi-group-add mdi-lg"></i> New Role
+                            <i class="mdi mdi-group-add mdi-lg"></i>
+                            <span class="hidden-xs">New Role</span>
                         </a>
                     </div>
                 </div>
@@ -209,6 +215,7 @@
                 user: Laravel.user,
                 error: {},
                 search: '',
+                active: false,
                 roles: {
                     last_page: 0
                 },
@@ -232,6 +239,14 @@
             }
         },
         methods: {
+            toggleSearchBtn (active) {
+                this.search = null
+                if (active) {
+                    this.active = active
+                } else {
+                    this.active = active
+                }
+            },
             getRoles (page) {
                 if (!page) {
                     axios.get(`/api/roles/filter${this.search ? '?search=' + this.search: ''}`)
