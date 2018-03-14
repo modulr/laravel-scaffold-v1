@@ -164,34 +164,22 @@
                                     </table>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="users">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="item in roleEdit.users">
-                                                <td>{{item.id}}</td>
-                                                <td>
-                                                    <div class="media">
-                                                        <div class="media-left">
-                                                            <a :href="`/profile/${item.id}`">
-                                                                <img class="avatar-xs" :src="item.avatar_url">
-                                                            </a>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <a :href="`/profile/${item.id}`">
-                                                                <h4 class="media-heading">{{item.name}}</h4>
-                                                            </a>
-                                                            <a class="text-muted" :href="`mailto:${item.email}`">{{item.email}}</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="media" v-for="item in roleEdit.users">
+                                        <div class="media-left">
+                                            <a :href="`/profile/${item.id}`">
+                                                <img class="avatar-xs" :src="item.avatar_url">
+                                            </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a :href="`/profile/${item.id}`">
+                                                {{item.name}}
+                                            </a>
+                                            <br>
+                                            <small class="text-muted">
+                                                {{item.email}}
+                                            </small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <hr>
