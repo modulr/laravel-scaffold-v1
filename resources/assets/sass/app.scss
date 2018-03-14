@@ -8,9 +8,6 @@
 // Material+Icons
 @import "node_modules/bootstrap-material-design-icons/scss/material-icons";
 
-// sweetalert
-@import "node_modules/sweetalert/dev/sweetalert";
-
 // swiper
 @import "node_modules/swiper/dist/css/swiper";
 
@@ -45,6 +42,7 @@
 // Components
 @import 'components/aside';
 @import 'components/actionbar';
+@import 'components/comments';
 @import 'components/filters';
 @import 'components/header';
 @import 'components/init-message';

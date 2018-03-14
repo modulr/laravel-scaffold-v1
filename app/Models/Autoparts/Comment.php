@@ -16,7 +16,7 @@ class Comment extends Model
     public $table = 'comments_autoparts';
 
     protected $fillable = [
-        'name', 'autopart_id'
+        'comment', 'autopart_id'
     ];
 
     public function autopart()

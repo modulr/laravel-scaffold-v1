@@ -8,14 +8,19 @@ use App\Models\Autoparts\Comment;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->relationships = ['creator', 'editor'];
+    }
+
     public function index()
     {
-        return Comment::all();
+        return Comment::with($this->relationships)->get();
     }
     
     public function show($id)
     {
-        return Comment::find($id);
+        return Comment::with($this->relationships)->find($id);
     }
 
     public function store(Request $request)
@@ -28,7 +33,7 @@ class CommentController extends Controller
         $comment = Comment::create([
             'comment' => $request->comment,
             'autopart_id' => $request->autopart_id
-        ]);
+        ])->load($this->relationships);
 
         return $comment;
     }

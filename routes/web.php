@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::group(['namespace' => 'Autoparts'], function() {
         Route::group(['prefix' => 'autoparts'], function() {
             Route::get('/' , function () {
-                return view('autoparts.autoparts');
+                return view('autoparts.inventory');
             })->middleware('permission:read-autoparts');
             Route::get('/config' , function () {
                 return view('autoparts.config');
@@ -82,9 +82,9 @@ Route::middleware('auth')->group(function () {
             Route::group(['prefix' => 'comments'], function() {
                 Route::get('/all', 'CommentController@index');
                 Route::get('/show/{id}', 'CommentController@show');
-                Route::get('/store', 'CommentController@store');
-                Route::get('/update/{id}', 'CommentController@update');
-                Route::get('/destroy/{id}', 'CommentController@destroy');
+                Route::post('/store', 'CommentController@store');
+                Route::put('/update/{id}', 'CommentController@update');
+                Route::delete('/destroy/{id}', 'CommentController@destroy');
             });
         });
     });
