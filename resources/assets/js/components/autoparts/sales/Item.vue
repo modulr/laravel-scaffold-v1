@@ -64,7 +64,9 @@
         <p>Description</p>
         <p class="text-muted">{{autopart.description}}</p>
         <hr>
-        <p>ID: <strong>{{autopart.id}}</strong></p>
+        <div class="form-group">
+            <p class="form-control-static">ID: <strong>{{autopart.id}}</strong></p>
+        </div>
         <fieldset class="separator">
             <legend>Activity</legend>
             <p class="text-muted">

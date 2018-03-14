@@ -34,28 +34,25 @@
                         :next-text="'Next'"
                         :container-class="'pagination pull-right'">
                     </paginate>
-                    <div class="table-responsive">
+                    <div>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Users</th>
+                                    <th class="hidden-xs">ID</th>
+                                    <th>Role</th>
+                                    <th class="hidden-xs">Users</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(role, index) in roles.data">
-                                    <td @click="editRole(role, index)">
+                                    <td class="hidden-xs" @click="editRole(role, index)">
                                         {{role.id}}
                                     </td>
                                     <td @click="editRole(role, index)">
                                         <h4 class="media-heading">{{role.display_name}}</h4>
+                                        <small class="text-muted">{{role.description}}</small>
                                     </td>
-                                    <td @click="editRole(role, index)">
-                                        {{role.description}}
-                                    </td>
-                                    <td @click="editRole(role, index)">
+                                    <td class="hidden-xs" @click="editRole(role, index)">
                                         {{role.users.length}}
                                     </td>
                                 </tr>
@@ -69,11 +66,18 @@
         <div class="modal right md" id="modalNewRole">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success"
+                                    @click="storeRole"
+                                    v-if="user.hasPermission['create-roles']">Create</button>
+                        </div>
+                    </div>
                     <div class="modal-body">
                         <form>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
                             <div class="form-group" :class="{'has-error': error.display_name}">
                                 <label>Name *</label>
                                 <input type="text" class="form-control input-lg" required
@@ -82,7 +86,7 @@
                             </div>
                             <div class="form-group" :class="{'has-error': error.description}">
                                 <label>Description</label>
-                                <textarea class="form-control" rows="3" v-model="roleNew.description"></textarea>
+                                <textarea class="form-control" rows="2" v-model="roleNew.description"></textarea>
                                 <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                             </div>
                             <br>
@@ -106,14 +110,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <hr>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success pull-left"
-                                @click="storeRole"
-                                v-if="user.hasPermission['create-roles']">Create</button>
-                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -122,10 +119,22 @@
         <div class="modal right md" id="modalEditRole">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <div class="modal-header">
+                        <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-default"
+                                    @click="destroyRole"
+                                    v-if="user.hasPermission['delete-roles']">
+                                <i class="fa fa-trash-o fa-lg"></i>
+                            </button>
+                            <button type="button" class="btn btn-primary"
+                                    @click="updateRole"
+                                    v-if="user.hasPermission['update-roles']">Save</button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
                         <form>
                             <div class="form-group" :class="{'has-error': error.display_name}">
                                 <label>Name *</label>
@@ -135,7 +144,7 @@
                             </div>
                             <div class="form-group" :class="{'has-error': error.description}">
                                 <label>Description</label>
-                                <textarea class="form-control" rows="3" v-model="roleEdit.description"></textarea>
+                                <textarea class="form-control" rows="2" v-model="roleEdit.description"></textarea>
                                 <span class="help-block" v-if="error.description">{{error.description[0]}}</span>
                             </div>
                             <br>
@@ -182,19 +191,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <hr>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary pull-left"
-                                @click="updateRole"
-                                v-if="user.hasPermission['update-roles']">Save</button>
-                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-default"
-                                @click="destroyRole"
-                                v-if="user.hasPermission['delete-roles']">
-                            <i class="fa fa-trash-o fa-lg"></i>
-                        </button>
                     </div>
                 </div>
             </div>

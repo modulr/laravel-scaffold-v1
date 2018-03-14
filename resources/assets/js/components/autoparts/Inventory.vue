@@ -21,7 +21,7 @@
                         <a href="#" class="btn btn-success"
                             v-if="user.hasPermission['create-autoparts']"
                             @click.prevent="newAutopart">
-                            <i class="fa fa-plus"></i> New
+                            <i class="fa fa-plus"></i> <span class="hidden-xs">New</span>
                         </a>
                     </div>
                 </div>
@@ -232,6 +232,10 @@
                                 </div>
                             </div>
                             <div class="col-xs-12" v-if="autopart.action == 'edit'">
+                                <hr>
+                                <div class="form-group">
+                                    <p class="form-control-static">ID: <strong>{{autopart.data.id}}</strong></p>
+                                </div>
                                 <fieldset class="separator">
                                     <legend>Activity</legend>
                                     <p class="text-muted"><small>Created at </small>{{autopart.data.created_at | moment('lll')}}, <small>by </small>{{autopart.data.creator.name}}</p>

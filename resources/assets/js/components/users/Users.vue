@@ -28,20 +28,20 @@
             <!-- List Users -->
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-responsive">
+                    <div>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th class="hidden-xs">ID</th>
                                     <th>Name</th>
                                     <th>Role</th>
-                                    <th class="text-center">Active</th>
-                                    <th>created</th>
+                                    <th class="hidden-xs text-center">Active</th>
+                                    <th class="hidden-xs">created</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(item, index) in users.data">
-                                    <td @click="editUser(item, index)">
+                                    <td class="hidden-xs" @click="editUser(item, index)">
                                         {{item.id}}
                                     </td>
                                     <td @click="editUser(item, index)">
@@ -51,7 +51,7 @@
                                             </div>
                                             <div class="media-body">
                                                 <h4 class="media-heading">{{item.name}}</h4>
-                                                <a class="text-muted" :href="`mailto:${item.email}`">{{item.email}}</a>
+                                                <small class="text-muted">{{item.email}}</small>
                                             </div>
                                         </div>
                                     </td>
@@ -59,10 +59,10 @@
                                         <span v-if="item.roles.length">{{item.roles[0].display_name}}</span>
                                         <span v-else>---</span>
                                     </td>
-                                    <td class="text-center" @click="editUser(item, index)">
+                                    <td class="hidden-xs text-center" @click="editUser(item, index)">
                                         <i class="mdi mdi-2x" :class="{'mdi-mood text-success': item.active, 'mdi-mood-bad': !item.active}"></i>
                                     </td>
-                                    <td @click="editUser(item, index)">
+                                    <td class="hidden-xs" @click="editUser(item, index)">
                                         <small>{{item.created_at | moment("LLL")}}</small>
                                     </td>
                                 </tr>
@@ -84,16 +84,15 @@
         <div class="modal right sm" id="modalNewUser">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                    <!-- Modal header -->
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <div class="switch">
-                            <label class="switch-label">
-                                <input type="checkbox" v-model="userNew.active">
-                                <span class="slider round"></span>
-                            </label>
-                            <span class="switch-text">Active</span>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success"
+                                    v-if="user.hasPermission['create-users']"
+                                    @click="storeUser">Create</button>
                         </div>
                     </div>
                     <div class="modal-body">
@@ -150,13 +149,15 @@
                                     Generate password
                                 </button>
                             </div>
+                            <hr>
+                            <div class="switch switch-block">
+                                <label class="switch-label">
+                                    <input type="checkbox" v-model="userNew.active">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="switch-text">Active</span>
+                            </div>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success pull-left"
-                                v-if="user.hasPermission['create-users']"
-                                @click="storeUser">Create</button>
-                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -165,16 +166,21 @@
         <div class="modal right sm" id="modalEditUser">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                    <!-- Modal header -->
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <div class="switch">
-                            <label class="switch-label">
-                                <input type="checkbox" v-model="userEdit.active">
-                                <span class="slider round"></span>
-                            </label>
-                            <span class="switch-text">Active</span>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-default"
+                                    v-if="user.hasPermission['delete-users']"
+                                    @click="destroyUser">
+                                <i class="fa fa-trash-o fa-lg"></i>
+                            </button>
+                            <button type="button" class="btn btn-primary"
+                                    v-if="user.hasPermission['update-users']"
+                                    @click="updateUser">Save</button>
+
                         </div>
                     </div>
                     <div class="modal-body">
@@ -197,6 +203,9 @@
                                 </template>
                             </vue-clip>
                         </div>
+                        <a class="pull-right" :href="`/profile/${userEdit.id}/edit`">
+                            <i class="fa fa-external-link" aria-hidden="true"></i> Edit Profile
+                        </a>
                         <form>
                             <div class="form-group" :class="{'has-error': error.name}">
                                 <label>Name *</label>
@@ -231,27 +240,23 @@
                                     Generate password
                                 </button>
                             </div>
+                            <hr>
+                            <div class="switch switch-block">
+                                <label class="switch-label">
+                                    <input type="checkbox" v-model="userEdit.active">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="switch-text">Active</span>
+                            </div>
+                            <hr>
                             <div class="form-group">
-                                <label class="pull-right">Created: <em>{{userEdit.created_at | moment("LLL")}}</em></label>
                                 <p class="form-control-static">ID: <strong>{{userEdit.id}}</strong></p>
                             </div>
-                            <div class="form-group">
-                                <a :href="`/profile/${userEdit.id}/edit`">
-                                    <i class="fa fa-external-link" aria-hidden="true"></i> Edit Profile
-                                </a>
-                            </div>
+                            <fieldset class="separator">
+                                <legend>Activity</legend>
+                                <p class="text-muted"><small>Created at </small>{{userEdit.created_at | moment('lll')}}</p>
+                            </fieldset>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary pull-left"
-                                v-if="user.hasPermission['update-users']"
-                                @click="updateUser">Save</button>
-                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-default"
-                                v-if="user.hasPermission['delete-users']"
-                                @click="destroyUser">
-                            <i class="fa fa-trash-o fa-lg"></i>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -354,6 +359,7 @@
             newUser () {
                 this.userNew = {
                     avatar_url: null,
+                    role_id: 1,
                     password: '',
                     active: true,
                 };
