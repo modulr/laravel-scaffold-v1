@@ -2,7 +2,7 @@
     <swiper :options="swiperOption" ref="mySwiper">
         <swiper-slide>
             <div class="text-center">
-                <img src="http://modulr.io/img/modules/auth.png" class="img-responsive">
+                <img src="/img/modules/auth.png" class="img-responsive">
                 <h3>
                     <i class="mdi mdi-lock-outline mdi-lg text-primary"></i> Authentication
                 </h3>
@@ -11,7 +11,7 @@
         </swiper-slide>
         <swiper-slide>
             <div class="text-center">
-                <img src="http://modulr.io/img/modules/contacts.png" class="img-responsive">
+                <img src="/img/modules/contacts.png" class="img-responsive">
                 <h3>
                     <i class="mdi mdi-contacts mdi-lg text-primary"></i> Contacts
                 </h3>
@@ -20,7 +20,7 @@
         </swiper-slide>
         <swiper-slide>
             <div class="text-center">
-                <img src="http://modulr.io/img/modules/files.png" class="img-responsive">
+                <img src="/img/modules/files.png" class="img-responsive">
                 <h3>
                     <i class="mdi mdi-folder-open mdi-lg text-primary"></i> Files
                 </h3>
@@ -29,7 +29,7 @@
         </swiper-slide>
         <swiper-slide>
             <div class="text-center">
-                <img src="http://modulr.io/img/modules/news.png" class="img-responsive">
+                <img src="/img/modules/news.png" class="img-responsive">
                 <h3>
                     <i class="mdi mdi-whatshot mdi-lg text-primary"></i> News
                 </h3>
@@ -38,7 +38,7 @@
         </swiper-slide>
         <swiper-slide>
             <div class="text-center">
-                <img src="http://modulr.io/img/modules/notifications.png" class="img-responsive">
+                <img src="/img/modules/notifications.png" class="img-responsive">
                 <h3>
                     <i class="mdi mdi-notifications mdi-lg text-primary"></i> Notifications
                 </h3>
@@ -47,7 +47,7 @@
         </swiper-slide>
         <swiper-slide>
             <div class="text-center">
-                <img src="http://modulr.io/img/modules/tasks.png" class="img-responsive">
+                <img src="/img/modules/tasks.png" class="img-responsive">
                 <h3>
                     <i class="mdi mdi-view-list mdi-lg text-primary"></i> Tasks
                 </h3>
@@ -56,7 +56,7 @@
         </swiper-slide>
         <swiper-slide>
             <div class="text-center">
-                <img src="http://modulr.io/img/modules/users.png" class="img-responsive">
+                <img src="/img/modules/users.png" class="img-responsive">
                 <h3>
                     <i class="mdi mdi-vpn-key mdi-lg text-primary"></i> Users & Access
                 </h3>
@@ -69,22 +69,21 @@
 </template>
 
 <script>
-    import { swiper, swiperSlide } from 'vue-awesome-swiper';
-
-    export default {
-        data () {
-            return {
-                swiperOption: {
-                    autoplay: 5000,
-                    loop: true,
-                    nextButton: '.swiper-button-next',
-                    prevButton: '.swiper-button-prev',
-                }
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+export default {
+    data () {
+        return {
+            swiperOption: {
+                autoplay: 5000,
+                loop: true,
+                nextButton: '.swiper-button-next',
+                prevButton: '.swiper-button-prev'
             }
-        },
-        components: {
-            swiper,
-            swiperSlide,
-        },
-    };
+        }
+    },
+    components: {
+        swiper,
+        swiperSlide
+    }
+}
 </script>
