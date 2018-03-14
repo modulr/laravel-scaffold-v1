@@ -12,7 +12,7 @@
                     </button>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6 links">
+                    <div class="col-xs-6 links">
                         <h5>Users</h5>
                     </div>
                     <div class="col-xs-6 text-right controls">
