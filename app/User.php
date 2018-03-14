@@ -87,16 +87,21 @@ class User extends Authenticatable
 
     public function news()
     {
-        return $this->hasMany(\App\Models\News\News::class);
+        return $this->hasMany(\App\Models\News\News::class, 'created_by');
     }
 
     public function tasks()
     {
-        return $this->hasMany(\App\Models\Tasks\Task::class);
+        return $this->hasMany(\App\Models\Tasks\Task::class, 'created_by');
     }
 
     public function events()
     {
-        return $this->hasMany(\App\Models\Events\Event::class);
+        return $this->hasMany(\App\Models\Events\Event::class, 'created_by');
+    }
+
+    public function autoparts()
+    {
+        return $this->hasMany(\App\Models\Autoparts\Autopart::class, 'created_by');
     }
 }

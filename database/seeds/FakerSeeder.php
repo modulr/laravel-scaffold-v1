@@ -30,6 +30,8 @@ class FakerDataSeeder extends Seeder
                 $u->tasks()->saveMany(factory(App\Models\Tasks\Task::class, 3)->make());
 
                 $u->events()->saveMany(factory(App\Models\Events\Event::class, 3)->make());
+
+                $u->autoparts()->saveMany(factory(App\Models\Autoparts\Autopart::class, 13)->make());
             });
     }
 }
