@@ -19,10 +19,12 @@
         }
     }
     .controls {
-        .btn, input {
+        .form-control {
+            margin-bottom: 0;
+        }
+        .btn, input, .form-group {
             margin-bottom: 10px;
         }
-
     }
     .separator {
         margin-left: 5px;

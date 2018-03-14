@@ -6,15 +6,17 @@
             <div class="actionbar">
                 <div class="row">
                     <div class="col-sm-6 links">
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a href="">Users</a></li>
-                            <li><a href="/roles">Roles</a></li>
-                        </ul>
+                        <h5>Users</h5>
                     </div>
-                    <div class="col-sm-3 controls">
-                        <input type="text" class="form-control" placeholder="Search" v-model="search">
+                    <div class="col-xs-6 col-sm-3 controls">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="mdi mdi-search mdi-lg"></i></span>
+                                <input type="text" class="form-control" placeholder="Search" v-model="search">
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-3 text-right controls">
+                    <div class="col-xs-6 col-sm-3 text-right controls">
                         <a href="#" class="btn btn-success"
                             v-if="user.hasPermission['create-users']"
                             @click.prevent="newUser">
@@ -26,7 +28,7 @@
             <!-- List Users -->
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-responsive table-elevation">
+                    <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <tr>

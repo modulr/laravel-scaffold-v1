@@ -6,15 +6,15 @@
             <div class="actionbar">
                 <div class="row">
                     <div class="col-sm-6 links">
-                        <ul class="nav nav-tabs">
-                            <li><a href="/users">Users</a></li>
-                            <li class="active"><a href="">Roles</a></li>
-                        </ul>
+                        <h5>Roles</h5>
                     </div>
-                    <div class="col-sm-3 controls">
-                        <input type="text" class="form-control" placeholder="Search" v-model="search">
+                    <div class="col-xs-6 col-sm-3 controls">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="mdi mdi-search mdi-lg"></i></span>
+                            <input type="text" class="form-control" placeholder="Search" v-model="search">
+                        </div>
                     </div>
-                    <div class="col-sm-3 text-right controls">
+                    <div class="col-xs-6 col-sm-3 text-right controls">
                         <a href="#" class="btn btn-success"
                            v-if="user.hasPermission['create-roles']"
                            @click.prevent="newRole">
@@ -26,7 +26,15 @@
             <!-- List Roles -->
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-responsive table-elevation">
+                    <paginate
+                        v-if="roles.last_page>1"
+                        :page-count="roles.last_page"
+                        :click-handler="changePage"
+                        :prev-text="'Prev'"
+                        :next-text="'Next'"
+                        :container-class="'pagination pull-right'">
+                    </paginate>
+                    <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -54,14 +62,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <paginate
-                        v-if="roles.last_page>1"
-                        :page-count="roles.last_page"
-                        :click-handler="changePage"
-                        :prev-text="'Prev'"
-                        :next-text="'Next'"
-                        :container-class="'pagination pull-right'">
-                    </paginate>
                 </div>
             </div>
         </div>

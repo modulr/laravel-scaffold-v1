@@ -10,12 +10,12 @@
                     </div>
                     <div class="col-xs-6 text-right controls">
                         <!-- <input type="text" class="form-control" placeholder="Search" v-model="search"> -->
-                        <a href="#" class="btn btn-link"
+                        <a href="#" class="btn btn-default"
                             @click.prevent="showFilters">
                             <i class="fa fa-sliders fa-lg" aria-hidden="true"></i>
                             <span class="hidden-xs">Filters</span>
                         </a>
-                        <a href="#" class="btn btn-link"
+                        <a href="#" class="btn btn-default"
                             @click.prevent="showSearchQR">
                             <i class="fa fa-qrcode fa-lg" aria-hidden="true"></i>
                             <span class="hidden-xs">Search</span>
@@ -44,12 +44,22 @@
                             </div>
                         </div>
                         <div class="media-body">
-                            <h5 class="media-heading">{{item.name}}</h5>
+                            <h5 class="media-heading">
+                                {{item.name}}
+                                <span class="pull-right hidden-xs">
+                                    ID: <strong>{{item.id}}</strong>
+                                </span>
+                            </h5>
                             <p class="text-muted">
                                 {{item.make.name}} - {{item.model.name}} -
                                 <span v-for="(year, index) in item.years">
                                     {{year.name}}<span v-if="index+1 < item.years.length">, </span>
                                 </span>
+                                <small class="text-muted pull-right hidden-xs">
+                                    <small>Created at </small>
+                                    {{item.created_at | moment('lll')}},
+                                    <small>by </small>{{item.creator.name}}
+                                </small>
                             </p>
                             <h5>
                                 {{item.sale_price | currency}}

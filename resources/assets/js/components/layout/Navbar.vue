@@ -75,28 +75,28 @@
                             <i class="fa fa-th fa-lg" aria-hidden="true"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right list-inline">
-                            <li :class="{'active': activeLink == 'dashboard'}">
+                            <!-- <li :class="{'active': activeLink == 'dashboard'}">
                                 <a href="/dashboard">
                                     <i class="mdi mdi-dashboard mdi-3x"></i>
                                     <br>
                                     <span>Dashboard</span>
                                 </a>
-                            </li>
-                            <li :class="{'active': activeLink == 'autoparts/sales'}" v-if="user.hasPermission['read-autoparts']">
+                            </li> -->
+                            <li :class="{'active': activeLink == 'autoparts/sales'}" v-if="user.hasPermission['update-autoparts']">
                                 <a href="/autoparts/sales">
                                     <i class="mdi mdi-monetization-on mdi-3x"></i>
                                     <br>
                                     <span>Sales</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'autoparts/inventory'}" v-if="user.hasPermission['read-autoparts']">
+                            <li :class="{'active': activeLink == 'autoparts/inventory'}" v-if="user.hasPermission['create-autoparts']">
                                 <a href="/autoparts/inventory">
                                     <i class="mdi mdi-widgets mdi-3x"></i>
                                     <br>
                                     <span>Inventory</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'autoparts/lists'}" v-if="user.hasPermission['read-autoparts']">
+                            <li :class="{'active': activeLink == 'autoparts/lists'}" v-if="user.hasPermission['create-autoparts']">
                                 <a href="/autoparts/lists">
                                     <i class="mdi mdi-list mdi-3x"></i>
                                     <br>
@@ -110,11 +110,19 @@
                                     <span>Tasks</span>
                                 </a>
                             </li>
+                            <hr>
                             <li :class="{'active': activeLink == 'users'}" v-if="user.hasPermission['read-users']">
                                 <a href="/users">
                                     <i class="mdi mdi-people mdi-3x"></i>
                                     <br>
                                     <span>Users</span>
+                                </a>
+                            </li>
+                            <li :class="{'active': activeLink == 'roles'}" v-if="user.hasPermission['read-roles']">
+                                <a href="/roles">
+                                    <i class="mdi mdi-vpn-key mdi-3x"></i>
+                                    <br>
+                                    <span>Roles</span>
                                 </a>
                             </li>
                             <!-- <li :class="{'active': activeLink == 'news'}" v-if="user.hasPermission['read-news']">
