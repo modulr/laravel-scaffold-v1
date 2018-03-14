@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
     <div class="autoparts">
         <!-- Container -->
         <div class="container-fluid">
@@ -7,21 +7,18 @@
                 <div class="row">
                     <div class="col-xs-12 text-right controls">
                         <!-- <input type="text" class="form-control" placeholder="Search" v-model="search"> -->
-                        <a href="/autoparts/config" class="btn btn-link">
-                            <i class="fa fa-cog fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Config</span>
+                        <a href="#" class="btn btn-link"
+                            @click.prevent="showFilters">
+                            <i class="fa fa-sliders fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Filters</span>
                         </a>
                         <a href="#" class="btn btn-link"
                             @click.prevent="showSearchQR">
                             <i class="fa fa-qrcode fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Search</span>
                         </a>
-                        <a href="#" class="btn btn-link"
-                            @click.prevent="showFilters">
-                            <i class="fa fa-sliders fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Filters</span>
-                        </a>
                         <a href="#" class="btn btn-success"
                             v-if="user.hasPermission['create-autoparts']"
                             @click.prevent="newAutopart">
-                            <i class="fa fa-car"></i> New
+                            <i class="fa fa-plus"></i> New
                         </a>
                     </div>
                 </div>
@@ -31,29 +28,7 @@
                 <div class="col-md-12">
                     <div class="media" v-for="(item, index) in autoparts.data" @click="editAutopart(item.id, index)">
                         <div class="media-left">
-                            <span class="label pull-right" :class="{
-                                'label-success': item.origin_id == 1,
-                                'label-info': item.origin_id == 2,
-                                'label-primary': item.origin_id == 3
-                                }">
-                                {{item.origin.name}}
-                            </span>
-                            <img :src="item.images[0].url_thumbnail" v-if="item.images.length">
-                            <i class="fa fa-picture-o fa-5x" v-else></i>
-                        </div>
-                        <div class="media-body">
-                            <h5 class="media-heading">{{item.id}} {{item.name}}</h5>
-                            <span>
-                                {{item.make.name}} - {{item.model.name}} -
-                                <span v-for="(year, index) in item.years">
-                                    {{year.name}}<span v-if="index+1 < item.years.length">, </span>
-                                </span>
-                            </span>
-                            <br>
-                            <span class="lead">
-                                {{item.purchase_price | currency}} / <strong>{{item.sale_price | currency}}</strong>
-                            </span>
-                            <span class="label pull-right" :class="{
+                            <span class="label" :class="{
                                 'label-primary': item.status_id == 1,
                                 'label-default': item.status_id == 2,
                                 'label-info': item.status_id == 3,
@@ -61,6 +36,30 @@
                                 }">
                                 {{item.status.name}}
                             </span>
+                            <img class="img-rounded" :src="item.images[0].url_thumbnail"
+                                v-if="item.images.length">
+                            <div class="img-rounded" v-else>
+                                <i class="fa fa-picture-o fa-5x"></i>
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <h5 class="media-heading">{{item.id}} {{item.name}}</h5>
+                            <p class="text-muted">
+                                {{item.make.name}} - {{item.model.name}} -
+                                <span v-for="(year, index) in item.years">
+                                    {{year.name}}<span v-if="index+1 < item.years.length">, </span>
+                                </span>
+                            </p>
+                            <h5>
+                                {{item.sale_price | currency}}
+                                <small class="pull-right" :class="{
+                                    'text-success': item.origin_id == 1,
+                                    'text-info': item.origin_id == 2,
+                                    'text-primary': item.origin_id == 3
+                                    }">
+                                    {{item.origin.name}}
+                                </small>
+                            </h5>
                         </div>
                     </div>
                 </div>
@@ -768,7 +767,7 @@
                     })
                 }
                 var btn = $(e.target).button('loading')
-                axios.post('/api/autoparts/filter',{
+                axios.post('/api/autoparts/filter', {
                     make: this.filters.make,
                     model: this.filters.model,
                     years: years,

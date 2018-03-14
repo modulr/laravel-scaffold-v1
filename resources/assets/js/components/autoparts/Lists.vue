@@ -1,10 +1,10 @@
 <template>
-    <div class="autoparts config">
+    <div class="autoparts-lists">
         <!-- Container -->
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-7">
-                    <h4>Makes & Models Lists</h4>
+                    <h5>Makes & Models Lists</h5>
                     <hr>
                     <div class="form-group" :class="{'has-error': newMake.error.name}">
                         <input type="text" class="form-control" placeholder="Make" v-model="newMake.name" @keyup.enter="storeMake">
@@ -38,7 +38,7 @@
                     </ul>
                 </div>
                 <div class="col-sm-5">
-                    <h4>Years List</h4>
+                    <h5>Years List</h5>
                     <hr>
                     <div class="form-group" :class="{'has-error': newYear.error.name}">
                         <input type="text" class="form-control" placeholder="Year" v-model="newYear.name" @keyup.enter="storeYear">

@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <config></config>
+    <autoparts-sales-list></autoparts-sales-list>
 @endsection

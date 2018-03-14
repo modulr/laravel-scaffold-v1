@@ -37,12 +37,15 @@ Route::middleware('auth')->group(function () {
     // Autoparts
     Route::group(['namespace' => 'Autoparts'], function() {
         Route::group(['prefix' => 'autoparts'], function() {
-            Route::get('/' , function () {
-                return view('autoparts.autoparts');
+            Route::get('/inventory' , function () {
+                return view('autoparts.inventory');
             })->middleware('permission:read-autoparts');
-            Route::get('/config' , function () {
-                return view('autoparts.config');
+            Route::get('/lists' , function () {
+                return view('autoparts.lists');
             })->middleware('permission:create-autoparts');
+            Route::get('/sales' , function () {
+                return view('autoparts.sales');
+            })->middleware('permission:read-autoparts');
             Route::get('/{id}' , function ($id) {
                 return view('autoparts.autopart', ['id' => $id]);
             })->middleware('permission:read-autoparts');
@@ -53,6 +56,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/show/{id}', 'AutopartController@show')->middleware('permission:read-autoparts');
             Route::post('/store', 'AutopartController@store')->middleware('permission:create-autoparts');
             Route::put('/update/{id}', 'AutopartController@update')->middleware('permission:update-autoparts');
+            Route::put('/updateStatus/{id}', 'AutopartController@updateStatus')->middleware('permission:update-autoparts');
             Route::delete('/destroy/{id}', 'AutopartController@destroy')->middleware('permission:delete-autoparts');
             // Images
             Route::post('/images/upload/temp', 'AutopartController@uploadImageTemp')->middleware('permission:create-autoparts');

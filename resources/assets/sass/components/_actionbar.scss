@@ -1,6 +1,9 @@
 .actionbar {
     border-bottom: 1px solid $gray-lighter;
     margin-bottom: 20px;
+    h5 {
+        margin: 7px 0;
+    }
     .links {
         .nav-tabs > li > a,
         .nav-tabs > li > a:focus {
