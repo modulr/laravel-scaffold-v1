@@ -1,5 +1,5 @@
 <template>
-    <div class="users">
+    <div>
         <!-- Container -->
         <div class="container-fluid">
             <!-- Actionbar -->
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <!-- List Users -->
-            <div class="row">
+            <div class="row users-list">
                 <div class="col-md-12">
                     <div>
                         <table class="table table-hover">
@@ -48,6 +48,7 @@
                                         <div class="media">
                                             <div class="media-left">
                                                 <img class="avatar-xs" :src="item.avatar_url">
+                                                <span class="label label-active" :class="{'label-success': item.active, 'label-default': !item.active}"></span>
                                             </div>
                                             <div class="media-body">
                                                 <h4 class="media-heading">{{item.name}}</h4>
