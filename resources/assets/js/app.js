@@ -64,6 +64,7 @@ Vue.component('autoparts-sales-filters', require('./components/autoparts/sales/F
 Vue.component('autoparts-sales-search-qr', require('./components/autoparts/sales/SearchQr.vue'));
 Vue.component('autoparts-inventory', require('./components/autoparts/Inventory.vue'));
 Vue.component('autoparts-lists', require('./components/autoparts/Lists.vue'));
+Vue.component('comments', require('./components/autoparts/Comments.vue'));
 
 const app = new Vue({
     el: '#app'

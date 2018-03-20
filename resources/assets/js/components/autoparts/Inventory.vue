@@ -231,6 +231,12 @@
                                     <span class="help-block" v-if="autopart.error.status_id">{{autopart.error.status_id[0]}}</span>
                                 </div>
                             </div>
+                            <div class="col-xs-12">
+                                <fieldset class="separator">
+                                    <legend>Comments</legend>
+                                </fieldset>
+                                <comments :autopart="autopart"></comments>
+                            </div>
                             <div class="col-xs-12" v-if="autopart.action == 'edit'">
                                 <hr>
                                 <div class="form-group">
@@ -355,6 +361,7 @@
     import { QrcodeReader } from 'vue-qrcode-reader'
     import money from 'v-money'
     import Vue2Filters from 'vue2-filters'
+    import EventBus from './event-bus'
 
     export default {
         data() {
@@ -418,10 +425,15 @@
                         model: {},
                         years: [],
                         images: [],
+                        comments: [],
                         creator: {}
                     },
                     action: 'new',
                     error: {}
+                },
+                form: {
+                    comment: null,
+                    autopart_id: null
                 },
             }
         },
@@ -554,30 +566,29 @@
             },
             updateAutopart (e) {
                 var btn = $(e.target).button('loading')
-                this.autopart.data.make_id = this.autopart.data.make ? this.autopart.data.make.id : null
-                this.autopart.data.model_id = this.autopart.data.model ? this.autopart.data.model.id : null
-
-                axios.put('/api/autoparts/update/'+this.autopart.data.id, this.autopart.data)
-                .then(response => {
-                    this.autoparts.data[this.autopart.data.index] = response.data
-                    this.autopart = {
-                        data: {
-                            make: {},
-                            model: {},
-                            years: [],
-                            images: [],
-                            creator: {}
+                if (this.autopart.data.status_id === 4) {
+                    swal({
+                        title: "Wait!",
+                        text: 'First, you need to leave a comment:',
+                        content: 'input',
+                        buttons: {
+                            cancel: true,
+                            confirm: true,
                         },
-                        action: 'new',
-                        error: {}
-                    };
-                    var btn = $(e.target).button('reset')
-                    $('#modalAutopart').modal('hide')
-                })
-                .catch(error => {
-                    this.autopart.error = error.response.data;
-                    var btn = $(e.target).button('reset')
-                });
+                        closeModal: true
+                    }).then((val) => {
+                        if (!val) {
+                            var btn = $(e.target).button('reset')
+                            return null
+                        }
+                        EventBus.$emit('add-comment', val)
+                        return true
+                    }).then((val) => {
+                        if (val) return this.updateAutopartProcess()
+                    })
+                } else {
+                    this.updateAutopartProcess()
+                }
             },
             destroyAutopart () {
                 var self = this;
@@ -813,6 +824,30 @@
                 this.getAutoparts()
                 var btn = $(e.target).button('reset')
                 $('#modalFilters').modal('hide')
+            },
+            updateAutopartProcess () {
+                this.autopart.data.make_id = this.autopart.data.make ? this.autopart.data.make.id : null
+                this.autopart.data.model_id = this.autopart.data.model ? this.autopart.data.model.id : null
+
+                axios.put('/api/autoparts/update/'+this.autopart.data.id, this.autopart.data)
+                .then(response => {
+                    this.autoparts.data[this.autopart.data.index] = response.data
+                    this.autopart = {
+                        data: {
+                            make: {},
+                            model: {},
+                            years: [],
+                            images: [],
+                            creator: {}
+                        },
+                        action: 'new',
+                        error: {}
+                    };
+                    $('#modalAutopart').modal('hide')
+                })
+                .catch(error => {
+                    this.autopart.error = error.response.data;
+                });
             }
         }
     }

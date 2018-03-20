@@ -73,7 +73,7 @@ class AutopartController extends Controller
 
     public function show ($id)
     {
-        return Autopart::with(['make', 'model', 'years', 'origin', 'status', 'creator', 'images' => function ($query) {
+        return Autopart::with(['make', 'model', 'years', 'origin', 'status', 'creator', 'comments', 'comments.creator', 'images' => function ($query) {
                         $query->orderBy('order', 'asc');
                     }])->find($id);
     }

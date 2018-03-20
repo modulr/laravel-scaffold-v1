@@ -169,7 +169,7 @@
                                 <a href="/notifications"><small>View all notifications</small></a>
                             </li>
                         </ul>
-                    </lli>
+                    </li>
                     <!-- User -->
                     <li class="dropdown user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
