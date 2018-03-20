@@ -5,7 +5,8 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="form-group input-lg search" :class="{'active': active}">
-                    <input type="text" class="form-control" placeholder="Search" v-model="search">
+                    <input type="text" class="form-control" ref="search" placeholder="Search"
+                        v-model="search">
                     <button type="button" class="close" aria-label="Close"
                         @click="toggleSearchBtn(false)">
                         <span aria-hidden="true">&times;</span>
@@ -52,7 +53,7 @@
                                         <div class="media">
                                             <div class="media-left">
                                                 <img class="avatar-xs" :src="item.avatar_url">
-                                                <span class="label label-active" :class="{'label-success': item.active, 'label-default': !item.active}"></span>
+                                                <span class="label label-active" :class="{'label-primary': item.active, 'label-default': !item.active}"></span>
                                             </div>
                                             <div class="media-body">
                                                 <h4 class="media-heading">{{item.name}}</h4>
@@ -65,7 +66,7 @@
                                         <span v-else>---</span>
                                     </td>
                                     <td class="hidden-xs text-center" @click="editUser(item, index)">
-                                        <i class="mdi mdi-2x" :class="{'mdi-mood text-success': item.active, 'mdi-mood-bad': !item.active}"></i>
+                                        <i class="mdi mdi-2x" :class="{'mdi-mood text-primary': item.active, 'mdi-mood-bad': !item.active}"></i>
                                     </td>
                                     <td class="hidden-xs" @click="editUser(item, index)">
                                         <small>{{item.created_at | moment("LLL")}}</small>
@@ -344,6 +345,10 @@
                 this.search = null
                 if (active) {
                     this.active = active
+                    var self = this
+                    setTimeout(function() {
+                        self.$refs.search.focus()
+                    }, 100);
                 } else {
                     this.active = active
                 }

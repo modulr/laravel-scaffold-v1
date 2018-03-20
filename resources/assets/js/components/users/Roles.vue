@@ -5,7 +5,8 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="form-group input-lg search" :class="{'active': active}">
-                    <input type="text" class="form-control" placeholder="Search" v-model="search">
+                    <input type="text" class="form-control" ref="search" placeholder="Search"
+                        v-model="search">
                     <button type="button" class="close" aria-label="Close"
                         @click="toggleSearchBtn(false)">
                         <span aria-hidden="true">&times;</span>
@@ -46,7 +47,7 @@
                                 <tr>
                                     <th class="hidden-xs">ID</th>
                                     <th>Role</th>
-                                    <th class="hidden-xs">Users</th>
+                                    <th>Users</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,7 +59,7 @@
                                         <h4 class="media-heading">{{role.display_name}}</h4>
                                         <small class="text-muted">{{role.description}}</small>
                                     </td>
-                                    <td class="hidden-xs" @click="editRole(role, index)">
+                                    <td @click="editRole(role, index)">
                                         {{role.users.length}}
                                     </td>
                                 </tr>
@@ -243,6 +244,10 @@
                 this.search = null
                 if (active) {
                     this.active = active
+                    var self = this
+                    setTimeout(function() {
+                        self.$refs.search.focus()
+                    }, 100);
                 } else {
                     this.active = active
                 }
