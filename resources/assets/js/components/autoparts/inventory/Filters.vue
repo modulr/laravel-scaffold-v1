@@ -128,23 +128,23 @@ export default {
     },
     methods: {
         getLists () {
-            axios.get('/api/autoparts/list/makes')
+            axios.get('/api/autoparts/lists/makes')
             .then(response => {
                 this.lists.makes = response.data
             })
-            axios.get('/api/autoparts/list/models')
+            axios.get('/api/autoparts/lists/models')
             .then(response => {
                 this.lists.models = response.data
             })
-            axios.get('/api/autoparts/list/origins')
+            axios.get('/api/autoparts/lists/origins')
             .then(response => {
                 this.lists.origins = response.data
             })
-            axios.get('/api/autoparts/list/status')
+            axios.get('/api/autoparts/lists/status')
             .then(response => {
                 this.lists.status = response.data
             })
-            axios.get('/api/autoparts/list/years')
+            axios.get('/api/autoparts/lists/years')
             .then(response => {
                 this.lists.years = response.data
             })

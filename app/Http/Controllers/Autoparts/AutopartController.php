@@ -231,23 +231,6 @@ class AutopartController extends Controller
     }
 
     // Lists
-    public function makes ()
-    {
-        return AutopartListMake::orderBy('name')->get();
-    }
-
-    public function makesFull ()
-    {
-        return AutopartListMake::with(['models' => function ($query) {
-            $query->orderBy('name');
-        }])->orderBy('name')->get();
-    }
-
-    public function models ()
-    {
-        return AutopartListModel::orderBy('name')->get();
-    }
-
     public function status ()
     {
         return AutopartListStatus::get();
@@ -258,9 +241,16 @@ class AutopartController extends Controller
         return AutopartListOrigin::get();
     }
 
-    public function years ()
+    public function makes ()
     {
-        return AutopartListYear::orderBy('name', 'desc')->get();
+        return AutopartListMake::orderBy('name')->get();
+    }
+
+    public function makesFull ()
+    {
+        return AutopartListMake::with(['models' => function ($query) {
+            $query->orderBy('name');
+        }])->orderBy('name')->get();
     }
 
     public function storeMake (Request $request)
@@ -287,6 +277,11 @@ class AutopartController extends Controller
         }
     }
 
+    public function models ()
+    {
+        return AutopartListModel::orderBy('name')->get();
+    }
+
     public function storeModel (Request $request)
     {
         $this->validate($request, [
@@ -309,6 +304,11 @@ class AutopartController extends Controller
         } else {
             return response()->json(['data' => 'constraint'], 400);
         }
+    }
+
+    public function years ()
+    {
+        return AutopartListYear::orderBy('name', 'desc')->get();
     }
 
     public function storeYear (Request $request)

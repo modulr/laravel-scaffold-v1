@@ -12,23 +12,32 @@ class AutopartsListsTableSeeder extends Seeder
     public function run()
     {
         DB::table('autopart_list_makes')->insert([
+            ['name' => 'Aston Martin'],
             ['name' => 'Audi'],
-            ['name' => 'BMW']
+            ['name' => 'Bentley'],
+            ['name' => 'BMW'],
+            ['name' => 'Bugatti'],
+            ['name' => 'Ferrari'],
+            ['name' => 'Lamborghini'],
+            ['name' => 'Maserati'],
+            ['name' => 'Mercedes Benz'],
+            ['name' => 'Porsche'],
+            ['name' => 'Tesla']
         ]);
 
         DB::table('autopart_list_models')->insert([
-            ['name' => 'A1', 'make_id' => 1],
-            ['name' => 'A3', 'make_id' => 1],
-            ['name' => 'A4', 'make_id' => 1],
-            ['name' => 'A5', 'make_id' => 1],
-            ['name' => 'A6', 'make_id' => 1],
-            ['name' => 'A7', 'make_id' => 1],
-            ['name' => 'M1', 'make_id' => 2],
-            ['name' => 'M2', 'make_id' => 2],
-            ['name' => 'M3', 'make_id' => 2],
-            ['name' => 'M4', 'make_id' => 2],
-            ['name' => 'M5', 'make_id' => 2],
-            ['name' => 'M6', 'make_id' => 2]
+            ['name' => 'A1', 'make_id' => 2],
+            ['name' => 'A3', 'make_id' => 2],
+            ['name' => 'A4', 'make_id' => 2],
+            ['name' => 'A5', 'make_id' => 2],
+            ['name' => 'A6', 'make_id' => 2],
+            ['name' => 'A7', 'make_id' => 2],
+            ['name' => 'M1', 'make_id' => 4],
+            ['name' => 'M2', 'make_id' => 4],
+            ['name' => 'M3', 'make_id' => 4],
+            ['name' => 'M4', 'make_id' => 4],
+            ['name' => 'M5', 'make_id' => 4],
+            ['name' => 'M6', 'make_id' => 4]
         ]);
 
         DB::table('autopart_list_origins')->insert([

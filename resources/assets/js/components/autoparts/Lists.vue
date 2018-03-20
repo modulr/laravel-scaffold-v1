@@ -123,18 +123,18 @@ export default {
     },
     methods: {
         getLists () {
-            axios.get('/api/autoparts/list/makesFull')
+            axios.get('/api/autoparts/lists/makesFull')
             .then(response => {
                 this.lists.makes = response.data
             })
-            axios.get('/api/autoparts/list/years')
+            axios.get('/api/autoparts/lists/years')
             .then(response => {
                 this.lists.years = response.data
             })
         },
         storeMake () {
             if (this.newMake.name) {
-                axios.post('/api/autoparts/list/makes/store', this.newMake)
+                axios.post('/api/autoparts/lists/makes/store', this.newMake)
                 .then(response => {
                     this.lists.makes.push(response.data)
                     this.newMake = {
@@ -158,7 +158,7 @@ export default {
                 closeOnConfirm: false
             },
             function(){
-                axios.delete('/api/autoparts/list/makes/destroy/' + make.id)
+                axios.delete('/api/autoparts/lists/makes/destroy/' + make.id)
                 .then(response => {
                     self.lists.makes.splice(index, 1)
                     swal({
@@ -180,7 +180,7 @@ export default {
         },
         storeModel (make) {
             if (make.newModel) {
-                axios.post('/api/autoparts/list/models/store', {name:make.newModel, makeId:make.id})
+                axios.post('/api/autoparts/lists/models/store', {name:make.newModel, makeId:make.id})
                 .then(response => {
                     make.models.push(response.data)
                     make.newModel = null
@@ -203,7 +203,7 @@ export default {
                 closeOnConfirm: false
             },
             function(){
-                axios.delete('/api/autoparts/list/models/destroy/' + model.id)
+                axios.delete('/api/autoparts/lists/models/destroy/' + model.id)
                 .then(response => {
                     self.lists.makes.forEach(function(val){
                         if (val.id == model.make_id) {
@@ -229,7 +229,7 @@ export default {
         },
         storeYear () {
             if (this.newYear.name) {
-                axios.post('/api/autoparts/list/years/store', this.newYear)
+                axios.post('/api/autoparts/lists/years/store', this.newYear)
                 .then(response => {
                     this.lists.years.push(response.data)
                     this.newYear = {
@@ -253,7 +253,7 @@ export default {
                 closeOnConfirm: false
             },
             function(){
-                axios.delete('/api/autoparts/list/years/destroy/' + year.id)
+                axios.delete('/api/autoparts/lists/years/destroy/' + year.id)
                 .then(response => {
                     self.lists.years.splice(index, 1)
                     swal({

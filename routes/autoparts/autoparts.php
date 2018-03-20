@@ -22,13 +22,24 @@ Route::group(['namespace' => 'Autoparts'], function() {
         Route::delete('/destroy/{id}', 'AutopartController@destroy')->middleware('permission:delete-autoparts');
 
         // Images Upload
-        Route::post('/images/upload/temp', 'AutopartController@uploadImageTemp')->middleware('permission:create-autoparts');
-        Route::post('/images/upload/', 'AutopartController@uploadImage')->middleware('permission:update-autoparts');
-        Route::delete('/images/destroy/{id}', 'AutopartController@destroyImage')->middleware('permission:delete-autoparts');
-        Route::post('/images/sort/{autopartId}', 'AutopartController@sortImage')->middleware('permission:update-autoparts');
+        Route::group(['prefix' => 'images'], function() {
+            Route::post('/upload/temp', 'AutopartController@uploadImageTemp')->middleware('permission:create-autoparts');
+            Route::post('/upload', 'AutopartController@uploadImage')->middleware('permission:update-autoparts');
+            Route::delete('/destroy/{id}', 'AutopartController@destroyImage')->middleware('permission:delete-autoparts');
+            Route::post('/sort/{autopartId}', 'AutopartController@sortImage')->middleware('permission:update-autoparts');
+        });
+
+        // Comments
+        Route::group(['prefix' => 'comments'], function() {
+            Route::get('/all', 'AutopartCommentController@index');
+            Route::get('/show/{id}', 'AutopartCommentController@show');
+            Route::post('/store', 'AutopartCommentController@store');
+            Route::put('/update/{id}', 'AutopartCommentController@update');
+            Route::delete('/destroy/{id}', 'AutopartCommentController@destroy');
+        });
 
         // Lists
-        Route::group(['prefix' => 'list'], function() {
+        Route::group(['prefix' => 'lists'], function() {
             Route::get('/makes', 'AutopartController@makes')->middleware('permission:read-autoparts');
             Route::get('/makesFull', 'AutopartController@makesFull')->middleware('permission:read-autoparts');
             Route::post('/makes/store', 'AutopartController@storeMake')->middleware('permission:create-autoparts');

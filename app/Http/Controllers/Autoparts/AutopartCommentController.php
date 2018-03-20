@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Autoparts;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Autoparts\Comment;
+use App\Models\Autoparts\AutopartComment;
 
-class CommentController extends Controller
+class AutopartCommentController extends Controller
 {
     public function __construct()
     {
@@ -15,22 +15,22 @@ class CommentController extends Controller
 
     public function index()
     {
-        return Comment::with($this->relationships)->get();
+        return AutopartComment::with($this->relationships)->get();
     }
-    
+
     public function show($id)
     {
-        return Comment::with($this->relationships)->find($id);
+        return AutopartComment::with($this->relationships)->find($id);
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
             'comment' => 'required|string',
-            'autopart_id' => 'required|numeric' 
+            'autopart_id' => 'required|numeric'
         ]);
 
-        $comment = Comment::create([
+        $comment = AutopartComment::create([
             'comment' => $request->comment,
             'autopart_id' => $request->autopart_id
         ])->load($this->relationships);
@@ -42,10 +42,10 @@ class CommentController extends Controller
     {
         $this->validate($request, [
             'comment' => 'required|string',
-            'autopart_id' => 'required|numeric' 
+            'autopart_id' => 'required|numeric'
         ]);
 
-        $comment = Comment::find($id);
+        $comment = AutopartComment::find($id);
         $comment->comment = $request->comment;
         $comment->autopart_id = $request->autopart_id;
 
@@ -53,8 +53,8 @@ class CommentController extends Controller
     }
 
     public function destroy($id)
-    {   
-        return Comment::destroy($id);
+    {
+        return AutopartComment::destroy($id);
     }
 
 }

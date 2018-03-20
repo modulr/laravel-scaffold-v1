@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'America/Monterrey',
+    'timezone' => env('APP_TIMEZONA', 'UTC'),
 
     /*
     |--------------------------------------------------------------------------

@@ -1,23 +1,19 @@
 <?php
 
 namespace App\Models\Autoparts;
-use Wildside\Userstamps\Userstamps;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Wildside\Userstamps\Userstamps;
 
-class Comment extends Model
+class AutopartComment extends Model
 {
     use SoftDeletes;
     use Userstamps;
 
     protected $dates = ['deleted_at'];
+    protected $guarded = ['id'];
 
-    public $table = 'comments_autoparts';
-
-    protected $fillable = [
-        'comment', 'autopart_id'
-    ];
 
     public function autopart()
     {

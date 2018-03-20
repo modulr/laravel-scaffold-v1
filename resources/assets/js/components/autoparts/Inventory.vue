@@ -231,17 +231,15 @@
                                     <span class="help-block" v-if="autopart.error.status_id">{{autopart.error.status_id[0]}}</span>
                                 </div>
                             </div>
-                            <div class="col-xs-12">
-                                <fieldset class="separator">
-                                    <legend>Comments</legend>
-                                </fieldset>
-                                <comments :autopart="autopart"></comments>
-                            </div>
                             <div class="col-xs-12" v-if="autopart.action == 'edit'">
                                 <hr>
                                 <div class="form-group">
                                     <p class="form-control-static">ID: <strong>{{autopart.data.id}}</strong></p>
                                 </div>
+                                <fieldset class="separator">
+                                    <legend>Comments</legend>
+                                    <comments :autopart="autopart"></comments>
+                                </fieldset>
                                 <fieldset class="separator">
                                     <legend>Activity</legend>
                                     <p class="text-muted"><small>Created at </small>{{autopart.data.created_at | moment('lll')}}, <small>by </small>{{autopart.data.creator.name}}</p>
@@ -485,23 +483,23 @@
                 });
             },
             getLists () {
-                axios.get('/api/autoparts/list/makes')
+                axios.get('/api/autoparts/lists/makes')
                 .then(response => {
                     this.lists.makes = response.data
                 })
-                axios.get('/api/autoparts/list/models')
+                axios.get('/api/autoparts/lists/models')
                 .then(response => {
                     this.lists.models = response.data
                 })
-                axios.get('/api/autoparts/list/origins')
+                axios.get('/api/autoparts/lists/origins')
                 .then(response => {
                     this.lists.origins = response.data
                 })
-                axios.get('/api/autoparts/list/status')
+                axios.get('/api/autoparts/lists/status')
                 .then(response => {
                     this.lists.status = response.data
                 })
-                axios.get('/api/autoparts/list/years')
+                axios.get('/api/autoparts/lists/years')
                 .then(response => {
                     this.lists.years = response.data
                 })
