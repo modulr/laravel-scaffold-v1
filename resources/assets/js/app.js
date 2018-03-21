@@ -90,6 +90,7 @@ Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
 //Invoices
 Vue.component('invoices', require('./components/invoices/Invoices.vue'));
 Vue.component('invoice', require('./components/invoices/detail/Invoice.vue'));
+Vue.component('invoiceEdit', require('./components/invoices/Edit.vue'));
 Vue.component('createInvoice', require('./components/projects/detail/CreateInvoice.vue'));
 Vue.component('quoteInvoiceList', require('./components/projects/detail/QuotesInvoicesList.vue'));
 

@@ -39,6 +39,10 @@ class InvoiceController extends Controller
             $query->whereIn('invoice_status_id', explode(",",$request->status));
         }
 
+        if($request->status) {
+            $query->whereIn('invoice_status_id', explode(",",$request->status));
+        }
+
         $invoices = $query->orderBy('created_at', 'desc')->paginate(10);
         $invoices->load($this->relationships);
 

@@ -72,7 +72,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        {{item.amount | currency }}
+                                        {{item.amount | currency}}
                                         <br>
                                     </td>          
                                     <td>                                        
@@ -152,6 +152,8 @@
 </template>
 
 <script>
+import InvoiceEdit from './Edit.vue';
+
 import moment from 'moment';
 import swal from 'sweetalert';
 import Spinner from 'vue-simple-spinner';
@@ -162,6 +164,7 @@ import Dropzone from 'vue2-dropzone';
 export default {
     data() {
         return {
+            error: '',
             loading: false,
             newCustomer: false,
             dzOptions: {
@@ -171,7 +174,8 @@ export default {
             invoices: [],
             invoice: {
                 area: {},
-                user: {}
+                user: {},
+                status: {}
             },
             sort: {
                 owner: [],
