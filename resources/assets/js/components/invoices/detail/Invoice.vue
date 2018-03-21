@@ -4,40 +4,61 @@
     <div class="invoice-content">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">{{invoice.name}}</h3>
+          <h3 class="panel-title">{{invoiceClone.name}}</h3>
         </div>
         <div class="panel-body">
           <div class="row">
             <div class="col-xs-4">
               <dl>
                 <dd>Description</dd>
-                <dt>{{invoice.description}}</dt>
+                <dt>{{invoiceClone.description}}</dt>
               </dl>
               <dl>
                 <dd>Created At</dd>
-                <dt>{{invoice.created_at | date}}</dt>
+                <dt>{{invoiceClone.created_at | date}}</dt>
               </dl>
             </div>
             <div class="col-xs-4">
               <dl>
                 <dd>Owner</dd>
-                <dt v-if="invoice.owner">
-                  <a :href="'/profile/'+invoice.owner.id">{{invoice.owner.name}}</a>
+                <dt v-if="invoiceClone.owner">
+                  <a :href="'/profile/'+invoiceClone.owner.id">{{invoiceClone.owner.name}}</a>
                 </dt>
               </dl>
               <dl>
                 <dd>File</dd>
                 <dt>
-                  <a :href="invoice.url" target="_blank">Inspect File</a>
+                  <a :href="invoiceClone.url" target="_blank">Inspect File</a>
                 </dt>
               </dl>
             </div>
             <div class="col-xs-4">
               <dl>
                 <dd>Amount</dd>
-                <dt>{{invoice.amount | currency}}</dt>
+                <dt>{{invoiceClone.amount}}</dt>
+              </dl>
+              <dl v-if="invoiceClone.invocie_status">
+                <dd>Status</dd>
+                <dt>{{invoiceClone.invocie_status.name}}</dt>
               </dl>
             </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <a href="#" class="btn btn-primary pull-right" @click.prevent="changeStatus(1)">
+                  <i class="mdi mdi-check mdi-lg"></i> Mark as In progress
+              </a>
+            </div>
+            <div class="col-sm-2">
+              <a href="#" class="btn btn-primary pull-right" @click.prevent="changeStatus(3)">
+                  <i class="mdi mdi-thumb-up mdi-lg"></i> Mark as Chargued
+              </a>
+            </div>
+            <div class="col-sm-2">
+              <a href="#" class="btn btn-primary pull-right" @click.prevent="changeStatus(2)">
+                  <i class="mdi mdi-thumb-down mdi-lg"></i> Mark as Canceled
+              </a>
+            </div>                          
           </div>
         </div>
       </div>
@@ -54,7 +75,8 @@
     data() {
       return {
         loading: false,
-        error: {}
+        error: {},
+        invoiceClone: {}
       }
     },
     props: ['invoice'],
@@ -62,7 +84,7 @@
       Spinner
     },
     mounted() {
-
+      this.invoiceClone = _.clone(this.invoice)
     },
     filters: {
       date(date) {
@@ -70,7 +92,28 @@
       }
     },
     methods: {
-
+      changeStatus(status) {
+        this.invoiceClone.invoice_status_id = status        
+        var self = this;
+          swal({
+                title: "Are you sure?",
+                text: "You will do this action",
+                type: "warning",
+                showLoaderOnConfirm: true,
+                showCancelButton: true,
+                confirmButtonText: "Yes, do it!",
+                closeOnConfirm: true
+            },
+            function () {
+                axios.put('/invoices/update/' + self.invoice.id, self.invoiceClone)
+                  .then(response => {
+                      self.invoiceClone = response.data                      
+                  })
+                  .catch(error => {
+                      self.error = error.response.data;
+                  });
+            });
+      }
     }
   }
 </script>

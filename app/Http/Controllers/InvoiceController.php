@@ -15,7 +15,7 @@ class InvoiceController extends Controller
 {
     public function __construct()
     {
-        $this->relationships = ['quotes', 'owner'];
+        $this->relationships = ['quotes', 'owner', 'invocie_status'];
     }
     /**
      * Display a listing of the resource.
@@ -34,6 +34,10 @@ class InvoiceController extends Controller
         // $query->where('status', 2);
         if($request->owner) {
             $query->whereIn('owner_id', explode(",",$request->owner));
+        }
+        
+        if($request->status) {
+            $query->whereIn('invoice_status_id', explode(",",$request->status));
         }
 
         if($request->status) {
@@ -63,8 +67,8 @@ class InvoiceController extends Controller
         'amount' => $request->amount,
         'description' => $request->description,
         'invoice_status_id' => 1,        
-        'name' => $request->name,
-        'basename' => $request->basename]);        
+        'name' => "pendding",
+        'basename' => "pendding"]);        
                 
         foreach ($request->quotes as $quote) {                           
             DB::table('invoice_quote')->insert([
@@ -72,12 +76,20 @@ class InvoiceController extends Controller
             ]);
         }
 
-        if ($request->pathFile) {
-            $upload = new Upload();
-            $upload->move($request->pathFile, 'files/'.Auth::id().'/invoices/'.$invoice->id)
-                    ->getData();
-        }
+        // if ($request->pathFile) {
+        //     $upload = new Upload();
+        //     $upload->move($request->pathFile, 'files/'.Auth::id().'/invoices/'.$invoice->id)
+        //             ->getData();
+        // }
 
+        return $invoice->load($this->relationships);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $invoice = Invoice::find($id);
+        $invoice->invoice_status_id = $request->invoice_status_id;
+        $invoice->save();
         return $invoice->load($this->relationships);
     }
 
@@ -90,6 +102,36 @@ class InvoiceController extends Controller
         $upload = new Upload();
         $uploadData = $upload->uploadTemp($request->file)->getData();
         return $uploadData;
+    }
+
+    public function uploadFile(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'string|max:255',
+            'basename' => 'string'
+        ]);
+  
+        $upload = $this->upload($request->file,$request->invoice_id);
+        $request->name = $request->file->getClientOriginalName();
+        $request->basename = $upload['basename'];
+        $request->extension = $upload['extension'];
+
+        $invoice = Invoice::find($request->invoice_id);
+        $invoice->name = $request->name;
+        $invoice->basename = $request->basename;
+        $invoice->save();
+  
+        return $invoice;
+    }
+
+    private function upload($file, $invoice_id)
+    {
+        $path = $file->store('files/'.Auth::id().'/invoices/'.$invoice_id);
+
+        $infoFile = pathinfo($path);
+        Storage::put('files/'.Auth::id().'/invoices/'.$invoice_id.'/'.$infoFile['basename'], $file);
+
+        return $infoFile;
     }
 
     /**
@@ -106,12 +148,7 @@ class InvoiceController extends Controller
                     ->get();
     }
 
-    /**
-      * Get a list of status.
-      *
-      * @return \Illuminate\Http\Response
-      */
-    public function listStatus()
+    public function listStatuses()
     {
         return ListInvoiceStatus::all();
     }

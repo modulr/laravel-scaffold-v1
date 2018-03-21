@@ -1,7 +1,6 @@
 <template>
     <div class="invoices">
         <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
-
         <div class="wrapper" v-else>
             <div class="col-md-2">
                 <div class="col-md-12 filters">
@@ -10,13 +9,29 @@
                     <br>
                     <a href="#" class="pull-right" @click.prevent="clearFilters">Clear</a>
                     <div class="row">
+                        <div class="card search col-xs-12">
+                            <p class="title"><small>Search</small></p>
+                            <div class="col-xs-1">
+                                <i class="mdi mdi-search mdi-2x"></i>
+                            </div>
+                            <div class="col-xs-10">
+                                <input type="text" class="form-control" placeholder="Search" v-model="search">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="card col-xs-12">
                             <p class="title"><small>Owner</small></p>
                             <multiselect v-model="sort.owner" track-by="name" label="name" :options="list.owners" placeholder="Select a owner" :multiple="true"></multiselect>
                         </div>
-                        <div class="card col-xs-12">
-                            <p class="title"><small>Status</small></p>
-                            <multiselect v-model="sort.status" track-by="name" label="name" :options="list.status" placeholder="Select a status" :multiple="true"></multiselect>
+                        <div class="row">
+                            <div class="card col-xs-12">
+                                <p class="title"><small>Status</small></p>
+                                <div v-for="option in list.status">
+                                    <input type="checkbox" v-model="sort.status" :value="option.id">
+                                    <label>{{option.name}}</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -38,9 +53,9 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Amount</th>
                                     <th>Description</th>
+                                    <th>Amount</th>          
+                                    <th>Status</th>                          
                                     <th>Created At</th>
                                     <th>Owner</th>
                                     <th></th>
@@ -53,17 +68,19 @@
                                     </td>
                                     <td>
                                         <a class="heading" :href="'/invoices/'+item.id">
-                                            <strong>{{item.name}}</strong>
+                                            <strong>{{item.description }}</strong>
                                         </a>
                                     </td>
                                     <td>
                                         {{item.amount | currency}}
                                         <br>
-                                    </td>
-                                    <td>
-                                        {{item.description }}
+                                    </td>          
+                                    <td>                                        
+                                        <span class="chip" :class="'status-'+item.invoice_status_id">
+                                            {{item.invocie_status.name}}
+                                        </span>
                                         <br>
-                                    </td>
+                                    </td>                          
                                     <td>
                                         {{item.created_at | date }}
                                         <br>
@@ -75,7 +92,7 @@
 
                                     </td>
                                     <td class="text-right">
-                                        <div class="dropdown">
+                                        <div class="dropdown" v-if="item.basename === 'pendding'">
                                             <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                 <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                             </a>
@@ -83,11 +100,12 @@
                                                 <li>
                                                     <a href="#" @click.prevent="edit(item, index)">
                                                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                        Edit
+                                                        Upload File
                                                     </a>
                                                 </li>
                                             </ul>
                                         </div>
+                                        <span v-else>File uploaded</span>                                        
                                     </td>
                                 </tr>
                             </tbody>
@@ -102,9 +120,34 @@
                 </div>
             </div>
         </div>
-
-        <!-- Invoice quote -->
-        <invoice-edit :list="list" :invoice="invoice" class="modal right fade" id="modalEdit"></invoice-edit>
+        <div class="modal right fade" id="modalAddFile">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Add File for {{invoice.description}} {{invoice.basename === 'pendding'}}</h4>
+                    </div>
+                    <div class="modal-body">                    
+                        <form class="form-horizontal" action="index.html" method="post">                            
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <dropzone id="invoiceTempDropzone" ref="invoiceTempDropzone"
+                                        url="/invoices/file/upload" :use-font-awesome=true
+                                        :use-custom-dropzone-options=true :dropzoneOptions="dzOptions"
+                                        v-on:vdropzone-success="uploadSuccess">
+                                        <input type="hidden" name="invoice_id" v-model="invoice.id">
+                                    </dropzone>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button> -->
+                    </div>                
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -117,12 +160,17 @@ import Spinner from 'vue-simple-spinner';
 import Vue2Filters from 'vue2-filters';
 import Paginate from 'vuejs-paginate';
 import Multiselect from 'vue-multiselect';
+import Dropzone from 'vue2-dropzone';
 export default {
     data() {
         return {
             error: '',
             loading: false,
             newCustomer: false,
+            dzOptions: {
+                acceptedFileTypes: '.pdf',
+                headers: {'X-CSRF-TOKEN': Laravel.csrfToken}
+            },
             invoices: [],
             invoice: {
                 area: {},
@@ -136,7 +184,7 @@ export default {
             search: '',
             list: {
                 owners: [],
-                status: []
+                status:[]
             },
             pagination: {
                 current_page: 1,
@@ -150,10 +198,12 @@ export default {
     components: {
         Spinner,
         Paginate,
-        Multiselect
+        Multiselect,
+        Dropzone
     },
     mounted() {
         this.getAll();
+        this.getLists();
     },
     filters: {
         date(date) {
@@ -172,23 +222,25 @@ export default {
                     `/invoices/all?page=${page}
                     ${this.search ? '&name=' + this.search: ''}
                     ${(this.sort.owner && this.sort.owner.length > 0) ? '&owner=' + this.sort.owner.map(item => item.id) : ''}
-                    ${(this.sort.status && this.sort.status.length > 0) ? 'status=' + this.sort.status.map(item => item.id) : ''}`
+                    ${(this.sort.status && this.sort.status.length > 0) ? '&status=' + this.sort.status : ''}`
                 )
-                .then(response => {
-                    axios.get('/invoices/list/owners')
-                    .then(response => {
-                        this.list.owners = response.data;
-                    });
-                    axios.get('/invoices/list/status')
-                    .then(response => {
-                        this.list.status = response.data;
-                    });
+                .then(response => {                    
                     this.pagination.last_page = response.data.invoices.last_page
                     this.pagination.total = response.data.invoices.total
                     this.pagination.from = response.data.invoices.from
                     this.pagination.to = response.data.invoices.to
                     this.invoices = response.data.invoices.data;
                     this.loading = false;
+                });
+        },
+        getLists () {
+            axios.get('/invoices/list/owners')
+                .then(response => {
+                    this.list.owners = response.data;
+                });
+            axios.get('/invoices/list/statuses')
+                .then(response => {
+                    this.list.status = response.data;
                 });
         },
         add: function () {
@@ -203,7 +255,7 @@ export default {
         edit: function (invoice, index) {
             this.invoice = _.clone(invoice);
             this.invoice.index = index;
-            $('#modalEdit').modal('show');
+            $('#modalAddFile').modal('show');
         },
         totalQuotes: function (quotes) {
             let total = 0.0;
@@ -228,6 +280,13 @@ export default {
         doSearch() {
             this.current_page = 1
             this.getAll()
+        },
+        uploadSuccess (file, response) {            
+            this.invoice.pathFile = response.path
+            this.invoice.basename = response.basename
+            this.invoice.name = response.name
+            this.invoices[this.invoice.index] = this.invoice
+            $('#modalAddFile').modal('hide');
         }
     }
 }

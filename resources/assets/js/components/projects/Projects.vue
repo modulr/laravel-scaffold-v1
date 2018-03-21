@@ -43,6 +43,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="card col-xs-12">
+                                <p class="title"><small>Status</small></p>
+                                <div v-for="option in list.status">
+                                    <input type="checkbox" v-model="sort.status" :value="option.id">
+                                    <label>{{option.name}}</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-10">
@@ -190,6 +199,7 @@ export default {
                 client: [],
                 area: [],
                 total: '',
+                status:[]
             },
             search: '',
             list: {
@@ -198,6 +208,7 @@ export default {
                 customers: [],
                 areas: [],
                 users: [],
+                status: []
             },
             pagination : {
                 current_page: 1,
@@ -217,7 +228,8 @@ export default {
         Spinner, Paginate, Multiselect
     },
     mounted() {
-        this.getAll();
+        this.getAll()
+        this.getList()
     },
     filters: {
         date(date) {
@@ -232,40 +244,46 @@ export default {
         getAll: function () {
             var page = Number(this.pagination.current_page);
             this.loading = true;
-            axios.get(`/projects/all?page=${page}${this.search ? '&name=' + this.search: ''}${(this.sort.client && this.sort.client.length > 0) ? '&client=' + this.sort.client.map(item => item.id) : ''}${(this.sort.customers && this.sort.customers.length > 0) ? '&customer=' + this.sort.customers.map(item => item.id) : ''}${(this.sort.area && this.sort.area.length > 0) ? '&area=' + this.sort.area : ''}`)
+            axios.get(`/projects/all?page=${page}${this.search ? '&name=' + this.search: ''}${(this.sort.client && this.sort.client.length > 0) ? '&client=' + this.sort.client.map(item => item.id) : ''}${(this.sort.customers && this.sort.customers.length > 0) ? '&customer=' + this.sort.customers.map(item => item.id) : ''}${(this.sort.area && this.sort.area.length > 0) ? '&area=' + this.sort.area : ''}${(this.sort.status && this.sort.status.length > 0) ? '&status=' + this.sort.status : ''}`)
+            .then(response => {                
+                this.pagination.last_page = response.data.projects.last_page
+                this.pagination.total = response.data.projects.total
+                this.pagination.from = response.data.projects.from
+                this.pagination.to = response.data.projects.to
+                this.projects = response.data.projects.data;
+                this.insights.Region.North = response.data.north
+                this.insights.Region.South = response.data.south
+                this.insights.Region.Center = response.data.center
+                this.insights.Priority.High = response.data.high
+                this.insights.Priority.Medium = response.data.medium
+                this.insights.Priority.Low = response.data.low
+                this.insights.Status.Done = response.data.done
+                this.insights.Status['In Progress'] = response.data.inProgress
+                this.insights.Status.Canceled = response.data.canceled
+                this.insights.Status.New = response.data.new
+                this.loading = false;
+            });
+        },
+        getList () {
+            axios.get('/projects/list/priorities')
             .then(response => {
-                axios.get('/projects/list/priorities')
-                .then(response => {
-                    this.list.priorities = response.data;
-                });
-                axios.get('/projects/list/clients')
-                .then(response => {
-                    this.list.clients = response.data;
-                });
-                axios.get('/projects/list/customers')
-                .then(response => {
-                    this.list.customers = response.data;
-                });
-                axios.get('/projects/list/areas')
-                .then(response => {
-                    this.list.areas = response.data;
-                });
-            this.pagination.last_page = response.data.projects.last_page
-            this.pagination.total = response.data.projects.total
-            this.pagination.from = response.data.projects.from
-            this.pagination.to = response.data.projects.to
-            this.projects = response.data.projects.data;
-            this.insights.Region.North = response.data.north
-            this.insights.Region.South = response.data.south
-            this.insights.Region.Center = response.data.center
-            this.insights.Priority.High = response.data.high
-            this.insights.Priority.Medium = response.data.medium
-            this.insights.Priority.Low = response.data.low
-            this.insights.Status.Done = response.data.done
-            this.insights.Status['In Progress'] = response.data.inProgress
-            this.insights.Status.Canceled = response.data.canceled
-            this.insights.Status.New = response.data.new
-            this.loading = false;
+                this.list.priorities = response.data;
+            });
+            axios.get('/projects/list/clients')
+            .then(response => {
+                this.list.clients = response.data;
+            });
+            axios.get('/projects/list/customers')
+            .then(response => {
+                this.list.customers = response.data;
+            });
+            axios.get('/projects/list/areas')
+            .then(response => {
+                this.list.areas = response.data;
+            });
+            axios.get('/projects/list/statuses')
+            .then(response => {
+                this.list.status = response.data;
             });
         },
         add: function () {
@@ -301,6 +319,7 @@ export default {
                 customers: [],
                 client: [],
                 area: [],
+                status:[],
                 total: '',
             }
             this.getAll()

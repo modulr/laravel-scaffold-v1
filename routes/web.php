@@ -297,6 +297,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/invoices/{id}', 'InvoiceController@show');
     Route::post('/invoices/store', 'InvoiceController@store');
     Route::post('/invoices/file/temp', 'InvoiceController@uploadImageTemp');
+    Route::post('/invoices/file/upload', 'InvoiceController@uploadFile');
+    Route::put('/invoices/update/{id}', 'InvoiceController@update');
     Route::get('/invoices/list/owners', 'InvoiceController@listOwners');
-    Route::get('/invoices/list/status', 'InvoiceController@listStatus');
+    Route::get('/invoices/list/statuses', 'InvoiceController@listStatuses');
 });
