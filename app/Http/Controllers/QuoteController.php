@@ -13,7 +13,7 @@ class QuoteController extends Controller
 {
     public function __construct()
     {
-        $this->relationships = ['designer', 'salesman', 'customer', 'project', 'status', 'service', 'attachment', 'currency', 'invoices', 'invoices.invocie_status'];
+        $this->relationships = ['designer', 'salesman', 'customer', 'project', 'status', 'service', 'attachment', 'currency', 'invoices', 'invoices.invoice_status'];
     }
 
   public function index(Request $request)
@@ -132,7 +132,6 @@ class QuoteController extends Controller
   {
     $query = Quote::query();
     $commissionQuery = RangeOfCommission::query();    
-    // $query->where('status', '!=', 4); todas las cotizaciones que no esten rechazadas
     $query->whereRaw('MONTH(request_date) = ?', [$request->month]);
     if($request->designer) {
         $query->where('designer_id', $request->designer);
@@ -144,21 +143,13 @@ class QuoteController extends Controller
     }
     $total = 0.00;
     $quotes = $query->get()->load($this->relationships);
-    foreach ($quotes as $quote) {               
+    foreach ($quotes as $quote) {
         $total += $quote['currency']['exchange_rate'] * $quote['amount'];
     }
 
     $commissionQuery->where('lower_limit', '<=', $total)
         ->where('upper_limit', '>=', $total);
-    $range_commission = $commissionQuery->get();
-    // $range_commission = RageOfCommission::where('lower_limit', '<=', $total)
-    //                                     ->where('upper_limit', '>=', $total)->get();
-    
-    // return DB::table('rage_of_commissions')->where([
-    //     ['lower_limit', '>=', 12999],
-    //     ['upper_limit', '<=', 12999],
-    // ])->get();
-                                    
+    $range_commission = $commissionQuery->get();                                
 
     return response()->json([
         'quotes' => $quotes,

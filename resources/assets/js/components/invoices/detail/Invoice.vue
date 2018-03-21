@@ -4,7 +4,7 @@
     <div class="invoice-content">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">{{invoiceClone.name}}</h3>
+          <h3 class="panel-title">{{invoiceClone.description}}</h3>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -35,11 +35,11 @@
             <div class="col-xs-4">
               <dl>
                 <dd>Amount</dd>
-                <dt>{{invoiceClone.amount}}</dt>
+                <dt>{{invoiceClone.amount | currency}}</dt>
               </dl>
-              <dl v-if="invoiceClone.invocie_status">
+              <dl v-if="invoiceClone.invoice_status">
                 <dd>Status</dd>
-                <dt>{{invoiceClone.invocie_status.name}}</dt>
+                <dt>{{invoiceClone.invoice_status.name}}</dt>
               </dl>
             </div>
           </div>

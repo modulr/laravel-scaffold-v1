@@ -15,7 +15,7 @@ class InvoiceController extends Controller
 {
     public function __construct()
     {
-        $this->relationships = ['quotes', 'owner', 'invocie_status'];
+        $this->relationships = ['quotes', 'owner', 'invoice_status'];
     }
     /**
      * Display a listing of the resource.
@@ -28,8 +28,7 @@ class InvoiceController extends Controller
     }
 
     public function all(Request $request)
-    {
-        // return Project::with($this->relationships)->where('status', 2)->paginate(10);
+    {        
         $query = Invoice::query();
         // $query->where('status', 2);
         if($request->owner) {
@@ -147,5 +146,10 @@ class InvoiceController extends Controller
     public function listStatuses()
     {
         return ListInvoiceStatus::all();
+    }
+
+    public function invoicesPerMonth(Request $request)
+    {
+        $invoiceQuery = Invoice::query();
     }
 }

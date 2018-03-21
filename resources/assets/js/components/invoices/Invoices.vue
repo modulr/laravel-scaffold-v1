@@ -72,12 +72,12 @@
                                         </a>
                                     </td>
                                     <td>
-                                        {{item.amount }}
+                                        {{item.amount | currency }}
                                         <br>
                                     </td>          
                                     <td>                                        
                                         <span class="chip" :class="'status-'+item.invoice_status_id">
-                                            {{item.invocie_status.name}}
+                                            {{item.invoice_status.name}}
                                         </span>
                                         <br>
                                     </td>                          
