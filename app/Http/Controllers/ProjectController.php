@@ -55,6 +55,9 @@ class ProjectController extends Controller
         if($request->area) {
           $query->whereIn('area_id', explode(",",$request->area));
         }
+        if($request->status) {
+            $query->whereIn('project_status_id', explode(",",$request->status));
+          }
         $north = clone $query;
         $south = clone $query;
         $center = clone $query;

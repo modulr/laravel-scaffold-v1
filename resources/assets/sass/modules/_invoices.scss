@@ -1,0 +1,16 @@
+.invoices {
+    .table {
+        .status-2 {
+            color: $brand-danger;
+            background-color: lighten($brand-danger, 20%);
+        }
+        .status-3 {
+            color: $brand-success;
+            background-color: lighten($brand-success, 20%);
+        }
+        .status-1 {
+            color: $brand-gray;
+            background-color: lighten($brand-gray, 20%);
+        }
+    }    
+}

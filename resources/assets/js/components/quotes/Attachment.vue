@@ -112,6 +112,7 @@ export default {
                         this.error = error.response.data;
                 });
             }
+            this.$refs.myVueDropzone.removeAllFiles()
         },
         deleteAttachment (quote, attachment, index) {
             console.log(quote)

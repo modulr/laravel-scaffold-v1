@@ -53,7 +53,7 @@
                                 <span class="help-block" v-if="invoice.quotes[index].remainder < invoice.quotes[index].invoice_amount">El total asignado a la cotización no puede ser mayor al restante por facturar: {{ invoice.quotes[index].remainder }}</span>                                
                             </div>                            
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <div class="col-md-12">
                                 <dropzone id="invoiceTempDropzone" ref="invoiceTempDropzone"
                                     url="/invoices/file/temp" :use-font-awesome=true
@@ -61,7 +61,7 @@
                                     v-on:vdropzone-success="uploadSuccess">
                                 </dropzone>
                             </div>
-                        </div>                        
+                        </div>                         -->
                     </form>
                 </div>
                 <div class="modal-footer">
