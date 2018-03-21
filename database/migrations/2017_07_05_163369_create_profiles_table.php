@@ -13,35 +13,61 @@ class CreateProfilesTable extends Migration
      */
     public function up()
     {
-        // Personals
-        Schema::create('profile_personals', function (Blueprint $table) {
+        // Lists
+        Schema::create('profile_list_contacts', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->date('birthday')->nullable();
-            $table->string('place_of_birth')->nullable();
-            $table->integer('gender_id')->unsigned()->nullable();
-            $table->foreign('gender_id')->references('id')->on('list_genders');
-            $table->integer('relationship_id')->unsigned()->nullable();
-            $table->foreign('relationship_id')->references('id')->on('list_relationships');
-            $table->string('rfc')->nullable();
-            $table->string('curp')->nullable();
-            $table->string('nss')->nullable();
-            $table->timestamps();
+            $table->string('title');
             $table->softDeletes();
         });
-        // Contacts
+
+        Schema::create('profile_list_departments', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->softDeletes();
+        });
+
+        Schema::create('profile_list_genders', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->softDeletes();
+        });
+
+        Schema::create('profile_list_positions', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->softDeletes();
+        });
+
+        Schema::create('profile_list_professions', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->softDeletes();
+        });
+
+        Schema::create('profile_list_relations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->softDeletes();
+        });
+
+        Schema::create('profile_list_relationships', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->softDeletes();
+        });
+
+        // Profile
         Schema::create('profile_contacts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('contact');
             $table->integer('type_id')->unsigned();
-            $table->foreign('type_id')->references('id')->on('list_contacts');
+            $table->foreign('type_id')->references('id')->on('profile_list_contacts');
             $table->timestamps();
             $table->softDeletes();
         });
-        // Educations
+
         Schema::create('profile_educations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
@@ -53,21 +79,38 @@ class CreateProfilesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        // Families
+
         Schema::create('profile_families', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('name');
             $table->integer('gender_id')->unsigned();
-            $table->foreign('gender_id')->references('id')->on('list_genders');
+            $table->foreign('gender_id')->references('id')->on('profile_list_genders');
             $table->integer('relation_id')->unsigned();
-            $table->foreign('relation_id')->references('id')->on('list_relations');
+            $table->foreign('relation_id')->references('id')->on('profile_list_relations');
             $table->date('birthday')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
-        // Places
+
+        Schema::create('profile_personals', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->date('birthday')->nullable();
+            $table->string('place_of_birth')->nullable();
+            $table->integer('gender_id')->unsigned()->nullable();
+            $table->foreign('gender_id')->references('id')->on('profile_list_genders');
+            $table->integer('relationship_id')->unsigned()->nullable();
+            $table->foreign('relationship_id')->references('id')->on('profile_list_relationships');
+            $table->string('rfc')->nullable();
+            $table->string('curp')->nullable();
+            $table->string('nss')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('profile_places', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
@@ -77,17 +120,17 @@ class CreateProfilesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        // Works
+
         Schema::create('profile_works', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('profession_id')->unsigned()->nullable();
-            $table->foreign('profession_id')->references('id')->on('list_professions');
+            $table->foreign('profession_id')->references('id')->on('profile_list_professions');
             $table->integer('position_id')->unsigned()->nullable();
-            $table->foreign('position_id')->references('id')->on('list_positions');
+            $table->foreign('position_id')->references('id')->on('profile_list_positions');
             $table->integer('department_id')->unsigned()->nullable();
-            $table->foreign('department_id')->references('id')->on('list_departments');
+            $table->foreign('department_id')->references('id')->on('profile_list_departments');
             $table->integer('boss_id')->unsigned()->nullable();
             $table->foreign('boss_id')->references('id')->on('users');
             $table->date('starting_from')->nullable();
@@ -103,11 +146,21 @@ class CreateProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profile_personals');
+        // Profile
         Schema::dropIfExists('profile_contacts');
         Schema::dropIfExists('profile_educations');
         Schema::dropIfExists('profile_families');
+        Schema::dropIfExists('profile_personals');
         Schema::dropIfExists('profile_places');
         Schema::dropIfExists('profile_works');
+        // Lists
+        Schema::dropIfExists('profile_list_contacts');
+        Schema::dropIfExists('profile_list_departments');
+        Schema::dropIfExists('profile_list_genders');
+        Schema::dropIfExists('profile_list_positions');
+        Schema::dropIfExists('profile_list_professions');
+        Schema::dropIfExists('profile_list_relations');
+        Schema::dropIfExists('profile_list_relationships');
+
     }
 }

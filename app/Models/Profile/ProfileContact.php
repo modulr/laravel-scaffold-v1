@@ -20,6 +20,6 @@ class ProfileContact extends Model
 
     public function type()
     {
-        return $this->belongsTo(\App\Models\Profile\ListContact::class, 'type_id');
+        return $this->belongsTo(\App\Models\Profile\ProfileListContact::class, 'type_id');
     }
 }

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class AutopartsListsTableSeeder extends Seeder
+class AutopartsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -82,11 +82,11 @@
         },
         props: ['user'],
         mounted() {
-            axios.get('/api/list/profile/gender')
+            axios.get('/api/profile/lists/gender')
             .then(response => {
                 this.list.genders = response.data;
             });
-            axios.get('/api/list/profile/relation')
+            axios.get('/api/profile/lists/relation')
             .then(response => {
                 this.list.relations = response.data;
             });

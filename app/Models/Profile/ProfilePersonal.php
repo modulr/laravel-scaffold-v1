@@ -20,11 +20,11 @@ class ProfilePersonal extends Model
 
     public function gender()
     {
-        return $this->belongsTo(\App\Models\Profile\ListGender::class);
+        return $this->belongsTo(\App\Models\Profile\ProfileListGender::class);
     }
 
     public function relationship()
     {
-        return $this->belongsTo(\App\Models\Profile\ListRelationship::class);
+        return $this->belongsTo(\App\Models\Profile\ProfileListRelationship::class);
     }
 }

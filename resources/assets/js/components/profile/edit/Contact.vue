@@ -62,7 +62,7 @@ export default {
     },
     props: ['user'],
     mounted() {
-        axios.get('/api/list/profile/contact')
+        axios.get('/api/profile/lists/contact')
         .then(response => {
             this.list.contacts = response.data;
         });
