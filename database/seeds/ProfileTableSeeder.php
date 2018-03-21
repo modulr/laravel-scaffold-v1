@@ -11,6 +11,21 @@ class ProfileTableSeeder extends Seeder
      */
     public function run()
     {
+        // Permissions
+        DB::table('permissions')->insert([
+            [
+                'name' => 'read-profile',
+                'display_name' => 'Profile',
+                'description' => 'Read'
+            ],
+            [
+                'name' => 'update-profile',
+                'display_name' => 'Profile',
+                'description' => 'Create'
+            ],
+        ]);
+
+        // Lists
         DB::table('profile_list_contacts')->insert([
             ['title' => 'mail'],
             ['title' => 'phone'],

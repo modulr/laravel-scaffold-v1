@@ -11,6 +11,71 @@ class AutopartsTableSeeder extends Seeder
      */
     public function run()
     {
+        // Permissions
+        DB::table('permissions')->insert([
+            [
+                'name' => 'read-sales',
+                'display_name' => 'Sales',
+                'description' => 'Read'
+            ],
+            [
+                'name' => 'create-sales',
+                'display_name' => 'Sales',
+                'description' => 'Create'
+            ],
+            [
+                'name' => 'update-sales',
+                'display_name' => 'Sales',
+                'description' => 'Update'
+            ],
+            [
+                'name' => 'delete-sales',
+                'display_name' => 'Sales',
+                'description' => 'Delete'
+            ],
+            [
+                'name' => 'read-inventory',
+                'display_name' => 'Inventory',
+                'description' => 'Read'
+            ],
+            [
+                'name' => 'create-inventory',
+                'display_name' => 'Inventory',
+                'description' => 'Create'
+            ],
+            [
+                'name' => 'update-inventory',
+                'display_name' => 'Inventory',
+                'description' => 'Update'
+            ],
+            [
+                'name' => 'delete-inventory',
+                'display_name' => 'Inventory',
+                'description' => 'Delete'
+            ],
+            [
+                'name' => 'read-inventory-lists',
+                'display_name' => 'Inventory Lists',
+                'description' => 'Read'
+            ],
+            [
+                'name' => 'create-inventory-lists',
+                'display_name' => 'Inventory Lists',
+                'description' => 'Create'
+            ],
+            [
+                'name' => 'update-inventory-lists',
+                'display_name' => 'Inventory Lists',
+                'description' => 'Update'
+            ],
+            [
+                'name' => 'delete-inventory-lists',
+                'display_name' => 'Inventory Lists',
+                'description' => 'Delete'
+            ]
+        ]);
+
+        // Lists
         DB::table('autopart_list_makes')->insert([
             ['name' => 'Aston Martin'],
             ['name' => 'Audi'],
