@@ -11,17 +11,25 @@ class ProfileTableSeeder extends Seeder
      */
     public function run()
     {
+        // Module
+        $moduleId = DB::table('modules')->insertGetId([
+            'name' => 'profile',
+            'display_name' => 'Profile'
+        ]);
+
         // Permissions
         DB::table('permissions')->insert([
             [
-                'name' => 'read-profile',
-                'display_name' => 'Profile',
-                'description' => 'Read'
+                'name' => 'update-own-profile',
+                'display_name' => 'Update Own',
+                'description' => 'Profile Update Own',
+                'module_id' => $moduleId
             ],
             [
-                'name' => 'update-profile',
-                'display_name' => 'Profile',
-                'description' => 'Create'
+                'name' => 'update-all-profile',
+                'display_name' => 'Update All',
+                'description' => 'Profile Update All',
+                'module_id' => $moduleId
             ],
         ]);
 

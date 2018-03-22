@@ -16,3 +16,24 @@
         }
     }
 }
+
+.roles-permissions-list {
+    padding-bottom: 12px;
+    border-bottom: 1px solid $gray-lighter;
+    .roles-permissions-module {
+        margin-bottom: 8px;
+    }
+    .roles-permissions-permission {
+        margin-right: 8px;
+    }
+}
+
+.roles-users-list {
+    padding-bottom: 10px;
+    border-bottom: 1px solid $gray-lighter;
+    .roles-users-name {
+        display: block;
+        line-height: 16px;
+        margin-bottom: -6px;
+    }
+}

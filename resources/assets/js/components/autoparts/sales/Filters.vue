@@ -14,25 +14,24 @@
         </div>
         <!-- Modal body -->
         <div class="modal-body">
-            <fieldset class="separator">
-                <legend>Filters</legend>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="form-group">
-                            <multiselect v-model="filters.make" :options="lists.makes" track-by="id" label="name"
-                                selectLabel="" placeholder="Make" @remove="filters.make={}"></multiselect>
-                        </div>
-                        <div class="form-group">
-                            <multiselect v-model="filters.model" :options="filteredFiltersModels" track-by="id" label="name"
-                                selectLabel="" placeholder="Model" @remove="filters.model={}"></multiselect>
-                        </div>
-                        <div class="form-group">
-                            <multiselect v-model="filters.years" :options="lists.years" track-by="id" label="name"
-                                selectLabel="" placeholder="Years" :multiple="true" :close-on-select="false"></multiselect>
-                        </div>
+            <h5>Filters</h5>
+            <br>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <multiselect v-model="filters.make" :options="lists.makes" track-by="id" label="name"
+                            selectLabel="" placeholder="Make" @remove="filters.make={}"></multiselect>
+                    </div>
+                    <div class="form-group">
+                        <multiselect v-model="filters.model" :options="filteredFiltersModels" track-by="id" label="name"
+                            selectLabel="" placeholder="Model" @remove="filters.model={}"></multiselect>
+                    </div>
+                    <div class="form-group">
+                        <multiselect v-model="filters.years" :options="lists.years" track-by="id" label="name"
+                            selectLabel="" placeholder="Years" :multiple="true" :close-on-select="false"></multiselect>
                     </div>
                 </div>
-            </fieldset>
+            </div>
             <fieldset class="separator">
                 <legend>Status</legend>
                 <div class="switch switch-block">

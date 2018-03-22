@@ -19,7 +19,7 @@
                             <i class="fa fa-qrcode fa-lg" aria-hidden="true"></i> <span class="hidden-xs">Search</span>
                         </a>
                         <a href="#" class="btn btn-success"
-                            v-if="user.hasPermission['create-autoparts']"
+                            v-if="user.hasPermission['create-inventory']"
                             @click.prevent="newAutopart">
                             <i class="fa fa-plus"></i> <span class="hidden-xs">New</span>
                         </a>
@@ -94,18 +94,18 @@
                         </button>
                         <div class="pull-right">
                             <button type="button" class="btn btn-default"
-                                    v-if="user.hasPermission['read-autoparts'] && autopart.action == 'edit'"
+                                    v-if="autopart.action == 'edit'"
                                     @click="printQR(autopart.data)">
                                     <i class="fa fa-print fa-lg"></i>
                             </button>
                             <button type="button" class="btn btn-default"
-                                    v-if="user.hasPermission['delete-autoparts'] && autopart.action == 'edit'"
+                                    v-if="user.hasPermission['delete-inventory'] && autopart.action == 'edit'"
                                     @click="destroyAutopart"><i class="fa fa-trash-o fa-lg"></i></button>
                             <button type="button" class="btn btn-success"
-                                    v-if="user.hasPermission['update-autoparts'] && autopart.action == 'edit'"
+                                    v-if="user.hasPermission['update-inventory'] && autopart.action == 'edit'"
                                     @click="updateAutopart">Save</button>
                             <button type="button" class="btn btn-success"
-                                    v-if="user.hasPermission['create-autoparts'] && autopart.action == 'new'"
+                                    v-if="user.hasPermission['create-inventory'] && autopart.action == 'new'"
                                     @click="storeAutopart">Save</button>
                         </div>
                     </div>
@@ -127,8 +127,8 @@
                                 <img class="img-rounded" :src="image.url_thumbnail" v-else>
                                 <div class="progress" v-if="image.status">
                                     <div class="progress-bar"
-                                     :class="{'progress-bar-danger': image.status == 'error'}"
-                                      :style="{width: image.progress+'%'}">
+                                        :class="{'progress-bar-danger': image.status == 'error'}"
+                                        :style="{width: image.progress+'%'}">
                                     </div>
                                 </div>
                                 <a href="#" class="btn-delete" @click.prevent="destroyImage(image, index)">
@@ -140,20 +140,24 @@
                             </span>
                         </draggable>
                         <vue-clip class="vue-clip-photo"
-                                  :options="vueClipOptions"
-                                  :on-sending="sendingImage"
-                                  :on-complete="completeImage"
-                                  v-if="user.hasPermission['create-autoparts']">
+                                :class="{'vue-clip-block': autopart.data.images.length == 0}"
+                                :options="vueClipOptions"
+                                :on-sending="sendingImage"
+                                :on-complete="completeImage"
+                                v-if="user.hasPermission['create-inventory']">
                             <template slot="clip-uploader-action">
                                 <div>
-                                    <div class="dz-message btn btn-link btn-upload">
-                                        <i class="fa fa-photo fa-lg" aria-hidden="true"></i>
+                                    <div class="dz-message btn btn-link">
+                                        <i class="fa fa-camera fa-lg" aria-hidden="true"></i>
                                         <span v-show="autopart.data.images.length == 0"> ADD PHOTOS</span>
                                     </div>
                                 </div>
                             </template>
                         </vue-clip>
                         <hr>
+                        <div class="form-group" v-if="autopart.action == 'edit'">
+                            <p class="form-control-static">ID: <strong>{{autopart.data.id}}</strong></p>
+                        </div>
                         <div class="form-group" :class="{'has-error': autopart.error.name}">
                             <input type="text" class="form-control input-lg" placeholder="Name autopart"
                                 v-model="autopart.data.name">
@@ -232,10 +236,6 @@
                                 </div>
                             </div>
                             <div class="col-xs-12" v-if="autopart.action == 'edit'">
-                                <hr>
-                                <div class="form-group">
-                                    <p class="form-control-static">ID: <strong>{{autopart.data.id}}</strong></p>
-                                </div>
                                 <fieldset class="separator">
                                     <legend>Comments</legend>
                                     <comments :autopart="autopart"></comments>
@@ -261,34 +261,31 @@
                         </button>
                         <div class="pull-right">
                             <button type="button" class="btn btn-link"
-                                    v-if="user.hasPermission['read-autoparts']"
                                     @click="clearFilters">Clear</button>
                             <button type="button" class="btn btn-link"
-                                    v-if="user.hasPermission['read-autoparts']"
                                     @click="applyFilters">Apply</button>
                         </div>
                     </div>
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <fieldset class="separator">
-                            <legend>Filters</legend>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="form-group">
-                                        <multiselect v-model="filters.make" :options="lists.makes" track-by="id" label="name"
-                                            selectLabel="" placeholder="Make" @remove="filters.make={}"></multiselect>
-                                    </div>
-                                    <div class="form-group">
-                                        <multiselect v-model="filters.model" :options="filteredFiltersModels" track-by="id" label="name"
-                                            selectLabel="" placeholder="Model" @remove="filters.model={}"></multiselect>
-                                    </div>
-                                    <div class="form-group">
-                                        <multiselect v-model="filters.years" :options="lists.years" track-by="id" label="name"
-                                            selectLabel="" placeholder="Years" :multiple="true" :close-on-select="false"></multiselect>
-                                    </div>
+                        <h5>Filters</h5>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <multiselect v-model="filters.make" :options="lists.makes" track-by="id" label="name"
+                                        selectLabel="" placeholder="Make" @remove="filters.make={}"></multiselect>
+                                </div>
+                                <div class="form-group">
+                                    <multiselect v-model="filters.model" :options="filteredFiltersModels" track-by="id" label="name"
+                                        selectLabel="" placeholder="Model" @remove="filters.model={}"></multiselect>
+                                </div>
+                                <div class="form-group">
+                                    <multiselect v-model="filters.years" :options="lists.years" track-by="id" label="name"
+                                        selectLabel="" placeholder="Years" :multiple="true" :close-on-select="false"></multiselect>
                                 </div>
                             </div>
-                        </fieldset>
+                        </div>
                         <fieldset class="separator">
                             <legend>Status</legend>
                             <div class="switch switch-block">

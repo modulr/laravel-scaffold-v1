@@ -11,47 +11,67 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        // Modules
+        $usersId = DB::table('modules')->insertGetId([
+            'name' => 'users',
+            'display_name' => 'Users',
+            'icon' => 'mdi-people'
+        ]);
+        $rolesId = DB::table('modules')->insertGetId([
+            'name' => 'roles',
+            'display_name' => 'Roles',
+            'icon' => 'mdi-vpn-key'
+        ]);
+
         // Permissions
         DB::table('permissions')->insert([
             [
                 'name' => 'read-users',
-                'display_name' => 'Users',
-                'description' => 'Read'
+                'display_name' => 'Read',
+                'description' => 'Read Users',
+                'module_id' => $usersId
             ],
             [
                 'name' => 'create-users',
-                'display_name' => 'Users',
-                'description' => 'Create'
+                'display_name' => 'Create',
+                'description' => 'Create Users',
+                'module_id' => $usersId
             ],
             [
                 'name' => 'update-users',
-                'display_name' => 'Users',
-                'description' => 'Update'
+                'display_name' => 'Update',
+                'description' => 'Update Users',
+                'module_id' => $usersId
             ],
             [
                 'name' => 'delete-users',
-                'display_name' => 'Users',
-                'description' => 'Delete'
+                'display_name' => 'Delete',
+                'description' => 'Delete Users',
+                'module_id' => $usersId
             ],
             [
                 'name' => 'read-roles',
-                'display_name' => 'Roles',
-                'description' => 'Read'
+                'display_name' => 'Read',
+                'description' => 'Read Roles',
+                'module_id' => $rolesId
             ],
             [
                 'name' => 'create-roles',
-                'display_name' => 'Roles',
-                'description' => 'Create'
+                'display_name' => 'Create',
+                'description' => 'Create Roles',
+                'module_id' => $rolesId
             ],
             [
                 'name' => 'update-roles',
-                'display_name' => 'Roles',
-                'description' => 'Update'
+                'display_name' => 'Update',
+                'description' => 'Update Roles',
+                'module_id' => $rolesId
             ],
             [
                 'name' => 'delete-roles',
-                'display_name' => 'Roles',
-                'description' => 'Delete'
+                'display_name' => 'Delete',
+                'description' => 'Delete Roles',
+                'module_id' => $rolesId
             ]
         ]);
 

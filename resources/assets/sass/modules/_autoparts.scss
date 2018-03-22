@@ -59,8 +59,7 @@
             padding: 10px 0;
             display: inline;
             .image {
-                margin-right: 10px;
-                margin-bottom: 10px;
+                margin: 5px;
                 display: inline-block;
                 position: relative;
                 &last {
@@ -94,7 +93,6 @@
             text-align: center;
             height: 250px;
             width: 100%;
-            margin-bottom: 25px;
             i {
                 font-size: 14em;
                 margin-top: .2em;
@@ -191,7 +189,10 @@
     ul.list-group {
         .list-group-item {
             .fa-chevron-down {
-                margin-left: 20px;
+                margin-right: 10px;
+            }
+            .badge {
+                float: none;
             }
         }
     }

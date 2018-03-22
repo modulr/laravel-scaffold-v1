@@ -1,7 +1,10 @@
 <template lang="html">
     <div class="panel panel-default">
         <div class="panel-body">
-            <!-- User -->
+            <a :href="`/profile/${user.id}/edit`" class="btn btn-link btn-edit"
+                v-if="user.hasPermission['update-own-profile']">
+                <i class="fa fa-lg fa-pencil" aria-hidden="true"></i>
+            </a>
             <div class="text-center">
                 <img class="avatar-md" :src="user.avatar_url">
                 <p class="lead">{{user.name}}</p>

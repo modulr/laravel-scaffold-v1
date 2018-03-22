@@ -20,6 +20,7 @@
         <div class="img-rounded" v-else>
             <i class="fa fa-picture-o fa-5x"></i>
         </div>
+        <p>ID: <strong>{{autopart.id}}</strong></p>
         <h4>{{autopart.name}}</h4>
         <p class="lead text-muted">
             {{autopart.make.name}}
@@ -43,19 +44,22 @@
         <div class="row">
             <div class="col-xs-6" v-show="showBtnAvailable">
                 <button type="button" class="btn btn-primary btn-lg btn-block"
-                    @click="updateAutopart($event, 1)">
+                    @click="updateAutopart($event, 1)"
+                    v-if="user.hasPermission['update-sales']">
                     Available
                 </button>
             </div>
             <div class="col-xs-6" v-show="showBtnSeparated">
                 <button type="button" class="btn btn-info btn-lg btn-block"
-                    @click="updateAutopart($event, 3)">
+                    @click="updateAutopart($event, 3)"
+                    v-if="user.hasPermission['update-sales']">
                     Separated
                 </button>
             </div>
             <div class="col-xs-6" v-show="showBtnSold">
                 <button type="button" class="btn btn-success btn-lg btn-block"
-                    @click="updateAutopart($event, 4)">
+                    @click="updateAutopart($event, 4)"
+                    v-if="user.hasPermission['update-sales']">
                     Sold
                 </button>
             </div>
@@ -63,10 +67,6 @@
         <hr>
         <p>Description</p>
         <p class="text-muted">{{autopart.description}}</p>
-        <hr>
-        <div class="form-group">
-            <p class="form-control-static">ID: <strong>{{autopart.id}}</strong></p>
-        </div>
         <fieldset class="separator">
             <legend>Activity</legend>
             <p class="text-muted">
@@ -83,6 +83,7 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper'
 export default {
     data() {
         return {
+            user: Laravel.user,
             swiperOption: {
                 loop: true,
                 pagination: '.swiper-pagination'

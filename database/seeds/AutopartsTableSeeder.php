@@ -11,67 +11,96 @@ class AutopartsTableSeeder extends Seeder
      */
     public function run()
     {
+        // Modules
+        $salesId = DB::table('modules')->insertGetId([
+            'name' => 'sales',
+            'display_name' => 'Sales',
+            'icon' => 'mdi-monetization-on'
+        ]);
+        $inventoryId = DB::table('modules')->insertGetId([
+            'name' => 'inventory',
+            'display_name' => 'Inventory',
+            'icon' => 'mdi-widgets'
+        ]);
+        $inventoryListsId = DB::table('modules')->insertGetId([
+            'name' => 'inventory-lists',
+            'display_name' => 'Inventory Lists',
+            'icon' => 'mdi-list'
+        ]);
+
         // Permissions
         DB::table('permissions')->insert([
             [
                 'name' => 'read-sales',
-                'display_name' => 'Sales',
-                'description' => 'Read'
+                'display_name' => 'Read',
+                'description' => 'Read Sales',
+                'module_id' => $salesId
             ],
             [
                 'name' => 'create-sales',
-                'display_name' => 'Sales',
-                'description' => 'Create'
+                'display_name' => 'Create',
+                'description' => 'Create Sales',
+                'module_id' => $salesId
             ],
             [
                 'name' => 'update-sales',
-                'display_name' => 'Sales',
-                'description' => 'Update'
+                'display_name' => 'Update',
+                'description' => 'Update Sales',
+                'module_id' => $salesId
             ],
             [
                 'name' => 'delete-sales',
-                'display_name' => 'Sales',
-                'description' => 'Delete'
+                'display_name' => 'Delete',
+                'description' => 'Delete Sales',
+                'module_id' => $salesId
             ],
             [
                 'name' => 'read-inventory',
-                'display_name' => 'Inventory',
-                'description' => 'Read'
+                'display_name' => 'Read',
+                'description' => 'Read Inventory',
+                'module_id' => $inventoryId
             ],
             [
                 'name' => 'create-inventory',
-                'display_name' => 'Inventory',
-                'description' => 'Create'
+                'display_name' => 'Create',
+                'description' => 'Create Inventory',
+                'module_id' => $inventoryId
             ],
             [
                 'name' => 'update-inventory',
-                'display_name' => 'Inventory',
-                'description' => 'Update'
+                'display_name' => 'Update',
+                'description' => 'Update Inventory',
+                'module_id' => $inventoryId
             ],
             [
                 'name' => 'delete-inventory',
-                'display_name' => 'Inventory',
-                'description' => 'Delete'
+                'display_name' => 'Delete',
+                'description' => 'Delete Inventory',
+                'module_id' => $inventoryId
             ],
             [
                 'name' => 'read-inventory-lists',
-                'display_name' => 'Inventory Lists',
-                'description' => 'Read'
+                'display_name' => 'Read',
+                'description' => 'Read Inventory Lists',
+                'module_id' => $inventoryListsId
             ],
             [
                 'name' => 'create-inventory-lists',
-                'display_name' => 'Inventory Lists',
-                'description' => 'Create'
+                'display_name' => 'Create',
+                'description' => 'Create Inventory Lists',
+                'module_id' => $inventoryListsId
             ],
             [
                 'name' => 'update-inventory-lists',
-                'display_name' => 'Inventory Lists',
-                'description' => 'Update'
+                'display_name' => 'Update',
+                'description' => 'Update Inventory Lists',
+                'module_id' => $inventoryListsId
             ],
             [
                 'name' => 'delete-inventory-lists',
-                'display_name' => 'Inventory Lists',
-                'description' => 'Delete'
+                'display_name' => 'Delete',
+                'description' => 'Delete Inventory Lists',
+                'module_id' => $inventoryListsId
             ]
         ]);
 

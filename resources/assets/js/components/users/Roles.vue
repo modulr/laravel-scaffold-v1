@@ -101,22 +101,16 @@
                                 <li class="active"><a>Permissions</a></li>
                             </ul>
                             <br>
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Permission</th>
-                                        <th class="text-right">Allow</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="permission in roleNew.permissions">
-                                        <td>{{permission.display_name}}</td>
-                                        <td class="text-right">
-                                            <input type="checkbox" v-model="permission.allow">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="media roles-permissions-list" v-for="role in roleNew.modules">
+                                <div class="media-body">
+                                    <p class="roles-permissions-module">{{role.display_name}}</p>
+                                    <div class="text-right">
+                                        <small class="text-muted roles-permissions-permission" v-for="permission in role.permissions">
+                                            <input type="checkbox" v-model="permission.allow">{{permission.display_name}}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -162,36 +156,29 @@
                             <br>
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="permissions">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Permission</th>
-                                                <th class="text-right">Allow</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="permission in roleEdit.checkPermissions">
-                                                <td>{{permission.display_name}}</td>
-                                                <td class="text-right">
-                                                    <input type="checkbox" v-model="permission.allow">
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="media roles-permissions-list" v-for="role in roleEdit.modules">
+                                        <div class="media-body">
+                                            <p class="roles-permissions-module">{{role.display_name}}</p>
+                                            <div class="text-right">
+                                                <small class="text-muted roles-permissions-permission" v-for="permission in role.permissions">
+                                                    <input type="checkbox" v-model="permission.allow">{{permission.display_name}}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="users">
-                                    <div class="media" v-for="item in roleEdit.users">
+                                    <div class="media roles-users-list" v-for="item in roleEdit.users">
                                         <div class="media-left">
                                             <a :href="`/profile/${item.id}`">
                                                 <img class="avatar-xs" :src="item.avatar_url">
                                             </a>
                                         </div>
                                         <div class="media-body">
-                                            <a :href="`/profile/${item.id}`">
+                                            <a class="roles-users-name" :href="`/profile/${item.id}`">
                                                 {{item.name}}
                                             </a>
-                                            <br>
-                                            <small class="text-muted">
+                                            <small class="text-muted roles-users-email">
                                                 {{item.email}}
                                             </small>
                                         </div>
@@ -207,8 +194,8 @@
 </template>
 
 <script>
-    import swal from 'sweetalert';
-    import Paginate from 'vuejs-paginate';
+    import swal from 'sweetalert'
+    import Paginate from 'vuejs-paginate'
 
     export default {
         data() {
@@ -223,20 +210,20 @@
                 roleNew: {},
                 roleEdit: {},
                 lists: {
-                    permissions: [],
+                    modules: []
                 }
             }
         },
         mounted() {
-            this.getRoles();
-            this.getLists();
+            this.getRoles()
+            this.getLists()
         },
         components: {
-            Paginate,
+            Paginate
         },
         watch: {
             search () {
-                this.getRoles();
+                this.getRoles()
             }
         },
         methods: {
@@ -256,74 +243,75 @@
                 if (!page) {
                     axios.get(`/api/roles/filter${this.search ? '?search=' + this.search: ''}`)
                     .then(response => {
-                        this.roles = response.data;
-                    });
+                        this.roles = response.data
+                    })
                 } else {
                     axios.get(`/api/roles/filter?page=${page}${this.search ? '&search=' + this.search: ''}`)
                     .then(response => {
-                        this.roles = response.data;
-                    });
+                        this.roles = response.data
+                    })
                 }
             },
             getLists () {
-                axios.get('/api/permissions/all')
+                axios.get('/api/modules/permissions')
                 .then(response => {
-                    this.lists.permissions = response.data;
+                    this.lists.modules = response.data
                 });
             },
             changePage (page) {
-                this.getRoles(page);
+                this.getRoles(page)
             },
             newRole () {
-                this.roleNew = {};
-                this.roleNew.permissions = _.clone(this.lists.permissions);
-                this.roleNew.permissions.forEach(function(v){
-                    if (v.allow)
-                        v.allow = false;
-                });
-                this.error = {};
-                $('#modalNewRole').modal('show');
+                this.roleNew = {}
+                this.roleNew.modules = _.clone(this.lists.modules);
+                this.roleNew.modules.forEach(function(val) {
+                    val.permissions.forEach(function(v) {
+                        v.allow = false
+                    })
+                })
+                this.error = {}
+                $('#modalNewRole').modal('show')
             },
             storeRole (e) {
                 var btn = $(e.target).button('loading')
                 axios.post('/api/roles/store', this.roleNew)
                 .then(response => {
                     this.roles.data.push(response.data);
-                    this.roleNew = {};
-                    this.error = {};
-                    var btn = $(e.target).button('reset')
-                    $('#modalNewRole').modal('hide');
+                    this.roleNew = {}
+                    this.error = {}
+                    btn.button('reset')
+                    $('#modalNewRole').modal('hide')
                 })
                 .catch(error => {
-                    this.error = error.response.data;
-                    var btn = $(e.target).button('reset')
-                });
+                    this.error = error.response.data
+                    btn.button('reset')
+                })
             },
             editRole (role, index) {
                 axios.get('/api/roles/'+role.id)
                 .then(response => {
-                    this.roleEdit = response.data;
-                    this.roleEdit.index = index;
-                    $('#modalEditRole').modal('show');
-                });
+                    this.roleEdit = response.data
+                    this.roleEdit.index = index
+                    $('#modalEditRole').modal('show')
+                })
             },
             updateRole (e) {
                 var btn = $(e.target).button('loading')
                 axios.put('/api/roles/update/'+this.roleEdit.id, this.roleEdit)
                 .then(response => {
-                    this.roles.data[this.roleEdit.index] = response.data;
-                    this.roleEdit = {};
-                    this.error = {};
-                    var btn = $(e.target).button('reset')
-                    $('#modalEditRole').modal('hide');
+                    this.roles.data[this.roleEdit.index] = response.data
+                    this.roleEdit = {}
+                    this.error = {}
+                    btn.button('reset')
+                    $('#modalEditRole').modal('hide')
                 })
                 .catch(error => {
-                    this.error = error.response.data;
-                    var btn = $(e.target).button('reset')
-                });
+                    this.error = error.response.data
+                    btn.button('reset')
+                })
             },
             destroyRole () {
-                var self = this;
+                var self = this
                 swal({
                     title: "Are you sure?",
                     text: "You will not be able to recover this role and will be remove all users use it!",
@@ -336,21 +324,21 @@
                 function(){
                     axios.delete('/api/roles/destroy/' + self.roleEdit.id)
                     .then(response => {
-                        self.roles.data.splice(self.roleEdit.index, 1);
+                        self.roles.data.splice(self.roleEdit.index, 1)
                         swal({
                             title: "Deleted!",
                             text: "The role has been deleted.",
                             type: "success",
                             timer: 1000,
                             showConfirmButton: false
-                        });
-                        self.error = {};
-                        $('#modalEditRole').modal('hide');
+                        })
+                        self.error = {}
+                        $('#modalEditRole').modal('hide')
                     })
                     .catch(error => {
-                        self.error = error.response.data;
-                    });
-                });
+                        self.error = error.response.data
+                    })
+                })
             }
 
         }

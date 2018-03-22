@@ -11,27 +11,38 @@ class NewsTableSeeder extends Seeder
      */
     public function run()
     {
+        // Module
+        $moduleId = DB::table('modules')->insertGetId([
+            'name' => 'news',
+            'display_name' => 'News',
+            'icon' => 'mdi-whatshot'
+        ]);
+
         // Permissions
         DB::table('permissions')->insert([
             [
                 'name' => 'read-news',
-                'display_name' => 'News',
-                'description' => 'Read'
+                'display_name' => 'Read',
+                'description' => 'Read News',
+                'module_id' => $moduleId
             ],
             [
                 'name' => 'create-news',
-                'display_name' => 'News',
-                'description' => 'Create'
+                'display_name' => 'Create',
+                'description' => 'Create News',
+                'module_id' => $moduleId
             ],
             [
                 'name' => 'update-news',
-                'display_name' => 'News',
-                'description' => 'Update'
+                'display_name' => 'Update',
+                'description' => 'Update News',
+                'module_id' => $moduleId
             ],
             [
                 'name' => 'delete-news',
-                'display_name' => 'News',
-                'description' => 'Delete'
+                'display_name' => 'Delete',
+                'description' => 'Delete News',
+                'module_id' => $moduleId
             ]
         ]);
     }

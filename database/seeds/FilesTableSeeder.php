@@ -11,27 +11,38 @@ class FilesTableSeeder extends Seeder
      */
     public function run()
     {
+        // Module
+        $moduleId = DB::table('modules')->insertGetId([
+            'name' => 'files',
+            'display_name' => 'Files',
+            'icon' => 'mdi-folder'
+        ]);
+
         // Permissions
         DB::table('permissions')->insert([
             [
                 'name' => 'read-files',
-                'display_name' => 'Files',
-                'description' => 'Read'
+                'display_name' => 'Read',
+                'description' => 'Read Files',
+                'module_id' => $moduleId
             ],
             [
                 'name' => 'create-files',
-                'display_name' => 'Files',
-                'description' => 'Create'
+                'display_name' => 'Create',
+                'description' => 'Create Files',
+                'module_id' => $moduleId
             ],
             [
                 'name' => 'update-files',
-                'display_name' => 'Files',
-                'description' => 'Update'
+                'display_name' => 'Update',
+                'description' => 'Update Files',
+                'module_id' => $moduleId
             ],
             [
                 'name' => 'delete-files',
-                'display_name' => 'Files',
-                'description' => 'Delete'
+                'display_name' => 'Delete',
+                'description' => 'Delete Files',
+                'module_id' => $moduleId
             ]
         ]);
     }

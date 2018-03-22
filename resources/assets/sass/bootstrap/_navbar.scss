@@ -94,14 +94,12 @@
             padding-bottom: 0;
             li {
                 &.dropdown-header {
-                    text-align: center;
+                    color: $gray;
                     p {
                         margin-bottom: 0;
                     }
                 }
-                &.divider {
-                    margin: 0;
-                }
+
             }
         }
 

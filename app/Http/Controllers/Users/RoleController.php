@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Role;
 use App\Permission;
+use App\Models\Modules\Module;
 
 class RoleController extends Controller
 {
@@ -31,18 +32,21 @@ class RoleController extends Controller
 
     public function show($id)
     {
-        $permissions = Permission::get();
         $role = Role::with('users', 'permissions')->find($id);
+        $modules = Module::has('permissions')->orderBy('name')->get();
 
-        foreach ($permissions as $key => $value) {
-            foreach ($role->permissions as $k => $v) {
-                if ($v->name == $value->name) {
-                    $value->allow = true;
+        foreach ($modules as $key => $value) {
+            foreach ($value->permissions as $ke => $val) {
+                foreach ($role->permissions as $k => $v) {
+                    if ($v->name == $val->name) {
+                        $val->allow = true;
+                    }
                 }
             }
         }
 
-        $role->checkPermissions = $permissions;
+        $role->modules = $modules;
+
         return $role;
     }
 
@@ -51,7 +55,7 @@ class RoleController extends Controller
         $this->validate($request, [
             'display_name' => 'required|string|unique:roles',
             'description' => 'nullable|string',
-            'permissions' => 'array'
+            'modules' => 'array'
         ]);
 
         $role = Role::create([
@@ -61,9 +65,11 @@ class RoleController extends Controller
         ]);
 
         $newPermissions = [];
-        foreach ($request->permissions as $key => $value) {
-            if (isset($value['allow']) && $value['allow']) {
-                array_push($newPermissions, $value['id']);
+        foreach ($request->modules as $key => $value) {
+            foreach ($value['permissions'] as $ke => $val) {
+                if (isset($val['allow']) && $val['allow']) {
+                    array_push($newPermissions, $val['id']);
+                }
             }
         }
 
@@ -76,7 +82,8 @@ class RoleController extends Controller
     {
         $this->validate($request, [
             'display_name' => 'required|string',
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
+            'modules' => 'array'
         ]);
 
         $role = Role::with('users')->find($id);
@@ -86,9 +93,11 @@ class RoleController extends Controller
         $role->save();
 
         $newPermissions = [];
-        foreach ($request->checkPermissions as $key => $value) {
-            if (isset($value['allow']) && $value['allow']) {
-                array_push($newPermissions, $value['id']);
+        foreach ($request->modules as $key => $value) {
+            foreach ($value['permissions'] as $ke => $val) {
+                if (isset($val['allow']) && $val['allow']) {
+                    array_push($newPermissions, $val['id']);
+                }
             }
         }
 

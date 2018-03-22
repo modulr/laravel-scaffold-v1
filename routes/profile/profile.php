@@ -3,10 +3,8 @@
 Route::group(['namespace' => 'Profile'], function() {
     // Views
     Route::group(['prefix' => 'profile'], function() {
-        Route::get('/{id}', 'ProfileController@profile')
-            ->middleware('permission:read-profile');
-        Route::get('/{id}/edit', 'ProfileController@profileEdit')
-            ->middleware('permission:update-profile');
+        Route::get('/{id}', 'ProfileController@profile');
+        Route::get('/{id}/edit', 'ProfileController@profileEdit')->middleware('permission:update-own-profile');
 
         Route::get('/{id}/work', 'ProfileController@work');
         Route::get('/{id}/work/edit', 'ProfileController@workEdit');

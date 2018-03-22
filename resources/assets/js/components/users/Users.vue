@@ -102,6 +102,13 @@
                         </div>
                     </div>
                     <div class="modal-body">
+                        <div class="switch">
+                            <label class="switch-label">
+                                <input type="checkbox" v-model="userNew.active">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="switch-text">Active</span>
+                        </div>
                         <div class="modal-avatar">
                             <vue-clip class="vue-clip-btn"
                                       :options="optionsAvatarTemp"
@@ -155,14 +162,6 @@
                                     Generate password
                                 </button>
                             </div>
-                            <hr>
-                            <div class="switch switch-block">
-                                <label class="switch-label">
-                                    <input type="checkbox" v-model="userNew.active">
-                                    <span class="slider round"></span>
-                                </label>
-                                <span class="switch-text">Active</span>
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -190,6 +189,16 @@
                         </div>
                     </div>
                     <div class="modal-body">
+                        <div class="switch">
+                            <label class="switch-label">
+                                <input type="checkbox" v-model="userEdit.active">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="switch-text">Active</span>
+                            <a class="pull-right" :href="`/profile/${userEdit.id}/edit`">
+                                <i class="fa fa-pencil" aria-hidden="true"></i> Edit Profile
+                            </a>
+                        </div>
                         <div class="modal-avatar">
                             <vue-clip class="vue-clip-btn"
                                       :options="optionsAvatar"
@@ -209,10 +218,10 @@
                                 </template>
                             </vue-clip>
                         </div>
-                        <a class="pull-right" :href="`/profile/${userEdit.id}/edit`">
-                            <i class="fa fa-external-link" aria-hidden="true"></i> Edit Profile
-                        </a>
                         <form>
+                            <div class="form-group">
+                                <p class="form-control-static">ID: <strong>{{userEdit.id}}</strong></p>
+                            </div>
                             <div class="form-group" :class="{'has-error': error.name}">
                                 <label>Name *</label>
                                 <input type="text" class="form-control input-lg" placeholder="Name" required
@@ -245,18 +254,6 @@
                                 <button class="btn btn-link btn-sm" type="button" @click="generatePassword">
                                     Generate password
                                 </button>
-                            </div>
-                            <hr>
-                            <div class="switch switch-block">
-                                <label class="switch-label">
-                                    <input type="checkbox" v-model="userEdit.active">
-                                    <span class="slider round"></span>
-                                </label>
-                                <span class="switch-text">Active</span>
-                            </div>
-                            <hr>
-                            <div class="form-group">
-                                <p class="form-control-static">ID: <strong>{{userEdit.id}}</strong></p>
                             </div>
                             <fieldset class="separator">
                                 <legend>Activity</legend>

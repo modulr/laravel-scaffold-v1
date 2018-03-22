@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     require __DIR__ . '/contacts/contacts.php';
     require __DIR__ . '/events/events.php';
     require __DIR__ . '/files/files.php';
+    require __DIR__ . '/modules/modules.php';
     require __DIR__ . '/news/news.php';
     require __DIR__ . '/profile/profile.php';
     require __DIR__ . '/tasks/tasks.php';

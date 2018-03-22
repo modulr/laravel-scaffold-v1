@@ -82,21 +82,21 @@
                                     <span>Dashboard</span>
                                 </a>
                             </li> -->
-                            <li :class="{'active': activeLink == 'autoparts/sales'}" v-if="user.hasPermission['update-autoparts']">
+                            <li :class="{'active': activeLink == 'autoparts/sales'}" v-if="user.hasPermission['read-sales']">
                                 <a href="/autoparts/sales">
                                     <i class="mdi mdi-monetization-on mdi-3x"></i>
                                     <br>
                                     <span>Sales</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'autoparts/inventory'}" v-if="user.hasPermission['create-autoparts']">
+                            <li :class="{'active': activeLink == 'autoparts/inventory'}" v-if="user.hasPermission['read-inventory']">
                                 <a href="/autoparts/inventory">
                                     <i class="mdi mdi-widgets mdi-3x"></i>
                                     <br>
                                     <span>Inventory</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'autoparts/lists'}" v-if="user.hasPermission['create-autoparts']">
+                            <li :class="{'active': activeLink == 'autoparts/lists'}" v-if="user.hasPermission['read-inventory-lists']">
                                 <a href="/autoparts/lists">
                                     <i class="mdi mdi-list mdi-3x"></i>
                                     <br>
@@ -108,6 +108,34 @@
                                     <i class="mdi mdi-assignment mdi-3x"></i>
                                     <br>
                                     <span>Tasks</span>
+                                </a>
+                            </li>
+                            <li :class="{'active': activeLink == 'news'}" v-if="user.hasPermission['read-news']">
+                                <a href="/news">
+                                    <i class="mdi mdi-whatshot mdi-3x"></i>
+                                    <br>
+                                    <span>News</span>
+                                </a>
+                            </li>
+                            <li :class="{'active': activeLink == 'events'}" v-if="user.hasPermission['read-events']">
+                                <a href="/events">
+                                    <i class="mdi mdi-event mdi-3x"></i>
+                                    <br>
+                                    <span>Events</span>
+                                </a>
+                            </li>
+                            <li :class="{'active': activeLink == 'files'}" v-if="user.hasPermission['read-files']">
+                                <a href="/files">
+                                    <i class="mdi mdi-folder mdi-3x"></i>
+                                    <br>
+                                    <span>Files</span>
+                                </a>
+                            </li>
+                            <li :class="{'active': activeLink == 'contacts'}" v-if="user.hasPermission['read-contacts']">
+                                <a href="/contacts">
+                                    <i class="mdi mdi-contacts mdi-3x"></i>
+                                    <br>
+                                    <span>Contacts</span>
                                 </a>
                             </li>
                             <hr>
@@ -125,35 +153,6 @@
                                     <span>Roles</span>
                                 </a>
                             </li>
-                            <!-- <li :class="{'active': activeLink == 'news'}" v-if="user.hasPermission['read-news']">
-                                <a href="/news">
-                                    <i class="mdi mdi-whatshot mdi-3x"></i>
-                                    <br>
-                                    <span>News</span>
-                                </a>
-                            </li>
-                            <li :class="{'active': activeLink == 'events'}" v-if="user.hasPermission['read-events']">
-                                <a href="/events">
-                                    <i class="mdi mdi-event mdi-3x"></i>
-                                    <br>
-                                    <span>Events</span>
-                                </a>
-                            </li> -->
-
-                            <!-- <li :class="{'active': activeLink == 'files'}" v-if="user.hasPermission['read-files']">
-                                <a href="/files">
-                                    <i class="mdi mdi-folder mdi-3x"></i>
-                                    <br>
-                                    <span>Files</span>
-                                </a>
-                            </li>
-                            <li :class="{'active': activeLink == 'contacts'}" v-if="user.hasPermission['read-contacts']">
-                                <a href="/contacts">
-                                    <i class="mdi mdi-contacts mdi-3x"></i>
-                                    <br>
-                                    <span>Contacts</span>
-                                </a>
-                            </li> -->
                         </ul>
                     </li>
                     <!-- Notifications -->
@@ -179,17 +178,12 @@
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li class="dropdown-header">
                                 <p class="lead">{{user.name}}</p>
-                                <span>{{user.email}}</span>
+                                <small class="text-muted">{{user.email}}</small>
                             </li>
                             <li class="divider"></li>
-                            <li v-if="user.hasPermission['read-profile']">
-                                <a :href="'/profile/'+user.id">
+                            <li>
+                                <a :href="`/profile/${user.id}`">
                                     <i class="fa fa-fw fa-user-circle-o"></i> Profile
-                                </a>
-                            </li>
-                            <li v-if="user.hasPermission['update-profile']">
-                                <a :href="'/profile/'+user.id+'/edit'">
-                                    <i class="fa fa-fw fa-pencil"></i> Edit profile
                                 </a>
                             </li>
                             <li class="divider"></li>

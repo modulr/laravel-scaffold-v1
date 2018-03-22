@@ -16,7 +16,8 @@ class CreateModulesTable extends Migration
         Schema::create('modules', function (Blueprint $table) {
             $table->increments('id')->comment = "The module ID";
             $table->string('name')->comment = "Module name";
-            $table->string('icon')->comment = "Module icon";
+            $table->string('display_name')->nullable();
+            $table->string('icon')->default('mdi-extension')->comment = "Module icon";
             $table->text('description')->nullable()->comment = "Long-form description";
             $table->boolean('active')->default(true)->comment = "Module is active";
             $table->unsignedInteger('created_by')->nullable()->default(null);

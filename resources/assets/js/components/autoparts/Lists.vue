@@ -2,33 +2,49 @@
     <div class="autoparts-lists">
         <!-- Container -->
         <div class="container-fluid">
+            <!-- Actionbar -->
+            <div class="actionbar">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <h5>Lists</h5>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-7">
-                    <h5>Makes & Models Lists</h5>
-                    <hr>
-                    <div class="form-group" :class="{'has-error': newMake.error.name}">
-                        <input type="text" class="form-control" placeholder="Make" v-model="newMake.name" @keyup.enter="storeMake">
+                    <h6 v-if="user.hasPermission['create-inventory-lists']">Create Makes & Models</h6>
+                    <div class="form-group" :class="{'has-error': newMake.error.name}"
+                        v-if="user.hasPermission['create-inventory-lists']">
+                        <input type="text" class="form-control" placeholder="Make name" v-model="newMake.name" @keyup.enter="storeMake">
                         <span class="help-block" v-if="newMake.error.name">{{newMake.error.name[0]}}</span>
                     </div>
                     <ul class="list-group" id="accordion">
                         <li class="list-group-item" v-for="(make, index) in sortedMakes" :key="make.id">
-                            {{make.name}} <small>({{make.models.length}})</small>
-                            <a class="pull-right text-muted" data-toggle="collapse" data-parent="#accordion" :href="'#collapse'+make.id">
+                            <a class="text-muted" data-toggle="collapse" data-parent="#accordion" :href="'#collapse'+make.id">
                                 <i class="fa fa-chevron-down"></i>
                             </a>
-                            <a href="#" class="text-muted pull-right" @click.prevent="destroyMake(make, index)">
+                            {{make.name}}
+                            <small class="badge" v-show="make.models.length > 0">
+                                {{make.models.length}}
+                            </small>
+                            <a href="#" class="text-muted pull-right"
+                                @click.prevent="destroyMake(make, index)"
+                                v-if="user.hasPermission['delete-inventory-lists']">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                             <ul class="list-group collapse" :id="'collapse'+make.id">
                                 <hr>
-                                <div class="form-group" :class="{'has-error': make.error}">
-                                    <input type="text" class="form-control" placeholder="Model" v-model="make.newModel" @keyup.enter="storeModel(make)">
+                                <div class="form-group" :class="{'has-error': make.error}"
+                                    v-if="user.hasPermission['create-inventory-lists']">
+                                    <input type="text" class="form-control" placeholder="Model name" v-model="make.newModel" @keyup.enter="storeModel(make)">
                                     <span class="help-block" v-if="make.error">{{make.error.name[0]}}</span>
                                 </div>
                                 <ul class="list-group">
                                     <li class="list-group-item" v-for="(model, index) in make.models" :key="model.id">
                                         {{model.name}}
-                                        <a href="#" class="text-muted pull-right" @click.prevent="destroyModel(model, index)">
+                                        <a href="#" class="text-muted pull-right"
+                                            @click.prevent="destroyModel(model, index)"
+                                            v-if="user.hasPermission['delete-inventory-lists']">
                                             <i class="fa fa-trash-o"></i>
                                         </a>
                                     </li>
@@ -38,16 +54,18 @@
                     </ul>
                 </div>
                 <div class="col-sm-5">
-                    <h5>Years List</h5>
-                    <hr>
-                    <div class="form-group" :class="{'has-error': newYear.error.name}">
-                        <input type="text" class="form-control" placeholder="Year" v-model="newYear.name" @keyup.enter="storeYear">
+                    <h6 v-if="user.hasPermission['create-inventory-lists']">Create Years</h6>
+                    <div class="form-group" :class="{'has-error': newYear.error.name}"
+                        v-if="user.hasPermission['create-inventory-lists']">
+                        <input type="text" class="form-control" placeholder="Year name" v-model="newYear.name" @keyup.enter="storeYear">
                         <span class="help-block" v-if="newYear.error.name">{{newYear.error.name[0]}}</span>
                     </div>
                     <ul class="list-group">
                         <li class="list-group-item" v-for="(year, index) in sortedYears"  :key="year.id">
                             {{year.name}}
-                            <a href="#" class="text-muted pull-right" @click.prevent="destroyYear(year, index)">
+                            <a href="#" class="text-muted pull-right"
+                            @click.prevent="destroyYear(year, index)"
+                            v-if="user.hasPermission['delete-inventory-lists']">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </li>
@@ -62,6 +80,7 @@
 export default {
     data() {
         return {
+            user: Laravel.user,
             lists: {
                 makes: [],
                 years: []
@@ -151,31 +170,30 @@ export default {
             swal({
                 title: "Are you sure?",
                 text: "You will not be able to recover this Make!",
-                type: "warning",
-                showLoaderOnConfirm: true,
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-            },
-            function(){
-                axios.delete('/api/autoparts/lists/makes/destroy/' + make.id)
-                .then(response => {
-                    self.lists.makes.splice(index, 1)
-                    swal({
-                        title: "Deleted!",
-                        text: "The Make has been deleted.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
+                icon: "warning",
+                buttons: true
+            })
+            .then((value) => {
+                if (value) {
+                    axios.delete('/api/autoparts/lists/makes/destroy/' + make.id)
+                    .then(response => {
+                        self.lists.makes.splice(index, 1)
+                        swal({
+                            title: "Deleted!",
+                            text: "The Make has been deleted.",
+                            icon: "success",
+                            buttons: false,
+                            timer: 1000
+                        })
                     })
-                })
-                .catch(error => {
-                    swal({
-                        title: "Not Deleted!",
-                        text: "The Make was not deleted, because it is in use.",
-                        type: "warning",
+                    .catch(error => {
+                        swal({
+                            title: "Not Deleted!",
+                            text: "The Make was not deleted, because it is in use.",
+                            icon: "warning"
+                        })
                     })
-                })
+                }
             })
         },
         storeModel (make) {
@@ -196,35 +214,34 @@ export default {
             swal({
                 title: "Are you sure?",
                 text: "You will not be able to recover this Model!",
-                type: "warning",
-                showLoaderOnConfirm: true,
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-            },
-            function(){
-                axios.delete('/api/autoparts/lists/models/destroy/' + model.id)
-                .then(response => {
-                    self.lists.makes.forEach(function(val){
-                        if (val.id == model.make_id) {
-                            val.models.splice(index, 1)
-                        }
+                icon: "warning",
+                buttons: true
+            })
+            .then((value) => {
+                if (value) {
+                    axios.delete('/api/autoparts/lists/models/destroy/' + model.id)
+                    .then(response => {
+                        self.lists.makes.forEach(function(val){
+                            if (val.id == model.make_id) {
+                                val.models.splice(index, 1)
+                            }
+                        })
+                        swal({
+                            title: "Deleted!",
+                            text: "The Model has been deleted.",
+                            icon: "success",
+                            buttons: false,
+                            timer: 1000
+                        })
                     })
-                    swal({
-                        title: "Deleted!",
-                        text: "The Model has been deleted.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
+                    .catch(error => {
+                        swal({
+                            title: "Not Deleted!",
+                            text: "The Model was not deleted, because it is in use.",
+                            icon: "warning",
+                        })
                     })
-                })
-                .catch(error => {
-                    swal({
-                        title: "Not Deleted!",
-                        text: "The Model was not deleted, because it is in use.",
-                        type: "warning",
-                    })
-                })
+                }
             })
         },
         storeYear () {
@@ -246,31 +263,30 @@ export default {
             swal({
                 title: "Are you sure?",
                 text: "You will not be able to recover this Year!",
-                type: "warning",
-                showLoaderOnConfirm: true,
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-            },
-            function(){
-                axios.delete('/api/autoparts/lists/years/destroy/' + year.id)
-                .then(response => {
-                    self.lists.years.splice(index, 1)
-                    swal({
-                        title: "Deleted!",
-                        text: "The Year has been deleted.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
+                icon: "warning",
+                buttons: true
+            })
+            .then((value) => {
+                if (value) {
+                    axios.delete('/api/autoparts/lists/years/destroy/' + year.id)
+                    .then(response => {
+                        self.lists.years.splice(index, 1)
+                        swal({
+                            title: "Deleted!",
+                            text: "The Year has been deleted.",
+                            icon: "success",
+                            buttons: false,
+                            timer: 1000
+                        })
                     })
-                })
-                .catch(error => {
-                    swal({
-                        title: "Not Deleted!",
-                        text: "The Year was not deleted, because it is in use.",
-                        type: "warning",
+                    .catch(error => {
+                        swal({
+                            title: "Not Deleted!",
+                            text: "The Year was not deleted, because it is in use.",
+                            icon: "warning",
+                        })
                     })
-                })
+                }
             })
         }
     }

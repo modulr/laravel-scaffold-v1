@@ -11,27 +11,38 @@ class TasksTableSeeder extends Seeder
      */
     public function run()
     {
+        // Module
+        $moduleId = DB::table('modules')->insertGetId([
+            'name' => 'tasks',
+            'display_name' => 'Tasks',
+            'icon' => 'mdi-assignment'
+        ]);
+
         // Permissions
         DB::table('permissions')->insert([
             [
                 'name' => 'read-tasks',
-                'display_name' => 'Tasks',
-                'description' => 'Read'
+                'display_name' => 'Read',
+                'description' => 'Read Tasks',
+                'module_id' => $moduleId
             ],
             [
                 'name' => 'create-tasks',
-                'display_name' => 'Tasks',
-                'description' => 'Create'
+                'display_name' => 'Create',
+                'description' => 'Create Tasks',
+                'module_id' => $moduleId
             ],
             [
                 'name' => 'update-tasks',
-                'display_name' => 'Tasks',
-                'description' => 'Update'
+                'display_name' => 'Update',
+                'description' => 'Update Tasks',
+                'module_id' => $moduleId
             ],
             [
                 'name' => 'delete-tasks',
-                'display_name' => 'Tasks',
-                'description' => 'Delete'
+                'display_name' => 'Delete',
+                'description' => 'Delete Tasks',
+                'module_id' => $moduleId
             ]
         ]);
     }
