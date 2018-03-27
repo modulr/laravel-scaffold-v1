@@ -464,6 +464,7 @@ export default {
             .catch(error => {
                 this.student.data = {};
                 this.student.error = error.response.data;
+                console.log(error.response);
                 if (error.response.status == 400) {
                     swal({
                         title: 'Registro Fallido',
@@ -471,21 +472,14 @@ export default {
                         html: true,
                         type: 'error'
                     })
+                } else {
+                    swal({
+                        title: 'Registro Fallido',
+                        text: `Ocurrio un problema al momento de registrarte<br>Intentalo de nuevo, si el problema persiste contáctanos en <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a>`,
+                        html: true,
+                        type: 'error'
+                    })
                 }
-                swal({
-                    title: 'Registro Exitoso',
-                    text: `Validaremos tu información<br>Arranque de cursos 7 de Mayo de 2018<br>Cualquier duda contáctanos en <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a>`,
-                    html: true,
-                    type: 'success'
-                })
-                // if (error.response.status == 500) {
-                //     swal({
-                //         title: 'Registro Fallido',
-                //         text: `Ocurrio un problema al momento de registrarte<br>Intentalo de nuevo, si el problema persiste contáctanos en <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a>`,
-                //         html: true,
-                //         type: 'error'
-                //     })
-                // }
                 $(e.target).button('reset')
             });
         }
