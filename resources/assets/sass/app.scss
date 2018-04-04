@@ -40,17 +40,19 @@
 @import 'bootstrap/type';
 
 // Components
-@import 'components/aside';
 @import 'components/actionbar';
+@import 'components/aside';
+@import 'components/avatar';
 @import 'components/comments';
 @import 'components/filters';
 @import 'components/header';
 @import 'components/init-message';
+@import 'components/mdi';
+@import 'components/multiselect';
 @import 'components/swiper';
 @import 'components/switch';
 @import 'components/vue-clip';
 @import 'components/widgets';
-@import 'components/multiselect';
 
 
 // Modules
@@ -63,5 +65,6 @@
 @import 'modules/news';
 @import 'modules/notifications';
 @import 'modules/profile';
+@import 'modules/roles';
 @import 'modules/tasks';
 @import 'modules/users';

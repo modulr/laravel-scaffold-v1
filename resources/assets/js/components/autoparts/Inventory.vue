@@ -159,7 +159,7 @@
                             <p class="form-control-static">ID: <strong>{{autopart.data.id}}</strong></p>
                         </div>
                         <div class="form-group" :class="{'has-error': autopart.error.name}">
-                            <input type="text" class="form-control input-lg" placeholder="Name autopart"
+                            <input type="text" class="form-control input-lg" placeholder="Autopart name"
                                 v-model="autopart.data.name">
                             <span class="help-block" v-if="autopart.error.name">{{autopart.error.name[0]}}</span>
                         </div>
@@ -590,39 +590,38 @@
                 swal({
                     title: "Are you sure?",
                     text: "You will not be able to recover this Autopart!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
-                    axios.delete('/api/autoparts/destroy/' + self.autopart.data.id)
-                    .then(response => {
-                        self.autoparts.data.splice(self.autopart.data.index, 1);
-                        swal({
-                            title: "Deleted!",
-                            text: "The Autopart has been deleted.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
+                    icon: "warning",
+                    buttons: true
+                })
+                .then((value) => {
+                    if (value) {
+                        axios.delete('/api/autoparts/destroy/' + self.autopart.data.id)
+                        .then(response => {
+                            self.autoparts.data.splice(self.autopart.data.index, 1);
+                            swal({
+                                title: "Deleted!",
+                                text: "The Autopart has been deleted.",
+                                icon: "success",
+                                buttons: false,
+                                timer: 1000
+                            });
+                            this.autopart = {
+                                data: {
+                                    make: {},
+                                    model: {},
+                                    years: [],
+                                    images: [],
+                                    creator: {}
+                                },
+                                action: 'new',
+                                error: {}
+                            };
+                            $('#modalAutopart').modal('hide');
+                        })
+                        .catch(error => {
+                            self.autopart.error = error.response.data;
                         });
-                        this.autopart = {
-                            data: {
-                                make: {},
-                                model: {},
-                                years: [],
-                                images: [],
-                                creator: {}
-                            },
-                            action: 'new',
-                            error: {}
-                        };
-                        $('#modalAutopart').modal('hide');
-                    })
-                    .catch(error => {
-                        self.autopart.error = error.response.data;
-                    });
+                    }
                 });
             },
 

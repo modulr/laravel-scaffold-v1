@@ -87,7 +87,7 @@
             </div>
         </div>
         <!-- Modal New User -->
-        <div class="modal right sm" id="modalNewUser">
+        <div class="modal right sm users-modal" id="modalNewUser">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <!-- Modal header -->
@@ -102,6 +102,23 @@
                         </div>
                     </div>
                     <div class="modal-body">
+                        <vue-clip class="vue-clip-avatar"
+                                  :options="optionsAvatarTemp"
+                                  :on-complete="completeAvatarTemp"
+                                  v-if="user.hasPermission['create-users']">
+                            <template slot="clip-uploader-action">
+                                <div>
+                                    <div class="dz-message">
+                                        <img class="avatar-md" :src="userNew.avatar_url" v-if="userNew.avatar_url">
+                                        <i class="mdi mdi-account-circle mdi-8x" v-else></i>
+                                        <span class="fa-stack fa-lg text-primary">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </template>
+                        </vue-clip>
                         <div class="switch">
                             <label class="switch-label">
                                 <input type="checkbox" v-model="userNew.active">
@@ -109,25 +126,7 @@
                             </label>
                             <span class="switch-text">Active</span>
                         </div>
-                        <div class="modal-avatar">
-                            <vue-clip class="vue-clip-btn"
-                                      :options="optionsAvatarTemp"
-                                      :on-complete="completeAvatarTemp"
-                                      v-if="user.hasPermission['create-users']">
-                                <template slot="clip-uploader-action">
-                                    <div class="">
-                                        <div class="dz-message btn-avatar">
-                                            <img class="avatar-md" :src="userNew.avatar_url" v-if="userNew.avatar_url">
-                                            <i class="mdi mdi-account-circle mdi-avatar-md" v-else></i>
-                                            <span class="fa-stack fa-lg text-primary">
-                                                <i class="fa fa-circle fa-stack-2x"></i>
-                                                <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </template>
-                            </vue-clip>
-                        </div>
+                        <hr>
                         <form>
                             <div class="form-group" :class="{'has-error': error.name}">
                                 <label>Name *</label>
@@ -168,7 +167,7 @@
             </div>
         </div>
         <!-- Modal Edit User -->
-        <div class="modal right sm" id="modalEditUser">
+        <div class="modal right sm users-modal" id="modalEditUser">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <!-- Modal header -->
@@ -189,6 +188,23 @@
                         </div>
                     </div>
                     <div class="modal-body">
+                        <vue-clip class="vue-clip-avatar"
+                                  :options="optionsAvatar"
+                                  :on-sending="sendingAvatar"
+                                  :on-complete="completeAvatar"
+                                  v-if="user.hasPermission['update-users']">
+                            <template slot="clip-uploader-action">
+                                <div>
+                                    <div class="dz-message">
+                                        <img class="avatar-md" :src="userEdit.avatar_url">
+                                        <span class="fa-stack fa-lg text-primary">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </template>
+                        </vue-clip>
                         <div class="switch">
                             <label class="switch-label">
                                 <input type="checkbox" v-model="userEdit.active">
@@ -199,25 +215,7 @@
                                 <i class="fa fa-pencil" aria-hidden="true"></i> Edit Profile
                             </a>
                         </div>
-                        <div class="modal-avatar">
-                            <vue-clip class="vue-clip-btn"
-                                      :options="optionsAvatar"
-                                      :on-sending="sendingAvatar"
-                                      :on-complete="completeAvatar"
-                                      v-if="user.hasPermission['update-users']">
-                                <template slot="clip-uploader-action">
-                                    <div class="">
-                                        <div class="dz-message btn-avatar">
-                                            <img class="avatar-md" :src="userEdit.avatar_url">
-                                            <span class="fa-stack fa-lg text-primary">
-                                                <i class="fa fa-circle fa-stack-2x"></i>
-                                                <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </template>
-                            </vue-clip>
-                        </div>
+                        <hr>
                         <form>
                             <div class="form-group">
                                 <p class="form-control-static">ID: <strong>{{userEdit.id}}</strong></p>

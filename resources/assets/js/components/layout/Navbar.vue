@@ -138,7 +138,6 @@
                                     <span>Contacts</span>
                                 </a>
                             </li>
-                            <hr>
                             <li :class="{'active': activeLink == 'users'}" v-if="user.hasPermission['read-users']">
                                 <a href="/users">
                                     <i class="mdi mdi-people mdi-3x"></i>
