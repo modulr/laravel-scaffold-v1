@@ -44,6 +44,9 @@ class ProfileController extends Controller
             'profileWork.position'
             )->find($id);
 
+        if (!Auth::user()->hasPermission('update-all-profile') && Auth::user()->id != $user->id)
+            return redirect('dashboard');
+
         return view('profile.edit.profile', ['user' => $user]);
     }
 
@@ -183,6 +186,9 @@ class ProfileController extends Controller
             'profileWork.boss'
             )->find($id);
 
+        if (!Auth::user()->hasPermission('update-all-profile') && Auth::user()->id != $user->id)
+            return redirect('dashboard');
+
         return view('profile.edit.work', ['user' => $user]);
     }
 
@@ -210,6 +216,9 @@ class ProfileController extends Controller
     public function password(Request $request, $id)
     {
         $user = User::find($id);
+
+        if (!Auth::user()->hasPermission('update-all-profile') && Auth::user()->id != $user->id)
+            return redirect('dashboard');
 
         return view('profile.edit.password', ['user' => $user]);
     }

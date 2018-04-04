@@ -21,6 +21,7 @@ Route::group(['namespace' => 'Users'], function() {
         Route::post('/upload/avatar/temp', 'UserController@uploadAvatarTemp')->middleware('permission:update-users');
         Route::post('/upload/avatar', 'UserController@uploadAvatar')->middleware('permission:update-users');
     });
+    
     // Views Roles
     Route::group(['prefix' => 'roles'], function() {
         Route::get('/' , function () {
