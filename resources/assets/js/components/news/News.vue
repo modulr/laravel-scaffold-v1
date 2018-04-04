@@ -45,58 +45,57 @@
 </template>
 
 <script>
-    import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import swal from 'sweetalert'
+import { swiper, swiperSlide } from 'vue-awesome-swiper';
 
-    export default {
-        data() {
-            return {
-                user: Laravel.user,
-                item: {
-                    creator: {},
-                    images: [],
-                },
-                swiperOption: {
-                    pagination : '.swiper-pagination',
-                    paginationClickable :true,
-                },
-            }
-        },
-        props: ['id'],
-        components: {
-            swiper,
-            swiperSlide,
-        },
-        mounted() {
-            this.getNews();
-        },
-        methods: {
-            getNews() {
-                axios.get('/api/news/show/'+this.id)
-                .then(response => {
-                    this.item = response.data
-                });
+export default {
+    data() {
+        return {
+            user: Laravel.user,
+            item: {
+                creator: {},
+                images: [],
             },
-            destroyNews (id) {
-                var self = this;
-                swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this news!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
+            swiperOption: {
+                pagination : '.swiper-pagination',
+                paginationClickable :true,
+            },
+        }
+    },
+    props: ['id'],
+    components: {
+        swiper,
+        swiperSlide,
+    },
+    mounted() {
+        this.getNews();
+    },
+    methods: {
+        getNews() {
+            axios.get('/api/news/show/'+this.id)
+            .then(response => {
+                this.item = response.data
+            });
+        },
+        destroyNews (id) {
+            var self = this;
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this news!",
+                icon: "warning",
+                buttons: true
+            })
+            .then((value) => {
+                if (value) {
                     axios.delete('/api/news/destroy/' + id)
                     .then(response => {
                         self.news = {};
                         swal({
                             title: "Deleted!",
                             text: "Your news has been deleted.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
+                            icon: "success",
+                            buttons: false,
+                            timer: 1000
                         });
                         self.error = {};
                         location.href = '/news';
@@ -104,24 +103,25 @@
                     .catch(error => {
                         self.error = error.response.data;
                     });
-                });
-            },
-            likeNews (item) {
-                if (!this.user.hasPermission['update-tasks']) {
-                    swal("Oops", "Don't have permissions to give like!",  "error");
-                    return false;
                 }
-                axios.post('/api/news/like/'+item.id, {like: item.like})
-                .then(response => {
-                    item.likes = response.data.likes;
-                    item.like = response.data.like;
-                    item.likes_counter = response.data.likes_counter;
-                    this.error = {};
-                })
-                .catch(error => {
-                    this.error = error.response.data;
-                });
-            },
-        }
+            });
+        },
+        likeNews (item) {
+            if (!this.user.hasPermission['update-tasks']) {
+                swal("Oops", "Don't have permissions to give like!",  "error");
+                return false;
+            }
+            axios.post('/api/news/like/'+item.id, {like: item.like})
+            .then(response => {
+                item.likes = response.data.likes;
+                item.like = response.data.like;
+                item.likes_counter = response.data.likes_counter;
+                this.error = {};
+            })
+            .catch(error => {
+                this.error = error.response.data;
+            });
+        },
     }
+}
 </script>

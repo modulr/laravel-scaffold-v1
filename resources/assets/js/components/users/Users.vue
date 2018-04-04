@@ -267,8 +267,8 @@
 
 <script>
     import VueClip from 'vue-clip';
-    import swal from 'sweetalert';
     import Paginate from 'vuejs-paginate';
+    import swal from 'sweetalert'
 
     export default {
         data() {
@@ -421,34 +421,33 @@
                 });
             },
             destroyUser () {
-                var self = this;
+                var self = this
                 swal({
                     title: "Are you sure?",
                     text: "You will not be able to recover this user!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
-                    axios.delete('/api/users/destroy/' + self.userEdit.id)
-                    .then(response => {
-                        self.users.data.splice(self.userEdit.index, 1);
-                        swal({
-                            title: "Deleted!",
-                            text: "The user has been deleted.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
-                        });
-                        self.userEdit = {};
-                        self.error = {};
-                        $('#modalEditUser').modal('hide');
-                    })
-                    .catch(error => {
-                        self.error = error.response.data;
-                    });
+                    icon: "warning",
+                    buttons: true
+                })
+                .then((value) => {
+                    if (value) {
+                        axios.delete('/api/users/destroy/' + self.userEdit.id)
+                        .then(response => {
+                            self.users.data.splice(self.userEdit.index, 1);
+                            swal({
+                                title: "Deleted!",
+                                text: "The user has been deleted.",
+                                icon: "success",
+                                buttons: false,
+                                timer: 1000
+                            });
+                            self.userEdit = {}
+                            self.error = {}
+                            $('#modalEditUser').modal('hide')
+                        })
+                        .catch(error => {
+                            self.error = error.response.data
+                        })
+                    }
                 });
             },
             completeAvatarTemp (file, status, xhr) {

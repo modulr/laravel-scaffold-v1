@@ -356,6 +356,7 @@
     import { QrcodeReader } from 'vue-qrcode-reader'
     import money from 'v-money'
     import Vue2Filters from 'vue2-filters'
+    import swal from 'sweetalert'
     import EventBus from './event-bus'
 
     export default {

@@ -194,8 +194,8 @@
 </template>
 
 <script>
-    import swal from 'sweetalert'
     import Paginate from 'vuejs-paginate'
+    import swal from 'sweetalert'
 
     export default {
         data() {
@@ -315,29 +315,28 @@
                 swal({
                     title: "Are you sure?",
                     text: "You will not be able to recover this role and will be remove all users use it!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
-                    axios.delete('/api/roles/destroy/' + self.roleEdit.id)
-                    .then(response => {
-                        self.roles.data.splice(self.roleEdit.index, 1)
-                        swal({
-                            title: "Deleted!",
-                            text: "The role has been deleted.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
+                    icon: "warning",
+                    buttons: true
+                })
+                .then((value) => {
+                    if (value) {
+                        axios.delete('/api/roles/destroy/' + self.roleEdit.id)
+                        .then(response => {
+                            self.roles.data.splice(self.roleEdit.index, 1)
+                            swal({
+                                title: "Deleted!",
+                                text: "The role has been deleted.",
+                                icon: "success",
+                                buttons: false,
+                                timer: 1000
+                            })
+                            self.error = {}
+                            $('#modalEditRole').modal('hide')
                         })
-                        self.error = {}
-                        $('#modalEditRole').modal('hide')
-                    })
-                    .catch(error => {
-                        self.error = error.response.data
-                    })
+                        .catch(error => {
+                            self.error = error.response.data
+                        })
+                    }
                 })
             }
 

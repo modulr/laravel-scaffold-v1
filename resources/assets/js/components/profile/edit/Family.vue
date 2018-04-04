@@ -69,73 +69,74 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                list: {
-                    genders: [],
-                    relations: []
-                },
-                family: {},
-                error: {}
-            }
-        },
-        props: ['user'],
-        mounted() {
-            axios.get('/api/profile/lists/gender')
-            .then(response => {
-                this.list.genders = response.data;
-            });
-            axios.get('/api/profile/lists/relation')
-            .then(response => {
-                this.list.relations = response.data;
-            });
-        },
-        methods: {
-            storeFamily: function (e) {
-                var btn = $(e.target).button('loading')
-                this.family.user_id = this.user.id;
-                axios.post('/api/profile/family/store', this.family)
-                .then(response => {
-                    this.user.profile_family.push(response.data);
-                    this.family = {};
-                    this.error = {};
-                    var btn = $(e.target).button('reset')
-                })
-                .catch(error => {
-                    this.error = error.response.data;
-                    var btn = $(e.target).button('reset')
-                });
+import swal from 'sweetalert'
+
+export default {
+    data() {
+        return {
+            list: {
+                genders: [],
+                relations: []
             },
-            destroyFamily: function (familyId, index) {
-                var self = this;
-                swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this family!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
+            family: {},
+            error: {}
+        }
+    },
+    props: ['user'],
+    mounted() {
+        axios.get('/api/profile/lists/gender')
+        .then(response => {
+            this.list.genders = response.data;
+        });
+        axios.get('/api/profile/lists/relation')
+        .then(response => {
+            this.list.relations = response.data;
+        });
+    },
+    methods: {
+        storeFamily: function (e) {
+            var btn = $(e.target).button('loading')
+            this.family.user_id = this.user.id;
+            axios.post('/api/profile/family/store', this.family)
+            .then(response => {
+                this.user.profile_family.push(response.data);
+                this.family = {};
+                this.error = {};
+                var btn = $(e.target).button('reset')
+            })
+            .catch(error => {
+                this.error = error.response.data;
+                var btn = $(e.target).button('reset')
+            });
+        },
+        destroyFamily: function (familyId, index) {
+            var self = this;
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this family!",
+                icon: "warning",
+                buttons: true
+            })
+            .then((value) => {
+                if (value) {
                     axios.delete('/api/profile/family/destroy/' + familyId)
                     .then(response => {
                         self.user.profile_family.splice(index, 1);
                         swal({
                             title: "Deleted!",
                             text: "The family has been deleted.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
+                            icon: "success",
+                            buttons: false,
+                            timer: 1000
                         });
                         self.error = {};
                     })
                     .catch(error => {
                         self.error = error.response.data;
                     });
-                });
-            }
+                }
+            });
         }
     }
+}
 </script>
