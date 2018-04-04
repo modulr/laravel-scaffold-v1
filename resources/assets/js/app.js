@@ -62,6 +62,7 @@ Vue.component('events', require('./components/events/Events.vue'));
 Vue.component('my-events', require('./components/events/MyEvents.vue'));
 Vue.component('event', require('./components/events/Event.vue'));
 Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
+Vue.component('my-desk', require('./components/events/MyDesk.vue'));
 
 const app = new Vue({
     el: '#app'

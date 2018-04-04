@@ -200,4 +200,22 @@ class EventController extends Controller
 
         return $event;
     }
+
+    public function attendings()
+    {
+        $events = Event::all();
+
+        $events = Event::whereHas("attendings", function($q) {
+            $q->where('user_id', Auth::user()->id);
+        })->get();
+
+        $events->load('owner', 'images','attendings');
+        
+        return $events;
+    }
+
+    public function ad() {
+
+        return ['key' => "this debug ad"];
+    }
 }

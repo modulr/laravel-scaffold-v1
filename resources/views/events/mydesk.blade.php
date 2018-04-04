@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-  <my-events></my-events>
+  <my-desk></my-desk>
 @endsection

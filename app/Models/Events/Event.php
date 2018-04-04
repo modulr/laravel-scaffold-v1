@@ -28,4 +28,9 @@ class Event extends Model
     {
         return $this->belongsToMany(\App\User::class)->withPivot('approved', 'paid');
     }
+
+    public function attendByUserId($user_id){
+        // = in where is optional in this case
+        return $this->belongsToMany(\App\User::class)->where('user_id', '=', $user_id);
+    }
 }

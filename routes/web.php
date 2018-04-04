@@ -146,6 +146,7 @@ Route::middleware('auth')->group(function () {
             return view('events.event', ['id' => $id]);
         })->middleware('permission:read-events');
 
+        Route::get('/attendings', 'EventController@attendings')->middleware('permission:read-events');
         Route::get('/byOwner', 'EventController@byOwner')->middleware('permission:read-events');
         Route::get('/{id}', 'EventController@show')->middleware('permission:read-events');
         Route::post('/store', 'EventController@store')->middleware('permission:create-events');
@@ -155,6 +156,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/attend/{id}', 'EventController@attend')->middleware('permission:read-events');
         Route::get('/approve/{eventId}/{userId}', 'EventController@approve')->middleware('permission:update-events');
         Route::get('/reject/{eventId}/{userId}', 'EventController@reject')->middleware('permission:update-events');
+       
 
         Route::post('/images/upload/temp', 'EventController@uploadImageTemp')->middleware('permission:create-news');
         Route::post('/images/upload/', 'EventController@uploadImage')->middleware('permission:update-news');
@@ -172,6 +174,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/mis_platillos' , function () {
             return view('events.myevents');
         })->middleware('permission:read-events');
+
+        Route::get('/mi_mesa' , function () {
+            return view('events.mydesk');
+        });
+
+        
     });
 
     Route::post('/paypal/checkout', 'PaypalController@getCheckout');
