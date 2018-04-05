@@ -128,7 +128,7 @@ export default {
             });
         },
         likeNews (item) {
-            if (!this.user.hasPermission['update-tasks']) {
+            if (!this.user.hasPermission['update-news']) {
                 swal("Oops", "Don't have permissions to give like!",  "error");
                 return false;
             }

@@ -226,18 +226,23 @@
                     this.notifications.unshift({data:e});
                     this.unReadNotifications.unshift({data:e});
 
-                    Notification.requestPermission().then(function(result) {
+                    Notification.requestPermission()
+                    .then(function(result) {
                         if (result === "granted") {
-                            var options = {
-                                body: e.message.title,
-                                icon: '/img/icon/favicon-96x96.png',
-                                badge: '/img/icon/favicon-16x16.png',
-                                image: e.message.userAvatarUrl,
-                            }
-                            if (e.message.imageUrl) {
-                                options.image = e.message.imageUrl;
-                            }
-                            new Notification(e.message.userName, options);
+                            navigator.serviceWorker.getRegistration()
+                            .then(function(reg) {
+                                var options = {
+                                    body: e.message.title,
+                                    icon: '/img/icon/favicon-96x96.png',
+                                    badge: '/img/icon/favicon-16x16.png',
+                                    image: e.message.userAvatarUrl,
+                                }
+                                if (e.message.imageUrl) {
+                                    options.image = e.message.imageUrl;
+                                }
+                                //reg.showNotification(e.message.userName, options);
+                                new Notification(e.message.userName, options);
+                            });
                         }
                     });
                 });
