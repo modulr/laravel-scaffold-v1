@@ -1,7 +1,7 @@
 {
     "short_name": "Modulr",
     "name": "Modulr - The Base for Developing Awesome Projects",
-    "start_url": "/index.php",
+    "start_url": "/?launcher=true",
     "icons": [
         {
             "src": "img/icon/apple-touch-icon-57x57.png",
