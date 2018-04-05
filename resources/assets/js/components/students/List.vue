@@ -34,6 +34,7 @@
                                     <th>Teléfono Fijo</th>
                                     <th>Correo electrónico</th>
                                     <th>Construrama</th>
+                                    <th>Fecha registro</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,6 +58,7 @@
                                     <td @click="editStudent(item.id)">{{item.phone}}</td>
                                     <td @click="editStudent(item.id)">{{item.email}}</td>
                                     <td @click="editStudent(item.id)">{{item.store.name}}</td>
+                                    <td @click="editStudent(item.id)">{{item.created_at}}</td>
                                 </tr>
                             </tbody>
                         </table>
