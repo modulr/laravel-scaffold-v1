@@ -1,0 +1,25 @@
+{
+    "short_name": "Modulr",
+    "name": "Modulr - The Base for Developing Awesome Projects",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "img/icon/apple-touch-icon-57x57.png",
+            "type": "image/png",
+            "sizes": "57x57"
+        },
+        {
+            "src": "img/icon/favicon-96x96.png",
+            "type": "image/png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "img/icon/android-chrome-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+    ],
+    "background_color": "#FEAE3B",
+    "theme_color": "#FEAE3B",
+    "display": "standalone"
+}
