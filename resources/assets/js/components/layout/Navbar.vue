@@ -75,14 +75,14 @@
                             <i class="fa fa-th fa-lg" aria-hidden="true"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right list-inline">
-                            <!-- <li :class="{'active': activeLink == 'dashboard'}">
+                            <li :class="{'active': activeLink == 'dashboard'}">
                                 <a href="/dashboard">
                                     <i class="mdi mdi-dashboard mdi-3x"></i>
                                     <br>
                                     <span>Dashboard</span>
                                 </a>
-                            </li> -->
-                            <li :class="{'active': activeLink == 'autoparts/sales'}" v-if="user.hasPermission['read-sales']">
+                            </li>
+                            <!-- <li :class="{'active': activeLink == 'autoparts/sales'}" v-if="user.hasPermission['read-sales']">
                                 <a href="/autoparts/sales">
                                     <i class="mdi mdi-monetization-on mdi-3x"></i>
                                     <br>
@@ -102,7 +102,7 @@
                                     <br>
                                     <span>Lists</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <li :class="{'active': activeLink == 'tasks'}" v-if="user.hasPermission['read-tasks']">
                                 <a href="/tasks">
                                     <i class="mdi mdi-assignment mdi-3x"></i>

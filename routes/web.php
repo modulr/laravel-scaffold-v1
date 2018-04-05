@@ -24,8 +24,8 @@ Auth::routes();
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
-        return redirect('autoparts/sales');
-        //return view('dashboard');
+        //return redirect('autoparts/sales');
+        return view('dashboard');
     });
 
     Route::get('/notifications', function () {

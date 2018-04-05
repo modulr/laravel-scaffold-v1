@@ -2,7 +2,9 @@ var CACHE_NAME = 'modulr-cache-v1';
 var urlsToCache = [
   '/',
   '/css/app.css',
-  '/js/app.js'
+  '/img/icon/',
+  '/img/logos/'
+  //'/js/app.js'
 ];
 
 self.addEventListener('install', function(event) {
