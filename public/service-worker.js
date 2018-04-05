@@ -1,10 +1,12 @@
 var CACHE_NAME = 'modulr-cache-v1';
 var urlsToCache = [
   '/',
+  '/js/app.js',
   '/css/app.css',
-  '/img/icon/',
-  '/img/logos/'
-  //'/js/app.js'
+  '/img/icon/apple-touch-icon-57x57.png',
+  '/img/icon/favicon-96x96.png',
+  '/img/icon/android-chrome-192x192.png',
+  '/img/logos/logo-name.svg'
 ];
 
 self.addEventListener('install', function(event) {
