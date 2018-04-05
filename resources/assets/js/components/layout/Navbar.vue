@@ -91,6 +91,11 @@
                                 <span>{{user.email}}</span>
                             </li>
                             <li class="divider"></li>
+                            <li>
+                                <a href="/mi_mesa">
+                                    <i class="fa fa-fw"></i> Mi mesa
+                                </a>
+                            </li>
                             <li v-if="user.hasPermission['read-profile']">
                                 <a :href="'/profile/'+user.id">
                                     <i class="fa fa-fw fa-user-circle-o"></i> Profile
