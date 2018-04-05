@@ -1,18 +1,17 @@
-.modal-body,
 .modal-body {
-    .modal-avatar {
-        text-align: center;
-        border-bottom: 1px solid $gray-lighter;
-        margin-bottom: 30px;
-        min-height: 140px;
-        h4 {
-            margin-bottom: 0;
-        }
-        a {
-            display: block;
-            margin-bottom: 20px;
-        }
-    }
+    // .modal-avatar {
+    //     text-align: center;
+    //     border-bottom: 1px solid $gray-lighter;
+    //     margin-bottom: 30px;
+    //     min-height: 140px;
+    //     h4 {
+    //         margin-bottom: 0;
+    //     }
+    //     a {
+    //         display: block;
+    //         margin-bottom: 20px;
+    //     }
+    // }
     .modal-padding {
         padding: 0 20px;
     }
@@ -53,6 +52,10 @@
 
 .modal.lg .modal-dialog {
     width: 100%;
+}
+
+.modal-backdrop {
+    background-color: $white;
 }
 
 

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class FakerDataSeeder extends Seeder
+class FakerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,7 +16,7 @@ class FakerDataSeeder extends Seeder
             ->each(function ($u) {
 
                 $avatar = Avatar::create($u->name)->getImageObject()->encode('png');
-                Storage::put('avatars/'.$u->id.'/avatar.png', $avatar);
+                Storage::put('avatars/'.$u->id.'/avatar.png', (string) $avatar);
 
                 $u->profilePersonal()->save(factory(App\Models\Profile\ProfilePersonal::class)->make());
                 $u->profileContact()->saveMany(factory(App\Models\Profile\ProfileContact::class, 3)->make());
@@ -30,6 +30,8 @@ class FakerDataSeeder extends Seeder
                 $u->tasks()->saveMany(factory(App\Models\Tasks\Task::class, 3)->make());
 
                 $u->events()->saveMany(factory(App\Models\Events\Event::class, 3)->make());
+
+                $u->autoparts()->saveMany(factory(App\Models\Autoparts\Autopart::class, 13)->make());
             });
     }
 }

@@ -240,127 +240,125 @@
 </template>
 
 <script>
-    import swal from 'sweetalert';
-    import VueClip from 'vue-clip'
+import swal from 'sweetalert'
+import VueClip from 'vue-clip'
 
-    export default {
-        data() {
-            return {
-                user: Laravel.user,
-                error: {},
-                search: '',
-                layout: 'list',
-                uploadFileOptions: {
-                    headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                    url: '/api/files/store',
-                    paramName: 'file',
-                    maxFilesize: {
-                        limit: 10,
-                        message: '{{filesize}} is greater than the {{maxFilesize}}MB'
-                    },
-                    acceptedFiles: {
-                        extensions: ['image/*', 'application/pdf'],
-                        message: 'You are uploading an invalid file'
-                    },
+export default {
+    data() {
+        return {
+            user: Laravel.user,
+            error: {},
+            search: '',
+            layout: 'list',
+            uploadFileOptions: {
+                headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
+                url: '/api/files/store',
+                paramName: 'file',
+                maxFilesize: {
+                    limit: 10,
+                    message: '{{filesize}} is greater than the {{maxFilesize}}MB'
                 },
-                files: [],
-                filesUpload: [],
-
-                fileCurrent: {},
-                fileRename: false,
-
-                folderCurrentId: 0,
-                folderNew: {},
-            }
-        },
-        mounted() {
-            var str = window.location.pathname;
-            var res = str.split("/");
-
-            if (res[2] == 'folder') {
-                this.folderCurrentId = parseInt(res[3]);
-                axios.get('/api/files/byCreator/' + this.folderCurrentId)
-                .then(response => {
-                    this.files = response.data;
-                });
-            } else {
-                axios.get('/api/files/byCreator')
-                .then(response => {
-                    this.files = response.data;
-                });
-            }
-
-            if (JSON.parse(localStorage.getItem('files'))) {
-                this.layout = JSON.parse(localStorage.getItem('files')).layout;
-            }
-        },
-        computed: {
-            filteredFiles: function () {
-                var filteredArray = this.files,
-                    search = this.search;
-
-                if(!search){
-                    return filteredArray;
-                }
-
-                search = search.trim().toLowerCase();
-
-                filteredArray = filteredArray.filter(function(item){
-                    return Object.keys(item).some(function (key) {
-                        return String(item[key]).toLowerCase().indexOf(search) !== -1
-                    })
-                })
-
-                return filteredArray;;
-            }
-        },
-        methods: {
-            uploadFileSending (file, xhr, formData) {
-                this.filesUpload.push(file);
-                formData.append('parent_id', this.folderCurrentId);
-                $('#modalUploadFiles').modal('show');
-            },
-            uploadFileComplete (file, status, xhr) {
-                if (status == 'success')
-                    this.files.push(JSON.parse(xhr.response));
-            },
-            newFolder () {
-                this.folderNew = {
-                    parent_id: this.folderCurrentId,
-                    is_folder: true,
-                };
-                $('#modalNewFolder').modal('show');
-            },
-            storeFolder (e) {
-                axios.post('/api/files/store', this.folderNew)
-                .then(response => {
-                    this.files.unshift(response.data);
-                    this.folderNew = {};
-                    this.error = {};
-                    $('#modalNewFolder').modal('hide');
-                })
-                .catch(error => {
-                    this.error = error.response.data;
-                    var btn = $(e.target).button('reset')
-                });
-            },
-            destroyFile () {
-                var self = this;
-                var whatIs = 'file';
-
-                if (self.fileCurrent.is_folder)
-                    whatIs = 'folder'
-
-                swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this "+whatIs+"!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
+                acceptedFiles: {
+                    extensions: ['image/*', 'application/pdf'],
+                    message: 'You are uploading an invalid file'
                 },
-                function(){
+            },
+            files: [],
+            filesUpload: [],
+
+            fileCurrent: {},
+            fileRename: false,
+
+            folderCurrentId: 0,
+            folderNew: {},
+        }
+    },
+    mounted() {
+        var str = window.location.pathname;
+        var res = str.split("/");
+
+        if (res[2] == 'folder') {
+            this.folderCurrentId = parseInt(res[3]);
+            axios.get('/api/files/byCreator/' + this.folderCurrentId)
+            .then(response => {
+                this.files = response.data;
+            });
+        } else {
+            axios.get('/api/files/byCreator')
+            .then(response => {
+                this.files = response.data;
+            });
+        }
+
+        if (JSON.parse(localStorage.getItem('files'))) {
+            this.layout = JSON.parse(localStorage.getItem('files')).layout;
+        }
+    },
+    computed: {
+        filteredFiles: function () {
+            var filteredArray = this.files,
+                search = this.search;
+
+            if(!search){
+                return filteredArray;
+            }
+
+            search = search.trim().toLowerCase();
+
+            filteredArray = filteredArray.filter(function(item){
+                return Object.keys(item).some(function (key) {
+                    return String(item[key]).toLowerCase().indexOf(search) !== -1
+                })
+            })
+
+            return filteredArray;;
+        }
+    },
+    methods: {
+        uploadFileSending (file, xhr, formData) {
+            this.filesUpload.push(file);
+            formData.append('parent_id', this.folderCurrentId);
+            $('#modalUploadFiles').modal('show');
+        },
+        uploadFileComplete (file, status, xhr) {
+            if (status == 'success')
+                this.files.push(JSON.parse(xhr.response));
+        },
+        newFolder () {
+            this.folderNew = {
+                parent_id: this.folderCurrentId,
+                is_folder: true,
+            };
+            $('#modalNewFolder').modal('show');
+        },
+        storeFolder (e) {
+            axios.post('/api/files/store', this.folderNew)
+            .then(response => {
+                this.files.unshift(response.data);
+                this.folderNew = {};
+                this.error = {};
+                $('#modalNewFolder').modal('hide');
+            })
+            .catch(error => {
+                this.error = error.response.data;
+                var btn = $(e.target).button('reset')
+            });
+        },
+        destroyFile () {
+            var self = this;
+            var whatIs = 'file';
+
+            if (self.fileCurrent.is_folder)
+                whatIs = 'folder'
+
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this "+whatIs+"!",
+                icon: "warning",
+                buttons: true
+            })
+            .then((value) => {
+                if (value) {
                     axios.delete('/api/files/destroy/' + self.fileCurrent.id)
                     .then(response => {
                         self.files.splice(self.fileCurrent.index, 1);
@@ -368,45 +366,46 @@
                         swal({
                             title: "Deleted!",
                             text: "Your "+whatIs+" has been deleted.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
+                            icon: "success",
+                            buttons: false,
+                            timer: 1000
                         });
                         this.error = {};
                     })
                     .catch(error => {
                         self.error = error.response.data;
                     });
-                });
-            },
-            openFile (file) {
-                if (file.is_folder) {
-                    location.href = '/files/folder/' + file.id;
-                } else {
-                    location.href = file.url;
                 }
-            },
-            infoFile (file, index) {
-                this.fileCurrent = file;
-                this.fileCurrent.index = index;
-            },
-            updateFileName () {
-                axios.put('/api/files/update/'+this.fileCurrent.id, {name: this.fileCurrent.name})
-                .then(response => {
-                    this.files[this.fileCurrent.index].name = response.data.name;
-                    this.fileRename = false;
-                })
-                .catch(error => {
-                    this.error = error.response.data;
-                });
-            },
-            toggleLayout () {
-                this.layout == 'list' ? this.layout = 'grid' : this.layout = 'list';
-                localStorage.setItem('files', JSON.stringify({'layout':this.layout}));
-            },
-            comingSoon () {
-                swal('Coming soon...');
-            },
-        }
+            });
+        },
+        openFile (file) {
+            if (file.is_folder) {
+                location.href = '/files/folder/' + file.id;
+            } else {
+                location.href = file.url;
+            }
+        },
+        infoFile (file, index) {
+            this.fileCurrent = file;
+            this.fileCurrent.index = index;
+        },
+        updateFileName () {
+            axios.put('/api/files/update/'+this.fileCurrent.id, {name: this.fileCurrent.name})
+            .then(response => {
+                this.files[this.fileCurrent.index].name = response.data.name;
+                this.fileRename = false;
+            })
+            .catch(error => {
+                this.error = error.response.data;
+            });
+        },
+        toggleLayout () {
+            this.layout == 'list' ? this.layout = 'grid' : this.layout = 'list';
+            localStorage.setItem('files', JSON.stringify({'layout':this.layout}));
+        },
+        comingSoon () {
+            swal('Coming soon...');
+        },
     }
+}
 </script>

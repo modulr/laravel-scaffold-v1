@@ -75,18 +75,39 @@
                             <i class="fa fa-th fa-lg" aria-hidden="true"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right list-inline">
-                            <li :class="{'active': activeLink == 'dashboard'}">
+                            <!-- <li :class="{'active': activeLink == 'dashboard'}">
                                 <a href="/dashboard">
                                     <i class="mdi mdi-dashboard mdi-3x"></i>
                                     <br>
                                     <span>Dashboard</span>
                                 </a>
-                            </li>
-                            <li :class="{'active': activeLink == 'autoparts'}" v-if="user.hasPermission['read-autoparts']">
-                                <a href="/autoparts">
-                                    <i class="mdi mdi-directions-car mdi-3x"></i>
+                            </li> -->
+                            <li :class="{'active': activeLink == 'autoparts/sales'}" v-if="user.hasPermission['read-sales']">
+                                <a href="/autoparts/sales">
+                                    <i class="mdi mdi-monetization-on mdi-3x"></i>
                                     <br>
-                                    <span>Autoparts</span>
+                                    <span>Sales</span>
+                                </a>
+                            </li>
+                            <li :class="{'active': activeLink == 'autoparts/inventory'}" v-if="user.hasPermission['read-inventory']">
+                                <a href="/autoparts/inventory">
+                                    <i class="mdi mdi-widgets mdi-3x"></i>
+                                    <br>
+                                    <span>Inventory</span>
+                                </a>
+                            </li>
+                            <li :class="{'active': activeLink == 'autoparts/lists'}" v-if="user.hasPermission['read-inventory-lists']">
+                                <a href="/autoparts/lists">
+                                    <i class="mdi mdi-list mdi-3x"></i>
+                                    <br>
+                                    <span>Lists</span>
+                                </a>
+                            </li>
+                            <li :class="{'active': activeLink == 'tasks'}" v-if="user.hasPermission['read-tasks']">
+                                <a href="/tasks">
+                                    <i class="mdi mdi-assignment mdi-3x"></i>
+                                    <br>
+                                    <span>Tasks</span>
                                 </a>
                             </li>
                             <li :class="{'active': activeLink == 'news'}" v-if="user.hasPermission['read-news']">
@@ -96,11 +117,11 @@
                                     <span>News</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'tasks'}" v-if="user.hasPermission['read-tasks']">
-                                <a href="/tasks">
-                                    <i class="mdi mdi-assignment mdi-3x"></i>
+                            <li :class="{'active': activeLink == 'events'}" v-if="user.hasPermission['read-events']">
+                                <a href="/events">
+                                    <i class="mdi mdi-event mdi-3x"></i>
                                     <br>
-                                    <span>Tasks</span>
+                                    <span>Events</span>
                                 </a>
                             </li>
                             <li :class="{'active': activeLink == 'files'}" v-if="user.hasPermission['read-files']">
@@ -117,19 +138,18 @@
                                     <span>Contacts</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'events'}" v-if="user.hasPermission['read-events']">
-                                <a href="/events">
-                                    <i class="mdi mdi-event mdi-3x"></i>
-                                    <br>
-                                    <span>Events</span>
-                                </a>
-                            </li>
-                            <hr>
                             <li :class="{'active': activeLink == 'users'}" v-if="user.hasPermission['read-users']">
                                 <a href="/users">
                                     <i class="mdi mdi-people mdi-3x"></i>
                                     <br>
                                     <span>Users</span>
+                                </a>
+                            </li>
+                            <li :class="{'active': activeLink == 'roles'}" v-if="user.hasPermission['read-roles']">
+                                <a href="/roles">
+                                    <i class="mdi mdi-vpn-key mdi-3x"></i>
+                                    <br>
+                                    <span>Roles</span>
                                 </a>
                             </li>
                         </ul>
@@ -147,7 +167,7 @@
                                 <a href="/notifications"><small>View all notifications</small></a>
                             </li>
                         </ul>
-                    </lli>
+                    </li>
                     <!-- User -->
                     <li class="dropdown user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -157,17 +177,12 @@
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li class="dropdown-header">
                                 <p class="lead">{{user.name}}</p>
-                                <span>{{user.email}}</span>
+                                <small class="text-muted">{{user.email}}</small>
                             </li>
                             <li class="divider"></li>
-                            <li v-if="user.hasPermission['read-profile']">
-                                <a :href="'/profile/'+user.id">
+                            <li>
+                                <a :href="`/profile/${user.id}`">
                                     <i class="fa fa-fw fa-user-circle-o"></i> Profile
-                                </a>
-                            </li>
-                            <li v-if="user.hasPermission['update-profile']">
-                                <a :href="'/profile/'+user.id+'/edit'">
-                                    <i class="fa fa-fw fa-pencil"></i> Edit profile
                                 </a>
                             </li>
                             <li class="divider"></li>
@@ -200,20 +215,12 @@
     export default {
         data() {
             return {
-                activeLink: '',
                 user: Laravel.user,
                 notifications: Laravel.notifications,
                 unReadNotifications: Laravel.unReadNotifications,
             }
         },
         mounted() {
-            var str = window.location.pathname;
-            var res = str.split("/");
-
-            if (res.length == 2) {
-                this.activeLink = res[1];
-            }
-
             Echo.private('App.User.' + this.user.id)
                 .notification((e) => {
                     this.notifications.unshift({data:e});
@@ -247,14 +254,21 @@
             //         }
             //     });
         },
+        computed: {
+            activeLink () {
+                var str = window.location.pathname
+                var link = str.slice(1)
+                return link
+            }
+        },
         methods: {
-            logout: function () {
+            logout () {
                 axios.post('/logout')
                 .then(response => {
                     location.href = '/';
                 });
             },
-            markAsRead: function () {
+            markAsRead () {
                 axios.get('/notifications/markAsRead')
                 .then(response => {
                     this.unReadNotifications = [];

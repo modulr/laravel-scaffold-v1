@@ -11,9 +11,7 @@ class AutopartImage extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-
     protected $guarded = ['id'];
-
     protected $appends = ['url', 'url_thumbnail'];
 
     public function autopart()

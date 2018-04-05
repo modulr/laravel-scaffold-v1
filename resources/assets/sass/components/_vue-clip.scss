@@ -3,13 +3,21 @@
     div {
         display: inline-block;
     }
-    .btn-avatar {
+}
+
+.vue-clip-avatar {
+    display: block;
+    div {
+        display: block;
+    }
+    .dz-message {
         position: relative;
+        text-align: center;
         .fa-stack {
             cursor: pointer;
             position: absolute;
-            right: 0px;
-            bottom: 0px;
+            bottom: 0;
+            margin-left: -35px;
         }
     }
 }
@@ -20,8 +28,15 @@
     div {
         display: inline-block;
     }
-    .dz-message{
+    .dz-message {
         padding: 12px 13px;
+    }
+}
+
+.vue-clip-block {
+    display: block;
+    div {
+        display: block;
     }
 }
 

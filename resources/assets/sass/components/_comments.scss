@@ -1,0 +1,44 @@
+.comments {
+  height: 300px;
+  overflow: auto;
+  .card {
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,.05);
+    padding: 5px 0px;
+    .comment-top {
+      margin-bottom: 5px;
+      .comment-image {
+        display: inline-block;
+        vertical-align: top;
+        padding: 0px 5px;
+        .image {
+          vertical-align: bottom;
+        }
+      }
+      .image,
+      .comment-author {
+        display: inline-block;
+      }
+      .comment-author {
+        .comment-heading {
+          font-weight: bold;
+          margin: 0 !important;
+        }
+        .comment-date {
+          opacity: .7;
+        }
+      }
+    }
+    .comment-body {
+      margin-left: 44px;
+    }
+    .comment-bottom {
+      .comment-input {
+        width: 80%;
+      }
+      button {
+        width: 20%;
+      }
+    }
+  }
+}

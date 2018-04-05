@@ -1,7 +1,10 @@
 <template lang="html">
     <div class="panel panel-default">
         <div class="panel-body">
-            <!-- User -->
+            <a :href="`/profile/${user.id}/edit`" class="btn btn-link btn-edit"
+                v-if="(authUser.hasPermission['update-own-profile'] && authUser.id == user.id) || authUser.hasPermission['update-all-profile']">
+                <i class="fa fa-lg fa-pencil" aria-hidden="true"></i>
+            </a>
             <div class="text-center">
                 <img class="avatar-md" :src="user.avatar_url">
                 <p class="lead">{{user.name}}</p>
@@ -35,6 +38,7 @@
     export default {
         data () {
             return {
+                authUser: Laravel.user,
                 activeLink: '',
             }
         },
@@ -49,6 +53,8 @@
             } else if (res.length == 4) {
                 this.activeLink = res[3];
             }
+            console.log(this.authUser);
+            console.log(this.user);
         }
     }
 </script>

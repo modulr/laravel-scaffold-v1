@@ -1,6 +1,10 @@
 .actionbar {
     border-bottom: 1px solid $gray-lighter;
     margin-bottom: 20px;
+    position: relative;
+    h5 {
+        margin: 7px 0;
+    }
     .links {
         .nav-tabs > li > a,
         .nav-tabs > li > a:focus {
@@ -15,11 +19,34 @@
             padding-bottom: 12px;
         }
     }
+    .search {
+        position: absolute;
+        width: 100%;
+        background-color: $body-bg;
+        outline: 5px solid $body-bg;
+        padding: 0;
+        z-index: 2;
+        display: none;
+        &.active {
+            display: block;
+        }
+        .close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            span {
+                line-height: 30px;
+                background-color: $body-bg;
+            }
+        }
+    }
     .controls {
-        .btn, input {
+        .form-control {
+            margin-bottom: 0;
+        }
+        .btn, input, .form-group {
             margin-bottom: 10px;
         }
-
     }
     .separator {
         margin-left: 5px;

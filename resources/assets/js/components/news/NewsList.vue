@@ -56,94 +56,93 @@
 </template>
 
 <script>
-    import swal from 'sweetalert';
-    import { swiper, swiperSlide } from 'vue-awesome-swiper';
-    import InfiniteLoading from 'vue-infinite-loading';
-    import EventBus from './event-bus';
+import swal from 'sweetalert'
+import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import InfiniteLoading from 'vue-infinite-loading';
+import EventBus from './event-bus';
 
-    export default {
-        data() {
-            return {
-                user: Laravel.user,
-                news: [],
-                pagination: {
-                    current_page: 0
-                },
-                swiperOption: {
-                    pagination : '.swiper-pagination',
-                    paginationClickable :true,
-                },
-            }
-        },
-        mounted() {
-            EventBus.$on('add-news', this.addNews);
-        },
-        components: {
-            swiper,
-            swiperSlide,
-            InfiniteLoading,
-        },
-        methods: {
-            addNews (item) {
-                this.news.unshift(item)
+export default {
+    data() {
+        return {
+            user: Laravel.user,
+            news: [],
+            pagination: {
+                current_page: 0
             },
-            loadNews ($state) {
-                var page = Number(this.pagination.current_page) + 1;
+            swiperOption: {
+                pagination : '.swiper-pagination',
+                paginationClickable :true,
+            },
+        }
+    },
+    mounted() {
+        EventBus.$on('add-news', this.addNews);
+    },
+    components: {
+        swiper,
+        swiperSlide,
+        InfiniteLoading,
+    },
+    methods: {
+        addNews (item) {
+            this.news.unshift(item)
+        },
+        loadNews ($state) {
+            var page = Number(this.pagination.current_page) + 1;
 
-                axios.get('/api/news/all?page='+ page)
-                .then(response => {
-                    this.news = this.news.concat(response.data.data);
-                    this.pagination = response.data
-                    $state.loaded();
-                    if (!this.pagination.next_page_url)
-                        $state.complete();
-                });
-            },
-            destroyNews (id, index) {
-                var self = this;
-                swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this news!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
+            axios.get('/api/news/all?page='+ page)
+            .then(response => {
+                this.news = this.news.concat(response.data.data);
+                this.pagination = response.data
+                $state.loaded();
+                if (!this.pagination.next_page_url)
+                    $state.complete();
+            });
+        },
+        destroyNews (id, index) {
+            var self = this;
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this news!",
+                icon: "warning",
+                buttons: true
+            })
+            .then((value) => {
+                if (value) {
                     axios.delete('/api/news/destroy/' + id)
                     .then(response => {
                         self.news.splice(index, 1);
                         swal({
                             title: "Deleted!",
                             text: "Your news has been deleted.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
+                            icon: "success",
+                            buttons: false,
+                            timer: 1000
                         });
                         self.error = {};
                     })
                     .catch(error => {
                         self.error = error.response.data;
                     });
-                });
-            },
-            likeNews (item) {
-                if (!this.user.hasPermission['update-tasks']) {
-                    swal("Oops", "Don't have permissions to give like!",  "error");
-                    return false;
                 }
-                axios.post('/api/news/like/'+item.id, {like: item.like})
-                .then(response => {
-                    item.likes = response.data.likes;
-                    item.like = response.data.like;
-                    item.likes_counter = response.data.likes_counter;
-                    this.error = {};
-                })
-                .catch(error => {
-                    this.error = error.response.data;
-                });
-            },
-        }
+            });
+        },
+        likeNews (item) {
+            if (!this.user.hasPermission['update-tasks']) {
+                swal("Oops", "Don't have permissions to give like!",  "error");
+                return false;
+            }
+            axios.post('/api/news/like/'+item.id, {like: item.like})
+            .then(response => {
+                item.likes = response.data.likes;
+                item.like = response.data.like;
+                item.likes_counter = response.data.likes_counter;
+                this.error = {};
+            })
+            .catch(error => {
+                this.error = error.response.data;
+            });
+        },
     }
+}
 </script>

@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Autoparts\Autopart;
 use App\Models\Autoparts\AutopartImage;
-use App\Models\Autoparts\AutopartStatus;
-use App\Models\Autoparts\AutopartListMakes;
-use App\Models\Autoparts\AutopartListModels;
-use App\Models\Autoparts\AutopartListYears;
+use App\Models\Autoparts\AutopartYear;
+use App\Models\Autoparts\AutopartListMake;
+use App\Models\Autoparts\AutopartListModel;
+use App\Models\Autoparts\AutopartListOrigin;
+use App\Models\Autoparts\AutopartListStatus;
+use App\Models\Autoparts\AutopartListYear;
 use App\Http\Helpers\Upload;
 use QrCode;
 use Storage;
@@ -17,16 +19,16 @@ use Storage;
 
 class AutopartController extends Controller
 {
-    public function all()
+    public function all ()
     {
-        return Autopart::with(['make', 'model', 'year', 'status', 'images' => function ($query) {
+        return Autopart::with(['make', 'model', 'years', 'origin', 'status', 'creator', 'images' => function ($query) {
                             $query->orderBy('order', 'asc');
                         }])
                         ->orderBy('id', 'desc')
                         ->paginate(50);
     }
 
-    public function filter(Request $request)
+    public function filter (Request $request)
     {
         $query = Autopart::query();
 
@@ -36,52 +38,80 @@ class AutopartController extends Controller
         if ($request->model)
             $query->where('model_id', $request->model['id']);
 
-        if ($request->year)
-            $query->where('year_id', $request->year['id']);
+        if ($request->years) {
+            $query->whereHas('years', function($query) use($request) {
+                $query->whereIn('year_id', $request->years);
+            });
+        }
+
+        $status = [];
+
+        if ($request->available)
+            array_push($status, 1);
+
+        if ($request->notAvailable)
+            array_push($status, 2);
+
+        if ($request->separated)
+            array_push($status, 3);
+
+        if ($request->sold)
+            array_push($status, 4);
+
+        if (count($status))
+            $query->whereIn('status_id', $status);
 
         $autoparts = $query->orderBy('id', 'desc')
                         ->paginate(50);
 
-        $autoparts->load(['make', 'model', 'year', 'status', 'images' => function ($query) {
+        $autoparts->load(['make', 'model', 'years', 'origin', 'status', 'creator', 'images' => function ($query) {
                             $query->orderBy('order', 'asc');
                         }]);
 
         return $autoparts;
     }
 
-    public function show($id)
+    public function show ($id)
     {
-        return Autopart::with(['make', 'model', 'year', 'status', 'creator', 'images' => function ($query) {
+        return Autopart::with(['make', 'model', 'years', 'origin', 'status', 'creator', 'comments', 'comments.creator', 'images' => function ($query) {
                         $query->orderBy('order', 'asc');
                     }])->find($id);
     }
 
-    public function store(Request $request)
+    public function store (Request $request)
     {
         $this->validate($request, [
             'name' => 'required|string',
-            'purchase_price' => 'required|numeric',
-            'sale_price' => 'required|numeric',
+            'purchase_price' => 'required|numeric|min:1',
+            'sale_price' => 'required|numeric|min:1',
             'make_id' => 'required|integer',
             'model_id' => 'required|integer',
-            'year_id' => 'required|integer',
+            'origin_id' => 'required|integer',
             'status_id' => 'required|integer',
+            'years' => 'required|array'
         ]);
 
         $autopart = Autopart::create([
             'name' => $request->name,
             'description' => $request->description,
-            'observations' => $request->observations,
             'purchase_price' => $request->purchase_price,
             'sale_price' => $request->sale_price,
             'make_id' => $request->make_id,
             'model_id' => $request->model_id,
-            'year_id' => $request->year_id,
-            'status_id' => $request->status_id,
+            'origin_id' => $request->origin_id,
+            'status_id' => $request->status_id
         ]);
 
-        $qr = QrCode::format('png')->size(200)->generate($autopart->id);
-        Storage::put('autoparts/'.$autopart->id.'/qr/'.$autopart->id.'.png', $qr);
+        if (count($request->years)) {
+            $yearsIds = [];
+            foreach ($request->years as $key => $value) {
+                array_push($yearsIds, $value['id']);
+            };
+            $autopart->years()->attach($yearsIds);
+        }
+
+        $qr = QrCode::format('png')->size(200)->margin(1)->generate($autopart->id);
+        Storage::put('autoparts/'.$autopart->id.'/qr/'.$autopart->id.'.png', (string) $qr);
 
         if (count($request->images)) {
             $upload = new Upload();
@@ -103,16 +133,17 @@ class AutopartController extends Controller
         return $this->show($autopart->id);
     }
 
-    public function update(Request $request, $id)
+    public function update (Request $request, $id)
     {
         $this->validate($request, [
             'name' => 'required|string',
-            'purchase_price' => 'required|numeric',
-            'sale_price' => 'required|numeric',
+            'purchase_price' => 'required|numeric|min:1',
+            'sale_price' => 'required|numeric|min:1',
             'make_id' => 'required|integer',
             'model_id' => 'required|integer',
-            'year_id' => 'required|integer',
+            'origin_id' => 'required|integer',
             'status_id' => 'required|integer',
+            'years' => 'required|array'
         ]);
 
         $autopart = Autopart::find($id);
@@ -122,20 +153,41 @@ class AutopartController extends Controller
         $autopart->sale_price = $request->sale_price;
         $autopart->make_id = $request->make_id;
         $autopart->model_id = $request->model_id;
-        $autopart->year_id = $request->year_id;
+        $autopart->origin_id = $request->origin_id;
+        $autopart->status_id = $request->status_id;
+        $autopart->save();
+
+        if (count($request->years)) {
+            $yearsIds = [];
+            foreach ($request->years as $key => $value) {
+                array_push($yearsIds, $value['id']);
+            };
+            $autopart->years()->sync($yearsIds);
+        }
+
+        return $this->show($autopart->id);
+    }
+
+    public function updateStatus (Request $request, $id)
+    {
+        $this->validate($request, [
+            'status_id' => 'required|integer'
+        ]);
+
+        $autopart = Autopart::find($id);
         $autopart->status_id = $request->status_id;
         $autopart->save();
 
         return $this->show($autopart->id);
     }
 
-    public function destroy($id)
+    public function destroy ($id)
     {
         return Autopart::destroy($id);
     }
 
     // Images
-    public function uploadImageTemp(Request $request)
+    public function uploadImageTemp (Request $request)
     {
         $this->validate($request, [
             'file' => 'required|max:10000',
@@ -145,7 +197,7 @@ class AutopartController extends Controller
         return $uploadData;
     }
 
-    public function uploadImage(Request $request)
+    public function uploadImage (Request $request)
     {
         $this->validate($request, [
             'file' => 'required|max:10000',
@@ -163,7 +215,7 @@ class AutopartController extends Controller
         ]);
     }
 
-    public function sortImage(Request $request, $autopartId)
+    public function sortImage (Request $request, $autopartId)
     {
         foreach ($request->images as $key => $v) {
             AutopartImage::where('id', $v['id'])
@@ -173,131 +225,111 @@ class AutopartController extends Controller
         return AutopartImage::where('autopart_id', $autopartId)->orderBy('order', 'asc')->get();
     }
 
-    public function destroyImage($id)
+    public function destroyImage ($id)
     {
         return AutopartImage::destroy($id);
     }
 
     // Lists
-    public function status()
+    public function status ()
     {
-        return AutopartStatus::get();
+        return AutopartListStatus::get();
     }
 
-    public function makes()
+    public function origins ()
     {
-        return AutopartListMakes::orderBy('order')->get();
+        return AutopartListOrigin::get();
     }
 
-    public function makesFull()
+    public function makes ()
     {
-        return AutopartListMakes::with(['models' => function ($query) {
-            $query->orderBy('order');
-        }])->orderBy('order')->get();
+        return AutopartListMake::orderBy('name')->get();
     }
 
-    public function models()
+    public function makesFull ()
     {
-        return AutopartListModels::orderBy('order')->get();
+        return AutopartListMake::with(['models' => function ($query) {
+            $query->orderBy('name');
+        }])->orderBy('name')->get();
     }
 
-    public function years()
-    {
-        return AutopartListYears::orderBy('order', 'desc')->get();
-    }
-
-    public function storeMake(Request $request)
+    public function storeMake (Request $request)
     {
         $this->validate($request, [
             'name' => 'required|string'
         ]);
 
-        $maxOrder = AutopartListMakes::max('order') + 1;
-
-        $make = AutopartListMakes::create([
-            'name' => $request->name,
-            'order' => $maxOrder
+        $make = AutopartListMake::create([
+            'name' => $request->name
         ]);
 
-        return AutopartListMakes::with('models')->find($make->id);
+        return AutopartListMake::with('models')->find($make->id);
     }
 
-    public function destroyMake($id)
+    public function destroyMake ($id)
     {
-        return AutopartListMakes::destroy($id);
-    }
+        $inUse = Autopart::where('make_id', $id)->first();
 
-    public function orderMake(Request $request)
-    {
-        $order = 0;
-        foreach ($request->all() as $key => $v) {
-            $order++;
-            AutopartListMakes::where('id', $v['id'])
-                            ->update(['order' => $order]);
+        if (!$inUse) {
+            return AutopartListMake::destroy($id);
+        } else {
+            return response()->json(['data' => 'constraint'], 400);
         }
-        return $order;
     }
 
-    public function storeModel(Request $request)
+    public function models ()
+    {
+        return AutopartListModel::orderBy('name')->get();
+    }
+
+    public function storeModel (Request $request)
     {
         $this->validate($request, [
             'name' => 'required|string',
             'makeId' => 'required|integer'
         ]);
 
-        $maxOrder = AutopartListModels::max('order') + 1;
-
-        return AutopartListModels::create([
+        return AutopartListModel::create([
             'name' => $request->name,
-            'make_id' => $request->makeId,
-            'order' => $maxOrder
+            'make_id' => $request->makeId
         ]);
     }
 
-    public function destroyModel($id)
+    public function destroyModel ($id)
     {
-        return AutopartListModels::destroy($id);
-    }
+        $inUse = Autopart::where('model_id', $id)->first();
 
-    public function orderModel(Request $request)
-    {
-        $order = 0;
-        foreach ($request->all() as $key => $v) {
-            $order++;
-            AutopartListModels::where('id', $v['id'])
-                            ->update(['order' => $order]);
+        if (!$inUse) {
+            return AutopartListModel::destroy($id);
+        } else {
+            return response()->json(['data' => 'constraint'], 400);
         }
-        return $order;
     }
 
-    public function storeYear(Request $request)
+    public function years ()
+    {
+        return AutopartListYear::orderBy('name', 'desc')->get();
+    }
+
+    public function storeYear (Request $request)
     {
         $this->validate($request, [
             'name' => 'required|integer'
         ]);
 
-        $maxOrder = AutopartListYears::max('order') + 1;
-
-        return AutopartListYears::create([
-            'name' => $request->name,
-            'order' => $maxOrder
+        return AutopartListYear::create([
+            'name' => $request->name
         ]);
     }
 
-    public function destroyYear($id)
+    public function destroyYear ($id)
     {
-        return AutopartListYears::destroy($id);
-    }
+        $inUse = AutopartYear::where('year_id', $id)->first();
 
-    public function orderYear(Request $request)
-    {
-        $order = AutopartListYears::count() + 1;
-        foreach ($request->all() as $key => $v) {
-            $order--;
-            AutopartListYears::where('id', $v['id'])
-                            ->update(['order' => $order]);
+        if (!$inUse) {
+            return AutopartListYear::destroy($id);
+        } else {
+            return response()->json(['data' => 'constraint'], 400);
         }
-
-        return $order;
     }
 }

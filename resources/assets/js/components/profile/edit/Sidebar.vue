@@ -3,13 +3,13 @@
         <div class="panel-body">
             <!-- User -->
             <div class="text-center">
-                <vue-clip class="vue-clip-btn"
+                <vue-clip class="vue-clip-avatar"
                           :options="optionsAvatar"
                           :on-sending="sendingAvatar"
                           :on-complete="completeAvatar">
                     <template slot="clip-uploader-action">
-                        <div class="">
-                            <div class="dz-message btn-avatar">
+                        <div>
+                            <div class="dz-message">
                                 <img class="avatar-md" :src="user.avatar_url">
                                 <span class="fa-stack fa-lg text-primary">
                                     <i class="fa fa-circle fa-stack-2x"></i>
@@ -89,16 +89,15 @@
         },
         methods: {
             sendingAvatar (file, xhr, formData) {
-                formData.append('id', this.user.id);
+                formData.append('id', this.user.id)
             },
             completeAvatar (file, status, xhr) {
                 if (status == 'success') {
-                    this.user.avatar_url = JSON.parse(xhr.response).avatar_url;
-                    if (Laravel.user.id == this.user.id) {
-                        Laravel.user.avatar_url = JSON.parse(xhr.response).avatar_url;
-                    }
+                    this.user.avatar_url = JSON.parse(xhr.response).avatar_url
+                    if (Laravel.user.id == this.user.id)
+                        Laravel.user.avatar_url = JSON.parse(xhr.response).avatar_url
                 }
-            },
+            }
         }
     }
 </script>

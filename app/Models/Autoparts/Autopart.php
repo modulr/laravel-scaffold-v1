@@ -16,11 +16,6 @@ class Autopart extends Model
     protected $guarded = ['id'];
     protected $appends = ['qr'];
 
-    public function images()
-    {
-        return $this->hasMany(AutopartImage::class);
-    }
-
     public function getQrAttribute()
     {
         return Storage::url('autoparts/'.$this->id.'/qr/'.$this->id.'.png');
@@ -28,21 +23,36 @@ class Autopart extends Model
 
     public function make()
     {
-        return $this->belongsTo(AutopartListMakes::class);
+        return $this->belongsTo(AutopartListMake::class);
     }
 
     public function model()
     {
-        return $this->belongsTo(AutopartListModels::class);
+        return $this->belongsTo(AutopartListModel::class);
     }
 
-    public function year()
+    public function origin()
     {
-        return $this->belongsTo(AutopartListYears::class);
+        return $this->belongsTo(AutopartListOrigin::class);
     }
 
     public function status()
     {
-        return $this->belongsTo(AutopartStatus::class);
+        return $this->belongsTo(AutopartListStatus::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(AutopartImage::class);
+    }
+
+    public function years()
+    {
+        return $this->belongsToMany(AutopartListYear::class, 'autopart_years', 'autopart_id', 'year_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(AutopartComment::class);
     }
 }

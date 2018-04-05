@@ -1,55 +1,63 @@
 <template>
-    <div class="users">
+    <div>
         <!-- Container -->
         <div class="container-fluid">
             <!-- Actionbar -->
             <div class="actionbar">
+                <div class="form-group input-lg search" :class="{'active': active}">
+                    <input type="text" class="form-control" ref="search" placeholder="Search"
+                        v-model="search">
+                    <button type="button" class="close" aria-label="Close"
+                        @click="toggleSearchBtn(false)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="row">
-                    <div class="col-sm-6 links">
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a href="">Users</a></li>
-                            <li><a href="/roles">Roles</a></li>
-                        </ul>
+                    <div class="col-xs-6 links">
+                        <h5>Users</h5>
                     </div>
-                    <div class="col-sm-3 controls">
-                        <input type="text" class="form-control" placeholder="Search" v-model="search">
-                    </div>
-                    <div class="col-sm-3 text-right controls">
+                    <div class="col-xs-6 text-right controls">
+                        <a href="#" class="btn btn-link"
+                            @click="toggleSearchBtn(true)">
+                            <i class="mdi mdi-search mdi-lg"></i>
+                        </a>
                         <a href="#" class="btn btn-success"
                             v-if="user.hasPermission['create-users']"
                             @click.prevent="newUser">
-                            <i class="mdi mdi-person-add mdi-lg"></i> New User
+                            <i class="mdi mdi-person-add mdi-lg"></i>
+                            <span class="hidden-xs">New User</span>
                         </a>
                     </div>
                 </div>
             </div>
             <!-- List Users -->
-            <div class="row">
+            <div class="row users-list">
                 <div class="col-md-12">
-                    <div class="table-responsive table-elevation">
+                    <div>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th class="hidden-xs">ID</th>
                                     <th>Name</th>
                                     <th>Role</th>
-                                    <th class="text-center">Active</th>
-                                    <th>created</th>
+                                    <th class="hidden-xs text-center">Active</th>
+                                    <th class="hidden-xs">created</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(item, index) in users.data">
-                                    <td @click="editUser(item, index)">
+                                    <td class="hidden-xs" @click="editUser(item, index)">
                                         {{item.id}}
                                     </td>
                                     <td @click="editUser(item, index)">
                                         <div class="media">
                                             <div class="media-left">
                                                 <img class="avatar-xs" :src="item.avatar_url">
+                                                <span class="label label-active" :class="{'label-primary': item.active, 'label-default': !item.active}"></span>
                                             </div>
                                             <div class="media-body">
                                                 <h4 class="media-heading">{{item.name}}</h4>
-                                                <a class="text-muted" :href="`mailto:${item.email}`">{{item.email}}</a>
+                                                <small class="text-muted">{{item.email}}</small>
                                             </div>
                                         </div>
                                     </td>
@@ -57,10 +65,10 @@
                                         <span v-if="item.roles.length">{{item.roles[0].display_name}}</span>
                                         <span v-else>---</span>
                                     </td>
-                                    <td class="text-center" @click="editUser(item, index)">
-                                        <i class="mdi mdi-2x" :class="{'mdi-mood text-success': item.active, 'mdi-mood-bad': !item.active}"></i>
+                                    <td class="hidden-xs text-center" @click="editUser(item, index)">
+                                        <i class="mdi mdi-2x" :class="{'mdi-mood text-primary': item.active, 'mdi-mood-bad': !item.active}"></i>
                                     </td>
-                                    <td @click="editUser(item, index)">
+                                    <td class="hidden-xs" @click="editUser(item, index)">
                                         <small>{{item.created_at | moment("LLL")}}</small>
                                     </td>
                                 </tr>
@@ -79,39 +87,46 @@
             </div>
         </div>
         <!-- Modal New User -->
-        <div class="modal right sm" id="modalNewUser">
+        <div class="modal right sm users-modal" id="modalNewUser">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                    <!-- Modal header -->
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <label class="switch">
-                            <input type="checkbox" v-model="userNew.active">
-                            <span class="slider round"></span>
-                        </label>
-                        <span class="switch-text">Active</span>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success"
+                                    v-if="user.hasPermission['create-users']"
+                                    @click="storeUser">Create</button>
+                        </div>
                     </div>
                     <div class="modal-body">
-                        <div class="modal-avatar">
-                            <vue-clip class="vue-clip-btn"
-                                      :options="optionsAvatarTemp"
-                                      :on-complete="completeAvatarTemp"
-                                      v-if="user.hasPermission['create-users']">
-                                <template slot="clip-uploader-action">
-                                    <div class="">
-                                        <div class="dz-message btn-avatar">
-                                            <img class="avatar-md" :src="userNew.avatar_url" v-if="userNew.avatar_url">
-                                            <i class="mdi mdi-account-circle mdi-avatar-md" v-else></i>
-                                            <span class="fa-stack fa-lg text-primary">
-                                                <i class="fa fa-circle fa-stack-2x"></i>
-                                                <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </div>
+                        <vue-clip class="vue-clip-avatar"
+                                  :options="optionsAvatarTemp"
+                                  :on-complete="completeAvatarTemp"
+                                  v-if="user.hasPermission['create-users']">
+                            <template slot="clip-uploader-action">
+                                <div>
+                                    <div class="dz-message">
+                                        <img class="avatar-md" :src="userNew.avatar_url" v-if="userNew.avatar_url">
+                                        <i class="mdi mdi-account-circle mdi-8x" v-else></i>
+                                        <span class="fa-stack fa-lg text-primary">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
+                                        </span>
                                     </div>
-                                </template>
-                            </vue-clip>
+                                </div>
+                            </template>
+                        </vue-clip>
+                        <div class="switch">
+                            <label class="switch-label">
+                                <input type="checkbox" v-model="userNew.active">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="switch-text">Active</span>
                         </div>
+                        <hr>
                         <form>
                             <div class="form-group" :class="{'has-error': error.name}">
                                 <label>Name *</label>
@@ -148,50 +163,63 @@
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success pull-left"
-                                v-if="user.hasPermission['create-users']"
-                                @click="storeUser">Create</button>
-                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
-                    </div>
                 </div>
             </div>
         </div>
         <!-- Modal Edit User -->
-        <div class="modal right sm" id="modalEditUser">
+        <div class="modal right sm users-modal" id="modalEditUser">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                    <!-- Modal header -->
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <label class="switch">
-                            <input type="checkbox" v-model="userEdit.active">
-                            <span class="slider round"></span>
-                        </label>
-                        <span class="switch-text">Active</span>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-default"
+                                    v-if="user.hasPermission['delete-users']"
+                                    @click="destroyUser">
+                                <i class="fa fa-trash-o fa-lg"></i>
+                            </button>
+                            <button type="button" class="btn btn-primary"
+                                    v-if="user.hasPermission['update-users']"
+                                    @click="updateUser">Save</button>
+
+                        </div>
                     </div>
                     <div class="modal-body">
-                        <div class="modal-avatar">
-                            <vue-clip class="vue-clip-btn"
-                                      :options="optionsAvatar"
-                                      :on-sending="sendingAvatar"
-                                      :on-complete="completeAvatar"
-                                      v-if="user.hasPermission['update-users']">
-                                <template slot="clip-uploader-action">
-                                    <div class="">
-                                        <div class="dz-message btn-avatar">
-                                            <img class="avatar-md" :src="userEdit.avatar_url">
-                                            <span class="fa-stack fa-lg text-primary">
-                                                <i class="fa fa-circle fa-stack-2x"></i>
-                                                <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </div>
+                        <vue-clip class="vue-clip-avatar"
+                                  :options="optionsAvatar"
+                                  :on-sending="sendingAvatar"
+                                  :on-complete="completeAvatar"
+                                  v-if="user.hasPermission['update-users']">
+                            <template slot="clip-uploader-action">
+                                <div>
+                                    <div class="dz-message">
+                                        <img class="avatar-md" :src="userEdit.avatar_url">
+                                        <span class="fa-stack fa-lg text-primary">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
+                                        </span>
                                     </div>
-                                </template>
-                            </vue-clip>
+                                </div>
+                            </template>
+                        </vue-clip>
+                        <div class="switch">
+                            <label class="switch-label">
+                                <input type="checkbox" v-model="userEdit.active">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="switch-text">Active</span>
+                            <a class="pull-right" :href="`/profile/${userEdit.id}/edit`">
+                                <i class="fa fa-pencil" aria-hidden="true"></i> Edit Profile
+                            </a>
                         </div>
+                        <hr>
                         <form>
+                            <div class="form-group">
+                                <p class="form-control-static">ID: <strong>{{userEdit.id}}</strong></p>
+                            </div>
                             <div class="form-group" :class="{'has-error': error.name}">
                                 <label>Name *</label>
                                 <input type="text" class="form-control input-lg" placeholder="Name" required
@@ -225,27 +253,11 @@
                                     Generate password
                                 </button>
                             </div>
-                            <div class="form-group">
-                                <label class="pull-right">Created: <em>{{userEdit.created_at | moment("LLL")}}</em></label>
-                                <p class="form-control-static">ID: <strong>{{userEdit.id}}</strong></p>
-                            </div>
-                            <div class="form-group">
-                                <a :href="`/profile/${userEdit.id}/edit`">
-                                    <i class="fa fa-external-link" aria-hidden="true"></i> Edit Profile
-                                </a>
-                            </div>
+                            <fieldset class="separator">
+                                <legend>Activity</legend>
+                                <p class="text-muted"><small>Created at </small>{{userEdit.created_at | moment('lll')}}</p>
+                            </fieldset>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary pull-left"
-                                v-if="user.hasPermission['update-users']"
-                                @click="updateUser">Save</button>
-                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-default"
-                                v-if="user.hasPermission['delete-users']"
-                                @click="destroyUser">
-                            <i class="fa fa-trash-o fa-lg"></i>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -255,8 +267,8 @@
 
 <script>
     import VueClip from 'vue-clip';
-    import swal from 'sweetalert';
     import Paginate from 'vuejs-paginate';
+    import swal from 'sweetalert'
 
     export default {
         data() {
@@ -264,6 +276,7 @@
                 user: Laravel.user,
                 error: {},
                 search: '',
+                active: false,
                 optionsAvatarTemp: {
                     headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
                     url: '/api/users/upload/avatar/temp',
@@ -323,6 +336,18 @@
             }
         },
         methods: {
+            toggleSearchBtn (active) {
+                this.search = null
+                if (active) {
+                    this.active = active
+                    var self = this
+                    setTimeout(function() {
+                        self.$refs.search.focus()
+                    }, 100);
+                } else {
+                    this.active = active
+                }
+            },
             getUsers (page) {
                 if (!page) {
                     axios.get(`/api/users/filter${this.search ? '?search=' + this.search: ''}`)
@@ -348,6 +373,7 @@
             newUser () {
                 this.userNew = {
                     avatar_url: null,
+                    role_id: 1,
                     password: '',
                     active: true,
                 };
@@ -395,34 +421,33 @@
                 });
             },
             destroyUser () {
-                var self = this;
+                var self = this
                 swal({
                     title: "Are you sure?",
                     text: "You will not be able to recover this user!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
-                    axios.delete('/api/users/destroy/' + self.userEdit.id)
-                    .then(response => {
-                        self.users.data.splice(self.userEdit.index, 1);
-                        swal({
-                            title: "Deleted!",
-                            text: "The user has been deleted.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
-                        });
-                        self.userEdit = {};
-                        self.error = {};
-                        $('#modalEditUser').modal('hide');
-                    })
-                    .catch(error => {
-                        self.error = error.response.data;
-                    });
+                    icon: "warning",
+                    buttons: true
+                })
+                .then((value) => {
+                    if (value) {
+                        axios.delete('/api/users/destroy/' + self.userEdit.id)
+                        .then(response => {
+                            self.users.data.splice(self.userEdit.index, 1);
+                            swal({
+                                title: "Deleted!",
+                                text: "The user has been deleted.",
+                                icon: "success",
+                                buttons: false,
+                                timer: 1000
+                            });
+                            self.userEdit = {}
+                            self.error = {}
+                            $('#modalEditUser').modal('hide')
+                        })
+                        .catch(error => {
+                            self.error = error.response.data
+                        })
+                    }
                 });
             },
             completeAvatarTemp (file, status, xhr) {

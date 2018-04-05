@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import swal from 'sweetalert'
+
 export default {
     data() {
         return {
@@ -62,7 +64,7 @@ export default {
     },
     props: ['user'],
     mounted() {
-        axios.get('/api/list/profile/contact')
+        axios.get('/api/profile/lists/contact')
         .then(response => {
             this.list.contacts = response.data;
         });
@@ -88,28 +90,27 @@ export default {
             swal({
                 title: "Are you sure?",
                 text: "You will not be able to recover this contact!",
-                type: "warning",
-                showLoaderOnConfirm: true,
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-            },
-            function(){
-                axios.delete('/api/profile/contact/destroy/' + contactId)
-                .then(response => {
-                    self.user.profile_contact.splice(index, 1);
-                    swal({
-                        title: "Deleted!",
-                        text: "The contact has been deleted.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
+                icon: "warning",
+                buttons: true
+            })
+            .then((value) => {
+                if (value) {
+                    axios.delete('/api/profile/contact/destroy/' + contactId)
+                    .then(response => {
+                        self.user.profile_contact.splice(index, 1);
+                        swal({
+                            title: "Deleted!",
+                            text: "The contact has been deleted.",
+                            icon: "success",
+                            buttons: false,
+                            timer: 1000
+                        });
+                        self.error = {};
+                    })
+                    .catch(error => {
+                        self.error = error.response.data;
                     });
-                    self.error = {};
-                })
-                .catch(error => {
-                    self.error = error.response.data;
-                });
+                }
             });
         }
     }

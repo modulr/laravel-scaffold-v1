@@ -277,153 +277,152 @@
 </template>
 
 <script>
-    import moment from 'moment';
-    import VueClip from 'vue-clip';
-    import draggable from 'vuedraggable'
-    import {SnotifyService} from 'vue-snotify';
+import swal from 'sweetalert'
+import moment from 'moment';
+import VueClip from 'vue-clip';
+import draggable from 'vuedraggable'
+import {SnotifyService} from 'vue-snotify';
 
-    export default {
-        data() {
-            return {
-                user: Laravel.user,
-                error: {},
-                tabActive: 'events',
-                optionsImageTemp: {
-                    headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                    url: '/api/events/images/upload/temp',
-                    paramName: 'file',
-                    parallelUploads: 1,
-                    maxFilesize: {
-                        limit: 10,
-                        message: '{{filesize}} is greater than the {{maxFilesize}}MB'
-                    },
-                    maxFiles: {
-                        limit: 10,
-                        message: 'You can only upload a max of 10 files'
-                    },
-                    acceptedFiles: {
-                        extensions: ['image/*'],
-                        message: 'You are uploading an invalid file'
-                    },
+export default {
+    data() {
+        return {
+            user: Laravel.user,
+            error: {},
+            tabActive: 'events',
+            optionsImageTemp: {
+                headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
+                url: '/api/events/images/upload/temp',
+                paramName: 'file',
+                parallelUploads: 1,
+                maxFilesize: {
+                    limit: 10,
+                    message: '{{filesize}} is greater than the {{maxFilesize}}MB'
                 },
-                optionsImage: {
-                    headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-                    url: '/api/events/images/upload',
-                    paramName: 'file',
-                    parallelUploads: 1,
-                    maxFilesize: {
-                        limit: 10,
-                        message: '{{filesize}} is greater than the {{maxFilesize}}MB'
-                    },
-                    maxFiles: {
-                        limit: 10,
-                        message: 'You can only upload a max of 10 files'
-                    },
-                    acceptedFiles: {
-                        extensions: ['image/*'],
-                        message: 'You are uploading an invalid file'
-                    },
+                maxFiles: {
+                    limit: 10,
+                    message: 'You can only upload a max of 10 files'
                 },
-                events: [],
-                eventNew: {},
-                eventEdit: {},
-            }
+                acceptedFiles: {
+                    extensions: ['image/*'],
+                    message: 'You are uploading an invalid file'
+                },
+            },
+            optionsImage: {
+                headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
+                url: '/api/events/images/upload',
+                paramName: 'file',
+                parallelUploads: 1,
+                maxFilesize: {
+                    limit: 10,
+                    message: '{{filesize}} is greater than the {{maxFilesize}}MB'
+                },
+                maxFiles: {
+                    limit: 10,
+                    message: 'You can only upload a max of 10 files'
+                },
+                acceptedFiles: {
+                    extensions: ['image/*'],
+                    message: 'You are uploading an invalid file'
+                },
+            },
+            events: [],
+            eventNew: {},
+            eventEdit: {},
+        }
+    },
+    mounted() {
+        this.getEvents();
+    },
+    components: {
+        draggable,
+    },
+    methods: {
+        getEvents () {
+            axios.get('/api/events/all')
+            .then(response => {
+                this.events = response.data.data
+                this.tabActive = 'events'
+            });
         },
-        mounted() {
-            this.getEvents();
+        getMyEvents () {
+            axios.get('/api/events/byCreator')
+            .then(response => {
+                this.events = response.data.data
+                this.tabActive = 'myEvents'
+            });
         },
-        components: {
-            draggable,
+        newEvent () {
+            this.eventNew = {
+                date: moment().format('YYYY-MM-DD'),
+                start_time: moment().add(1,'h').startOf('hour').format('HH:mm'),
+                images: [],
+            };
+            $('#modalEditEvent').modal('hide');
+            $('#modalNewEvent').modal('show');
         },
-        methods: {
-            getEvents () {
-                axios.get('/api/events/all')
-                .then(response => {
-                    this.events = response.data.data
-                    this.tabActive = 'events'
-                });
-            },
-            getMyEvents () {
-                axios.get('/api/events/byCreator')
-                .then(response => {
-                    this.events = response.data.data
-                    this.tabActive = 'myEvents'
-                });
-            },
-            newEvent () {
-                this.eventNew = {
-                    date: moment().format('YYYY-MM-DD'),
-                    start_time: moment().add(1,'h').startOf('hour').format('HH:mm'),
-                    images: [],
-                };
-                $('#modalEditEvent').modal('hide');
-                $('#modalNewEvent').modal('show');
-            },
-            storeEvent (e) {
-                var btn = $(e.target).button('loading')
-                axios.post('/api/events/store', this.eventNew)
-                .then(response => {
-                    this.events.unshift(response.data);
-                    this.eventNew = {};
-                    this.error = {};
-                    var btn = $(e.target).button('reset')
-                    $('#modalNewEvent').modal('hide')
-                })
-                .catch(error => {
-                    this.error = error.response.data;
-                    var btn = $(e.target).button('reset')
-                });
-            },
-            editEvent (event, index) {
-                this.eventEdit = _.clone(event);
-                this.eventEdit.index = index;
-                this.eventEdit.images = [];
+        storeEvent (e) {
+            var btn = $(e.target).button('loading')
+            axios.post('/api/events/store', this.eventNew)
+            .then(response => {
+                this.events.unshift(response.data);
+                this.eventNew = {};
+                this.error = {};
+                var btn = $(e.target).button('reset')
+                $('#modalNewEvent').modal('hide')
+            })
+            .catch(error => {
+                this.error = error.response.data;
+                var btn = $(e.target).button('reset')
+            });
+        },
+        editEvent (event, index) {
+            this.eventEdit = _.clone(event);
+            this.eventEdit.index = index;
+            this.eventEdit.images = [];
 
-                $('#modalEditEvent').modal('show')
+            $('#modalEditEvent').modal('show')
 
-                axios.get('/api/events/show/'+event.id)
-                .then(response => {
-                    this.eventEdit.images = response.data.images;
-                })
-                .catch(error => {
-                    this.error = error.response.data;
-                });
-            },
-            updateEvent (e) {
-                var btn = $(e.target).button('loading')
-                axios.put('/api/events/update/'+this.eventEdit.id, this.eventEdit)
-                .then(response => {
-                    this.events[this.eventEdit.index] = response.data;
-                    this.error = {};
-                    var btn = $(e.target).button('reset')
-                    $('#modalEditEvent').modal('hide')
-                })
-                .catch(error => {
-                    this.error = error.response.data;
-                    var btn = $(e.target).button('reset')
-                });
-            },
-            destroyEvent () {
-                var self = this;
-                swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this Event!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
+            axios.get('/api/events/show/'+event.id)
+            .then(response => {
+                this.eventEdit.images = response.data.images;
+            })
+            .catch(error => {
+                this.error = error.response.data;
+            });
+        },
+        updateEvent (e) {
+            var btn = $(e.target).button('loading')
+            axios.put('/api/events/update/'+this.eventEdit.id, this.eventEdit)
+            .then(response => {
+                this.events[this.eventEdit.index] = response.data;
+                this.error = {};
+                var btn = $(e.target).button('reset')
+                $('#modalEditEvent').modal('hide')
+            })
+            .catch(error => {
+                this.error = error.response.data;
+                var btn = $(e.target).button('reset')
+            });
+        },
+        destroyEvent () {
+            var self = this;
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this Event!",
+                icon: "warning",
+                buttons: true
+            })
+            .then((value) => {
+                if (value) {
                     axios.delete('/api/events/destroy/' + self.eventEdit.id)
                     .then(response => {
                         self.events.splice(self.eventEdit.index, 1);
                         swal({
                             title: "Deleted!",
                             text: "The Event has been deleted.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
+                            icon: "success",
+                            buttons: false,
+                            timer: 1000
                         });
                         self.error = {};
                         $('#modalEditEvent').modal('hide');
@@ -431,63 +430,64 @@
                     .catch(error => {
                         self.error = error.response.data;
                     });
-                });
-            },
-            sendingImageTemp (file, xhr, formData) {
-                this.eventNew.images.push(file);
-            },
-            completeImageTemp (file, status, xhr) {
-                if (status == 'success') {
-                    console.log(xhr.response);
-                    var index = this.eventNew.images.indexOf(file);
-                    Object.assign(this.eventNew.images[index], JSON.parse(xhr.response))
-                } else {
-                    SnotifyService.error(JSON.parse(xhr.response).file[0]);
                 }
-            },
-            destroyImageTemp (index) {
-                this.eventNew.images.splice(index, 1);
-            },
-            sendingImage (file, xhr, formData) {
-                this.eventEdit.images.push(file);
-                formData.append('id', this.eventEdit.id);
-            },
-            completeImage (file, status, xhr) {
-                if (status == 'success') {
-                    var index = this.eventEdit.images.indexOf(file);
-                    this.eventEdit.images[index] = JSON.parse(xhr.response);
-                    this.events[this.eventEdit.index].images.push(JSON.parse(xhr.response));
-                } else {
-                    SnotifyService.error(JSON.parse(xhr.response).file[0]);
-                }
-            },
-            sortImage () {
-                axios.post('/api/events/images/sort/' + this.eventEdit.id, {images:this.eventEdit.images})
-                .then(response => {
-                    this.events[this.eventEdit.index].images = response.data;
-                    this.error = {};
-                })
-                .catch(error => {
-                    self.error = error.response.data;
+            });
+        },
+        sendingImageTemp (file, xhr, formData) {
+            this.eventNew.images.push(file);
+        },
+        completeImageTemp (file, status, xhr) {
+            if (status == 'success') {
+                console.log(xhr.response);
+                var index = this.eventNew.images.indexOf(file);
+                Object.assign(this.eventNew.images[index], JSON.parse(xhr.response))
+            } else {
+                SnotifyService.error(JSON.parse(xhr.response).file[0]);
+            }
+        },
+        destroyImageTemp (index) {
+            this.eventNew.images.splice(index, 1);
+        },
+        sendingImage (file, xhr, formData) {
+            this.eventEdit.images.push(file);
+            formData.append('id', this.eventEdit.id);
+        },
+        completeImage (file, status, xhr) {
+            if (status == 'success') {
+                var index = this.eventEdit.images.indexOf(file);
+                this.eventEdit.images[index] = JSON.parse(xhr.response);
+                this.events[this.eventEdit.index].images.push(JSON.parse(xhr.response));
+            } else {
+                SnotifyService.error(JSON.parse(xhr.response).file[0]);
+            }
+        },
+        sortImage () {
+            axios.post('/api/events/images/sort/' + this.eventEdit.id, {images:this.eventEdit.images})
+            .then(response => {
+                this.events[this.eventEdit.index].images = response.data;
+                this.error = {};
+            })
+            .catch(error => {
+                self.error = error.response.data;
+            });
+        },
+        destroyImage (image, index) {
+            axios.delete('/api/events/images/destroy/' + image.id)
+            .then(response => {
+                var key;
+                this.events[this.eventEdit.index].images.forEach(function(v, k){
+                    if (v.id == image.id) {
+                        key = k;
+                    }
                 });
-            },
-            destroyImage (image, index) {
-                axios.delete('/api/events/images/destroy/' + image.id)
-                .then(response => {
-                    var key;
-                    this.events[this.eventEdit.index].images.forEach(function(v, k){
-                        if (v.id == image.id) {
-                            key = k;
-                        }
-                    });
-                    this.events[this.eventEdit.index].images.splice(key, 1);
-                    this.eventEdit.images.splice(index, 1);
-                    this.error = {};
-                })
-                .catch(error => {
-                    self.error = error.response.data;
-                });
-            },
-        }
+                this.events[this.eventEdit.index].images.splice(key, 1);
+                this.eventEdit.images.splice(index, 1);
+                this.error = {};
+            })
+            .catch(error => {
+                self.error = error.response.data;
+            });
+        },
     }
+}
 </script>

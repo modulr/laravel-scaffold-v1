@@ -61,7 +61,7 @@ class UserController extends Controller
             $request->avatar = $avatar['basename'];
         } else {
             $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
-            Storage::put('avatars/'.$user->id.'/avatar.png', $avatar);
+            Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
             $request->avatar = 'avatar.png';
         }
 
@@ -94,7 +94,7 @@ class UserController extends Controller
 
         if ($user->name != $request->name) {
             $avatar = Avatar::create($request->name)->getImageObject()->encode('png');
-            Storage::put('avatars/'.$id.'/avatar.png', $avatar);
+            Storage::put('avatars/'.$id.'/avatar.png', (string) $avatar);
             $user->name = $request->name;
         }
 

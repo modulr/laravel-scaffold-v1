@@ -1,0 +1,24 @@
+.users-list {
+    .media {
+        .media-left {
+            position: relative;
+            .label-active {
+                border-radius: 50%;
+                padding: 5px;
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                border: 1px solid $white;
+                &:empty {
+                    display:inline-block;
+                }
+            }
+        }
+    }
+}
+
+.users-modal {
+    .vue-clip-avatar {
+        margin-bottom: 25px;
+    }
+}

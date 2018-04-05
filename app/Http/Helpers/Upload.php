@@ -87,7 +87,7 @@ class Upload {
 
             $this->meta['size'] = strlen((string) $img);
 
-            Storage::put($this->meta['path'], $img);
+            Storage::put($this->meta['path'], (string) $img);
         }
 
         return $this;
@@ -114,7 +114,7 @@ class Upload {
                         // ->crop($width, $height)
                         ->encode();
 
-            Storage::put($this->meta['dirname'].'/thumbnail_'.$this->meta['basename'], $img);
+            Storage::put($this->meta['dirname'].'/thumbnail_'.$this->meta['basename'], (string) $img);
         }
 
         return $this;

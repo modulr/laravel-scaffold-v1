@@ -99,17 +99,17 @@
         },
         props: ['user'],
         mounted() {
-            axios.get('/api/list/profile/profession')
+            axios.get('/api/profile/lists/profession')
             .then(response => {
                 this.list.professions = response.data;
             });
 
-            axios.get('/api/list/profile/position')
+            axios.get('/api/profile/lists/position')
             .then(response => {
                 this.list.positions = response.data;
             });
 
-            axios.get('/api/list/profile/department')
+            axios.get('/api/profile/lists/department')
             .then(response => {
                 this.list.departments = response.data;
             });

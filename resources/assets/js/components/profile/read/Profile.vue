@@ -4,7 +4,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="fa fa-fw fa-address-card" aria-hidden="true"></i> Personal
+                    Personal
                 </h3>
             </div>
             <div class="panel-body">
@@ -71,7 +71,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="fa fa-fw fa-address-book" aria-hidden="true"></i> Contact
+                    Contact
                 </h3>
             </div>
             <div class="panel-body">
@@ -91,7 +91,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="fa fa-fw fa-mortar-board" aria-hidden="true"></i> Education
+                    Education
                 </h3>
             </div>
             <div class="panel-body">
@@ -109,7 +109,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="fa fa-fw fa-users" aria-hidden="true"></i> Family
+                    Family
                 </h3>
             </div>
             <div class="panel-body">
@@ -127,7 +127,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Places
+                    Places
                 </h3>
             </div>
             <div class="panel-body">
