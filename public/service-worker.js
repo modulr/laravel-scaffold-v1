@@ -3,7 +3,6 @@ var urlsToCache = [
   //'/',
   //'/js/app.js',
   '/css/app.css',
-  '/img/icon/apple-touch-icon-57x57.png',
   '/img/icon/favicon-96x96.png',
   '/img/icon/android-chrome-192x192.png',
   '/img/logos/logo-name.svg'

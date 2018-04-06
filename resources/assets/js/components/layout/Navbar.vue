@@ -221,37 +221,6 @@
             }
         },
         mounted() {
-            Notification.requestPermission()
-            .then(function(result) {
-                if (result === "granted") {
-
-                    // var options = { tag : 'user_alerts' };
-                    //
-                    // navigator.serviceWorker.ready
-                    // .then(function(registration) {
-                    //     registration.getNotifications(options)
-                    //     .then(function(notifications) {
-                    //         // do something with your notifications
-                    //         console.log(notifications);
-                    //     })
-                    // });
-
-                    navigator.serviceWorker.ready
-                    .then(function(registration) {
-                        registration.showNotification('Vibration Sample', {
-                            body: 'Buzz! Buzz!',
-                            icon: '/img/icon/favicon-96x96.png',
-                            vibrate: [200, 100, 200, 100, 200, 100, 200],
-                            //tag: 'vibration-sample'
-                        });
-                    })
-
-                    navigator.serviceWorker.getRegistration()
-                    .then(function(reg) {
-                        reg.showNotification('Hello world!');
-                    });
-                }
-            });
             Echo.private('App.User.' + this.user.id)
                 .notification((e) => {
                     this.notifications.unshift({data:e});
@@ -265,7 +234,8 @@
                                 var options = {
                                     body: e.message.title,
                                     icon: '/img/icon/favicon-96x96.png',
-                                    badge: '/img/icon/favicon-16x16.png',
+                                    badge: '/img/icon/android-chrome-192x192.png',
+                                    vibrate: [200, 100, 200, 100, 200, 100, 200],
                                     image: e.message.userAvatarUrl,
                                 }
                                 if (e.message.imageUrl) {
