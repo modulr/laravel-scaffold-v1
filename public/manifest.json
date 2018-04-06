@@ -4,11 +4,6 @@
     "start_url": "/?launcher=true",
     "icons": [
         {
-            "src": "img/icon/favicon-96x96.png",
-            "type": "image/png",
-            "sizes": "96x96"
-        },
-        {
             "src": "img/icon/android-chrome-192x192.png",
             "type": "image/png",
             "sizes": "192x192"
@@ -16,5 +11,6 @@
     ],
     "background_color": "#FEAE3B",
     "theme_color": "#FEAE3B",
-    "display": "standalone"
+    "display": "standalone",
+    "orientation": "portrait"
 }

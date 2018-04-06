@@ -235,18 +235,19 @@
                                     body: e.message.title,
                                     icon: '/img/icon/favicon-96x96.png',
                                     badge: '/img/icon/android-chrome-192x192.png',
-                                    vibrate: [200, 100, 200, 100, 200, 100, 200],
-                                    image: e.message.userAvatarUrl,
+                                    vibrate: [100, 50, 100],
+                                    image: e.message.userAvatarUrl
                                 }
                                 if (e.message.imageUrl) {
                                     options.image = e.message.imageUrl;
                                 }
                                 reg.showNotification(e.message.userName, options);
                                 //new Notification(e.message.userName, options);
-                            });
+                            })
+
                         }
-                    });
-                });
+                    })
+                })
 
             // Echo.channel('news')
             //     .listen('StatusLiked', (e) => {
