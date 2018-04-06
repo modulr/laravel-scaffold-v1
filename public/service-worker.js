@@ -1,7 +1,7 @@
 var CACHE_NAME = 'modulr-cache-v1';
 var urlsToCache = [
   //'/',
-  //'/js/app.js',
+  '/js/app.js',
   '/css/app.css',
   '/img/icon/favicon-96x96.png',
   '/img/icon/android-chrome-192x192.png',
