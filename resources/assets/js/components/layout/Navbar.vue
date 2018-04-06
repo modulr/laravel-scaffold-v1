@@ -221,6 +221,37 @@
             }
         },
         mounted() {
+            Notification.requestPermission()
+            .then(function(result) {
+                if (result === "granted") {
+
+                    // var options = { tag : 'user_alerts' };
+                    //
+                    // navigator.serviceWorker.ready
+                    // .then(function(registration) {
+                    //     registration.getNotifications(options)
+                    //     .then(function(notifications) {
+                    //         // do something with your notifications
+                    //         console.log(notifications);
+                    //     })
+                    // });
+
+                    navigator.serviceWorker.ready
+                    .then(function(registration) {
+                        registration.showNotification('Vibration Sample', {
+                            body: 'Buzz! Buzz!',
+                            icon: '/img/icon/favicon-96x96.png',
+                            vibrate: [200, 100, 200, 100, 200, 100, 200],
+                            //tag: 'vibration-sample'
+                        });
+                    })
+
+                    navigator.serviceWorker.getRegistration()
+                    .then(function(reg) {
+                        reg.showNotification('Hello world!');
+                    });
+                }
+            });
             Echo.private('App.User.' + this.user.id)
                 .notification((e) => {
                     this.notifications.unshift({data:e});
@@ -240,8 +271,8 @@
                                 if (e.message.imageUrl) {
                                     options.image = e.message.imageUrl;
                                 }
-                                //reg.showNotification(e.message.userName, options);
-                                new Notification(e.message.userName, options);
+                                reg.showNotification(e.message.userName, options);
+                                //new Notification(e.message.userName, options);
                             });
                         }
                     });

@@ -46,32 +46,24 @@
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
+                //console.log('Service Worker and Push is supported')
                 navigator.serviceWorker.register('/service-worker.js')
-                .then(function(registration) {
-                    // Registration was successful
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, function(err) {
-                    // registration failed :(
-                    console.log('ServiceWorker registration failed: ', err);
+                .then(function(swReg) {
+                    console.log('Service Worker is registered', swReg)
+                }).catch(function(error) {
+                    console.error('Service Worker Error', error)
                 });
-            });
+            })
             window.addEventListener('beforeinstallprompt', function(e) {
-                // beforeinstallprompt Event fired
-
-                // e.userChoice will return a Promise.
-                // For more details read: https://developers.google.com/web/fundamentals/getting-started/primers/promises
                 e.userChoice.then(function(choiceResult) {
-
-                    console.log(choiceResult.outcome);
-
+                    console.log(choiceResult.outcome)
                     if(choiceResult.outcome == 'dismissed') {
-                        console.log('User cancelled home screen install');
-                    }
-                    else {
-                        console.log('User added to home screen');
+                        console.log('User cancelled home screen install')
+                    } else {
+                        console.log('User added to home screen')
                     }
                 });
-            });
+            })
         }
     </script>
 </head>

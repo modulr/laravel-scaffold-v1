@@ -1,7 +1,7 @@
 var CACHE_NAME = 'modulr-cache-v1';
 var urlsToCache = [
   //'/',
-  '/js/app.js',
+  //'/js/app.js',
   '/css/app.css',
   '/img/icon/apple-touch-icon-57x57.png',
   '/img/icon/favicon-96x96.png',
