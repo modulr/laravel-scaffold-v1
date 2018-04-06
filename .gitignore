@@ -15,5 +15,6 @@ yarn-error.log
 /public/js
 after.sh
 composer.lock
+package-lock.json
 aliases
 Vagrantfile
