@@ -454,7 +454,7 @@
 
                 var makeId = this.autopart.data.make.id
                 filteredArray = filteredArray.filter(function(item) {
-                    return String(item.make_id).indexOf(makeId) !== -1
+                    return item.make_id == makeId
                 })
 
                 return filteredArray;;
@@ -467,7 +467,7 @@
 
                 var makeId = this.filters.make.id
                 filteredArray = filteredArray.filter(function(item)  {
-                    return String(item.make_id).indexOf(makeId) !== -1
+                    return item.make_id == makeId
                 })
 
                 return filteredArray

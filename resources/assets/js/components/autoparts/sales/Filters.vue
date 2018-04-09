@@ -93,19 +93,6 @@ export default {
         Multiselect
     },
     computed: {
-        filteredModels () {
-            var filteredArray = this.lists.models
-
-            if (this.autopart.data.make.id != this.autopart.data.model.make_id)
-                this.autopart.data.model = {}
-
-            var makeId = this.autopart.data.make.id
-            filteredArray = filteredArray.filter(function(item) {
-                return String(item.make_id).indexOf(makeId) !== -1
-            })
-
-            return filteredArray;;
-        },
         filteredFiltersModels () {
             var filteredArray = this.lists.models
 
@@ -114,7 +101,7 @@ export default {
 
             var makeId = this.filters.make.id
             filteredArray = filteredArray.filter(function(item)  {
-                return String(item.make_id).indexOf(makeId) !== -1
+                return item.make_id == makeId
             })
 
             return filteredArray
