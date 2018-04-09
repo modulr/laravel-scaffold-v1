@@ -17,4 +17,8 @@
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # CHANGING THE MAXIMUM UPLOAD FILE SIZE
+    php_value upload_max_filesize 6M
+    php_value post_max_size 6M
 </IfModule>
