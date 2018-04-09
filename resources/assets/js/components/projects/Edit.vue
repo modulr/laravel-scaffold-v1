@@ -164,9 +164,9 @@ export default {
             .then(response => {
                 this.list.statuses = response.data;
             });
-        axios.get('/employees/all')
+        axios.get('/employees/allNoPaginate')
             .then(response => {
-                this.list.employees = response.data.data;
+                this.list.employees = response.data;
             });
     },
     methods: {

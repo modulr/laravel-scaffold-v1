@@ -243,6 +243,7 @@ Route::middleware('auth')->group(function () {
     // Employes
     Route::get('/employees', 'EmployeeController@index');
     Route::get('/employees/all', 'EmployeeController@all');
+    Route::get('/employees/allNoPaginate', 'EmployeeController@allNoPaginate');
     Route::post('/employees/store', 'EmployeeController@store');
     Route::put('/employees/update/{id}', 'EmployeeController@update');
     Route::delete('/employees/destroy/{id}', 'EmployeeController@destroy');

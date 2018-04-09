@@ -53,4 +53,9 @@ class EmployeeController extends Controller
     {
         return Employee::destroy($id);
     }
+
+    public function allNoPaginate()
+    {
+        return Employee::all();
+    }
 }
