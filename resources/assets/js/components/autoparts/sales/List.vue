@@ -24,9 +24,9 @@
                 </div>
             </div>
             <!-- List Autoparts -->
-            <div class="row autoparts-list" v-if="autoparts.data.length">
+            <div class="row autoparts-list" v-if="autoparts.length">
                 <div class="col-md-12">
-                    <div class="media" v-for="(item, index) in autoparts.data"
+                    <div class="media" v-for="(item, index) in autoparts"
                         @click="showAutopart(item)">
                         <div class="media-left">
                             <span class="label" :class="{
@@ -80,6 +80,12 @@
                 <i class="mdi mdi-directions-car" aria-hidden="true"></i>
                 <p class="lead">Don't exist Autoparts!!</p>
             </div>
+            <!-- Loading -->
+            <infinite-loading
+                @infinite="loadAutoparts"
+                spinner="waveDots"
+                ref="infiniteLoading">
+            </infinite-loading>
         </div>
         <!-- Modal Autopart -->
         <div class="modal right md autoparts-item" id="modalAutopart">
@@ -100,7 +106,7 @@
         <div class="modal left sm" id="modalFilters">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <autoparts-sales-filters @filterAutoparts="autoparts = $event"></autoparts-sales-filters>
+                    <autoparts-sales-filters @filterAutoparts="applyFilters"></autoparts-sales-filters>
                 </div>
             </div>
         </div>
@@ -127,18 +133,41 @@
 import AutopartsSalesFilters from './Filters.vue'
 import AutopartsSalesSearchQr from './SearchQr.vue'
 import AutopartsSalesItem from './Item.vue'
+import InfiniteLoading from 'vue-infinite-loading'
 export default {
     data () {
         return {
-            autoparts: {
-                data: []
-                // paginate info
-                // ...
+            filters: {},
+            autoparts: [],
+            pagination: {
+                current_page: 0
             },
             autopart: {}
         }
     },
+    components: {
+        InfiniteLoading
+    },
     methods: {
+        loadAutoparts ($state) {
+            var page = Number(this.pagination.current_page) + 1
+
+            axios.post(`/api/autoparts/filter?page=${page}`, this.filters)
+            .then(response => {
+                this.pagination = response.data
+                this.autoparts = this.autoparts.concat(response.data.data)
+
+                if (this.autoparts.length) {
+                    $state.loaded()
+
+                    if (this.pagination.current_page == this.pagination.last_page)
+                        $state.complete()
+
+                } else {
+                    $state.complete()
+                }
+            })
+        },
         showAutopart (autopart) {
             this.autopart = autopart
             $('#modalAutopart').modal('show')
@@ -146,11 +175,31 @@ export default {
         showFilters () {
             $('#modalFilters').modal('show')
         },
+        applyFilters (filters) {
+            this.filters = filters
+
+            axios.post(`/api/autoparts/filter`, this.filters)
+            .then(response => {
+                this.pagination = response.data
+                this.autoparts = response.data.data
+
+                if (this.autoparts.length) {
+                    this.$refs.infiniteLoading.stateChanger.reset()
+                    this.$refs.infiniteLoading.stateChanger.loaded()
+
+                    if (this.pagination.current_page == this.pagination.last_page)
+                        this.$refs.infiniteLoading.stateChanger.complete()
+
+                } else {
+                    this.$refs.infiniteLoading.stateChanger.complete()
+                }
+            })
+        },
         showSearchQR () {
             $('#modalSearchQR').modal('show')
         },
         updateStatus (autopart) {
-            this.autoparts.data.forEach(function(val){
+            this.autoparts.forEach(function(val){
                 if (val.id == autopart.id) {
                     val.status = autopart.status
                     val.status_id = autopart.status_id

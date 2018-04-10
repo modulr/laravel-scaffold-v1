@@ -85,8 +85,7 @@ export default {
                 notAvailable: false,
                 separated: true,
                 sold: false
-            },
-            autoparts: []
+            }
         }
     },
     components: {
@@ -109,7 +108,6 @@ export default {
     },
     mounted () {
         this.getLists()
-        this.applyFilters()
     },
     methods: {
         getLists () {
@@ -126,10 +124,7 @@ export default {
                 this.lists.years = response.data
             })
         },
-        applyFilters (e) {
-            if (e)
-                var btn = $(e.target).button('loading')
-
+        applyFilters () {
             var years = []
             if (this.filters.years.length) {
                 this.filters.years.forEach(function(val){
@@ -137,7 +132,7 @@ export default {
                 })
             }
 
-            axios.post('/api/autoparts/filter',{
+            var filters = {
                 make: this.filters.make,
                 model: this.filters.model,
                 years: years,
@@ -145,20 +140,13 @@ export default {
                 notAvailable: this.filters.notAvailable,
                 separated: this.filters.separated,
                 sold: this.filters.sold
-            })
-            .then(response => {
-                this.autoparts = response.data
-                this.$emit('filterAutoparts', this.autoparts)
+            }
 
-                if (e)
-                    btn.button('reset')
+            this.$emit('filterAutoparts', filters)
 
-                $('#modalFilters').modal('hide')
-            });
+            $('#modalFilters').modal('hide')
         },
-        clearFilters (e) {
-            var btn = $(e.target).button('loading')
-
+        clearFilters () {
             this.filters = {
                 make: {},
                 model: {},
@@ -169,13 +157,9 @@ export default {
                 sold: false
             }
 
-            axios.post('/api/autoparts/filter', this.filters)
-            .then(response => {
-                this.autoparts = response.data
-                this.$emit('filterAutoparts', this.autoparts)
-                btn.button('reset')
-                $('#modalFilters').modal('hide')
-            })
+            this.$emit('filterAutoparts', this.filters)
+
+            $('#modalFilters').modal('hide')
         }
     }
 }

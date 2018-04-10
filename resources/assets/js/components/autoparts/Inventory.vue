@@ -631,10 +631,13 @@
                 `<html>
                     <head>
                         <style>
-                            @page { margin: 0cm }
+                            @page {
+                                size: 2.4in 2.4in landscape;
+                                margin: 0cm;
+                            }
                             html, body {
-                                width: 86mm;
-                                height: 60mm;
+                                width: 62mm;
+                                height: 62mm;
                                 font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
                                 margin: .10em;
                                 padding: 0;
@@ -643,21 +646,21 @@
                                 width: 100%;
                             }
                             span {
-                                font-size:.7em;
+                                font-size:.8em;
                             }
                             img {
-                                heigth:3em;
-                                width:3em;
+                                heigth:6em;
+                                width:6em;
                             }
                             .origin {
                                 color: #fff;
                                 background-color: #f00;
-                                font-size:.5em;
+                                font-size:.6em;
                                 padding: .10em .5em;
                             }
                             .number {
-                                font-size:7.5em;
-                                line-height:.65em;
+                                font-size:9em;
+                                line-height:.7em;
                             }
 
                         </style>
