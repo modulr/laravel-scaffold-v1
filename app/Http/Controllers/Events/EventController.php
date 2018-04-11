@@ -214,8 +214,31 @@ class EventController extends Controller
         return $events;
     }
 
-    public function ad() {
+    public function attendingsByOwner()
+    {
 
-        return ['key' => "this debug ad"];
+      $events = Event::with('attendings', 'images')->where('owner_id', Auth::id())->get();
+      $attendings = array();
+      foreach ($events as $event) {
+        $_attendings = $event->attendings;
+        //dd($_attendings);
+        foreach ($_attendings as $attend) {
+          $_attend = $attend->toArray();
+          $_attend['name'] = $event->name;
+          $_attend['images'] = $event->images;
+          $_attend['attending_limit'] = $event->attending_limit;
+          $_attend['attendings'] = count($event->attendings);
+          $_oAttend = (object)$_attend;
+          
+          array_push($attendings, $_oAttend);
+          //$attendings += $_oAttend;
+          //array_push($attendings->attends, $_attend);
+          //$attendings->attends[] = $_attend;
+        }
+      }
+
+
+      return $attendings;
     }
+
 }

@@ -146,6 +146,7 @@ Route::middleware('auth')->group(function () {
             return view('events.event', ['id' => $id]);
         })->middleware('permission:read-events');
 
+        Route::get('/attendingsByOwner', 'EventController@attendingsByOwner')->middleware('permission:read-events');
         Route::get('/attendings', 'EventController@attendings')->middleware('permission:read-events');
         Route::get('/byOwner', 'EventController@byOwner')->middleware('permission:read-events');
         Route::get('/{id}', 'EventController@show')->middleware('permission:read-events');
