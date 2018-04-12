@@ -14,7 +14,7 @@
                             <div class="panel card">
                                 <div class="panel-heading">
                                     <div id="ribbon">
-                                        <div class="attend">
+                                        <div v-bind:class="[item.pivot.approved ? confirm : attend,'']">
                                             1</br>
                                             <span>Reservacion</span>
                                         </div>
@@ -62,9 +62,15 @@
                             <div class="panel card">
                                 <div class="panel-heading">
                                     <div id="ribbon">
-                                        <div class="attend">
-                                            1</br>
-                                            <span>Reservacion</span>
+                                        <div v-bind:class="[item.pivot.approved ? 'confirm' : 'attend','']">
+                                            <block v-if="!item.pivot.approved">
+                                                1</br>
+                                                <span>Reservacion</span>
+                                            </block>
+                                            <block v-if="item.pivot.approved">
+                                                </br>
+                                                <span>Confirmado</span>
+                                            </block>
                                         </div>
                                     </div>
                                     <a :href="'/platillos/'+item.id">
@@ -93,10 +99,10 @@
 
                                     <div class="row pull-right">
                                         <div class="col-lg-6">
-                                            <button type="button" class="btn btn-secondary btn-dark ">Rechazar</button>
+                                            <button v-if="!item.pivot.approved" type="button" class="btn btn-secondary btn-dark" @click="rejectEvent(item.event_id, item.id)">Rechazar</button>
                                         </div>
                                         <div class="col-lg-6">
-                                                <button type="button" class="btn btn-success">Confirmar</button>
+                                                <button type="button" :disabled="item.pivot.approved == 1" class="btn btn-success" @click="approveEvent(item.event_id, item.id)">Confirmar</button>
                                         </div>
                                     </div>
                                     
@@ -356,6 +362,26 @@
                     var btn = $(e.target).button('reset')
                 });
             },
+            approveEvent (id_event, id_user) {
+                axios.get('/events/approve/' + id_event + '/'+ id_user)
+                .then(response => {
+                    //this.eventEdit.images = response.data.images;
+                    console.log(response);
+                })
+                .catch(error => {
+                    this.error = error.response.data;
+                });
+            },
+            rejectEvent (id_event, id_user) {
+                axios.get('/events/reject/' + id_event + '/'+ id_user)
+                .then(response => {
+                    //this.eventEdit.images = response.data.images;
+                    console.log(response);
+                })
+                .catch(error => {
+                    this.error = error.response.data;
+                });
+            }
 
         }
     }

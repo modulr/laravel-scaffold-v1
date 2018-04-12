@@ -226,6 +226,7 @@ class EventController extends Controller
           $_attend = $attend->toArray();
           $_attend['name'] = $event->name;
           $_attend['images'] = $event->images;
+          $_attend['event_id'] = $event->id;
           $_attend['attending_limit'] = $event->attending_limit;
           $_attend['attendings'] = count($event->attendings);
           $_oAttend = (object)$_attend;
