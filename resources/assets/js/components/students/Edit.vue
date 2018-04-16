@@ -22,7 +22,7 @@
                     <br>
                 </div>
                 <div class="col-md-12 text-right">
-                    <span class="switch-text">Verificar</span>
+                    <span class="switch-text">Validado</span>
                     <label class="switch">
                         <input type="checkbox" v-model="student.data.verified">
                         <span class="slider round"></span>
