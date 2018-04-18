@@ -442,7 +442,7 @@ export default {
             })
         },
         registerStudent (e) {
-            $(e.target).button('loading')
+            var btn = $(e.target).button('loading')
 
             if (!this.student.data.have_studied)
                 this.student.data.have_studied = false;
@@ -459,7 +459,7 @@ export default {
                     html: true,
                     type: 'success'
                 })
-                $(e.target).button('reset')
+                btn.button('reset')
             })
             .catch(error => {
                 if (error.response.status == 400) {
@@ -469,8 +469,7 @@ export default {
                         html: true,
                         type: 'error'
                     })
-                }
-                if (error.response.status != 422) {
+                } else if (error.response.status != 422) {
                     swal({
                         title: 'Registro Fallido',
                         text: `Ocurrio un problema al momento de registrarte<br>Intentalo de nuevo, si el problema persiste contáctanos en <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a>`,
@@ -478,11 +477,8 @@ export default {
                         type: 'error'
                     })
                 }
-                if (error.response.status != 400 || error.response.status != 422) {
-                    this.student.data = {};
-                    this.student.error = error.response.data;
-                }
-                $(e.target).button('reset')
+                this.student.error = error.response.data;
+                btn.button('reset')
             });
         }
     }
