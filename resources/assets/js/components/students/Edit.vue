@@ -11,6 +11,8 @@
                         </a>
                     </div>
                     <div class="col-xs-6 controls text-right">
+                        <button type="button" class="btn btn-default"
+                                @click="deleteStudent">Borrar</button>
                         <button type="button" class="btn btn-success"
                                 @click="updateStudent">Guardar</button>
                     </div>
@@ -370,20 +372,54 @@ export default {
             });
         },
         updateStudent (e) {
-            $(e.target).button('loading')
+            var btn = $(e.target).button('loading')
             axios.put('/api/students/update/'+this.student.data.id, this.student.data)
             .then(response => {
                 this.student.error = {};
                 swal({
-                    title: 'Registro Actualizado',
-                    text: '¡El registro se actualizo correctamente!',
+                    title: 'Estudiante Actualizado',
+                    text: '¡El estudiante se actualizo correctamente!',
                     type: 'success'
                 })
-                $(e.target).button('reset')
+                btn.button('reset')
             })
             .catch(error => {
                 this.student.error = error.response.data;
-                $(e.target).button('reset')
+                btn.button('reset')
+            });
+        },
+        deleteStudent (e) {
+            var self = this;
+            var btn = $(e.target).button('loading')
+            swal({
+                title: "¿Estas seguro de eliminar el estudiante?",
+                text: "El estudiante se borrara definitivamente!",
+                type: "warning",
+                showLoaderOnConfirm: true,
+                showCancelButton: true,
+                closeOnConfirm: false
+            },
+            function(event) {
+                if (event) {
+                    axios.delete('/api/students/destroy/' + self.student.data.id)
+                    .then(response => {
+                        swal({
+                            title: "Registro borrado!",
+                            text: "El estudiante fue borrado.",
+                            type: "success",
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                        self.error = {};
+                        btn.button('reset')
+                        location.href = `/students`
+                    })
+                    .catch(error => {
+                        self.student.error = error.response.data;
+                        btn.button('reset')
+                    });
+                }
+                btn.button('reset')
             });
         }
     }

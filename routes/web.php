@@ -67,6 +67,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/all', 'StudentController@all');
             Route::get('/show/{id}', 'StudentController@show');
             Route::put('/update/{id}', 'StudentController@update');
+            Route::delete('/destroy/{id}', 'StudentController@destroy');
             Route::get('/export', 'StudentController@export');
         });
     });

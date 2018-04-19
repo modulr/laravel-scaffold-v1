@@ -165,6 +165,11 @@ class StudentController extends Controller
         });
     }
 
+    public function destroy($id)
+    {
+        return Student::destroy($id);
+    }
+
     public function export ()
     {
         $students = $this->all();
