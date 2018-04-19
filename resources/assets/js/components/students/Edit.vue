@@ -4,13 +4,13 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-xs-6 controls">
+                    <div class="col-xs-4 controls">
                         <a href="/students" class="btn btn-default">
                             <i class="fa fa-list"></i>
                             Estudiantes
                         </a>
                     </div>
-                    <div class="col-xs-6 controls text-right">
+                    <div class="col-xs-8 controls text-right">
                         <button type="button" class="btn btn-default"
                                 @click="deleteStudent">Borrar</button>
                         <button type="button" class="btn btn-success"
