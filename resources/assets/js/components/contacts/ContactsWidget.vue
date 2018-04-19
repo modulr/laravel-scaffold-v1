@@ -38,7 +38,7 @@
                             <h4>{{contactView.name}}</h4>
                             <a :href="`mailto:${contactView.email}`">{{contactView.email}}</a>
                         </div>
-                        <div class="modal-padding">
+                        <div>
                             <dl>
                                 <dd>Phone Number</dd>
                                 <dt v-if="contactView.profile_contact && contactView.profile_contact.length"
