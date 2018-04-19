@@ -23,11 +23,12 @@
         .modal-body,
         .modal-body {
             top: 65px;
-            padding-top: 30px;
-            padding-bottom: 40px;
+            padding-top: 25px;
+            padding-bottom: 95px;
             height: 100%;
-            max-height: calc(100vh - 65px);
+            //max-height: calc(100vh - 65px);
             overflow-y: auto;
+            background-color: $white;
         }
     }
 }
