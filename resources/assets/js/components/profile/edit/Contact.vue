@@ -1,7 +1,7 @@
 <template lang="html">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Contact</h3>
+            <h3 class="panel-title">Contacto</h3>
         </div>
         <div class="panel-body">
             <dl v-for="(contact, index) in user.profile_contact">
@@ -13,15 +13,21 @@
                         'fa-envelope': contact.type_id == 1,
                         'fa-phone': contact.type_id == 2,
                         'fa-mobile': contact.type_id == 3,
+                        'fa-whatsapp': contact.type_id == 4,
                         }" aria-hidden="true"></i> {{contact.contact}}
                 </dt>
             </dl>
             <hr>
             <form @submit.prevent>
                 <div class="row">
+                  <div class="col-md-6">
+
+                  </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group" :class="{'has-error': error.contact}">
-                            <input type="text" class="form-control" placeholder="example@modulr.io"
+                            <input type="text" class="form-control" placeholder="ejemplo@stb.io"
                                 v-model="contact.contact">
                             <span class="help-block" v-if="error.contact">{{error.contact[0]}}</span>
                         </div>
@@ -39,7 +45,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-primary" @click="storeContact">Add</button>
+                        <button type="button" class="btn btn-primary" @click="storeContact">Agregar</button>
                     </div>
                 </div>
             </form>

@@ -12,29 +12,21 @@
         <ul class="nav nav-pills nav-stacked">
             <li :class="{'active': activeLink == 'profile'}">
                 <a :href="'/profile/'+user.id+'/edit'">
-                    <i class="fa fa-fw fa-lg fa-user-circle-o" aria-hidden="true"></i> Profile
-                </a>
-            </li>
-            <li :class="{'active': activeLink == 'work'}">
-                <a :href="'/profile/'+user.id+'/work/edit'">
-                    <i class="fa fa-fw fa-lg fa-briefcase" aria-hidden="true"></i> Work
+                    <i class="fa fa-fw fa-lg fa-user-circle-o" aria-hidden="true"></i> Perfil
                 </a>
             </li>
             <li :class="{'active': activeLink == 'password'}">
                 <a :href="'/profile/'+user.id+'/password/edit'">
-                    <i class="fa fa-fw fa-lg fa-key" aria-hidden="true"></i> Password
+                    <i class="fa fa-fw fa-lg fa-key" aria-hidden="true"></i> Cambiar contraseña
                 </a>
             </li>
-            <li><a href="" @click.prevent="comingSoon"><i class="fa fa-fw fa-lg fa-sticky-note" aria-hidden="true"></i> Notes</a></li>
-            <li><a href="" @click.prevent="comingSoon"><i class="fa fa-fw fa-lg fa-folder" aria-hidden="true"></i> Documents</a></li>
-            <li><a href="" @click.prevent="comingSoon"><i class="fa fa-fw fa-lg fa-cog" aria-hidden="true"></i> Settings</a></li>
         </ul>
     </div>
 </template>
 
 <script>
     import comingSoon from '../../../mixins/comingSoon'
-    
+
     export default {
         mixins: [ comingSoon ],
         data () {

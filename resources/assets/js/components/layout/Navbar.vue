@@ -71,11 +71,11 @@
                                 <!-- Init Message  -->
                                 <div class="init-message" v-if="notifications.length == 0">
                                     <i class="fa fa-bell" aria-hidden="true"></i>
-                                    <p class="lead">Don't have notifications</p>
+                                    <p class="lead">No existen notificaciones</p>
                                 </div>
                             </li>
                             <li class="text-center">
-                                <a href="/notifications"><small>View all notifications</small></a>
+                                <a href="/notifications"><small>Ver todas las notificaciones</small></a>
                             </li>
                         </ul>
                     </lli>
@@ -93,29 +93,23 @@
                             <li class="divider"></li>
                             <li v-if="user.hasPermission['read-profile']">
                                 <a :href="'/profile/'+user.id">
-                                    <i class="fa fa-fw fa-user-circle-o"></i> Profile
+                                    <i class="fa fa-fw fa-user-circle-o"></i> Perfil
                                 </a>
                             </li>
                             <li v-if="user.hasPermission['update-profile']">
                                 <a :href="'/profile/'+user.id+'/edit'">
-                                    <i class="fa fa-fw fa-pencil"></i> Edit profile
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="https://modulr.slack.com" target="_blank">
-                                    <i class="fa fa-fw fa-slack"></i> Help
+                                    <i class="fa fa-fw fa-pencil"></i> Editar perfil
                                 </a>
                             </li>
                             <li>
-                                <a href="http://docs.modulr.io" target="_blank">
-                                    <i class="fa fa-fw fa-book"></i> Documentation
+                                <a href="">
+                                    <i class="fa fa-fw fa-facebook-official"></i> Share The Bread
                                 </a>
                             </li>
                             <li class="divider"></li>
                             <li>
                                 <a href="#" @click.prevent="logout">
-                                    <i class="fa fa-fw fa-sign-out"></i> Sign out
+                                    <i class="fa fa-fw fa-sign-out"></i> Salir
                                 </a>
                             </li>
                         </ul>

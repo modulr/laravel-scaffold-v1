@@ -6,37 +6,43 @@
         <div class="col-sm-9 profile-content">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Profile</h3>
+                    <h3 class="panel-title">Perfil</h3>
                 </div>
                 <div class="panel-body">
                     <form class="form-horizontal" @submit.prevent>
                         <div class="row">
                             <div class="col-sm-7">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">User ID</label>
+                                    <label class="col-md-3 control-label">Tu ID</label>
                                     <div class="col-md-9">
                                         <p class="form-control-static">{{user.id}}</p>
                                     </div>
                                 </div>
                                 <div class="form-group" :class="{'has-error': error.name}">
-                                    <label class="col-md-3 control-label">Name *</label>
+                                    <label class="col-md-3 control-label">Nombre *</label>
                                     <div class="col-md-9">
                                         <input type="text" class="form-control"
                                             v-model="user.name">
                                         <span class="help-block" v-if="error.name">{{error.name[0]}}</span>
                                     </div>
                                 </div>
-                                <div class="form-group" :class="{'has-error': error.email}">
-                                    <label class="col-md-3 control-label">E-mail *</label>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Edad</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control"
-                                            v-model="user.email">
-                                        <span class="help-block" v-if="error.email">{{error.email[0]}}</span>
+                                        <p class="form-control-static">{{user.age}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" :class="{'has-error': error.email}">
+                                    <label class="col-md-3 control-label">Acerca de tu experiencia *</label><br>
+                                    <div class="col-md-9">
+                                      <div class="form-group">
+                                        <textarea class="form-control" rows="6" id="comment" style="overflow-y"></textarea>
+                                      </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-9 col-md-offset-3">
-                                        <button type="button" class="btn btn-primary" @click="updateProfile">Save</button>
+                                        <button type="button" class="btn btn-primary" @click="updateProfile">Guardar</button>
                                     </div>
                                 </div>
                             </div>
@@ -56,13 +62,13 @@
                 </div>
             </div>
             <!-- personal -->
-            <profile-personal-edit :user="user"></profile-personal-edit>
+            <!-- <profile-personal-edit :user="user"></profile-personal-edit> -->
             <!-- contact -->
             <profile-contact-edit :user="user" id="contact"></profile-contact-edit>
             <!-- education -->
-            <profile-education-edit :user="user" id="education"></profile-education-edit>
+            <!-- <profile-education-edit :user="user" id="education"></profile-education-edit> -->
             <!-- family -->
-            <profile-family-edit :user="user" id="family"></profile-family-edit>
+            <!-- <profile-family-edit :user="user" id="family"></profile-family-edit> -->
             <!-- places -->
             <profile-place-edit :user="user" id="place"></profile-place-edit>
         </div>
