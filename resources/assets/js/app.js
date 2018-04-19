@@ -58,13 +58,20 @@ Vue.component('events', require('./components/events/Events.vue'));
 Vue.component('event', require('./components/events/Event.vue'));
 Vue.component('events-widget', require('./components/events/EventsWidget.vue'));
 // Autoparts
-Vue.component('autoparts-sales-list', require('./components/autoparts/sales/List.vue'));
+Vue.component('autoparts-list', require('./components/autoparts/List.vue'));
+Vue.component('autoparts-filters', require('./components/autoparts/Filters.vue'));
+Vue.component('autoparts-search-qr', require('./components/autoparts/SearchQr.vue'));
+
+Vue.component('autoparts-sales', require('./components/autoparts/sales/Sales.vue'));
 Vue.component('autoparts-sales-item', require('./components/autoparts/sales/Item.vue'));
-Vue.component('autoparts-sales-filters', require('./components/autoparts/sales/Filters.vue'));
-Vue.component('autoparts-sales-search-qr', require('./components/autoparts/sales/SearchQr.vue'));
-Vue.component('autoparts-inventory', require('./components/autoparts/Inventory.vue'));
-Vue.component('autoparts-lists', require('./components/autoparts/Lists.vue'));
-Vue.component('comments', require('./components/autoparts/Comments.vue'));
+
+Vue.component('autoparts-inventory', require('./components/autoparts/inventory/Inventory.vue'));
+Vue.component('autoparts-inventory-item', require('./components/autoparts/inventory/Item.vue'));
+Vue.component('autoparts-inventory-lists', require('./components/autoparts/inventory/InventoryLists.vue'));
+
+Vue.component('comments', require('./components/helpers/comments/Comments.vue'));
+Vue.component('activity', require('./components/helpers/activity/Activity.vue'));
+
 
 const app = new Vue({
     el: '#app'

@@ -12,7 +12,7 @@ Route::group(['namespace' => 'Autoparts'], function() {
     // API
     Route::group(['prefix' => 'api/autoparts'], function() {
         // Sales/Inventory Find
-        Route::get('/all', 'AutopartController@all')->middleware('permission:read-inventory|read-sales');
+        // Route::get('/all', 'AutopartController@all')->middleware('permission:read-inventory|read-sales');
         Route::post('/filter', 'AutopartController@filter')->middleware('permission:read-inventory|read-sales');
         Route::get('/show/{id}', 'AutopartController@show')->middleware('permission:read-inventory|read-sales');
         // Inventory CRUD

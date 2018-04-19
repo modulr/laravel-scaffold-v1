@@ -55,4 +55,9 @@ class Autopart extends Model
     {
         return $this->hasMany(AutopartComment::class);
     }
+
+    public function activity()
+    {
+        return $this->hasMany(AutopartActivity::class);
+    }
 }

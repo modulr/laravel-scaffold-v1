@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <autoparts-lists></autoparts-lists>
+    <autoparts-inventory-lists></autoparts-inventory-lists>
 @endsection

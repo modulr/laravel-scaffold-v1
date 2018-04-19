@@ -125,6 +125,16 @@ class CreateAutopartsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('autopart_activities', function (Blueprint $table) {
+            $table->increments('id');
+            $table->text('activity');
+            $table->integer('autopart_id')->unsigned();
+            $table->foreign('autopart_id')->references('id')->on('autoparts');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -138,6 +148,7 @@ class CreateAutopartsTable extends Migration
         // Autoparts
         Schema::dropIfExists('autopart_images');
         Schema::dropIfExists('autopart_comments');
+        Schema::dropIfExists('autopart_activities');
         Schema::dropIfExists('autopart_years');
         Schema::dropIfExists('autoparts');
         // Lists

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Autoparts\Autopart;
 use App\Models\Autoparts\AutopartImage;
+use App\Models\Autoparts\AutopartActivity;
 use App\Models\Autoparts\AutopartYear;
 use App\Models\Autoparts\AutopartListMake;
 use App\Models\Autoparts\AutopartListModel;
@@ -19,14 +20,14 @@ use Storage;
 
 class AutopartController extends Controller
 {
-    public function all ()
-    {
-        return Autopart::with(['make', 'model', 'years', 'origin', 'status', 'creator', 'images' => function ($query) {
-                            $query->orderBy('order', 'asc');
-                        }])
-                        ->orderBy('id', 'desc')
-                        ->paginate(50);
-    }
+    // public function all ()
+    // {
+    //     return Autopart::with(['make', 'model', 'years', 'origin', 'status', 'creator', 'images' => function ($query) {
+    //                         $query->orderBy('order', 'asc');
+    //                     }])
+    //                     ->orderBy('id', 'desc')
+    //                     ->paginate(50);
+    // }
 
     public function filter (Request $request)
     {
@@ -62,20 +63,54 @@ class AutopartController extends Controller
             $query->whereIn('status_id', $status);
 
         $autoparts = $query->orderBy('id', 'desc')
-                        ->paginate(50);
+                        ->paginate(20);
 
-        $autoparts->load(['make', 'model', 'years', 'origin', 'status', 'creator', 'images' => function ($query) {
-                            $query->orderBy('order', 'asc');
-                        }]);
+        $autoparts->load([
+            'make',
+            'model',
+            'years',
+            'origin',
+            'status',
+            'creator',
+            'editor',
+            'images' => function ($query) {
+                $query->orderBy('order', 'asc');
+            },
+            'comments' => function ($query) {
+                $query->orderBy('id', 'desc');
+            },
+            'activity' => function ($query) {
+                $query->orderBy('id', 'desc');
+            },
+            'comments.creator',
+            'activity.user'
+        ]);
 
         return $autoparts;
     }
 
     public function show ($id)
     {
-        return Autopart::with(['make', 'model', 'years', 'origin', 'status', 'creator', 'comments', 'comments.creator', 'images' => function ($query) {
-                        $query->orderBy('order', 'asc');
-                    }])->find($id);
+        return Autopart::with([
+            'make',
+            'model',
+            'years',
+            'origin',
+            'status',
+            'creator',
+            'editor',
+            'images' => function ($query) {
+                $query->orderBy('order', 'asc');
+            },
+            'comments' => function ($query) {
+                $query->orderBy('id', 'desc');
+            },
+            'activity' => function ($query) {
+                $query->orderBy('id', 'desc');
+            },
+            'comments.creator',
+            'activity.user'
+            ])->find($id);
     }
 
     public function store (Request $request)
@@ -177,6 +212,14 @@ class AutopartController extends Controller
         $autopart = Autopart::find($id);
         $autopart->status_id = $request->status_id;
         $autopart->save();
+
+        $autopart = $this->show($autopart->id);
+
+        AutopartActivity::create([
+            'activity' => 'marked as ' . $autopart->status->name,
+            'autopart_id' => $autopart->id,
+            'user_id' => $request->user()->id
+        ]);
 
         return $this->show($autopart->id);
     }

@@ -36,15 +36,6 @@
 
 .autoparts-item {
     .modal-body {
-        > div {
-            position: relative;
-        }
-        .label {
-            position: absolute;
-            right: -3px;
-            top: -3px;
-            z-index: 2;
-        }
         .swiper-container {
             margin-bottom: 25px;
             .swiper-slide {
@@ -97,6 +88,9 @@
                 font-size: 14em;
                 margin-top: .2em;
             }
+        }
+        p {
+            margin-bottom: 0;
         }
         h4 small {
             font-size: 12px;
