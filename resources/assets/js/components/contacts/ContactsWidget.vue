@@ -24,21 +24,22 @@
             </div>
         </div>
         <!-- Modal View Contact -->
-        <div class="modal fade" id="modalViewContact">
+        <div class="modal right sm" id="modalViewContact">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="modal-avatar">
+                        <div class="text-center">
                             <img class="avatar-md" :src="contactView.avatar_url">
                             <h4>{{contactView.name}}</h4>
                             <a :href="`mailto:${contactView.email}`">{{contactView.email}}</a>
                         </div>
-                        <div class="modal-padding">
+                        <hr>
+                        <div>
                             <dl>
                                 <dd>Phone Number</dd>
                                 <dt v-if="contactView.profile_contact && contactView.profile_contact.length"

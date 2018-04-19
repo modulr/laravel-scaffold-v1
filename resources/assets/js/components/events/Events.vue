@@ -76,9 +76,15 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success"
+                                v-if="user.hasPermission['create-events']"
+                                @click="storeEvent">Create
+                            </button>
+                        </div>
                     </div>
                     <div class="modal-body">
                         <div class="form-group" :class="{'has-error': error.name}">
@@ -96,8 +102,8 @@
                                 <span class="input-group-addon"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i></span>
                                 <input type="text" class="form-control" placeholder="Place"
                                     v-model="eventNew.place">
-                                <span class="help-block" v-if="error.place">{{error.place[0]}}</span>
                             </div>
+                            <span class="help-block" v-if="error.place">{{error.place[0]}}</span>
                         </div>
                         <div class="form-group" :class="{'has-error': error.date}">
                             <div class="input-group">
@@ -161,12 +167,6 @@
                             </div>
                         </draggable>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success pull-left"
-                                v-if="user.hasPermission['create-events']"
-                                @click="storeEvent">Create</button>
-                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -175,9 +175,20 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-default"
+                                    v-if="user.hasPermission['delete-events']"
+                                    @click="destroyEvent">
+                                <i class="fa fa-trash-o fa-lg"></i>
+                            </button>
+                            <button type="button" class="btn btn-primary"
+                                v-if="user.hasPermission['update-events']"
+                                @click="updateEvent">Save
+                            </button>
+                        </div>
                     </div>
                     <div class="modal-body">
                         <div class="form-group" :class="{'has-error': error.name}">
@@ -258,17 +269,6 @@
                                 </div>
                             </div>
                         </draggable>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary pull-left"
-                                v-if="user.hasPermission['update-events']"
-                                @click="updateEvent">Save</button>
-                        <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-default"
-                                v-if="user.hasPermission['delete-events']"
-                                @click="destroyEvent">
-                            <i class="fa fa-trash-o fa-lg"></i>
-                        </button>
                     </div>
                 </div>
             </div>
