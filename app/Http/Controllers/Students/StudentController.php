@@ -77,7 +77,12 @@ class StudentController extends Controller
             'store_email' => 'required|string|email'
         ]);
 
-        $student = Student::where('email', $request->email)->where('certificate_id', $request->certificate_id)->first();
+        $student = Student::
+            where('email', $request->email)
+            ->where('name', $request->name)
+            ->where('last_name', $request->last_name)
+            ->where('certificate_id', $request->certificate_id)
+            ->first();
 
         if ($student)
             return response()->json(['data' => 'duplicated'], 400);
