@@ -4,7 +4,8 @@
         <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3>Reservaciones</h3>
+                        <h3 v-if="attends.length">Reservaciones</h3>
+                        <h3 v-if="events.length">Lugares en mi mesa</h3>
                     </div>
                 </div>
 
@@ -14,9 +15,15 @@
                             <div class="panel card">
                                 <div class="panel-heading">
                                     <div id="ribbon">
-                                        <div v-bind:class="[item.pivot.approved ? confirm : attend,'']">
-                                            1</br>
-                                            <span>Reservacion</span>
+                                        <div v-bind:class="[item.pivot.approved ? 'confirm' : 'attend','']">
+                                                <span v-if="!item.pivot.approved">
+                                                    {{item.attendings.length}}</br>
+                                                    <span>Reservacion</span>
+                                                </span>
+                                                <span v-if="item.pivot.approved">
+                                                    </br>
+                                                    <span>Confirmado</span>
+                                                </span>
                                         </div>
                                     </div>
                                     <a :href="'/platillos/'+item.id">
@@ -43,7 +50,7 @@
                                     </ul>
 
                                     <div class="row pull-right">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6" v-if="item.pivot.approved != 1">
                                             <button type="button" class="btn btn-secondary btn-dark ">Cancelar</button>
                                         </div>
                                         <div class="col-lg-6">
@@ -63,14 +70,14 @@
                                 <div class="panel-heading">
                                     <div id="ribbon">
                                         <div v-bind:class="[item.pivot.approved ? 'confirm' : 'attend','']">
-                                            <block v-if="!item.pivot.approved">
+                                            <p v-if="!item.pivot.approved">
                                                 1</br>
                                                 <span>Reservacion</span>
-                                            </block>
-                                            <block v-if="item.pivot.approved">
+                                            </p>
+                                            <p v-if="item.pivot.approved">
                                                 </br>
                                                 <span>Confirmado</span>
-                                            </block>
+                                            </p>
                                         </div>
                                     </div>
                                     <a :href="'/platillos/'+item.id">
@@ -98,11 +105,11 @@
                                     </ul>
 
                                     <div class="row pull-right">
-                                        <div class="col-lg-6">
-                                            <button v-if="!item.pivot.approved" type="button" class="btn btn-secondary btn-dark" @click="rejectEvent(item.event_id, item.id)">Rechazar</button>
+                                        <div class="col-lg-6" v-if="!item.pivot.approved">
+                                            <button type="button" class="btn btn-secondary btn-dark" @click="rejectEvent(item.event_id, item.id)">Rechazar</button>
                                         </div>
                                         <div class="col-lg-6">
-                                                <button type="button" :disabled="item.pivot.approved == 1" class="btn btn-success" @click="approveEvent(item.event_id, item.id)">Confirmar</button>
+                                                <button type="button" :disabled="item.pivot.approved == 1" class="btn btn-success" @click="approveEvent(item.event_id, item.id, index)">Confirmar</button>
                                         </div>
                                     </div>
                                     
@@ -113,7 +120,7 @@
     
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3>Publicaciones</h3>
+                        <h3 v-if="myevents.length">Publicaciones</h3>
                     </div>
                 </div>
 
@@ -362,14 +369,15 @@
                     var btn = $(e.target).button('reset')
                 });
             },
-            approveEvent (id_event, id_user) {
+            approveEvent (id_event, id_user, index) {
                 axios.get('/events/approve/' + id_event + '/'+ id_user)
                 .then(response => {
                     //this.eventEdit.images = response.data.images;
-                    console.log(response);
+                    this.events[index] = response.data[0];
+                    app.$forceUpdate();
                 })
                 .catch(error => {
-                    this.error = error.response.data;
+                    console.log('approve error');
                 });
             },
             rejectEvent (id_event, id_user) {

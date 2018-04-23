@@ -186,9 +186,14 @@ class EventController extends Controller
         $event = Event::find($eventId);
         $event->attendings()->updateExistingPivot($userId, ['approved' => true]);
 
-        Mail::to(Auth::user())->send(new EventAttendApprove($event, Auth::user()));
+        //Mail::to(Auth::user())->send(new EventAttendApprove($event, Auth::user()));
+        $event->load('owner', 'images','attendings');
+        $_event = $event->toArray();
+        $_event['pivot'] = $event->attendings[0]->pivot;
+        $_events = array();
+        array_push($_events, (object)$_event);
 
-        return $event;
+        return $_events;
     }
 
     public function reject($eventId, $userId)
@@ -196,7 +201,7 @@ class EventController extends Controller
         $event = Event::find($eventId);
         $event->attendings()->detach($userId);
 
-        Mail::to(Auth::user())->send(new EventAttendReject($event, Auth::user()));
+        //Mail::to(Auth::user())->send(new EventAttendReject($event, Auth::user()));
 
         return $event;
     }
@@ -210,8 +215,18 @@ class EventController extends Controller
         })->get();
 
         $events->load('owner', 'images','attendings');
+
+        $_events = array();
+
+        foreach ($events as $event) { 
+            $_event = $event->toArray();
+            $_event['pivot'] = $event->attendings[0]->pivot;
+            $_oEvent = (object)$_event;
+          
+            array_push($_events, $_oEvent);
+        }        
         
-        return $events;
+        return $_events;
     }
 
     public function attendingsByOwner()
