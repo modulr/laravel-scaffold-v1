@@ -143,7 +143,7 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <label class="pull-right">
-                                                <bootstrap-toggle v-model="checked" :options="{ on: 'Activo', off: 'Inactivo' }"/>
+                                                <bootstrap-toggle  v-bind:id="'tg_'+item.id" :change="onChange(item.id, index)" v-model="item.enabled" :options="{ on: 'Activo', off: 'Inactivo'}"/>
                                             </label>
                                         </div>
                                     </div>
@@ -271,6 +271,7 @@
                 search: '',
                 events: [],
                 myevents: [],
+                myeventsorig: [],
                 attends:[],
                 checked:true,
                 eventEdit: {},
@@ -283,6 +284,11 @@
             this.getAttendsByOwner();
             console.log('Setup');
         },
+        events: {
+            input: function(event) {
+                console.log(event);
+            }
+        },
         methods: {
             getEvents () {
                 axios.get('/events/all')
@@ -293,7 +299,8 @@
             getOwnEvents () {
                 axios.get('/events/byOwner')
                 .then(response => {
-                    this.myevents = response.data.data
+                    this.myeventsorig = _.cloneDeep(response.data.data);
+                    this.myevents = response.data.data;                   
                 });
             },
             getAttends () {
@@ -389,6 +396,18 @@
                 .catch(error => {
                     this.error = error.response.data;
                 });
+            },
+            onChange(id_event, index) {
+                if(this.myevents[index].enabled != this.myeventsorig[index].enabled) {
+                    console.log('enable', id_event, index);
+                    axios.get('/events/enable/' + id_event)
+                        .then(response => {
+                            this.myeventsorig = _.cloneDeep(this.myevents);
+                        })
+                        .catch(error => {
+                            console.log('approve error');
+                        });                        
+                }
             }
 
         }

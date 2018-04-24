@@ -257,4 +257,15 @@ class EventController extends Controller
       return $attendings;
     }
 
+    public function toogleEnabled($id) {
+
+        $event = Event::with('owner', 'images')->find($id);
+        $new_status = !$event->enabled;
+
+        $event->enabled = $new_status;
+        $event->save();
+
+        return $event;
+    }
+
 }

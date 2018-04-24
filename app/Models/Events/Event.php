@@ -33,4 +33,8 @@ class Event extends Model
         // = in where is optional in this case
         return $this->belongsToMany(\App\User::class)->where('user_id', '=', $user_id);
     }
+
+    public function getEnabledAttribute($value) {
+        return (bool) $value;
+    }
 }

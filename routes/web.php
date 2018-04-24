@@ -157,6 +157,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/attend/{id}', 'EventController@attend')->middleware('permission:read-events');
         Route::get('/approve/{eventId}/{userId}', 'EventController@approve')->middleware('permission:update-events');
         Route::get('/reject/{eventId}/{userId}', 'EventController@reject')->middleware('permission:update-events');
+        Route::get('/enable/{id}', 'EventController@toogleEnabled')->middleware('permission:update-events');
        
 
         Route::post('/images/upload/temp', 'EventController@uploadImageTemp')->middleware('permission:create-news');
