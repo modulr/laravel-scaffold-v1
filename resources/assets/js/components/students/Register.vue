@@ -372,6 +372,7 @@ Nombre completo del padre o tutor Firma
 </template>
 
 <script>
+import moment from 'moment'
 import swal from 'sweetalert'
 import TheMask from 'vue-the-mask'
 export default {
@@ -453,9 +454,17 @@ export default {
                     data: {},
                     error: {}
                 }
+
+                var date = null;
+                if (moment().isBefore('2018-04-28')) {
+                    date = '7 de Mayo de 2018'
+                } else {
+                    date = '4 de Junio de 2018'
+                }
+
                 swal({
                     title: 'Registro Exitoso',
-                    text: `Validaremos tu información<br>Arranque de cursos 7 de Mayo de 2018<br>Cualquier duda contáctanos en <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a>`,
+                    text: `Validaremos tu información<br>Arranque de cursos ${date}<br>Cualquier duda contáctanos en <a href="mailto:uconstrurama@cemex.com">uconstrurama@cemex.com</a>`,
                     html: true,
                     type: 'success'
                 })
