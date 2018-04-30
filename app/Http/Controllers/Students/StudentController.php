@@ -136,6 +136,7 @@ class StudentController extends Controller
             'email' => 'required|string|email',
             'store_id' => 'required|integer',
             'verified' => 'boolean',
+            'discount' => 'boolean',
             'store.store_phone' => 'required|string|min:10|max:10',
             'store.store_email' => 'required|string|email'
         ]);
@@ -164,6 +165,7 @@ class StudentController extends Controller
             $student->email = $request->email;
             $student->store_id = $request->store_id;
             $student->verified = $request->verified;
+            $student->discount = $request->discount;
             $student->save();
 
             return response()->json(['data' => 'ok']);
@@ -199,6 +201,7 @@ class StudentController extends Controller
                 'Teléfono Fijo' => $value->phone,
                 'Correo electrónico' => $value->email,
                 'Validado' => ($value->verified) ? 'Si' : 'No',
+                'Beneficio Nuevo Construrama' => ($value->discount) ? 'Si' : 'No',
                 'Fecha registro' => $value->created_at,
                 'Numero Tienda' => $value->store->store_id,
                 'Construrama' => $value->store->name,

@@ -24,12 +24,18 @@
                     <br>
                 </div>
                 <div class="col-md-12 text-right">
+                    <span class="switch-text">Beneficio Nuevo Construrama</span>
+                    <label class="switch">
+                        <input type="checkbox" v-model="student.data.discount">
+                        <span class="slider round"></span>
+                    </label>
                     <span class="switch-text">Validado</span>
                     <label class="switch">
                         <input type="checkbox" v-model="student.data.verified">
                         <span class="slider round"></span>
                     </label>
                 </div>
+                <br>
                 <div class="col-md-6">
                     <div class="form-group" :class="{'has-error': student.error.name}">
                         <label><span class="text-danger">*</span> Nombre (s)</label>
