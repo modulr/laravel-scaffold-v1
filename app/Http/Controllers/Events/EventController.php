@@ -99,7 +99,7 @@ class EventController extends Controller
             'end_time' => 'nullable|after_or_equal:start_time',
         ]);
 
-        $event = Event::with('owner', 'images')->find($id);
+        $event = Event::with('owner', 'attendings', 'images')->find($id);
         $event->name = $request->name;
         $event->description = $request->description;
         $event->place = $request->place;
@@ -210,7 +210,7 @@ class EventController extends Controller
         })->get();
 
         $events->load('owner', 'images','attendings');
-        
+
         return $events;
     }
 
