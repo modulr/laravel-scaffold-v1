@@ -21,6 +21,7 @@ class EventController extends Controller
         return Event::with(['owner', 'images' => function ($query) {
                             $query->orderBy('order', 'asc');
                         }])
+                        ->where('enabled', 1)
                         ->orderBy('id', 'desc')
                         ->paginate(20);
     }
