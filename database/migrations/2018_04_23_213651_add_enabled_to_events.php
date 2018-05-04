@@ -14,8 +14,7 @@ class AddEnabledToEvents extends Migration
     public function up()
     {
       Schema::table('events', function($table) {
-        $value = 1;
-        $table->integer('enabled')->default($value);
+        $table->boolean('enabled')->default(true);
       });
     }
 
