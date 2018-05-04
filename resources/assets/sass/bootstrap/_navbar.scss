@@ -110,12 +110,14 @@
             }
         }
         ul {
+            padding-top: 0;
             padding-bottom: 0;
             li {
                 &.dropdown-header {
-                    text-align: center;
+                    padding: 0 15px;
                     p {
                         margin-bottom: 0;
+                        display: inline-block;
                     }
                 }
                 &.divider {
@@ -150,5 +152,8 @@
                 }
             }
         }
+    }
+    .user.open .dropdown-menu .dropdown-header {
+        padding: 0 5px;
     }
 }

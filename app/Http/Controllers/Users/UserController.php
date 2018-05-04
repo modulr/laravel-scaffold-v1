@@ -153,4 +153,14 @@ class UserController extends Controller
 
         return $user;
     }
+
+    public function uploadAvatar2(Request $request)
+    {
+        $upload = new Upload();
+        $avatar = $upload->upload($request->file, 'avatars/'.$request->id)->resize(200, 200)->getData();
+        $user = User::find($request->id);
+        $user->avatar = $avatar['basename'];
+        $user->save();
+        return $user;
+    }
 }

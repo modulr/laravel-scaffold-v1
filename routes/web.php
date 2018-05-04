@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
     // Users
     Route::group(['namespace' => 'Users'], function() {
         // Users
+        Route::post('/api/users/upload/avatar', 'UserController@uploadAvatar2')->middleware('permission:update-users');
         Route::group(['prefix' => 'users'], function() {
             Route::get('/', 'UserController@index')->middleware('permission:read-users');
             Route::get('/all', 'UserController@all')->middleware('permission:read-users');
@@ -73,31 +74,7 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    // Profile
-    Route::group(['namespace' => 'Profile', 'prefix' => 'profile'], function() {
-        Route::get('/{id}', 'ProfileController@profile');
-        Route::get('/{id}/edit', 'ProfileController@profileEdit');
-
-        Route::put('/personal/update/{id}', 'ProfileController@updatePersonal');
-
-        Route::post('/contact/store', 'ProfileController@storeContact');
-        Route::delete('/contact/destroy/{id}', 'ProfileController@destroyContact');
-
-        Route::post('/education/store', 'ProfileController@storeEducation');
-        Route::delete('/education/destroy/{id}', 'ProfileController@destroyEducation');
-
-        Route::post('/family/store', 'ProfileController@storeFamily');
-        Route::delete('/family/destroy/{id}', 'ProfileController@destroyFamily');
-
-        Route::post('/place/store', 'ProfileController@storePlace');
-        Route::delete('/place/destroy/{id}', 'ProfileController@destroyPlace');
-
-        Route::get('/{id}/work', 'ProfileController@work');
-        Route::get('/{id}/work/edit', 'ProfileController@workEdit');
-        Route::put('/work/update/{id}', 'ProfileController@updateWork');
-
-        Route::get('/{id}/password/edit', 'ProfileController@password');
-    });
+    require __DIR__ . '/profile/profile.php';
 
     // News
     Route::group(['namespace' => 'News', 'prefix' => 'news'], function() {
@@ -156,7 +133,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/attend/{id}', 'EventController@attend')->middleware('permission:read-events');
         Route::get('/approve/{eventId}/{userId}', 'EventController@approve')->middleware('permission:update-events');
         Route::get('/reject/{eventId}/{userId}', 'EventController@reject')->middleware('permission:update-events');
-       
+
 
         Route::post('/images/upload/temp', 'EventController@uploadImageTemp')->middleware('permission:create-news');
         Route::post('/images/upload/', 'EventController@uploadImage')->middleware('permission:update-news');
@@ -179,7 +156,7 @@ Route::middleware('auth')->group(function () {
             return view('events.mydesk');
         });
 
-        
+
     });
 
     Route::post('/paypal/checkout', 'PaypalController@getCheckout');

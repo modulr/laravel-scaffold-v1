@@ -6,12 +6,12 @@
         <div class="col-sm-9 profile-content">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Change password</h3>
+                    <h3 class="panel-title">Cambiar contraseña</h3>
                 </div>
                 <div class="panel-body">
                     <form class="form-horizontal" @submit.prevent>
                         <div class="form-group" :class="{'has-error': error.current}">
-                            <label class="col-sm-3 control-label">Current password *</label>
+                            <label class="col-sm-3 control-label">Contraseña actual *</label>
                             <div class="col-sm-9">
                                 <input type="password" class="form-control"
                                     v-model="password.current">
@@ -19,7 +19,7 @@
                             </div>
                         </div>
                         <div class="form-group" :class="{'has-error': error.password}">
-                            <label class="col-sm-3 control-label">New password *</label>
+                            <label class="col-sm-3 control-label">Nueva contraseña *</label>
                             <div class="col-sm-9">
                                 <input type="password" class="form-control"
                                     v-model="password.password">
@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <div class="form-group" :class="{'has-error': error.password_confirmation}">
-                            <label class="col-sm-3 control-label">Password confirmation *</label>
+                            <label class="col-sm-3 control-label">Confirmar contraseña *</label>
                             <div class="col-sm-9">
                                 <input type="password" class="form-control"
                                     v-model="password.password_confirmation">
@@ -36,7 +36,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-10 col-sm-offset-3">
-                                <button type="button" class="btn btn-primary" @click="updatePassword">Change password</button>
+                                <button type="button" class="btn btn-primary" @click="updatePassword">Guardar</button>
                             </div>
                         </div>
                     </form>
@@ -64,7 +64,7 @@ export default {
     methods: {
         updatePassword: function (e) {
             var btn = $(e.target).button('loading')
-            axios.put('/users/updatePassword/'+this.user.id, this.password)
+            axios.put('/api/users/updatePassword/'+this.user.id, this.password)
             .then(response => {
                 this.password = {};
                 this.error = {};

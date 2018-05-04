@@ -1,7 +1,7 @@
 <template lang="html">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Contact</h3>
+            <h3 class="panel-title">Contacto</h3>
         </div>
         <div class="panel-body">
             <dl v-for="(contact, index) in user.profile_contact">
@@ -21,7 +21,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group" :class="{'has-error': error.contact}">
-                            <input type="text" class="form-control" placeholder="example@modulr.io"
+                            <input type="text" class="form-control" placeholder="ejemplo@sharedebread.com"
                                 v-model="contact.contact">
                             <span class="help-block" v-if="error.contact">{{error.contact[0]}}</span>
                         </div>
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-primary" @click="storeContact">Add</button>
+                        <button type="button" class="btn btn-primary" @click="storeContact">Agregar</button>
                     </div>
                 </div>
             </form>
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import swal from 'sweetalert'
+
 export default {
     data() {
         return {
@@ -62,7 +64,7 @@ export default {
     },
     props: ['user'],
     mounted() {
-        axios.get('/list/contact')
+        axios.get('/api/profile/lists/contact')
         .then(response => {
             this.list.contacts = response.data;
         });
@@ -71,7 +73,7 @@ export default {
         storeContact: function (e) {
             var btn = $(e.target).button('loading')
             this.contact.user_id = this.user.id;
-            axios.post('/profile/contact/store', this.contact)
+            axios.post('/api/profile/contact/store', this.contact)
             .then(response => {
                 this.user.profile_contact.push(response.data);
                 this.contact.contact = null;
@@ -88,28 +90,27 @@ export default {
             swal({
                 title: "Are you sure?",
                 text: "You will not be able to recover this contact!",
-                type: "warning",
-                showLoaderOnConfirm: true,
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-            },
-            function(){
-                axios.delete('/profile/contact/destroy/' + contactId)
-                .then(response => {
-                    self.user.profile_contact.splice(index, 1);
-                    swal({
-                        title: "Deleted!",
-                        text: "The contact has been deleted.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
+                icon: "warning",
+                buttons: true
+            })
+            .then((value) => {
+                if (value) {
+                    axios.delete('/api/profile/contact/destroy/' + contactId)
+                    .then(response => {
+                        self.user.profile_contact.splice(index, 1);
+                        swal({
+                            title: "Deleted!",
+                            text: "The contact has been deleted.",
+                            icon: "success",
+                            buttons: false,
+                            timer: 1000
+                        });
+                        self.error = {};
+                    })
+                    .catch(error => {
+                        self.error = error.response.data;
                     });
-                    self.error = {};
-                })
-                .catch(error => {
-                    self.error = error.response.data;
-                });
+                }
             });
         }
     }

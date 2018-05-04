@@ -11,45 +11,28 @@ class ProfileListsTableSeeder extends Seeder
      */
     public function run()
     {
-        // Genders
-        DB::table('list_genders')->insert([
-            ['title' => 'female'],
-            ['title' => 'male']
-        ]);
-        // Relationsships
-        DB::table('list_relationships')->insert([
-            ['title' => 'single'],
-            ['title' => 'married'],
-            ['title' => 'commited'],
-            ['title' => 'separate'],
-            ['title' => 'divorced'],
-            ['title' => 'widower']
-        ]);
-        // Relations
-        DB::table('list_relations')->insert([
-            ['title' => 'father'],
-            ['title' => 'mother'],
-            ['title' => 'son'],
-            ['title' => 'daughter'],
-            ['title' => 'brother'],
-            ['title' => 'sister'],
-            ['title' => 'wife'],
-            ['title' => 'husband'],
-        ]);
-        // Contacts
-        DB::table('list_contacts')->insert([
+        // Lists
+        DB::table('profile_list_contacts')->insert([
             ['title' => 'mail'],
             ['title' => 'phone'],
             ['title' => 'cellphone']
         ]);
-        // Professions
-        DB::table('list_professions')->insert([
-            ['title' => 'Developer'],
-            ['title' => 'Designer'],
-            ['title' => 'Software Architect']
+
+        DB::table('profile_list_departments')->insert([
+            ['title' => 'Accounting and Finance'],
+            ['title' => 'Human Resource Management'],
+            ['title' => 'Marketing'],
+            ['title' => 'Purchasing'],
+            ['title' => 'Production'],
+            ['title' => 'Research and Development'],
         ]);
-        // Positions
-        DB::table('list_positions')->insert([
+
+        DB::table('profile_list_genders')->insert([
+            ['title' => 'female'],
+            ['title' => 'male']
+        ]);
+
+        DB::table('profile_list_positions')->insert([
             ['title' => 'SEO'],
             ['title' => 'Digital Marketing Manager'],
             ['title' => 'Social Media Manager'],
@@ -64,14 +47,31 @@ class ProfileListsTableSeeder extends Seeder
             ['title' => 'Devops Manager']
 
         ]);
-        // Departments
-        DB::table('list_departments')->insert([
-            ['title' => 'Accounting and Finance'],
-            ['title' => 'Human Resource Management'],
-            ['title' => 'Marketing'],
-            ['title' => 'Purchasing'],
-            ['title' => 'Production'],
-            ['title' => 'Research and Development'],
+
+        DB::table('profile_list_professions')->insert([
+            ['title' => 'Developer'],
+            ['title' => 'Designer'],
+            ['title' => 'Software Architect']
+        ]);
+
+        DB::table('profile_list_relations')->insert([
+            ['title' => 'father'],
+            ['title' => 'mother'],
+            ['title' => 'son'],
+            ['title' => 'daughter'],
+            ['title' => 'brother'],
+            ['title' => 'sister'],
+            ['title' => 'wife'],
+            ['title' => 'husband'],
+        ]);
+
+        DB::table('profile_list_relationships')->insert([
+            ['title' => 'single'],
+            ['title' => 'married'],
+            ['title' => 'commited'],
+            ['title' => 'separate'],
+            ['title' => 'divorced'],
+            ['title' => 'widower']
         ]);
     }
 }
