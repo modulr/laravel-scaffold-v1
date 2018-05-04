@@ -97,6 +97,6 @@ class User extends Authenticatable
 
     public function events()
     {
-        return $this->hasMany(\App\Models\Events\Event::class);
+        return $this->hasMany(\App\Models\Events\Event::class, 'owner_id');
     }
 }
