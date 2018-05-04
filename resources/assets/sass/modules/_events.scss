@@ -152,6 +152,27 @@
             padding-bottom: 40px;
         }
     }
+    .fa {
+        padding: 10px;
+        font-size: 19px;
+        width: 38px;
+        border-radius: 50%;
+        text-decoration: none;
+        text-align: center;
+        margin: 5px 2px;
+        &.fa-facebook {
+            background: #3B5998;
+            color: white;
+        }
+        &.fa-twitter {
+            background: #55ACEE;
+            color: white;
+        }
+        &.fa-instagram {
+            background: #f40083;
+            color: white;
+        }
+    }
 }
 
 .row-events {
