@@ -5,6 +5,23 @@
     }
 }
 
+.vue-clip-avatar {
+    display: block;
+    div {
+        display: block;
+    }
+    .dz-message {
+        position: relative;
+        text-align: center;
+        .fa-stack {
+            cursor: pointer;
+            position: absolute;
+            bottom: 0;
+            margin-left: -35px;
+        }
+    }
+}
+
 .vue-clip-queue {
     .media-left {
         .media-object {
