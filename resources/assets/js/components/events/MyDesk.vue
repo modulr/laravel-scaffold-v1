@@ -65,7 +65,7 @@
 
                 <!--Own Attends-->
                 <div class="row row-events">
-                        <div class="col-xs-12 col-sm-4 col-md-3" v-if="events.length" v-for="(item, index) in events">
+                        <div class="col-xs-12 col-sm-4 col-md-3" v-if="events.length" v-for="(item, index) in events" v-bind="item">
                             <div class="panel card">
                                 <div class="panel-heading">
                                     <div id="ribbon">
@@ -381,7 +381,7 @@
                 .then(response => {
                     //this.eventEdit.images = response.data.images;
                     this.events[index] = response.data[0];
-                    app.$forceUpdate();
+                    this.$forceUpdate();
                 })
                 .catch(error => {
                     console.log('approve error');
