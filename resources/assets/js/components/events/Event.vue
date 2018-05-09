@@ -29,8 +29,12 @@
                                     <h4 class="media-heading">{{event.name}}</h4>
                                     <p class="lead">{{event.description}}</p>
                                     <p class="lead" v-if="showPaidMsg || showAttendingsList"><i class="fa fa-fw fa-map-marker fa-lg" aria-hidden="true"></i> {{event.place}}</p>
-                                    <p if="event.date || event.start_time || event.end_time">
+                                    <p>
+                                        <i class="fa fa-calendar-check-o fa-lg" aria-hidden="true"></i>
                                         <span v-if="event.date">{{event.date | moment('LL')}}.</span>
+                                    </p>
+                                    <p>
+                                        <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i>
                                         <span v-if="event.start_time">
                                             <small class="text-muted">De </small>{{'2018-01-01 '+event.start_time | moment('h:mm a')}}
                                         </span>
@@ -78,7 +82,7 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                            <h1 class="text-center">${{event.price}}</h1>
+                            <h1 class="text-center">{{event.price | currency}}</h1>
                         </div>
                         <div class="panel-footer text-center">
                             <a href="#" class="btn btn-success" @click.prevent="attend" v-if="showAttendButton">

@@ -99,7 +99,7 @@ class EventController extends Controller
             'end_time' => 'nullable|after_or_equal:start_time',
         ]);
 
-        $event = Event::with('owner', 'images')->find($id);
+        $event = Event::with('owner', 'attendings', 'images')->find($id);
         $event->name = $request->name;
         $event->description = $request->description;
         $event->place = $request->place;
@@ -218,14 +218,14 @@ class EventController extends Controller
 
         $_events = array();
 
-        foreach ($events as $event) { 
+        foreach ($events as $event) {
             $_event = $event->toArray();
             $_event['pivot'] = $event->attendings[0]->pivot;
             $_oEvent = (object)$_event;
-          
+
             array_push($_events, $_oEvent);
-        }        
-        
+        }
+
         return $_events;
     }
 
@@ -245,7 +245,7 @@ class EventController extends Controller
           $_attend['attending_limit'] = $event->attending_limit;
           $_attend['attendings'] = count($event->attendings);
           $_oAttend = (object)$_attend;
-          
+
           array_push($attendings, $_oAttend);
           //$attendings += $_oAttend;
           //array_push($attendings->attends, $_attend);

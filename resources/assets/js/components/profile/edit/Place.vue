@@ -1,7 +1,7 @@
 <template lang="html">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Place</h3>
+            <h3 class="panel-title">Ubicación</h3>
         </div>
         <div class="panel-body">
             <dl v-for="(place, index) in user.profile_place">
@@ -21,7 +21,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group" :class="{'has-error': error.place}">
-                            <input type="text" class="form-control" placeholder="San Francisco"
+                            <input type="text" class="form-control" placeholder="CDMX"
                                 v-model="place.place">
                             <span class="help-block" v-if="error.place">{{error.place[0]}}</span>
                         </div>
@@ -30,13 +30,13 @@
                         <div class="form-group">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" v-model="place.currently"> Currently
+                                    <input type="checkbox" v-model="place.currently"> Actual
                                 </label>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-primary" @click="storePlace">Add</button>
+                        <button type="button" class="btn btn-primary" @click="storePlace">Agregar</button>
                     </div>
                 </div>
             </form>
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import swal from 'sweetalert'
+
 export default {
     data() {
         return {
@@ -59,7 +61,7 @@ export default {
             this.place.user_id = this.user.id;
             if(!this.place.currently)
                 this.place.currently = 0;
-            axios.post('/profile/place/store', this.place)
+            axios.post('/api/profile/place/store', this.place)
             .then(response => {
                 this.user.profile_place.push(response.data);
                 this.place = {};
@@ -76,28 +78,27 @@ export default {
             swal({
                 title: "Are you sure?",
                 text: "You will not be able to recover this place!",
-                type: "warning",
-                showLoaderOnConfirm: true,
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-            },
-            function(){
-                axios.delete('/profile/place/destroy/' + placeId)
-                .then(response => {
-                    self.user.profile_place.splice(index, 1);
-                    swal({
-                        title: "Deleted!",
-                        text: "The place has been deleted.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
+                icon: "warning",
+                buttons: false,
+            })
+            .then((value) => {
+                if (value) {
+                    axios.delete('/api/profile/place/destroy/' + placeId)
+                    .then(response => {
+                        self.user.profile_place.splice(index, 1);
+                        swal({
+                            title: "Deleted!",
+                            text: "The place has been deleted.",
+                            icon: "success",
+                            buttons: false,
+                            timer: 1000
+                        });
+                        self.error = {};
+                    })
+                    .catch(error => {
+                        self.error = error.response.data;
                     });
-                    self.error = {};
-                })
-                .catch(error => {
-                    self.error = error.response.data;
-                });
+                }
             });
         }
     }

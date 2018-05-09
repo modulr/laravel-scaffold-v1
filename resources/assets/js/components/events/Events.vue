@@ -8,7 +8,7 @@
                     <div class="col-sm-4 hidden-xs">
                         <p class="lead">Cerca de ti</p>
                     </div>
-                    <div class="col-sm-4 text-center">
+                    <div class="col-sm-4 col-sm-offset-4 text-center">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" placeholder="Buscar" v-model="search">
@@ -24,7 +24,7 @@
             </div>
             <!-- List Events -->
             <div class="row row-events">
-                <div class="col-xs-12 col-sm-4 col-md-3" v-if="events.length" v-for="(item, index) in events">
+                <div class="col-xs-12 col-sm-4" v-if="events.length" v-for="(item, index) in events">
                     <div class="panel card">
                         <div class="panel-heading">
                             <a :href="'/platillos/'+item.id">
@@ -32,12 +32,17 @@
                             </a>
                         </div>
                         <div class="panel-body">
-                            <img class="avatar-sm" :src="item.owner.avatar_url">
-                            <h3>{{item.name}}</h3>
-                            <p v-show="item.description">{{item.description}}</p>
-                            <div v-show="item.date || item.start_time || item.end_time">
-                                <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i>
+                            <a :href="'/profile/'+item.owner.id">
+                                <img class="avatar-sm" :src="item.owner.avatar_url">
+                            </a>
+                            <h3>{{item.name | truncate(25)}}</h3>
+                            <p v-show="item.description">{{item.description | truncate(80)}}</p>
+                            <div>
+                                <i class="fa fa-calendar-check-o fa-lg" aria-hidden="true"></i>
                                 <span v-if="item.date">{{item.date | moment('LL')}}.</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i>
                                 <span v-if="item.start_time">
                                     <small class="text-muted">De </small>{{'2018-01-01 '+item.start_time | moment('h:mm a')}}
                                 </span>
@@ -64,6 +69,7 @@
 
 <script>
     import moment from 'moment';
+    import Vue2Filters from 'vue2-filters'
 
     export default {
         data() {

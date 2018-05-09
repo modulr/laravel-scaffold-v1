@@ -20,11 +20,11 @@ class ProfileFamily extends Model
 
     public function gender()
     {
-        return $this->belongsTo(\App\Models\Profile\ListGender::class);
+        return $this->belongsTo(\App\Models\Profile\ProfileListGender::class);
     }
 
     public function relation()
     {
-        return $this->belongsTo(\App\Models\Profile\ListRelation::class);
+        return $this->belongsTo(\App\Models\Profile\ProfileListRelation::class);
     }
 }

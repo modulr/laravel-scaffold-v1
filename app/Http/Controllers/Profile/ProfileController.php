@@ -44,7 +44,27 @@ class ProfileController extends Controller
             'profileWork.position'
             )->find($id);
 
+        if (!Auth::user()->hasPermission('update-all-profile') && Auth::user()->id != $user->id)
+            return redirect('dashboard');
+
         return view('profile.edit.profile', ['user' => $user]);
+    }
+
+    public function updateProfile(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'string|required',
+            'age' => 'string|nullable',
+            'description' => 'string|nullable'
+        ]);
+
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->age = $request->age;
+        $user->description = $request->description;
+        $user->save();
+
+        return $user;
     }
 
     public function updatePersonal(Request $request, $id)
@@ -52,8 +72,8 @@ class ProfileController extends Controller
         $this->validate($request, [
             'birthday' => 'date|nullable',
             'place_of_birth' => 'string|nullable',
-            'gender_id' => 'integer',
-            'relationship_id' => 'integer',
+            'gender_id' => 'integer|nullable',
+            'relationship_id' => 'integer|nullable',
             'rfc' => 'alpha_num|nullable',
             'curp' => 'alpha_num|nullable',
             'nss' => 'alpha_num|nullable',
@@ -183,17 +203,20 @@ class ProfileController extends Controller
             'profileWork.boss'
             )->find($id);
 
+        if (!Auth::user()->hasPermission('update-all-profile') && Auth::user()->id != $user->id)
+            return redirect('dashboard');
+
         return view('profile.edit.work', ['user' => $user]);
     }
 
     public function updateWork(Request $request, $id)
     {
         $this->validate($request, [
-            'profession_id' => 'integer',
-            'position_id' => 'integer',
-            'department_id' => 'integer',
-            'boss_id' => 'integer',
-            'starting_from' => 'date',
+            'profession_id' => 'integer|nullable',
+            'position_id' => 'integer|nullable',
+            'department_id' => 'integer|nullable',
+            'boss_id' => 'integer|nullable',
+            'starting_from' => 'date|nullable',
         ]);
 
         $personal = ProfileWork::find($id);
@@ -210,6 +233,9 @@ class ProfileController extends Controller
     public function password(Request $request, $id)
     {
         $user = User::find($id);
+
+        if (!Auth::user()->hasPermission('update-all-profile') && Auth::user()->id != $user->id)
+            return redirect('dashboard');
 
         return view('profile.edit.password', ['user' => $user]);
     }

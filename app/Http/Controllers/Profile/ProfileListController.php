@@ -4,48 +4,48 @@ namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Profile\ListContact;
-use App\Models\Profile\ListDepartment;
-use App\Models\Profile\ListGender;
-use App\Models\Profile\ListPosition;
-use App\Models\Profile\ListProfession;
-use App\Models\Profile\ListRelation;
-use App\Models\Profile\ListRelationship;
+use App\Models\Profile\ProfileListContact;
+use App\Models\Profile\ProfileListDepartment;
+use App\Models\Profile\ProfileListGender;
+use App\Models\Profile\ProfileListPosition;
+use App\Models\Profile\ProfileListProfession;
+use App\Models\Profile\ProfileListRelation;
+use App\Models\Profile\ProfileListRelationship;
 
 class ProfileListController extends Controller
 {
     public function gender()
     {
-        return ListGender::get();
+        return ProfileListGender::get();
     }
 
     public function relationship()
     {
-        return ListRelationship::get();
+        return ProfileListRelationship::get();
     }
 
     public function relation()
     {
-        return ListRelation::get();
+        return ProfileListRelation::get();
     }
 
     public function contact()
     {
-        return ListContact::get();
+        return ProfileListContact::get();
     }
 
     public function profession()
     {
-        return ListProfession::get();
+        return ProfileListProfession::get();
     }
 
     public function position()
     {
-        return ListPosition::get();
+        return ProfileListPosition::get();
     }
 
     public function department()
     {
-        return ListDepartment::get();
+        return ProfileListDepartment::get();
     }
 }

@@ -5,7 +5,7 @@
         </div>
         <div class="panel-body">
             <dl v-for="(education, index) in user.profile_education">
-                <a href="" class="btn btn-link pull-right" @click="destroyEducation(education.id, index)">
+                <a href="" class="btn btn-link pull-right" @click.prevent="destroyEducation(education.id, index)">
                     <i class="fa fa-trash"></i>
                 </a>
                 <dt>{{education.title}} - {{education.school_name}}</dt>
@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import swal from 'sweetalert'
+
 export default {
     data() {
         return {
@@ -67,7 +69,7 @@ export default {
         storeEducation: function (e) {
             var btn = $(e.target).button('loading')
             this.education.user_id = this.user.id;
-            axios.post('/profile/education/store', this.education)
+            axios.post('/api/profile/education/store', this.education)
             .then(response => {
                 this.user.profile_education.push(response.data);
                 this.education = {};
@@ -84,28 +86,27 @@ export default {
             swal({
                 title: "Are you sure?",
                 text: "You will not be able to recover this education!",
-                type: "warning",
-                showLoaderOnConfirm: true,
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-            },
-            function(){
-                axios.delete('/profile/education/destroy/' + educationId)
-                .then(response => {
-                    self.user.profile_education.splice(index, 1);
-                    swal({
-                        title: "Deleted!",
-                        text: "The education has been deleted.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
+                icon: "warning",
+                buttons: false
+            })
+            .then((value) => {
+                if (value) {
+                    axios.delete('/api/profile/education/destroy/' + educationId)
+                    .then(response => {
+                        self.user.profile_education.splice(index, 1);
+                        swal({
+                            title: "Deleted!",
+                            text: "The education has been deleted.",
+                            icon: "success",
+                            buttons: false,
+                            timer: 1000
+                        });
+                        self.error = {};
+                    })
+                    .catch(error => {
+                        self.error = error.response.data;
                     });
-                    self.error = {};
-                })
-                .catch(error => {
-                    self.error = error.response.data;
-                });
+                }
             });
         }
     }

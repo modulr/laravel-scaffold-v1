@@ -20,17 +20,17 @@ class ProfileWork extends Model
 
     public function profession()
     {
-        return $this->belongsTo(\App\Models\Profile\ListProfession::class);
+        return $this->belongsTo(\App\Models\Profile\ProfileListProfession::class);
     }
 
     public function position()
     {
-        return $this->belongsTo(\App\Models\Profile\ListPosition::class);
+        return $this->belongsTo(\App\Models\Profile\ProfileListPosition::class);
     }
 
     public function department()
     {
-        return $this->belongsTo(\App\Models\Profile\ListDepartment::class);
+        return $this->belongsTo(\App\Models\Profile\ProfileListDepartment::class);
     }
 
     public function boss()

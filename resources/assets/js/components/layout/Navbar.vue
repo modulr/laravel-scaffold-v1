@@ -18,7 +18,7 @@
                                 <a href="/dashboard">
                                     <i class="mdi mdi-dashboard mdi-3x"></i>
                                     <br>
-                                    <span>Dashboard</span>
+                                    <span>Inicio</span>
                                 </a>
                             </li>
                             <li :class="{'active': activeLink == 'platillos'}" v-if="user.hasPermission['read-news']">
@@ -40,7 +40,7 @@
                                 <a href="/users">
                                     <i class="mdi mdi-people mdi-3x"></i>
                                     <br>
-                                    <span>Users</span>
+                                    <span>Usuarios</span>
                                 </a>
                             </li>
                         </ul>
@@ -71,11 +71,11 @@
                                 <!-- Init Message  -->
                                 <div class="init-message" v-if="notifications.length == 0">
                                     <i class="fa fa-bell" aria-hidden="true"></i>
-                                    <p class="lead">Don't have notifications</p>
+                                    <p class="lead">No existen notificaciones</p>
                                 </div>
                             </li>
                             <li class="text-center">
-                                <a href="/notifications"><small>View all notifications</small></a>
+                                <a href="/notifications"><small>Ver todas las notificaciones</small></a>
                             </li>
                         </ul>
                     </lli>
@@ -86,9 +86,19 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li class="dropdown-header">
-                                <p class="lead">{{user.name}}</p>
-                                <span>{{user.email}}</span>
+                            <li v-if="user.hasPermission['read-profile']">
+                                <a :href="'/profile/'+user.id">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <img :src="user.avatar_url" class="img-xs">
+                                    </div>
+                                    <div class="media-body">
+                                        <p class="lead">{{user.name}}</p>
+                                        <br>
+                                        <span>{{user.email}}</span>
+                                    </div>
+                                </div>
+                                </a>
                             </li>
                             <li class="divider"></li>
                             <li>
@@ -96,31 +106,10 @@
                                     <i class="fa fa-fw"></i> Mi mesa
                                 </a>
                             </li>
-                            <li v-if="user.hasPermission['read-profile']">
-                                <a :href="'/profile/'+user.id">
-                                    <i class="fa fa-fw fa-user-circle-o"></i> Profile
-                                </a>
-                            </li>
-                            <li v-if="user.hasPermission['update-profile']">
-                                <a :href="'/profile/'+user.id+'/edit'">
-                                    <i class="fa fa-fw fa-pencil"></i> Edit profile
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="https://modulr.slack.com" target="_blank">
-                                    <i class="fa fa-fw fa-slack"></i> Help
-                                </a>
-                            </li>
-                            <li>
-                                <a href="http://docs.modulr.io" target="_blank">
-                                    <i class="fa fa-fw fa-book"></i> Documentation
-                                </a>
-                            </li>
                             <li class="divider"></li>
                             <li>
                                 <a href="#" @click.prevent="logout">
-                                    <i class="fa fa-fw fa-sign-out"></i> Sign out
+                                    <i class="fa fa-fw fa-sign-out"></i> Salir
                                 </a>
                             </li>
                         </ul>
