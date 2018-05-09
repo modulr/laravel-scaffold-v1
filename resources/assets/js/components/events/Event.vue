@@ -41,6 +41,11 @@
                                         <span v-if="event.end_time">
                                             <small class="text-muted">a </small>{{'2018-01-01 '+event.end_time | moment('h:mm a')}}
                                         </span>
+                                        <span class="pull-right">
+                                                <a href="#" class="fa fa-facebook"></a>
+                                                <a href="#" class="fa fa-twitter"></a>
+                                                <a href="#" class="fa fa-instagram"></a>
+                                        </span>
                                     </p>
                                 </div>
                             </div>
