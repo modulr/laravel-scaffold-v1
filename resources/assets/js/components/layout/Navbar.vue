@@ -86,24 +86,24 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li v-if="user.hasPermission['read-profile']">
+                            <li class="dropdown-header">
                                 <a :href="'/profile/'+user.id">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <img :src="user.avatar_url" class="img-xs">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img :src="user.avatar_url" class="img-xs">
+                                        </div>
+                                        <div class="media-body">
+                                            <p class="lead">{{user.name}}</p>
+                                            <br>
+                                            <span>{{user.email}}</span>
+                                        </div>
                                     </div>
-                                    <div class="media-body">
-                                        <p class="lead">{{user.name}}</p>
-                                        <br>
-                                        <span>{{user.email}}</span>
-                                    </div>
-                                </div>
                                 </a>
                             </li>
                             <li class="divider"></li>
                             <li>
                                 <a href="/mi_mesa">
-                                    <i class="fa fa-fw"></i> Mi mesa
+                                    <i class="fa fa-fw fa-cutlery"></i> Mi mesa
                                 </a>
                             </li>
                             <li class="divider"></li>
