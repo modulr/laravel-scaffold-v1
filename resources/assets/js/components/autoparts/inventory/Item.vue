@@ -431,71 +431,73 @@ export default {
             }
         },
         printQR () {
-            var content =
-            `<html>
-                <head>
-                    <style>
-                        @page {
-                            size: 2.4in 2.4in landscape;
-                            margin: 0cm;
-                        }
-                        html, body {
-                            width: 62mm;
-                            height: 62mm;
-                            font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
-                            margin: .10em;
-                            padding: 0;
-                        }
-                        table {
-                            width: 100%;
-                        }
-                        span {
-                            font-size:.8em;
-                        }
-                        img {
-                            heigth:6em;
-                            width:6em;
-                        }
-                        .origin {
-                            color: #fff;
-                            background-color: #f00;
-                            font-size:.6em;
-                            padding: .10em .5em;
-                        }
-                        .number {
-                            font-size:9em;
-                            line-height:.7em;
-                        }
-
-                    </style>
-                </head>
-                <body onload="window.focus(); window.print(); window.close();">
-                    <table>
-                        <tr>
-                            <td><img src="${this.autopart.qr}"></td>
-                            <td>
-                                <span class="origin">${this.autopart.origin.name}</span>
-                                <br>
-                                <span>${this.autopart.make.name}</span>
-                                <span>${this.autopart.model.name}</span>
-                                <br>
-                                ${this.autopart.years.map(year =>
-                                    `<span>${year.name}</span>`
-                                ).join(',')}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <span class="number">${this.autopart.id}</span>
-                            </td>
-                        </tr>
-                    </table>
-                </body>
-            </html>`
-
-            var myWindow = window.open()
-            myWindow.document.write(content)
-            myWindow.document.close()
+            window.open(`/api/autoparts/export/qr/${this.autopart.id}`, '_blank');
+            
+            // var content =
+            // `<html>
+            //     <head>
+            //         <style>
+            //             @page {
+            //                 size: 2.4in 2.4in landscape;
+            //                 margin: 0cm;
+            //             }
+            //             html, body {
+            //                 width: 62mm;
+            //                 height: 62mm;
+            //                 font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            //                 margin: .10em;
+            //                 padding: 0;
+            //             }
+            //             table {
+            //                 width: 100%;
+            //             }
+            //             span {
+            //                 font-size:.8em;
+            //             }
+            //             img {
+            //                 heigth:6em;
+            //                 width:6em;
+            //             }
+            //             .origin {
+            //                 color: #fff;
+            //                 background-color: #f00;
+            //                 font-size:.6em;
+            //                 padding: .10em .5em;
+            //             }
+            //             .number {
+            //                 font-size:9em;
+            //                 line-height:.7em;
+            //             }
+            //
+            //         </style>
+            //     </head>
+            //     <body onload="window.focus(); window.print(); window.close();">
+            //         <table>
+            //             <tr>
+            //                 <td><img src="${this.autopart.qr}"></td>
+            //                 <td>
+            //                     <span class="origin">${this.autopart.origin.name}</span>
+            //                     <br>
+            //                     <span>${this.autopart.make.name}</span>
+            //                     <span>${this.autopart.model.name}</span>
+            //                     <br>
+            //                     ${this.autopart.years.map(year =>
+            //                         `<span>${year.name}</span>`
+            //                     ).join(',')}
+            //                 </td>
+            //             </tr>
+            //             <tr>
+            //                 <td colspan="2">
+            //                     <span class="number">${this.autopart.id}</span>
+            //                 </td>
+            //             </tr>
+            //         </table>
+            //     </body>
+            // </html>`
+            //
+            // var myWindow = window.open()
+            // myWindow.document.write(content)
+            // myWindow.document.close()
         }
     }
 }

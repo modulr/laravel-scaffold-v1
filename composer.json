@@ -6,15 +6,16 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
+        "barryvdh/laravel-dompdf": "^0.8.2",
         "intervention/image": "^2.4",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "laravolt/avatar": "^1.8",
+        "league/flysystem-aws-s3-v3": "~1.0",
         "pusher/pusher-php-server": "^2.0",
         "santigarcor/laratrust": "5.0.*",
         "simplesoftwareio/simple-qrcode": "~2",
-        "wildside/userstamps": "^0.5.1",
-        "league/flysystem-aws-s3-v3": "~1.0"
+        "wildside/userstamps": "^0.5.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

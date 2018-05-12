@@ -16,6 +16,7 @@ use App\Models\Autoparts\AutopartListYear;
 use App\Http\Helpers\Upload;
 use QrCode;
 use Storage;
+use PDF;
 
 
 class AutopartController extends Controller
@@ -271,6 +272,15 @@ class AutopartController extends Controller
     public function destroyImage ($id)
     {
         return AutopartImage::destroy($id);
+    }
+
+    // PDF
+    public function exportPDF ($autopartId)
+    {
+        $autopart = $this->show($autopartId);
+
+        $pdf = PDF::loadView('autoparts.qr', ['autopart' => $autopart]);
+        return $pdf->stream('qr.pdf');
     }
 
     // Lists

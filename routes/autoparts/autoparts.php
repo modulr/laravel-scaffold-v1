@@ -28,6 +28,11 @@ Route::group(['namespace' => 'Autoparts'], function() {
             Route::delete('/destroy/{id}', 'AutopartController@destroyImage')->middleware('permission:delete-inventory');
             Route::post('/sort/{autopartId}', 'AutopartController@sortImage')->middleware('permission:update-inventory');
         });
+        Route::group(['prefix' => 'export'], function() {
+            Route::get('/qr/{autopartId}', 'AutopartController@exportPDF')->middleware('permission:read-inventory|read-sales');
+
+        });
+
         // Comments
         Route::group(['prefix' => 'comments'], function() {
             Route::get('/all', 'AutopartCommentController@index');
