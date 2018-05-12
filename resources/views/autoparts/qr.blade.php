@@ -49,8 +49,8 @@
         <table>
             <tr>
                 <td class="qr">
-                    <img src="{{ storage_path('app/public/autoparts/'. $autopart->id .'/qr/'. $autopart->id .'.png' ) }}">
-                    {{ storage_path('app/public/autoparts/'. $autopart->id .'/qr/'. $autopart->id .'.png' ) }}
+                    <img src="{{ $autopart.qr }}">
+                    {{ $autopart.qr }}
                 </td>
                 <td>
                     <table>
