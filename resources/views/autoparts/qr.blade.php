@@ -49,8 +49,8 @@
         <table>
             <tr>
                 <td class="qr">
-                    <img src="{{ url($autopart->qr) }}">
-                    {{ url($autopart->qr) }}
+                    <img src="{{ asset($autopart->qr) }}">
+                    {{ asset($autopart->qr) }}
                 </td>
                 <td>
                     <table>
