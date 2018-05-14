@@ -431,89 +431,89 @@ export default {
             }
         },
         printQR () {
-            //window.open(`/api/autoparts/export/qr/${this.autopart.id}`, '_blank');
+            window.open(`/api/autoparts/export/qr/${this.autopart.id}`, '_blank');
 
-            var content =
-            `<html>
-                <head>
-                    <style>
-                        @page {
-                            size: 2.4in 4in landscape;
-                            margin: 0;
-                        }
-                        @page :first {
-                            margin: 0;
-                        }
-                        html, body {
-                            font-family: Helvetica, Arial, sans-serif;
-                            font-size: 12pt;
-                            margin: 0;
-                            padding: 0;
-                            border: 0;
-                        }
-                        table {
-                            border: none;
-                            border-collapse: collapse;
-                            border-spacing: 0;
-                        }
-                        .title {
-                            color: #333;
-                            text-transform: uppercase;
-                            font-size: 4pt;
-                            display: block;
-                        }
-                        .qr img {
-                            height: 100px;
-                            width: 100px;
-                        }
-                        .code {
-                            text-align: center;
-                            font-size: 80pt;
-                            line-height: 1;
-                        }
-                    </style>
-                </head>
-                <body onload="window.focus(); window.print(); window.close();">
-                    <div class="code">
-                        ${this.autopart.id}
-                    </div>
-                    <table>
-                        <tr>
-                            <td class="qr">
-                                <img src="${this.autopart.qr}">
-                            </td>
-                            <td>
-                                <table>
-                                    <tr>
-                                        <td class="make">
-                                            <span class="title">Marca</span>
-                                            ${this.autopart.make.name}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="model">
-                                            <span class="title">Modelo</span>
-                                            ${this.autopart.model.name}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" class="years">
-                                            <span class="title">Años</span>
-                                            ${this.autopart.years.map(year =>
-                                                `<span>${year.name}</span>`
-                                            ).join(',')}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </body>
-            </html>`
-
-            var myWindow = window.open()
-            myWindow.document.write(content)
-            myWindow.document.close()
+            // var content =
+            // `<html>
+            //     <head>
+            //         <style>
+            //             @page {
+            //                 size: 2.4in 4in landscape;
+            //                 margin: 0;
+            //             }
+            //             @page :first {
+            //                 margin: 0;
+            //             }
+            //             html, body {
+            //                 font-family: Helvetica, Arial, sans-serif;
+            //                 font-size: 12pt;
+            //                 margin: 0;
+            //                 padding: 0;
+            //                 border: 0;
+            //             }
+            //             table {
+            //                 border: none;
+            //                 border-collapse: collapse;
+            //                 border-spacing: 0;
+            //             }
+            //             .title {
+            //                 color: #333;
+            //                 text-transform: uppercase;
+            //                 font-size: 4pt;
+            //                 display: block;
+            //             }
+            //             .qr img {
+            //                 height: 100px;
+            //                 width: 100px;
+            //             }
+            //             .code {
+            //                 text-align: center;
+            //                 font-size: 80pt;
+            //                 line-height: 1;
+            //             }
+            //         </style>
+            //     </head>
+            //     <body onload="window.focus(); window.print(); window.close();">
+            //         <div class="code">
+            //             ${this.autopart.id}
+            //         </div>
+            //         <table>
+            //             <tr>
+            //                 <td class="qr">
+            //                     <img src="${this.autopart.qr}">
+            //                 </td>
+            //                 <td>
+            //                     <table>
+            //                         <tr>
+            //                             <td class="make">
+            //                                 <span class="title">Marca</span>
+            //                                 ${this.autopart.make.name}
+            //                             </td>
+            //                         </tr>
+            //                         <tr>
+            //                             <td class="model">
+            //                                 <span class="title">Modelo</span>
+            //                                 ${this.autopart.model.name}
+            //                             </td>
+            //                         </tr>
+            //                         <tr>
+            //                             <td colspan="2" class="years">
+            //                                 <span class="title">Años</span>
+            //                                 ${this.autopart.years.map(year =>
+            //                                     `<span>${year.name}</span>`
+            //                                 ).join(',')}
+            //                             </td>
+            //                         </tr>
+            //                     </table>
+            //                 </td>
+            //             </tr>
+            //         </table>
+            //     </body>
+            // </html>`
+            //
+            // var myWindow = window.open()
+            // myWindow.document.write(content)
+            // myWindow.document.close()
         }
     }
 }

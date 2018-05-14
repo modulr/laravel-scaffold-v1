@@ -280,7 +280,8 @@ class AutopartController extends Controller
         $autopart = $this->show($autopartId);
 
         $pdf = PDF::loadView('autoparts.qr', ['autopart' => $autopart]);
-        return $pdf->stream('qr.pdf');
+        $pdf->save('autoparts/'.$autopart->id.'/qr/'.$autopart->id.'.pdf');
+        return $pdf->stream('autoparts/'.$autopart->id.'/qr/'.$autopart->id.'.pdf');
     }
 
     // Lists
