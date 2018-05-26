@@ -62,9 +62,77 @@ class ProjectController extends Controller
         $south = clone $query;
         $center = clone $query;
 
-        $high = clone $query;
-        $medium = clone $query;
-        $low = clone $query;
+        // Inicio de calculos para total de facturas cobradas moneda MXN
+        $invoiceChargedMXN = clone $query;        
+        $invoiceChargedMXN->join('quotes', function ($join) {
+                    $join->on('projects.id', '=', 'quotes.project_id')
+                        ->where('quotes.currency_id', '=', 1);
+                })
+                ->join('invoice_quote', 'quotes.id', '=', 'invoice_quote.quote_id')                
+                ->join('invoices', function ($join) {
+                    $join->on('invoice_quote.invoice_id', '=', 'invoices.id')
+                        ->where('invoices.invoice_status_id', '=', 3);
+                })
+                ->select('invoice_quote.amount as InvoiceAmountPerQuote')->get();
+        $amountChargedMXN = 0.00;
+        foreach ($invoiceChargedMXN->get() as $invoice) {
+            $amountChargedMXN+= $invoice['InvoiceAmountPerQuote'];
+        }
+        // Fin de calculos para total de facturas cobradas moneda MXN
+
+        // Inicio de calculos para total de facturas pendientes moneda MXN
+        $invoicePenddingMXN = clone $query;        
+        $invoicePenddingMXN->join('quotes', function ($join) {
+                    $join->on('projects.id', '=', 'quotes.project_id')
+                        ->where('quotes.currency_id', '=', 1);
+                })
+                ->join('invoice_quote', 'quotes.id', '=', 'invoice_quote.quote_id')                
+                ->join('invoices', function ($join) {
+                    $join->on('invoice_quote.invoice_id', '=', 'invoices.id')
+                        ->where('invoices.invoice_status_id', '=', 1);
+                })
+                ->select('invoice_quote.amount as InvoiceAmountPerQuote')->get();
+        $amountPenddingMXN = 0.00;
+        foreach ($invoicePenddingMXN->get() as $invoice) {
+            $amountPenddingMXN+= $invoice['InvoiceAmountPerQuote'];
+        }
+        // Fin de calculos para total de facturas pendientes moneda MXN
+        
+        // Inicio de calculos para total de facturas cobradas moneda USD
+        $invoiceChargedUSD = clone $query;        
+        $invoiceChargedUSD->join('quotes', function ($join) {
+                    $join->on('projects.id', '=', 'quotes.project_id')
+                        ->where('quotes.currency_id', '=', 2);
+                })
+                ->join('invoice_quote', 'quotes.id', '=', 'invoice_quote.quote_id')                
+                ->join('invoices', function ($join) {
+                    $join->on('invoice_quote.invoice_id', '=', 'invoices.id')
+                        ->where('invoices.invoice_status_id', '=', 3);
+                })
+                ->select('invoice_quote.amount as InvoiceAmountPerQuote')->get();
+        $amountChargedUSD = 0.00;
+        foreach ($invoiceChargedUSD->get() as $invoice) {
+            $amountChargedUSD+= $invoice['InvoiceAmountPerQuote'];
+        }
+        // Fin de calculos para total de facturas cobradas moneda USD
+
+        // Inicio de calculos para total de facturas pendientes moneda USD
+        $invoicePenddingUSD = clone $query;        
+        $invoicePenddingUSD->join('quotes', function ($join) {
+                    $join->on('projects.id', '=', 'quotes.project_id')
+                        ->where('quotes.currency_id', '=', 2);
+                })
+                ->join('invoice_quote', 'quotes.id', '=', 'invoice_quote.quote_id')                
+                ->join('invoices', function ($join) {
+                    $join->on('invoice_quote.invoice_id', '=', 'invoices.id')
+                        ->where('invoices.invoice_status_id', '=', 1);
+                })
+                ->select('invoice_quote.amount as InvoiceAmountPerQuote')->get();
+        $amountPenddingUSD = 0.00;
+        foreach ($invoicePenddingUSD->get() as $invoice) {
+            $amountPenddingUSD+= $invoice['InvoiceAmountPerQuote'];
+        }
+        // Fin de calculos para total de facturas pendientes moneda MXN
 
         $done = clone $query;
         $inProgress = clone $query;
@@ -78,10 +146,11 @@ class ProjectController extends Controller
             'projects' => $projects,
             'north' => $north->where('area_id', 1)->count(),
             'south' => $south->where('area_id', 2)->count(),
-            'center' => $center->where('area_id', 3)->count(),
-            'high' => $high->where('priority_id', 1)->count(),
-            'medium' => $medium->where('priority_id', 2)->count(),
-            'low' => $low->where('priority_id', 3)->count(),
+            'center' => $center->where('area_id', 3)->count(),            
+            'amountChargedMXN' => $amountChargedMXN,            
+            'amountChargedUSD' => $amountChargedUSD,            
+            'amountPenddingMXN' => $amountPenddingMXN,    
+            'amountPenddingUSD' => $amountPenddingUSD,   
             'done' => $done->where('project_status_id', 1)->count(),
             'inProgress' => $inProgress->where('project_status_id', 2)->count(),
             'canceled' => $canceled->where('project_status_id', 3)->count(),

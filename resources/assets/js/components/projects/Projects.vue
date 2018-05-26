@@ -61,7 +61,7 @@
                     </div>
                     <div class="col-md-12" v-if="projects.length != 0">
                         <div class="row">
-                            <div class="col-md-2" v-for="(value, key) in insights">
+                            <div class="col-md-3" v-for="(value, key) in insights">
                                 <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">{{ key }}</h3>
@@ -219,7 +219,7 @@ export default {
             },
             insights : {
                 Region : {},
-                Priority : {},
+                Amount : {},
                 Status : {}
             }
         }
@@ -233,7 +233,7 @@ export default {
     },
     filters: {
         date(date) {
-            return moment(date).format('LL');
+            return  date ? moment(date).format('LL') : '';
         }
     },
     methods: {
@@ -254,9 +254,10 @@ export default {
                 this.insights.Region.North = response.data.north
                 this.insights.Region.South = response.data.south
                 this.insights.Region.Center = response.data.center
-                this.insights.Priority.High = response.data.high
-                this.insights.Priority.Medium = response.data.medium
-                this.insights.Priority.Low = response.data.low
+                this.insights.Amount['Charged MXN'] = response.data.amountChargedMXN
+                this.insights.Amount['Pendding MXN'] = response.data.amountPenddingMXN
+                this.insights.Amount['Charged USD'] = response.data.amountChargedUSD
+                this.insights.Amount['Pendding USD'] = response.data.amountPenddingUSD
                 this.insights.Status.Done = response.data.done
                 this.insights.Status['In Progress'] = response.data.inProgress
                 this.insights.Status.Canceled = response.data.canceled
