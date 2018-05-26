@@ -1,6 +1,13 @@
 <template>
     <div class="students">
-        <div class="container">
+        <div class="notice-text text-center">
+            <h1>
+                <small>Período de inscripciones finalizado.</small>
+                <br>
+                ¿Espera el segundo periodo 2018 para participar!
+            </h1>
+        </div>
+        <!--<div class="container">
             <br><br>
             <div class="row">
                 <div class="col-md-4">
@@ -215,7 +222,7 @@
                 </div>
             </div>
             <br><br><br>
-        </div>
+        </div> -->
         <!-- Modal -->
         <div class="modal fade" id="myModal">
             <div class="modal-dialog modal-lg">
