@@ -12,13 +12,18 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('close');
     //return redirect('login');
 });
 //Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home', function () {
     return redirect('dashboard');
 });
+
+Route::get('/inscripcionestardias', function () {
+    return view('register');
+});
+
 
 Auth::routes();
 
