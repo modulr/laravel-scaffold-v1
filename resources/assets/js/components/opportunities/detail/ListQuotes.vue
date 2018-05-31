@@ -4,11 +4,11 @@
         <div class="wrapper" v-if="!loading">
             <div class="row">
                 <div class="col-sm-10">
-                    <a href="#" class="btn btn-primary pull-right" @click.prevent="makeProject">
+                    <a href="#" class="btn btn-primary pull-right" @click.prevent="makeProject" v-if="user.hasPermission['create-projects']">
                         <i class="mdi mdi-thumb-up mdi-lg"></i> Approve Project
                     </a>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-2" v-if="user.hasPermission['create-quotes']">
                     <a href="#" class="btn btn-primary pull-right" @click.prevent="add">
                         <i class="mdi mdi-person-add mdi-lg"></i> New Quote
                     </a>

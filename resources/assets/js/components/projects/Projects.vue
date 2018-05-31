@@ -140,7 +140,7 @@
                                             </span>
                                         </td>
                                         <td class="text-right">
-                                            <div class="dropdown">
+                                            <div class="dropdown" v-if="user.hasPermission['update-projects']">
                                                 <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                 </a>
@@ -187,6 +187,7 @@ import Multiselect from 'vue-multiselect';
 export default {
     data() {
         return {
+            user: Laravel.user,
             loading: false,
             newCustomer: false,
             projects: [],

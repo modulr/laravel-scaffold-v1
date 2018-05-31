@@ -3,7 +3,7 @@
         <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
         <!-- Actions Buttons -->
         <div class="wrapper" v-if="!loading">
-            <div class="material-button bottom right">
+            <div class="material-button bottom right" v-if="user.hasPermission['create-opportunities']">
                 <button href="#" class="btn-primary" @click.prevent="add">
                     <i class="mdi mdi-add mdi-lg"></i>
                 </button>
@@ -148,7 +148,7 @@
                                             <br>
                                         </td>
                                         <td class="text-right">
-                                            <div class="dropdown">
+                                            <div class="dropdown" v-if="user.hasPermission['update-opportunities']">
                                                 <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                 </a>
@@ -203,6 +203,7 @@ import Multiselect from 'vue-multiselect';
 export default {
     data() {
         return {
+            user: Laravel.user,
             loading: false,
             newCustomer: false,
             opportunities: [],

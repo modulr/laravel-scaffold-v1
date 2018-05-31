@@ -131,28 +131,28 @@
                                     <span>Clients</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'quote'}">
+                            <li :class="{'active': activeLink == 'quote'}" v-if="user.hasPermission['read-quotes']">
                                 <a href="/quote">
                                     <i class="mdi mdi-receipt mdi-3x"></i>
                                     <br>
                                     <span>Quote</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'opportunities'}">
+                            <li :class="{'active': activeLink == 'opportunities'}" v-if="user.hasPermission['read-opportunities']">
                                 <a href="/opportunities">
                                     <i class="mdi mdi-turned-in mdi-3x"></i>
                                     <br>
                                     <span>Opportunities</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'projects'}">
+                            <li :class="{'active': activeLink == 'projects'}" v-if="user.hasPermission['read-projects']">
                                 <a href="/projects">
                                     <i class="mdi mdi-book mdi-3x"></i>
                                     <br>
                                     <span>Projects</span>
                                 </a>
                             </li>
-                            <li :class="{'active': activeLink == 'invoices'}">
+                            <li :class="{'active': activeLink == 'invoices'}" v-if="user.hasPermission['read-invoices']">
                                 <a href="/invoices">
                                     <i class="mdi mdi-description mdi-3x"></i>
                                     <br>

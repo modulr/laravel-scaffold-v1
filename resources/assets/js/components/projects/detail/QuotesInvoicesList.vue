@@ -27,7 +27,7 @@
                             </td>
                             <td>{{a.pivot.amount | currency}}</td>
                             <td>
-                                <a href="#">
+                                <a href="#" v-if="user.hasPermission['delete-invoices']">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>
                             </td>
@@ -49,6 +49,7 @@ export default {
     props: ['invoices'],
     data () {
         return {
+            user: Laravel.user,
             dzOptions: {
                 acceptedFileTypes: '.jpg,.jpeg,.png,.pdf',
                 headers: {'X-CSRF-TOKEN': Laravel.csrfToken},

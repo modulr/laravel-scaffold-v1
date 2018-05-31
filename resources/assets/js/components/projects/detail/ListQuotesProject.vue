@@ -9,7 +9,7 @@
                             :class="{'fa-list': layout == 'list', 'fa-th-large': layout == 'grid'}">
                         </i>
                     </a>
-                    <a href="#" class="btn btn-primary pull-right" @click.prevent="add" v-if="layout == 'list'">
+                    <a href="#" class="btn btn-primary pull-right" @click.prevent="add" v-if="layout == 'list' && user.hasPermission['create-invoices']">
                         <i class="mdi mdi-person-add mdi-lg"></i> New Invoice
                     </a>
                 </div>                

@@ -2,7 +2,7 @@
   <div class="quotes">
     <vue-simple-spinner line-fg-color="#FEAE3B" size="big" v-if="loading"></vue-simple-spinner>
     <div class="wrapper" v-if="!loading">
-      <div class="material-button bottom right">
+      <div class="material-button bottom right" v-if="user.hasPermission['create-quotes']">
           <button href="#" class="btn-primary" @click.prevent="add">
               <i class="mdi mdi-add mdi-lg"></i>
           </button>
@@ -169,7 +169,10 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="#" @click.prevent="edit(quote, index)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    <a href="#" 
+                                      @click.prevent="edit(quote, index)"
+                                      v-if="user.hasPermission['update-quotes']">
+                                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                       Edit
                                     </a>
                                     <a href="#" @click.prevent="uploadFile(quote)"><i class="fa fa-file-pdf-o"></i>
@@ -179,7 +182,11 @@
                                 <li role="separator" class="divider"></li>
                                 <li>
                                   <a href="#" @click.prevent="changeStatus(quote, index, 2)"><i class="fa fa-envelope-o"></i> Sent</a>
-                                  <a href="#" @click.prevent="changeStatus(quote, index, 3)"><i class="fa fa-thumbs-o-up"></i> Approve</a>
+                                  <a href="#" @click.prevent="changeStatus(quote, index, 3)"
+                                    v-if="user.hasPermission['authorize-quotes']">
+                                    <i class="fa fa-thumbs-o-up"></i> 
+                                    Approve
+                                  </a>
                                   <a href="#" @click.prevent="changeStatus(quote, index, 4)"><i class="fa fa-thumbs-o-down"></i> Refuse</a>
                                 </li>
                             </ul>

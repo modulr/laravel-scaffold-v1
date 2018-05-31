@@ -108,7 +108,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" @click="destroy()">
+                    <button type="button" class="btn btn-default pull-left" @click="destroy()" v-if="user.hasPermission['delete-projects']">
                         <i class="mdi mdi-delete mdi-lg"></i> Delete
                     </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -132,6 +132,7 @@ export default {
     },
     data() {
         return {
+            user: Laravel.user,
             list: {
                 priorities: [],
                 clients: [],
