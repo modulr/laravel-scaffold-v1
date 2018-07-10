@@ -80,7 +80,7 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <a :href="'/platillos/'+item.id">
+                                    <a :href="'/platillos/'+item.event_id">
                                         <img :src="item.images[0].url_thumbnail" v-if="item.images.length">
                                     </a>
                                 </div>
