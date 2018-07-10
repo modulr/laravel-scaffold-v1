@@ -20,6 +20,7 @@ $factory->define(App\Models\Events\Event::class, function (Faker\Generator $fake
         'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
         'start_time' => $faker->time($format = 'H:i:s', $max = 'now'),
         'end_time' => $faker->time($format = 'H:i:s', $max = 'now'),
+        'price' => $faker->randomFloat(2, 100, 400),
         'attending_limit' => 10,
     ];
 
