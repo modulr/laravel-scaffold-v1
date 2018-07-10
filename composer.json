@@ -15,7 +15,8 @@
         "laravolt/avatar": "^1.8",
         "paypal/rest-api-sdk-php": "^1.13",
         "pusher/pusher-php-server": "^2.0",
-        "santigarcor/laratrust": "5.0.*"
+        "santigarcor/laratrust": "5.0.*",
+        "spatie/laravel-migrate-fresh": "^1.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
