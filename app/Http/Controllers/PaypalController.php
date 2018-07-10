@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Events\Event;
+use Illuminate\Support\Facades\Mail;
 
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
@@ -17,6 +18,7 @@ use PayPal\Api\Payment;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use PayPal\Api\PaymentExecution;
+use App\Mail\EventAttendPaymentConfirmation;
 
 class PaypalController extends Controller
 {
@@ -103,6 +105,8 @@ class PaypalController extends Controller
             if ($result->getState() == 'approved') {
                 $event = Event::find($result->transactions[0]->item_list->items[0]->sku);
                 $event->attendings()->updateExistingPivot(Auth::id(), ['paid' => true, 'paypal_id' => $payment->getId()]);
+
+                Mail::to(Auth::user())->send(new EventAttendPaymentConfirmation($event, Auth::user()));
             }
 
             return redirect($result->transactions[0]->item_list->items[0]->url);
