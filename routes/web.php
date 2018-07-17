@@ -22,10 +22,6 @@ Route::get('/home', function () {
 
 Auth::routes();
 
-Route::group(['namespace' => 'Events'], function() {
-    Route::get('/events/all', 'EventController@all');
-});
-
 Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', 'DashboardController@index');
@@ -116,51 +112,54 @@ Route::middleware('auth')->group(function () {
 
     // Events
     Route::group(['namespace' => 'Events', 'prefix' => 'events'], function() {
-        Route::get('/' , function () {
-            return view('events.events');
-        })->middleware('permission:read-events');
-        Route::get('/show/{id}' , function ($id) {
-            return view('events.event', ['id' => $id]);
-        })->middleware('permission:read-events');
-
-        Route::get('/attendingsByOwner', 'EventController@attendingsByOwner')->middleware('permission:read-events');
-        Route::get('/attendings', 'EventController@attendings')->middleware('permission:read-events');
-        Route::get('/byOwner', 'EventController@byOwner')->middleware('permission:read-events');
-        Route::get('/{id}', 'EventController@show')->middleware('permission:read-events');
-        Route::post('/store', 'EventController@store')->middleware('permission:create-events');
-        Route::put('/update/{id}', 'EventController@update')->middleware('permission:update-events');
-        Route::delete('/destroy/{id}', 'EventController@destroy')->middleware('permission:delete-events');
-
-        Route::get('/attend/{id}', 'EventController@attend')->middleware('permission:read-events');
-        Route::get('/approve/{eventId}/{userId}', 'EventController@approve')->middleware('permission:update-events');
-        Route::get('/reject/{eventId}/{userId}', 'EventController@reject')->middleware('permission:update-events');
-        Route::get('/enable/{id}', 'EventController@toogleEnabled')->middleware('permission:update-events');
-
-
         Route::post('/images/upload/temp', 'EventController@uploadImageTemp')->middleware('permission:create-news');
         Route::post('/images/upload/', 'EventController@uploadImage')->middleware('permission:update-news');
         Route::post('/images/sort/{eventId}', 'EventController@sortImage')->middleware('permission:update-news');
         Route::delete('/images/destroy/{id}', 'EventController@destroyImage')->middleware('permission:delete-events');
     });
 
-    Route::group(['namespace' => 'Events'], function() {
-        Route::get('/platillos' , function () {
-            return view('events.events');
-        })->middleware('permission:read-events');
-        Route::get('/platillos/{id}' , function ($id) {
-            return view('events.event', ['id' => $id]);
-        })->middleware('permission:read-events');
-        Route::get('/mis_platillos' , function () {
-            return view('events.myevents');
-        })->middleware('permission:read-events');
-
-        Route::get('/mi_mesa' , function () {
-            return view('events.mydesk');
-        });
-
-
-    });
-
     Route::post('/paypal/checkout', 'PaypalController@getCheckout');
     Route::get('/paypal/status', 'PaypalController@getStatus');
+});
+
+// Vistas de Platillos
+Route::group(['namespace' => 'Platillos'], function() {
+    Route::get('/platillos', 'PlatillosController@index')->middleware('permission:read-events');
+    Route::get('/platillos/{id}', 'PlatillosController@show')->middleware('permission:read-events');
+
+    Route::get('/cocina/platillos', 'CocinaPlatillosController@index')->middleware('auth', 'permission:read-events');
+    Route::get('/cocina/platillos/menu-del-dia', 'CocinaPlatillosController@meduDelDia')->middleware('auth', 'permission:read-events');
+    Route::get('/cocina/platillos/{id}/reservaciones', 'CocinaPlatillosController@reservaciones')->middleware('auth', 'permission:read-events');
+});
+
+// Events
+Route::group(['namespace' => 'Events'], function() {
+    Route::get('/events', 'EventController@index');
+    Route::get('/events/{event}', 'EventController@show');
+});
+
+Route::middleware('auth')->group(['namespace' => 'Events'], function() {
+    Route::get('/user/events', 'UserEventsController@index')->middleware('permission:read-events');
+    Route::post('/user/events', 'UserEventsController@store')->middleware('permission:create-events');
+    Route::get('/user/events/reserved', 'UserEventsController@reserved')->middleware('permission:read-events');
+    
+    Route::put('/events/{event}', 'EventController@update')->middleware('permission:update-events');
+    Route::delete('/events/{event}', 'EventController@destroy')->middleware('permission:delete-events');
+    
+    Route::post('/published-events', 'PublishedEventsController@store')->middleware('permission:update-events');
+    Route::delete('/published-events', 'PublishedEventsController@destroy')->middleware('permission:update-events');
+
+    Route::post('/events/images/upload/temp', 'EventImagesController@uploadImageTemp')->middleware('permission:create-news');
+    Route::post('/events/images/upload/', 'EventImagesController@uploadImage')->middleware('permission:update-news');
+    Route::post('/events/images/sort/{eventId}', 'EventImagesController@sortImage')->middleware('permission:update-news');
+    Route::delete('/events/images/destroy/{id}', 'EventImagesController@destroyImage')->middleware('permission:delete-events');
+});
+
+Route::middleware('auth')->group(['namespace' => 'Reservations'], function() {
+    Route::get('/reservations', 'ReservationsController@index')->middleware('permission:read-events');
+    Route::post('/reservations', 'ReservationsController@store')->middleware('permission:read-events');
+    Route::delete('/reservations/{id}', 'ReservationsController@destroy')->middleware('permission:read-events');
+
+    Route::post('/approved-reservations', 'ApprovedReservationsController@store')->middleware('permission:update-events');
+    Route::delete('/approved-reservations', 'ApprovedReservationsController@destroy')->middleware('permission:update-events');
 });

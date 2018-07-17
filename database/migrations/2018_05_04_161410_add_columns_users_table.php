@@ -27,8 +27,7 @@ class AddColumnsUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function($table) {
-            $table->dropColumn('age');
-            $table->dropColumn('description');
+            $table->dropColumn(['age', 'description']);
         });
     }
 }
