@@ -10,8 +10,6 @@ use App\Models\Events\Event;
 
 class ReadEventsTest extends TestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */

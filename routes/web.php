@@ -138,10 +138,12 @@ Route::group(['namespace' => 'Events'], function() {
     Route::get('/events/{event}', 'EventController@show');
 });
 
-Route::middleware('auth')->group(['namespace' => 'Events'], function() {
+Route::middleware('auth')->namespace('Events')->group(function() {
     Route::get('/user/events', 'UserEventsController@index')->middleware('permission:read-events');
     Route::post('/user/events', 'UserEventsController@store')->middleware('permission:create-events');
     Route::get('/user/events/reserved', 'UserEventsController@reserved')->middleware('permission:read-events');
+    
+    Route::get('/events/reserved', 'EventsController@reserved')->middleware('permission:read-events');
     
     Route::put('/events/{event}', 'EventController@update')->middleware('permission:update-events');
     Route::delete('/events/{event}', 'EventController@destroy')->middleware('permission:delete-events');
@@ -155,10 +157,10 @@ Route::middleware('auth')->group(['namespace' => 'Events'], function() {
     Route::delete('/events/images/destroy/{id}', 'EventImagesController@destroyImage')->middleware('permission:delete-events');
 });
 
-Route::middleware('auth')->group(['namespace' => 'Reservations'], function() {
-    Route::get('/reservations', 'ReservationsController@index')->middleware('permission:read-events');
+Route::middleware('auth')->namespace('Reservations')->group(function() {
+
     Route::post('/reservations', 'ReservationsController@store')->middleware('permission:read-events');
-    Route::delete('/reservations/{id}', 'ReservationsController@destroy')->middleware('permission:read-events');
+    Route::delete('/reservations', 'ReservationsController@destroy')->middleware('permission:read-events');
 
     Route::post('/approved-reservations', 'ApprovedReservationsController@store')->middleware('permission:update-events');
     Route::delete('/approved-reservations', 'ApprovedReservationsController@destroy')->middleware('permission:update-events');

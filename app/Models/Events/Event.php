@@ -24,7 +24,7 @@ class Event extends Model
         return $this->hasMany(EventImage::class);
     }
 
-    public function attendings()
+    public function users()
     {
         return $this->belongsToMany(\App\User::class)->withPivot('approved', 'paid');
     }

@@ -95,8 +95,13 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Tasks\Task::class);
     }
 
-    public function events()
+    public function ownEvents()
     {
         return $this->hasMany(\App\Models\Events\Event::class, 'owner_id');
+    }
+
+    public function events()
+    {
+        return $this->belongsToMany(\App\Models\Events\Event::class)->withPivot('approved', 'paid');
     }
 }
