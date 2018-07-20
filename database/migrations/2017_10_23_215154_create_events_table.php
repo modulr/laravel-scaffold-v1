@@ -25,6 +25,7 @@ class CreateEventsTable extends Migration
             $table->float('price')->nullable()->comment = "Event cost";
             $table->integer('attending_limit')->nullable()->comment = "Attending limit";
             $table->integer('owner_id')->unsigned()->comment = "Event owner";
+            $table->boolean('enabled')->default(true);
             $table->foreign('owner_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
@@ -40,13 +41,17 @@ class CreateEventsTable extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('event_user', function (Blueprint $table) {
+        Schema::create('reservations', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('event_id')->unsigned()->comment = "Event ID";
             $table->integer('user_id')->unsigned()->comment = "User ID";
             $table->boolean('approved')->default(false);
             $table->boolean('paid')->default(false);
             $table->text('paypal_id')->nullable();
-            $table->primary(['event_id', 'user_id']);
+
+            $table->foreign('event_id')->references('id')->on('events');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unique(['event_id', 'user_id']);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -59,7 +64,7 @@ class CreateEventsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('event_images');
+        Schema::dropIfExists('reservations');
         Schema::dropIfExists('event_user');
         Schema::dropIfExists('events');
     }

@@ -5,6 +5,7 @@ namespace App\Models\Events;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class Event extends Model
 {
@@ -13,6 +14,10 @@ class Event extends Model
     protected $dates = ['deleted_at'];
 
     protected $guarded = ['id'];
+
+    protected $casts = [
+        'enabled' => 'boolean',
+    ];
 
     public function owner()
     {
@@ -24,17 +29,17 @@ class Event extends Model
         return $this->hasMany(EventImage::class);
     }
 
-    public function users()
+    public function reservations()
     {
-        return $this->belongsToMany(\App\User::class)->withPivot('approved', 'paid');
+        return $this->hasMany(Reservation::class);
     }
 
-    public function attendByUserId($user_id){
-        // = in where is optional in this case
-        return $this->belongsToMany(\App\User::class)->where('user_id', '=', $user_id);
-    }
+    public function reserveFor(User $user)
+    {
+        $reservation =  $this->reservations()->create([
+            'user_id' => $user->id
+        ]);
 
-    public function getEnabledAttribute($value) {
-        return (bool) $value;
+        return $reservation->fresh();
     }
 }

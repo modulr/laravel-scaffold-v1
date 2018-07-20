@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Storage;
 use Laratrust\Traits\LaratrustUserTrait;
+use App\Models\Events\Reservation;
 
 class User extends Authenticatable
 {
@@ -100,8 +101,8 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Events\Event::class, 'owner_id');
     }
 
-    public function events()
+    public function reservations()
     {
-        return $this->belongsToMany(\App\Models\Events\Event::class)->withPivot('approved', 'paid');
+        return $this->hasMany(Reservation::class);
     }
 }

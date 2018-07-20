@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Events;
+namespace App\Http\Controllers\Kitchen;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

@@ -132,36 +132,50 @@ Route::group(['namespace' => 'Platillos'], function() {
     Route::get('/cocina/platillos/{id}/reservaciones', 'CocinaPlatillosController@reservaciones')->middleware('auth', 'permission:read-events');
 });
 
+
+/*
+|--------------------------------------------------------------------------
+| API
+|--------------------------------------------------------------------------
+*/
+
 // Events
-Route::group(['namespace' => 'Events'], function() {
-    Route::get('/events', 'EventController@index');
-    Route::get('/events/{event}', 'EventController@show');
+// Endpoints for comensales
+Route::namespace('Events')->group(function() {
+    Route::get('events', 'EventController@index');
+    Route::get('events/reserved', 'EventController@reserved')->middleware('auth', 'permission:read-events');
+    Route::get('events/{event}', 'EventController@show');
 });
 
-Route::middleware('auth')->namespace('Events')->group(function() {
-    Route::get('/user/events', 'UserEventsController@index')->middleware('permission:read-events');
-    Route::post('/user/events', 'UserEventsController@store')->middleware('permission:create-events');
-    Route::get('/user/events/reserved', 'UserEventsController@reserved')->middleware('permission:read-events');
-    
-    Route::get('/events/reserved', 'EventsController@reserved')->middleware('permission:read-events');
-    
-    Route::put('/events/{event}', 'EventController@update')->middleware('permission:update-events');
-    Route::delete('/events/{event}', 'EventController@destroy')->middleware('permission:delete-events');
-    
-    Route::post('/published-events', 'PublishedEventsController@store')->middleware('permission:update-events');
-    Route::delete('/published-events', 'PublishedEventsController@destroy')->middleware('permission:update-events');
-
-    Route::post('/events/images/upload/temp', 'EventImagesController@uploadImageTemp')->middleware('permission:create-news');
-    Route::post('/events/images/upload/', 'EventImagesController@uploadImage')->middleware('permission:update-news');
-    Route::post('/events/images/sort/{eventId}', 'EventImagesController@sortImage')->middleware('permission:update-news');
-    Route::delete('/events/images/destroy/{id}', 'EventImagesController@destroyImage')->middleware('permission:delete-events');
-});
-
+// Reservations
+// Create and Cancel Reservations by comensal
 Route::middleware('auth')->namespace('Reservations')->group(function() {
-
     Route::post('/reservations', 'ReservationsController@store')->middleware('permission:read-events');
-    Route::delete('/reservations', 'ReservationsController@destroy')->middleware('permission:read-events');
+    Route::delete('/reservations/{reservation}', 'ReservationsController@destroy')->middleware('permission:read-events');
+});
 
-    Route::post('/approved-reservations', 'ApprovedReservationsController@store')->middleware('permission:update-events');
-    Route::delete('/approved-reservations', 'ApprovedReservationsController@destroy')->middleware('permission:update-events');
+// Kitchen
+Route::middleware('auth')->prefix('kitchen')->namespace('Kitchen')->group(function() {
+    // Events
+    Route::get('events', 'EventsController@index')->middleware('permission:read-events');
+    Route::post('events', 'EventsController@store')->middleware('permission:create-events');
+    Route::put('events/{event}', 'EventsController@update')->middleware('permission:update-events');
+    Route::delete('events/{event}', 'EventsController@destroy')->middleware('permission:delete-events');
+    
+    // Reserved Events
+    Route::get('events/reserved', 'EventsController@reserved')->middleware('permission:read-events');
+
+    // Published Events
+    Route::post('events/published-events', 'PublishedEventsController@store')->middleware('permission:update-events');
+    Route::post('events/unpublished-events', 'PublishedEventsController@destroy')->middleware('permission:update-events');
+
+    // Image Event
+    Route::post('events/images/upload/temp', 'EventImagesController@uploadImageTemp')->middleware('permission:create-news');
+    Route::post('events/images/upload/', 'EventImagesController@uploadImage')->middleware('permission:update-news');
+    Route::post('events/images/sort/{eventId}', 'EventImagesController@sortImage')->middleware('permission:update-news');
+    Route::delete('events/images/destroy/{id}', 'EventImagesController@destroyImage')->middleware('permission:delete-events');
+
+    // Reservations
+    Route::delete('reservations/{reservation}', 'ReservationsController@destroy')->middleware('permission:update-events');
+    Route::post('approved-reservations', 'ApprovedReservationsController@store')->middleware('permission:update-events');
 });

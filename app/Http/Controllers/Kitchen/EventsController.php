@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Events;
+namespace App\Http\Controllers\Kitchen;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -9,14 +9,25 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Helpers\Upload;
 use App\Models\Events\EventImage;
 
-class UserEventsController extends Controller
+class EventsController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        return Event::with(['owner', 'attendings', 'images' => function ($query) {
+        return Event::with(['owner', 'images' => function ($query) {
             $query->orderBy('order', 'asc');
         }])
             ->where('owner_id', Auth::id())
+            ->orderBy('id', 'desc')
+            ->paginate(20);
+    }
+
+    public function reserved()
+    {
+        return Event::has('reservations')->with(['owner', 'images' => function ($query) {
+            $query->orderBy('order', 'asc');
+        }])
+            ->where('owner_id', Auth::id())
+            ->where('enabled', 1)
             ->orderBy('id', 'desc')
             ->paginate(20);
     }
@@ -65,5 +76,36 @@ class UserEventsController extends Controller
         return Event::with(['owner', 'attendings', 'images' => function ($query) {
             $query->orderBy('order', 'asc');
         }])->find($event->id);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'required|string',
+            'place' => 'required|string',
+            'price' => 'required|numeric',
+            'date' => 'required|date|after_or_equal:today',
+            'start_time' => 'required',
+            'end_time' => 'nullable|after_or_equal:start_time',
+        ]);
+
+        $event = Event::with('owner', 'attendings', 'images')->find($id);
+        $event->name = $request->name;
+        $event->description = $request->description;
+        $event->place = $request->place;
+        $event->date = $request->date;
+        $event->start_time = $request->start_time;
+        $event->end_time = $request->end_time;
+        $event->content = $request->content;
+        $event->price = $request->price;
+        $event->attending_limit = $request->attending_limit;
+        $event->save();
+
+        return $event;
+    }
+
+    public function destroy($id)
+    {
+        return Event::destroy($id);
     }
 }
