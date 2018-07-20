@@ -7,6 +7,8 @@ use Tests\Concerns\InteractsWithExceptionHandling;
 use App\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -21,6 +23,8 @@ abstract class TestCase extends BaseTestCase
         $this->seed();
 
         Schema::disableForeignKeyConstraints();
+        Storage::fake('public');
+        Mail::fake();
     }
 
     public function makeAdminUser()

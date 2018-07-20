@@ -29,11 +29,38 @@ class ReadEventsTest extends TestCase
     /**
      * @test
      */
-    function a_guest_have_not_events()
+    function a_user_can_view_their_events_reserved()
     {
-        $response = $this->json('get', 'user/events');
+        $this->withoutExceptionHandling();
 
-        $response
-            ->assertStatus(401);
+        $comensal = $this->makeUser();
+        $events = factory(Event::class, 5)->create(['owner_id' => $this->makeUser()->id]);
+        
+        $events[0]->reserveFor($comensal);
+        $events[1]->reserveFor($comensal);
+
+        $response = $this->actingAs($comensal)->json('get', 'events/reserved');
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'total' => 2
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    function a_user_can_read_a_event()
+    {
+        $this->withoutExceptionHandling();
+
+        $event = factory(Event::class)->create(['owner_id' => $this->makeUser()->id]);
+
+        $response = $this->json('get', "events/{$event->id}");
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'name' => $event->name
+        ]);
     }
 }

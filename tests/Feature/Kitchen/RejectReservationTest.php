@@ -1,31 +1,41 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Kitchen;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Events\Event;
 
-class CancelReservationTest extends TestCase
+class RejectReservationTest extends TestCase
 {
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        Mail::fake();
+    }
+
     /**
      * @test
      */
-    function user_can_cancel_reservation()
+    function cocinero_can_reject_reservation()
     {
         $this->withoutExceptionHandling();
 
-        $user = $this->makeUser();
-        $event = factory(Event::class)->create(['owner_id' => $user->id]);
+        $cocinero = $this->makeUser();
+        $event = factory(Event::class)->create(['owner_id' => $cocinero->id]);
 
         $comensal = $this->makeUser();
         $reservation = $event->reservations()->create([
             'user_id' => $comensal->id,
         ]);
 
-        $response = $this->actingAs($comensal)->json('delete', "reservations/{$reservation->id}");
+        // Cancelo la orden como cocinero
+        $response = $this->actingAs($cocinero)->json('delete', "kitchen/reservations/{$reservation->id}");
 
         $response->assertStatus(200);
         $response->assertJson([]);
