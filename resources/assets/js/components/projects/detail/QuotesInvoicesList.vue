@@ -27,7 +27,9 @@
                             </td>
                             <td>{{a.pivot.amount | currency}}</td>
                             <td>
-                                <a href="#" v-if="user.hasPermission['delete-invoices']">
+                                <a href="#" 
+                                    v-if="user.hasPermission['delete-invoices']"
+                                    @click.prevent="deleteInvoice(a, index)">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>
                             </td>
@@ -60,8 +62,44 @@ export default {
         Dropzone,
     },
     methods : {
-        deleteAttachment (a,b,c) {
-            
+        deleteInvoice (invoice, index) {
+            var self = this;
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this Invoice!",
+                type: "warning",
+                showLoaderOnConfirm: true,
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: false
+            },
+            function(){
+                axios.delete('/invoices/destroy/' + invoice.id)
+                .then(response => {
+                    self.$parent.invoices.splice(index, 1);
+                    swal({
+                        title: "Deleted!",
+                        text: "The Invoice has been deleted.",
+                        type: "success",
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    self.error = {};
+                    $('#myModalInvoices').modal('hide')
+                })
+                .catch(error => {
+                    self.$parent.invoices.splice(index, 1);
+                    swal({
+                        title: "Deleted!",
+                        text: "The Invoice has been deleted.",
+                        type: "success",
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    $('#myModalInvoices').modal('hide')
+                    // self.error = error.response.data
+                });
+            });
         }
     }
 }

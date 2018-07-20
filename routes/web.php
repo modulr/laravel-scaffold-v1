@@ -302,4 +302,5 @@ Route::middleware('auth')->group(function () {
     Route::put('/invoices/update/{id}', 'InvoiceController@update');
     Route::get('/invoices/list/owners', 'InvoiceController@listOwners');
     Route::get('/invoices/list/statuses', 'InvoiceController@listStatuses');
+    Route::delete('/invoices/destroy/{id}', 'InvoiceController@destroy');
 });

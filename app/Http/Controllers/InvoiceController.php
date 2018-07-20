@@ -58,6 +58,13 @@ class InvoiceController extends Controller
         return view('invoices.invoice', ['breadcrumb' => $request->path(), 'invoice' => $invoice]);
     }
 
+    public function destroy(Request $request, $id)
+    {
+        DB::table('invoice_quote')->where('invoice_id', '=', $id)->delete();
+        DB::table('invoices')->where('id', '=', $id)->delete();
+        return 1;
+    }
+
     public function store(Request $request)
     {        
 

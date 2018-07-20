@@ -220,8 +220,9 @@ export default {
             },
             insights : {
                 Region : {},
-                Amount : {},
-                Status : {}
+                Status : {},
+                Invoiced: {},
+                Unbilled: {}
             }
         }
     },
@@ -255,10 +256,12 @@ export default {
                 this.insights.Region.North = response.data.north
                 this.insights.Region.South = response.data.south
                 this.insights.Region.Center = response.data.center
-                this.insights.Amount['Charged MXN'] = response.data.amountChargedMXN
-                this.insights.Amount['Pendding MXN'] = response.data.amountPenddingMXN
-                this.insights.Amount['Charged USD'] = response.data.amountChargedUSD
-                this.insights.Amount['Pendding USD'] = response.data.amountPenddingUSD
+                this.insights.Invoiced['Charged MXN'] = response.data.amountChargedMXN
+                this.insights.Invoiced['Pendding MXN'] = response.data.amountPenddingMXN
+                this.insights.Invoiced['Charged USD'] = response.data.amountChargedUSD                
+                this.insights.Invoiced['Pendding USD'] = response.data.amountPenddingUSD
+                this.insights.Unbilled['Amount MXN'] = response.data.penddingQuotedAmountMXN
+                this.insights.Unbilled['Amount USD'] = response.data.penddingQuotedAmountUSD
                 this.insights.Status.Done = response.data.done
                 this.insights.Status['In Progress'] = response.data.inProgress
                 this.insights.Status.Canceled = response.data.canceled
