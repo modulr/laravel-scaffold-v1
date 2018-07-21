@@ -187,7 +187,7 @@ paths:
                   example: {}
 
   # Published Events
-  /events/published-events:
+  /kithcen/events/published-events:
     post:
       summary: Publish a event
       tags:
@@ -213,7 +213,7 @@ paths:
                   id: 1
                 }
   # Published Events
-  /events/unpublished-events:
+  /kitchen/events/unpublished-events:
     post:
       summary: Unpublish a event
       tags:

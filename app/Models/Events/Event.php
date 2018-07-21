@@ -29,6 +29,11 @@ class Event extends Model
         return $this->hasMany(EventImage::class);
     }
 
+    public function attendings()
+    {
+        return User::whereIn('id', $$this->reservations()->pluck('user_id'));
+    }
+
     public function reservations()
     {
         return $this->hasMany(Reservation::class);

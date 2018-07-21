@@ -4,10 +4,15 @@ namespace App\Models\Events;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Reservation extends Model
 {
     protected $guarded = [];
+
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
     
     protected $casts = [
         'paid' => 'boolean',

@@ -73,13 +73,17 @@ class EventsController extends Controller
             }
         }
 
-        return Event::with(['owner', 'attendings', 'images' => function ($query) {
+        $event = $event->load(['owner', 'reservations.user', 'images' => function ($query) {
             $query->orderBy('order', 'asc');
-        }])->find($event->id);
+        }]);
+        
+        return response()->json($event, 201);
     }
 
     public function update(Request $request, $id)
     {
+        $event = auth()->user()->ownEvents()->findOrFail($id);
+
         $this->validate($request, [
             'name' => 'required|string',
             'place' => 'required|string',
@@ -89,7 +93,7 @@ class EventsController extends Controller
             'end_time' => 'nullable|after_or_equal:start_time',
         ]);
 
-        $event = Event::with('owner', 'attendings', 'images')->find($id);
+        $event = $event->load('owner', 'reservations.user', 'images');
         $event->name = $request->name;
         $event->description = $request->description;
         $event->place = $request->place;
@@ -104,8 +108,12 @@ class EventsController extends Controller
         return $event;
     }
 
-    public function destroy($id)
+    public function destroy($eventId)
     {
-        return Event::destroy($id);
+        $event = auth()->user()->ownEvents()->findOrFail($eventId);
+
+        $event->delete();
+
+        return response()->json(null, 204);
     }
 }
