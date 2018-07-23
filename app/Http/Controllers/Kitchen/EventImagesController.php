@@ -12,7 +12,7 @@ class EventImagesController extends Controller
 {
     public function uploadImageTemp($eventId)
     {
-        $event = auth()->user()->ownEvents()->findOrFail($eventId);
+        $event = auth()->user()->events()->findOrFail($eventId);
 
         $this->validate(request(), [
             'file' => 'required|max:2000000',
@@ -26,7 +26,7 @@ class EventImagesController extends Controller
 
     public function uploadImage($eventId)
     {
-        $event = auth()->user()->ownEvents()->findOrFail($eventId);
+        $event = auth()->user()->events()->findOrFail($eventId);
 
         $this->validate(request(), [
             'file' => 'required|max:2000000',
@@ -49,7 +49,7 @@ class EventImagesController extends Controller
 
     public function sortImage($eventId)
     {
-        $event = auth()->user()->ownEvents()->findOrFail($eventId);
+        $event = auth()->user()->events()->findOrFail($eventId);
 
         $this->validate(request(), [
             'images' => 'required|array',
@@ -74,8 +74,12 @@ class EventImagesController extends Controller
         return $event->images()->orderBy('order', 'asc')->get();
     }
 
-    public function destroyImage($id)
+    public function destroyImage($eventId, $imageId)
     {
-        return EventImage::destroy($id);
+        $event = auth()->user()->events()->findOrFail($eventId);
+
+        $event->images()->findOrFail($imageId)->delete();
+
+        return response()->json(null, 204);
     }
 }

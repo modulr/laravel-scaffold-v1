@@ -101,6 +101,11 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Events\Event::class, 'owner_id');
     }
 
+    public function events()
+    {
+        return $this->hasMany(\App\Models\Events\Event::class, 'owner_id');
+    }
+
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
