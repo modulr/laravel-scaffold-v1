@@ -57,5 +57,48 @@ class SortImageTest extends TestCase
     }
 
     // Testear que el cheff no pueda ordenar imagenes de un evento que no posea
-    // Testear que el cheff no pueda ordenar imagenes que no posea
+    /**
+     * @test
+     */
+    function a_chef_cannot_reorder_images_of_a_event_that_doesnot_owns()
+    {
+        $chef = $this->makeUser();
+        $event = factory(Event::class)->create(['owner_id' => $this->makeUser()]);
+        $event->images()->createMany([
+            ['basename' => 'foo.jpg', 'order' => 1 ],
+            ['basename' => 'bar.jpg', 'order' => 2 ],
+        ]);
+
+        $response = $this->actingAs($chef)->json('post', 'kitchen/events/' . $event->id . '/images/sort', [
+            'images' => [
+                ['id' => 2],
+                ['id' => 1],
+            ]
+        ]);
+
+        $response->assertStatus(404);
+    }
+
+    /**
+     * @test
+     */
+    function a_chef_cannot_reorder_images_that_doesnot_owns()
+    {
+        $chef = $this->makeUser();
+        $event = factory(Event::class)->create(['owner_id' => $chef->id]);
+        $event->images()->createMany([
+            ['basename' => 'foo.jpg', 'order' => 1 ],
+            ['basename' => 'bar.jpg', 'order' => 2 ],
+        ]);
+
+        $response = $this->actingAs($chef)->json('post', 'kitchen/events/' . $event->id . '/images/sort', [
+            'images' => [
+                ['id' => 2],
+                ['id' => 36],
+            ]
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['error']);
+    }
 }

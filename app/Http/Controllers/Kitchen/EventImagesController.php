@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\Upload;
 use App\Models\Events\EventImage;
+use Illuminate\Support\Facades\DB;
 
 class EventImagesController extends Controller
 {
@@ -30,10 +31,10 @@ class EventImagesController extends Controller
         $this->validate(request(), [
             'file' => 'required|max:2000000',
         ]);
-        
+
         $upload = new Upload();
-        $data = $upload->upload(request('file'), 'events/'.$event->id.'/images')
-            ->resize(800,500)->thumbnail(360,130)
+        $data = $upload->upload(request('file'), 'events/' . $event->id . '/images')
+            ->resize(800, 500)->thumbnail(360, 130)
             ->getData();
 
         $orderPosition = (int) $event->images()->max('order') + 1;
@@ -55,9 +56,20 @@ class EventImagesController extends Controller
         ]);
 
         $startOrder = 1;
-        foreach (request('images') as $image) {
-            $event->images()->where('id', $image['id'])->update(['order' => $startOrder++]);
+
+        try {
+            DB::beginTransaction();
+
+            foreach (request('images') as $image) {
+                $event->images()->findOrFail($image['id'])->update(['order' => $startOrder++]);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json(['error' => 'Alguna/s ids no pertenecen al evento ' . $event->id], 422);
         }
+
+        DB::commit();
 
         return $event->images()->orderBy('order', 'asc')->get();
     }
