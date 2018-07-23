@@ -122,14 +122,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/paypal/status', 'PaypalController@getStatus');
 });
 
+Route::get('tos', function() { return view('tos'); });
+
 // Vistas de Platillos
 Route::group(['namespace' => 'Platillos'], function() {
     Route::get('/platillos', 'PlatillosController@index')->middleware('permission:read-events');
-    Route::get('/platillos/{id}', 'PlatillosController@show')->middleware('permission:read-events');
+    Route::get('/platillos/{event}', 'PlatillosController@show')->middleware('permission:read-events');
 
     Route::get('/cocina/platillos', 'CocinaPlatillosController@index')->middleware('auth', 'permission:read-events');
-    Route::get('/cocina/platillos/menu-del-dia', 'CocinaPlatillosController@meduDelDia')->middleware('auth', 'permission:read-events');
-    Route::get('/cocina/platillos/{id}/reservaciones', 'CocinaPlatillosController@reservaciones')->middleware('auth', 'permission:read-events');
+    Route::get('/cocina/platillos/create', 'CocinaPlatillosController@create')->middleware('auth', 'permission:read-events');
+    Route::get('/cocina/platillos/menu-del-dia', 'CocinaPlatillosController@menuDelDia')->middleware('auth', 'permission:read-events');
 });
 
 

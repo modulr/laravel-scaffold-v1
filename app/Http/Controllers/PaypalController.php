@@ -104,9 +104,9 @@ class PaypalController extends Controller
 
             if ($result->getState() == 'approved') {
                 $event = Event::find($result->transactions[0]->item_list->items[0]->sku);
-                $event->attendings()->updateExistingPivot(Auth::id(), ['paid' => true, 'paypal_id' => $payment->getId()]);
+                $event->reservations()->where('user_id', auth()->id())->update(['paid' => true, 'paypal_id' => $payment->getId()]);
 
-                Mail::to(Auth::user())->send(new EventAttendPaymentConfirmation($event, Auth::user()));
+                Mail::to(auth()->user())->send(new EventAttendPaymentConfirmation($event, auth()->user()));
             }
 
             return redirect($result->transactions[0]->item_list->items[0]->url);

@@ -9,11 +9,25 @@ class CocinaPlatillosController extends Controller
 {
     public function index()
     {
-        return view('events.myevents');
+        return view('platillos.cocina.index');
     }
 
-    public function reservaciones($id)
+    public function reservaciones($eventId)
     {
-        // vista del cocinero para las reservaciones de un plato
+        if (! $event = auth()->user()->events()->find($eventId)) {
+            return redirect('/platillos');
+        }
+
+        return view('platillos.reservations');
+    }
+
+    public function menuDelDia()
+    {
+        return view('platillos.cocina.menu_del_dia');
+    }
+
+    public function create()
+    {
+        return view('platillos.cocina.create');
     }
 }

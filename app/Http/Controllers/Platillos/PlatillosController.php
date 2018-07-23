@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Platillos;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Events\Event;
 
 class PlatillosController extends Controller
 {
     public function index()
     {
-        return view('events.events');
+        return view('platillos.index');
     }
 
-    public function show($id)
+    public function show(Event $event)
     {
-        return view('events.event', ['id' => $id]);
+        return view('platillos.show', ['id' => $event->id]);
     }
 }
