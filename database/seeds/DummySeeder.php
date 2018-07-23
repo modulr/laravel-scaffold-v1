@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class FakerDataSeeder extends Seeder
+class DummySeeder extends Seeder
 {
     /**
      * Run the database seeds.
