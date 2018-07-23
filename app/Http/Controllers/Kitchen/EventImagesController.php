@@ -9,47 +9,57 @@ use App\Models\Events\EventImage;
 
 class EventImagesController extends Controller
 {
-
-
-    public function uploadImageTemp(Request $request)
+    public function uploadImageTemp($eventId)
     {
-        $this->validate($request, [
+        $event = auth()->user()->ownEvents()->findOrFail($eventId);
+
+        $this->validate(request(), [
             'file' => 'required|max:2000000',
         ]);
+
         $upload = new Upload();
-        $uploadData = $upload->uploadTemp($request->file)->getData();
-        return $uploadData;
+        $uploadData = $upload->uploadTemp(request('file'))->getData();
+
+        return response()->json($uploadData, 201);
     }
 
-    public function uploadImage(Request $request)
+    public function uploadImage($eventId)
     {
-        $this->validate($request, [
+        $event = auth()->user()->ownEvents()->findOrFail($eventId);
+
+        $this->validate(request(), [
             'file' => 'required|max:2000000',
         ]);
+        
         $upload = new Upload();
-        $data = $upload->upload($request->file, 'events/'.$request->id.'/images')
-                        ->resize(800,500)->thumbnail(360,130)
-                        ->getData();
+        $data = $upload->upload(request('file'), 'events/'.$event->id.'/images')
+            ->resize(800,500)->thumbnail(360,130)
+            ->getData();
 
-        $maxOrder = EventImage::where('event_id', $request->id)->max('order');
-        $maxOrder ++;
+        $orderPosition = (int) $event->images()->max('order') + 1;
 
-        return EventImage::create([
+        $eventImage = $event->images()->create([
             'basename' => $data['basename'],
-            'order' => $maxOrder,
-            'event_id' => $request->id
+            'order' => $orderPosition,
         ]);
+
+        return response()->json($eventImage, 201);
     }
 
-    public function sortImage(Request $request, $eventId)
+    public function sortImage($eventId)
     {
-        foreach ($request->images as $key => $v) {
-            EventImage::where('id', $v['id'])
-                        ->where('event_id', $eventId)
-                        ->update(['order' => $key]);
+        $event = auth()->user()->ownEvents()->findOrFail($eventId);
+
+        $this->validate(request(), [
+            'images' => 'required|array',
+        ]);
+
+        $startOrder = 1;
+        foreach (request('images') as $image) {
+            $event->images()->where('id', $image['id'])->update(['order' => $startOrder++]);
         }
 
-        return EventImage::where('event_id', $eventId)->orderBy('order', 'asc')->get();
+        return $event->images()->orderBy('order', 'asc')->get();
     }
 
     public function destroyImage($id)

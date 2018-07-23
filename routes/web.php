@@ -170,10 +170,10 @@ Route::middleware('auth')->prefix('kitchen')->namespace('Kitchen')->group(functi
     Route::post('events/unpublished-events', 'PublishedEventsController@destroy')->middleware('permission:update-events');
 
     // Image Event
-    Route::post('events/images/upload/temp', 'EventImagesController@uploadImageTemp')->middleware('permission:create-news');
-    Route::post('events/images/upload/', 'EventImagesController@uploadImage')->middleware('permission:update-news');
-    Route::post('events/images/sort/{eventId}', 'EventImagesController@sortImage')->middleware('permission:update-news');
-    Route::delete('events/images/destroy/{id}', 'EventImagesController@destroyImage')->middleware('permission:delete-events');
+    Route::post('events/{eventId}/images/temp', 'EventImagesController@uploadImageTemp')->middleware('permission:create-news');
+    Route::post('events/{eventId}/images', 'EventImagesController@uploadImage')->middleware('permission:update-news');
+    Route::post('events/{eventId}/images/sort', 'EventImagesController@sortImage')->middleware('permission:update-news');
+    Route::delete('events/{eventId}/images/{imageId}', 'EventImagesController@destroyImage')->middleware('permission:delete-events');
 
     // Reservations
     Route::delete('reservations/{reservation}', 'ReservationsController@destroy')->middleware('permission:update-events');
