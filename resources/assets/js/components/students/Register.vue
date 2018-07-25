@@ -102,10 +102,21 @@
                             </label>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     <div class="form-group" v-show="student.data.have_studied">
                         <label>¿Cual fue tu nombre de usuario?</label>
                         <input type="text" class="form-control"
                             v-model="student.data.username">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" v-show="student.data.have_studied">
+                        <label>¿En que Mes y año cursaste?</label>
+                        <input type="date" class="form-control"
+                            v-model="student.data.year_month">
                     </div>
                 </div>
             </div>

@@ -19,21 +19,41 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-12">
+                    <h4>Observaciones</h4>
+                    <br>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span> Es beneficio Construrama?</label>
+                        <select class="form-control text-capitalize"
+                            v-model="student.data.discount">
+                            <option :value="0">No</option>
+                            <option :value="1">Si</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span> Valido que el participante es colaborador de tienda Construrama?</label>
+                        <select class="form-control text-capitalize"
+                            v-model="student.data.verified">
+                            <option :value="0">No</option>
+                            <option :value="1">Si</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span> Justificación de Cambios/avisos/datos de factura</label>
+                        <textarea class="form-control" rows="4"
+                            v-model="student.data.observations"></textarea>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
                 <div class="col-md-8">
                     <h4>Información General</h4>
                     <br>
-                </div>
-                <div class="col-md-12 text-right">
-                    <span class="switch-text">Beneficio Nuevo Construrama</span>
-                    <label class="switch">
-                        <input type="checkbox" v-model="student.data.discount">
-                        <span class="slider round"></span>
-                    </label>
-                    <span class="switch-text">Validado</span>
-                    <label class="switch">
-                        <input type="checkbox" v-model="student.data.verified">
-                        <span class="slider round"></span>
-                    </label>
                 </div>
                 <br>
                 <div class="col-md-6">
@@ -125,14 +145,25 @@
                             </label>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     <div class="form-group" v-show="student.data.have_studied">
                         <label>¿Cual fue tu nombre de usuario?</label>
                         <input type="text" class="form-control"
                             v-model="student.data.username">
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group" v-show="student.data.have_studied">
+                        <label>¿En que Mes y año cursaste?</label>
+                        <input type="date" class="form-control"
+                            v-model="student.data.year_month">
+                    </div>
+                </div>
             </div>
-            <br><hr>
+            <br><br>
             <div class="row">
                 <div class="col-md-12">
                     <h4>Información de contacto</h4>
@@ -161,7 +192,7 @@
                     </div>
                 </div>
             </div>
-            <br><hr>
+            <br><br>
             <div class="row">
                 <div class="col-md-12">
                     <h4>Información Construrama</h4>
@@ -228,7 +259,7 @@
                     </div>
                 </div>
             </div>
-            <hr>
+            <br>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">

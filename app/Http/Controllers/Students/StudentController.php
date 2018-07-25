@@ -69,6 +69,7 @@ class StudentController extends Controller
             'certificate_id' => 'required|integer',
             'have_studied' => 'boolean',
             'username' => 'string',
+            'year_month' => 'date',
             'cellphone' => 'required|string|min:10|max:10',
             'phone' => 'required|string|min:10|max:10',
             'email' => 'required|string|email|confirmed',
@@ -105,6 +106,7 @@ class StudentController extends Controller
             'certificate_id' => $request->certificate_id,
             'have_studied' => $request->have_studied,
             'username' => $request->username,
+            'year_month' => $request->year_month,
             'cellphone' => $request->cellphone,
             'phone' => $request->phone,
             'email' => $request->email,
@@ -131,12 +133,14 @@ class StudentController extends Controller
             'certificate_id' => 'required|integer',
             'have_studied' => 'boolean',
             'username' => 'string|nullable',
+            'year_month' => 'date|nullable',
             'cellphone' => 'required|string|min:10|max:10',
             'phone' => 'required|string|min:10|max:10',
             'email' => 'required|string|email',
             'store_id' => 'required|integer',
             'verified' => 'boolean',
             'discount' => 'boolean',
+            'observations' => 'string|nullable',
             'store.store_phone' => 'required|string|min:10|max:10',
             'store.store_email' => 'required|string|email'
         ]);
@@ -160,12 +164,14 @@ class StudentController extends Controller
             $student->certificate_id = $request->certificate_id;
             $student->have_studied = $request->have_studied;
             $student->username = $request->username;
+            $student->year_month = $request->year_month;
             $student->cellphone = $request->cellphone;
             $student->phone = $request->phone;
             $student->email = $request->email;
             $student->store_id = $request->store_id;
             $student->verified = $request->verified;
             $student->discount = $request->discount;
+            $student->observations = $request->observations;
             $student->save();
 
             return response()->json(['data' => 'ok']);
@@ -197,6 +203,7 @@ class StudentController extends Controller
                 'Diplomado al que Aplica' => $value->certificate->name,
                 'Ha cursado' => $value->have_studied,
                 'Usuario' => $value->username,
+                'Mes y año' => $value->year_month,
                 'Teléfono Celular' => $value->cellphone,
                 'Teléfono Fijo' => $value->phone,
                 'Correo electrónico' => $value->email,
@@ -244,8 +251,6 @@ class StudentController extends Controller
                     $row->setFontWeight('bold');
                 });
             });
-
-
 
         })->store('xls', storage_path('app/public/students/exports'));
 
