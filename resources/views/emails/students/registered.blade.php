@@ -2,7 +2,7 @@
 
 Estimado **_{{$user->name}}_**,
 
-Se ha registrado el participante con el nombre **_{{$student->name}} {{$student->last_name}}_** en el diplomado **_{{$student->certificate->name}}_** de la Universidad Construrama,
+Se ha registrado un participante con el nombre **_{{$student->name}} {{$student->last_name}}_** en el diplomado **_{{$student->certificate->name}}_** de la Universidad Construrama,
 
 Tienda: **_{{$student->store->name}}_**<br>
 Región: **_{{$student->store->region}}_**<br>

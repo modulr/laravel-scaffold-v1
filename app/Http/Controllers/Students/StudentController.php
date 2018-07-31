@@ -181,6 +181,7 @@ class StudentController extends Controller
 
         $this->validate($request, [
             'verified' => 'boolean',
+            'discount' => 'boolean',
             'observations' => 'string|nullable',
         ]);
 
@@ -222,13 +223,16 @@ class StudentController extends Controller
                 'Forma de pago' => $value->paymentMethod->name,
                 'Diplomado al que Aplica' => $value->certificate->name,
                 'Ha cursado' => $value->have_studied,
-                'Usuario' => $value->username,
+                '¿Cual fue tu nombre de usuario?' => $value->username,
+                '¿En que Mes y año cursaste?' => $value->year_month,
                 'Mes y año' => $value->year_month,
                 'Teléfono Celular' => $value->cellphone,
                 'Teléfono Fijo' => $value->phone,
                 'Correo electrónico' => $value->email,
                 'Validado' => ($value->verified) ? 'Si' : 'No',
-                'Beneficio Nuevo Construrama' => ($value->discount) ? 'Si' : 'No',
+                '¿Es beneficio Construrama?' => ($value->discount) ? 'Si' : 'No',
+                '¿Valido que el participante es colaborador de tienda Construrama?' => ($value->verified) ? 'Si' : 'No',
+                'Justificación de Cambios/avisos/datos de factura' => $value->observations,
                 'Fecha registro' => $value->created_at,
                 'Numero Tienda' => $value->store->store_id,
                 'Construrama' => $value->store->name,

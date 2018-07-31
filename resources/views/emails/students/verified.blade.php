@@ -1,6 +1,6 @@
 @component('mail::message')
 
-Estimado **_{{$student->name}}_**,
+Estimado **_{{$student->name}} {{$student->last_name}}_**,
 
 
 Saludos,<br>

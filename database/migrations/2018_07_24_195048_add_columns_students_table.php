@@ -37,6 +37,7 @@ class AddColumnsStudentsTable extends Migration
     {
         Schema::table('students', function(Blueprint $table) {
             $table->dropColumn('year_month');
+            $table->dropColumn('observations');
         });
     }
 }

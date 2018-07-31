@@ -302,7 +302,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label><span class="text-danger">*</span> Es beneficio Construrama?</label>
+                                    <label><span class="text-danger">*</span> ¿Es beneficio Construrama?</label>
                                     <select class="form-control text-capitalize"
                                         v-model="student.data.discount">
                                         <option :value="0">No</option>
@@ -310,7 +310,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label><span class="text-danger">*</span> Valido que el participante es colaborador de tienda Construrama?</label>
+                                    <label><span class="text-danger">*</span> ¿Valido que el participante es colaborador de tienda Construrama?</label>
                                     <select class="form-control text-capitalize"
                                         v-model="student.data.verified">
                                         <option :value="0">No</option>
