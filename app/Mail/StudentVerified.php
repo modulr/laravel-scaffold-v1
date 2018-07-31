@@ -6,29 +6,22 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-
 use App\Models\Students\Student;
-use App\User;
-use App\Models\Students\StudentListStore;
 
-class StudentRegistered extends Mailable
+class StudentVerified extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $student;
-    public $user;
-    public $store;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Student $student, User $user, StudentListStore $store)
+    public function __construct(Student $student)
     {
         $this->student = $student;
-        $this->user = $user;
-        $this->store = $store;
     }
 
     /**
@@ -38,7 +31,6 @@ class StudentRegistered extends Mailable
      */
     public function build()
     {
-        return $this->subject('Se ha registrado un participante para la tienda ' . $this->store->name)
-            ->markdown('emails.students.registered');
+        return $this->markdown('emails.students.verified');
     }
 }

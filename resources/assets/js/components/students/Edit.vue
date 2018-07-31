@@ -13,43 +13,13 @@
                     <div class="col-xs-8 controls text-right">
                         <button type="button" class="btn btn-default"
                                 @click="deleteStudent">Borrar</button>
-                        <button type="button" class="btn btn-success"
+                        <button type="button" class="btn btn-primary"
                                 @click="updateStudent">Guardar</button>
+                        <button type="button" class="btn btn-success"
+                                data-toggle="modal" data-target="#modalVerify">Validar</button>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <h4>Observaciones</h4>
-                    <br>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label><span class="text-danger">*</span> Es beneficio Construrama?</label>
-                        <select class="form-control text-capitalize"
-                            v-model="student.data.discount">
-                            <option :value="0">No</option>
-                            <option :value="1">Si</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label><span class="text-danger">*</span> Valido que el participante es colaborador de tienda Construrama?</label>
-                        <select class="form-control text-capitalize"
-                            v-model="student.data.verified">
-                            <option :value="0">No</option>
-                            <option :value="1">Si</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label><span class="text-danger">*</span> Justificación de Cambios/avisos/datos de factura</label>
-                        <textarea class="form-control" rows="4"
-                            v-model="student.data.observations"></textarea>
-                    </div>
-                </div>
-            </div>
-            <br><br>
             <div class="row">
                 <div class="col-md-8">
                     <h4>Información General</h4>
@@ -322,6 +292,48 @@
             </div>
             <br><br><br>
         </div>
+        <div class="modal fade" id="modalVerify">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Observaciones</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><span class="text-danger">*</span> Es beneficio Construrama?</label>
+                                    <select class="form-control text-capitalize"
+                                        v-model="student.data.discount">
+                                        <option :value="0">No</option>
+                                        <option :value="1">Si</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label><span class="text-danger">*</span> Valido que el participante es colaborador de tienda Construrama?</label>
+                                    <select class="form-control text-capitalize"
+                                        v-model="student.data.verified">
+                                        <option :value="0">No</option>
+                                        <option :value="1">Si</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><span class="text-danger">*</span> Justificación de Cambios/avisos/datos de factura</label>
+                                    <textarea class="form-control" rows="2"
+                                        v-model="student.data.observations"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" @click="verifyStudent">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -424,6 +436,24 @@ export default {
                 this.student.error = error.response.data;
                 btn.button('reset')
             });
+        },
+        verifyStudent (e) {
+            var btn = $(e.target).button('loading')
+            axios.put('/api/students/verify/'+this.student.data.id, this.student.data)
+            .then(response => {
+                this.student.error = {};
+                swal({
+                    title: 'Estudiante Validado',
+                    text: '¡Se ha enviado un correo electronico al estudiante con los datos de pago!',
+                    type: 'success'
+                })
+                btn.button('reset')
+                $('#modalVerify').modal('hide')
+            })
+            .catch(error => {
+                this.student.error = error.response.data;
+                btn.button('reset')
+            })
         },
         deleteStudent (e) {
             var self = this;

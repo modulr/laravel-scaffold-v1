@@ -13,6 +13,7 @@
         "laravel/tinker": "~1.0",
         "laravolt/avatar": "^1.8",
         "maatwebsite/excel": "~2.1.0",
+        "predis/predis": "^1.1",
         "pusher/pusher-php-server": "^2.0",
         "santigarcor/laratrust": "5.0.*",
         "simplesoftwareio/simple-qrcode": "~2",

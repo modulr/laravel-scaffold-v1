@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Students;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
 use App\Models\Students\Student;
 use App\Models\Students\StudentListCertificate;
 use App\Models\Students\StudentListGender;
@@ -13,7 +14,11 @@ use App\Models\Students\StudentListStudy;
 use App\Models\Students\StudentListState;
 use App\Models\Students\StudentListCity;
 use App\Models\Students\StudentListStore;
-use App\Mail\StudentRegistered;
+
+//use App\Mail\StudentRegistered;
+use App\Jobs\SendStudentRegisteredEmail;
+use App\Jobs\SendStudentVerifiedEmail;
+
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Storage;
@@ -113,8 +118,8 @@ class StudentController extends Controller
             'store_id' => $request->store_id
         ]);
 
-        Mail::to($store->advisor->email)
-            ->send(new StudentRegistered($student, $store->advisor));
+        SendStudentRegisteredEmail::dispatch($student, $store);
+        info('Dispached registered student ' . $student->name);
 
         return response()->json(['data' => 'ok']);
     }
@@ -138,9 +143,6 @@ class StudentController extends Controller
             'phone' => 'required|string|min:10|max:10',
             'email' => 'required|string|email',
             'store_id' => 'required|integer',
-            'verified' => 'boolean',
-            'discount' => 'boolean',
-            'observations' => 'string|nullable',
             'store.store_phone' => 'required|string|min:10|max:10',
             'store.store_email' => 'required|string|email'
         ]);
@@ -169,10 +171,28 @@ class StudentController extends Controller
             $student->phone = $request->phone;
             $student->email = $request->email;
             $student->store_id = $request->store_id;
+            $student->save();
+
+            return response()->json(['data' => 'ok']);
+        });
+    }
+
+    public function verify (Request $request, $id) {
+
+        $this->validate($request, [
+            'verified' => 'boolean',
+            'observations' => 'string|nullable',
+        ]);
+
+        return DB::transaction(function () use ($request, $id) {
+            $student = Student::find($id);
             $student->verified = $request->verified;
             $student->discount = $request->discount;
             $student->observations = $request->observations;
             $student->save();
+
+            SendStudentVerifiedEmail::dispatch($student);
+            info('Dispached verified student ' . $student->name);
 
             return response()->json(['data' => 'ok']);
         });
