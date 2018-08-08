@@ -39,6 +39,6 @@ class SendStudentVerifiedEmail implements ShouldQueue
         Mail::to($this->student->email)
             ->send(new StudentVerified($this->student));
 
-        info('Emailed verified student ' . $this->student->name);
+        //info('Emailed verified student ' . $this->student->name);
     }
 }

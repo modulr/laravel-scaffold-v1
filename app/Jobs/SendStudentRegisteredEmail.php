@@ -43,6 +43,6 @@ class SendStudentRegisteredEmail implements ShouldQueue
             ->send(new StudentRegistered($this->student, $this->store->advisor, $this->store));
 
 
-        info('Emailed registered student ' . $this->student->name);
+        //info('Emailed registered student ' . $this->student->name);
     }
 }
