@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Events\Event;
+
+use App\Models\Stb\Saucer;
 
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
@@ -101,8 +102,8 @@ class PaypalController extends Controller
             }
 
             if ($result->getState() == 'approved') {
-                $event = Event::find($result->transactions[0]->item_list->items[0]->sku);
-                $event->attendings()->updateExistingPivot(Auth::id(), ['paid' => true, 'paypal_id' => $payment->getId()]);
+                $saucer = Saucer::find($result->transactions[0]->item_list->items[0]->sku);
+                $saucer->reservation()->updateExistingPivot(Auth::id(), ['paid' => true, 'paypal_id' => $payment->getId()]);
             }
 
             return redirect($result->transactions[0]->item_list->items[0]->url);

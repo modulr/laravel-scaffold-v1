@@ -9,7 +9,7 @@
                 </div>
                 <ul class="nav navbar-nav pull-right">
                     <!-- Menu -->
-                    <li class="dropdown menu">
+                    <!-- <li class="dropdown menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <i class="fa fa-th fa-lg" aria-hidden="true"></i>
                         </a>
@@ -44,7 +44,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
                     <!-- Notifications -->
                     <li class="dropdown notifications">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" @click="markAsRead">
@@ -101,12 +101,21 @@
                                 </a>
                             </li>
                             <li class="divider"></li>
+                            <li class="dropdown-header">Comensal</li>
                             <li>
-                                <a href="/mi_mesa">
-                                    <i class="fa fa-fw fa-cutlery"></i> Mi mesa
-                                </a>
+                                <a href="/platillos">Quiero comer</a>
+                            </li>
+                            <li>
+                                <a href="/reservaciones">Reservaciones</a>
                             </li>
                             <li class="divider"></li>
+                            <li class="dropdown-header">Cocinero</li>
+                            <li>
+                                <a href="/mis_platillos">Quiero cocinar</a>
+                            </li>
+                            <li>
+                                <a href="/mis_reservaciones">Recervaciones</a>
+                            </li>
                             <li>
                                 <a href="#" @click.prevent="logout">
                                     <i class="fa fa-fw fa-sign-out"></i> Salir

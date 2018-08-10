@@ -18,14 +18,8 @@ class ProfileController extends Controller
     public function profile($id)
     {
         $user = User::with(
-            'profilePersonal.gender',
-            'profilePersonal.relationship',
-            'profileContact',
-            'profileEducation',
-            'profileFamily.gender',
-            'profileFamily.relation',
             'profilePlace',
-            'profileWork.position'
+            'profileContact'
             )->find($id);
 
         return view('profile.profile', ['user' => $user]);
@@ -34,14 +28,8 @@ class ProfileController extends Controller
     public function profileEdit($id)
     {
         $user = User::with(
-            'profilePersonal.gender',
-            'profilePersonal.relationship',
-            'profileContact',
-            'profileEducation',
-            'profileFamily.gender',
-            'profileFamily.relation',
             'profilePlace',
-            'profileWork.position'
+            'profileContact'
             )->find($id);
 
         if (!Auth::user()->hasPermission('update-all-profile') && Auth::user()->id != $user->id)
@@ -66,32 +54,6 @@ class ProfileController extends Controller
 
         return $user;
     }
-
-    public function updatePersonal(Request $request, $id)
-    {
-        $this->validate($request, [
-            'birthday' => 'date|nullable',
-            'place_of_birth' => 'string|nullable',
-            'gender_id' => 'integer|nullable',
-            'relationship_id' => 'integer|nullable',
-            'rfc' => 'alpha_num|nullable',
-            'curp' => 'alpha_num|nullable',
-            'nss' => 'alpha_num|nullable',
-        ]);
-
-        $personal = ProfilePersonal::find($id);
-        $personal->birthday = $request->birthday;
-        $personal->place_of_birth = $request->place_of_birth;
-        $personal->gender_id = $request->gender_id;
-        $personal->relationship_id = $request->relationship_id;
-        $personal->rfc = $request->rfc;
-        $personal->curp = $request->curp;
-        $personal->nss = $request->nss;
-        $personal->save();
-
-        return ProfilePersonal::with('gender', 'relationship')->find($id);
-    }
-
     public function storeContact(Request $request)
     {
         $this->validate($request, [
@@ -112,55 +74,6 @@ class ProfileController extends Controller
         return ProfileContact::destroy($id);
     }
 
-    public function storeEducation(Request $request)
-    {
-        $this->validate($request, [
-            'user_id' => 'required|integer',
-            'title' => 'required|string|max:255',
-            'school_name' => 'required|string|max:255',
-            'start_year' => 'required|numeric',
-            'end_year' => 'required|numeric',
-        ]);
-
-        return ProfileEducation::create([
-            'user_id' => $request->user_id,
-            'title' => $request->title,
-            'school_name' => $request->school_name,
-            'start_year' => $request->start_year,
-            'end_year' => $request->end_year,
-        ]);
-    }
-
-    public function destroyEducation($id)
-    {
-        return ProfileEducation::destroy($id);
-    }
-
-    public function storeFamily(Request $request)
-    {
-        $this->validate($request, [
-            'user_id' => 'required|integer',
-            'name' => 'required|string|max:255',
-            'gender_id' => 'required|integer',
-            'relation_id' => 'required|integer',
-            'birthday' => 'required|date',
-        ]);
-
-        $family = ProfileFamily::create([
-            'user_id' => $request->user_id,
-            'name' => $request->name,
-            'gender_id' => $request->gender_id,
-            'relation_id' => $request->relation_id,
-            'birthday' => $request->birthday,
-        ]);
-
-        return ProfileFamily::with('relation', 'gender')->find($family->id);
-    }
-
-    public function destroyFamily($id)
-    {
-        return ProfileFamily::destroy($id);
-    }
 
     public function storePlace(Request $request)
     {
@@ -182,61 +95,4 @@ class ProfileController extends Controller
         return ProfilePlace::destroy($id);
     }
 
-    public function work(Request $request, $id)
-    {
-        $user = User::with(
-            'profileWork.profession',
-            'profileWork.position',
-            'profileWork.department',
-            'profileWork.boss'
-            )->find($id);
-
-        return view('profile.work', ['user' => $user]);
-    }
-
-    public function workEdit(Request $request, $id)
-    {
-        $user = User::with(
-            'profileWork.profession',
-            'profileWork.position',
-            'profileWork.department',
-            'profileWork.boss'
-            )->find($id);
-
-        if (!Auth::user()->hasPermission('update-all-profile') && Auth::user()->id != $user->id)
-            return redirect('dashboard');
-
-        return view('profile.edit.work', ['user' => $user]);
-    }
-
-    public function updateWork(Request $request, $id)
-    {
-        $this->validate($request, [
-            'profession_id' => 'integer|nullable',
-            'position_id' => 'integer|nullable',
-            'department_id' => 'integer|nullable',
-            'boss_id' => 'integer|nullable',
-            'starting_from' => 'date|nullable',
-        ]);
-
-        $personal = ProfileWork::find($id);
-        $personal->profession_id = $request->profession_id;
-        $personal->position_id = $request->position_id;
-        $personal->department_id = $request->department_id;
-        $personal->boss_id = $request->boss_id;
-        $personal->starting_from = $request->starting_from;
-        $personal->save();
-
-        return ProfileWork::with('profession', 'position', 'department', 'boss')->find($id);
-    }
-
-    public function password(Request $request, $id)
-    {
-        $user = User::find($id);
-
-        if (!Auth::user()->hasPermission('update-all-profile') && Auth::user()->id != $user->id)
-            return redirect('dashboard');
-
-        return view('profile.edit.password', ['user' => $user]);
-    }
 }

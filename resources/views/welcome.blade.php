@@ -11,7 +11,7 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        
+
         <link rel="sshortcut icon" href="{{ asset('img/icon/favicon.ico') }}" type="image/x-icon"/>
         <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('img/icon/apple-touch-icon-57x57.png') }}">
         <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('img/icon/apple-touch-icon-60x60.png') }}">
@@ -67,7 +67,7 @@
                         <img src="/img/logos/stb.png" alt="">
                     </div>
                     <br>
-                    <events></events>
+                    <saucers></saucers>
                 </div>
             </div>
 

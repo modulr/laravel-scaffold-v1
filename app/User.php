@@ -55,24 +55,9 @@ class User extends Authenticatable
         return $permissions;
     }
 
-    public function profilePersonal()
-    {
-        return $this->hasOne(\App\Models\Profile\ProfilePersonal::class);
-    }
-
     public function profileContact()
     {
         return $this->hasMany(\App\Models\Profile\ProfileContact::class);
-    }
-
-    public function profileEducation()
-    {
-        return $this->hasMany(\App\Models\Profile\ProfileEducation::class);
-    }
-
-    public function profileFamily()
-    {
-        return $this->hasMany(\App\Models\Profile\ProfileFamily::class);
     }
 
     public function profilePlace()
@@ -80,23 +65,8 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Profile\ProfilePlace::class);
     }
 
-    public function profileWork()
+    public function saucers()
     {
-        return $this->hasOne(\App\Models\Profile\ProfileWork::class);
-    }
-
-    public function news()
-    {
-        return $this->hasMany(\App\Models\News\News::class);
-    }
-
-    public function tasks()
-    {
-        return $this->hasMany(\App\Models\Tasks\Task::class);
-    }
-
-    public function events()
-    {
-        return $this->hasMany(\App\Models\Events\Event::class, 'owner_id');
+        return $this->hasMany(\App\Models\Stb\Saucer::class, 'owner_id');
     }
 }

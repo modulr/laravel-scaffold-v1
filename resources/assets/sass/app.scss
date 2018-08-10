@@ -43,11 +43,7 @@
 @import 'modules/auth';
 @import 'modules/profile';
 @import 'modules/dashboard';
-@import 'modules/news';
-@import 'modules/contacts';
-@import 'modules/files';
-@import 'modules/tasks';
-@import 'modules/events';
+@import 'modules/stb';
 @import 'modules/welcome';
 
 // Components
@@ -56,5 +52,6 @@
 @import 'components/init-message';
 @import 'components/header';
 @import 'components/filters';
+@import 'components/switch';
 @import 'components/widgets';
 @import 'components/vue-clip';

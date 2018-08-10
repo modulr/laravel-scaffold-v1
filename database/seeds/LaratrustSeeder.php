@@ -63,14 +63,6 @@ class LaratrustSeeder extends Seeder
             $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
             Storage::put('avatars/'.$user->id.'/avatar.png', $avatar);
 
-            \App\Models\Profile\ProfilePersonal::create([
-                'user_id' => $user->id
-            ]);
-
-            \App\Models\Profile\ProfileWork::create([
-                'user_id' => $user->id
-            ]);
-
             $user->attachRole($role);
         }
 
@@ -87,14 +79,6 @@ class LaratrustSeeder extends Seeder
                         'email' => $key.'@modulr.io',
                         'password' => bcrypt('secret'),
                         'remember_token' => str_random(10),
-                    ]);
-
-                    \App\Models\Profile\ProfilePersonal::create([
-                        'user_id' => $user->id
-                    ]);
-
-                    \App\Models\Profile\ProfileWork::create([
-                        'user_id' => $user->id
                     ]);
 
                     $avatar = Avatar::create($user->name)->getImageObject()->encode('png');

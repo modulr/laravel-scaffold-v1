@@ -3,7 +3,13 @@
         width: 100px;
         margin-bottom: 30px;
     }
+
+    .row {
+        margin: 25% 20%
+    }
+
     .panel {
+        border-radius: 30px;
         > .panel-heading {
             a {
                 font-size: 14px;
@@ -11,10 +17,17 @@
             }
         }
         > .panel-body {
+            background-color: #FA594C;
+            border-radius: 30px;
             a {
                 text-decoration: none;
                 img {
-                    width: 200px;
+                    width:85px;
+                    margin-top: 10px;
+                }
+                h3 {
+                    font-size: 20px;
+                    color: white;
                 }
             }
 
