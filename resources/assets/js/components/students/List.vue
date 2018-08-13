@@ -27,7 +27,7 @@
                                     <th>Puesto Actual</th>
                                     <th>Años de antiguedad en el puesto</th>
                                     <th>Forma de pago</th>
-                                    <th>Diplomado al que Aplica</th>
+                                    <th>Diplomados a los que Aplicas</th>
                                     <th>Ha cursado</th>
                                     <th>Usuario</th>
                                     <th>Teléfono Celular</th>
@@ -48,7 +48,11 @@
                                     <td @click="editStudent(item.id)">{{item.position.name}}</td>
                                     <td @click="editStudent(item.id)">{{item.years_in_position}}</td>
                                     <td @click="editStudent(item.id)">{{item.payment_method.name}}</td>
-                                    <td @click="editStudent(item.id)">{{item.certificate.name}}</td>
+                                    <td @click="editStudent(item.id)">
+                                        <span v-for="(certificate, index) in item.certificates">
+                                            {{certificate.name}}<span v-if="index+1 < item.certificates.length">, </span>
+                                        </span>
+                                    </td>
                                     <td @click="editStudent(item.id)">
                                         <span v-if="item.have_studied">Si</span>
                                         <span v-else>No</span>

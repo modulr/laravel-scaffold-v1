@@ -84,17 +84,21 @@
                         </select>
                         <span class="help-block" v-if="student.error.payment_method_id">{{student.error.payment_method_id[0]}}</span>
                     </div>
-                    <div class="form-group" :class="{'has-error': student.error.certificate_id}">
-                        <label><span class="text-danger">*</span> Diplomado al que Aplica</label>
-                        <select class="form-control text-capitalize"
-                            v-model="student.data.certificate_id">
-                            <option v-for="option in lists.certificates"
-                                :value="option.id">
-                                {{ option.name }}
-                            </option>
-                        </select>
-                        <span class="help-block" v-if="student.error.certificate_id">{{student.error.certificate_id[0]}}</span>
+                    <div class="form-group" :class="{'has-error': student.error.certificates}">
+                        <label><span class="text-danger">*</span> Diplomados a los que Aplicas</label>
+                        <div class="checkbox" v-for="(option, index) in lists.certificates" :key="index">
+                            <label>
+                                <input type="checkbox" :id="option.name"
+                                :value="option"
+                                v-model="student.data.certificates"> {{option.name}}
+                            </label>
+                        </div>
+                        <span class="help-block" v-if="student.error.certificates">{{student.error.certificates[0]}}</span>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <div class="form-group">
                         <div class="checkbox">
                             <label>
@@ -103,8 +107,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group" v-show="student.data.have_studied">
                         <label>¿Cual fue tu nombre de usuario?</label>
@@ -400,7 +402,9 @@ export default {
                 stores: []
             },
             student: {
-                data: {},
+                data: {
+                    certificates: []
+                },
                 error: {}
             }
         }

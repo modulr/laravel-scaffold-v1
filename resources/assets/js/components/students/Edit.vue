@@ -4,15 +4,15 @@
             <!-- Actionbar -->
             <div class="actionbar">
                 <div class="row">
-                    <div class="col-xs-4 controls">
+                    <div class="col-xs-3 controls">
                         <a href="/students" class="btn btn-default">
                             <i class="fa fa-list"></i>
                             Estudiantes
                         </a>
                     </div>
-                    <div class="col-xs-8 controls text-right">
+                    <div class="col-xs-9 controls text-right">
                         <button type="button" class="btn btn-default"
-                                @click="deleteStudent">Borrar</button>
+                                @click="deleteStudent"><i class="fa fa-trash"></i></button>
                         <button type="button" class="btn btn-primary"
                                 @click="updateStudent">Guardar</button>
                         <button type="button" class="btn btn-success"
@@ -97,17 +97,21 @@
                         </select>
                         <span class="help-block" v-if="student.error.payment_method_id">{{student.error.payment_method_id[0]}}</span>
                     </div>
-                    <div class="form-group" :class="{'has-error': student.error.certificate_id}">
-                        <label><span class="text-danger">*</span> Diplomado al que Aplica</label>
-                        <select class="form-control text-capitalize"
-                            v-model="student.data.certificate_id">
-                            <option v-for="option in lists.certificates"
-                                :value="option.id">
-                                {{ option.name }}
-                            </option>
-                        </select>
-                        <span class="help-block" v-if="student.error.certificate_id">{{student.error.certificate_id[0]}}</span>
+                    <div class="form-group" :class="{'has-error': student.error.certificates}">
+                        <label><span class="text-danger">*</span> Diplomados a los que Aplicas</label>
+                        <div class="checkbox" v-for="(option, index) in lists.certificates" :key="index">
+                            <label>
+                                <input type="checkbox" :id="option.name"
+                                :value="option"
+                                v-model="student.data.certificates"> {{option.name}}
+                            </label>
+                        </div>
+                        <span class="help-block" v-if="student.error.certificates">{{student.error.certificates[0]}}</span>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <div class="form-group">
                         <div class="checkbox">
                             <label>
@@ -116,8 +120,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group" v-show="student.data.have_studied">
                         <label>¿Cual fue tu nombre de usuario?</label>
@@ -301,28 +303,31 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
+                                <div class="form-group" :class="{'has-error': student.error.discount}">
                                     <label><span class="text-danger">*</span> ¿Es beneficio Construrama?</label>
                                     <select class="form-control text-capitalize"
                                         v-model="student.data.discount">
                                         <option :value="0">No</option>
                                         <option :value="1">Si</option>
                                     </select>
+                                    <span class="help-block" v-if="student.error.discount">{{student.error.discount[0]}}</span>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" :class="{'has-error': student.error.verified}">
                                     <label><span class="text-danger">*</span> ¿Valido que el participante es colaborador de tienda Construrama?</label>
                                     <select class="form-control text-capitalize"
                                         v-model="student.data.verified">
                                         <option :value="0">No</option>
                                         <option :value="1">Si</option>
                                     </select>
+                                    <span class="help-block" v-if="student.error.verified">{{student.error.verified[0]}}</span>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
+                                <div class="form-group" :class="{'has-error': student.error.observations}">
                                     <label><span class="text-danger">*</span> Justificación de Cambios/avisos/datos de factura</label>
                                     <textarea class="form-control" rows="2"
                                         v-model="student.data.observations"></textarea>
+                                    <span class="help-block" v-if="student.error.observations">{{student.error.observations[0]}}</span>
                                 </div>
                             </div>
                         </div>
@@ -339,6 +344,7 @@
 
 <script>
 import swal from 'sweetalert'
+
 export default {
     data () {
         return {
@@ -354,6 +360,7 @@ export default {
             },
             student: {
                 data: {
+                    certificates: [],
                     store: {
                         city: {},
                         state: {},
@@ -418,6 +425,7 @@ export default {
             axios.get('/api/students/show/'+this.id)
             .then(response => {
                 this.student.data = response.data
+                console.log(this.student.data);
             });
         },
         updateStudent (e) {

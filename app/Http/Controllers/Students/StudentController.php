@@ -15,7 +15,6 @@ use App\Models\Students\StudentListState;
 use App\Models\Students\StudentListCity;
 use App\Models\Students\StudentListStore;
 
-//use App\Mail\StudentRegistered;
 use App\Jobs\SendStudentRegisteredEmail;
 use App\Jobs\SendStudentVerifiedEmail;
 
@@ -31,7 +30,7 @@ class StudentController extends Controller
     {
         if (Auth::user()->hasRole('admin')) {
             return Student::with(
-                    'certificate',
+                    'certificates',
                     'gender',
                     'paymentMethod',
                     'position',
@@ -41,7 +40,7 @@ class StudentController extends Controller
                 ->get();
         } else {
             return Student::with(
-                    'certificate',
+                    'certificates',
                     'gender',
                     'paymentMethod',
                     'position',
@@ -57,7 +56,12 @@ class StudentController extends Controller
 
     public function show ($id)
     {
-        return Student::with('store.advisor')->find($id);
+        $student = Student::with([
+            'certificates',
+            'store.advisor'
+            ])->find($id);
+
+        return $student;
     }
 
     public function register (Request $request)
@@ -71,7 +75,8 @@ class StudentController extends Controller
             'position_id' => 'required|integer',
             'years_in_position' => 'required|numeric|min:1|max:30',
             'payment_method_id' => 'required|integer',
-            'certificate_id' => 'required|integer',
+            //'certificate_id' => 'required|integer',
+            'certificates' => 'required|array',
             'have_studied' => 'boolean',
             'username' => 'string',
             'year_month' => 'date',
@@ -108,7 +113,7 @@ class StudentController extends Controller
             'position_id' => $request->position_id,
             'years_in_position' => $request->years_in_position,
             'payment_method_id' => $request->payment_method_id,
-            'certificate_id' => $request->certificate_id,
+            'certificate_id' => 1,
             'have_studied' => $request->have_studied,
             'username' => $request->username,
             'year_month' => $request->year_month,
@@ -118,8 +123,10 @@ class StudentController extends Controller
             'store_id' => $request->store_id
         ]);
 
+        $arrayCertificates = collect($request->certificates)->pluck('id');
+        $student->certificates()->sync($arrayCertificates);
+
         SendStudentRegisteredEmail::dispatch($student, $store);
-        info('Dispached registered student ' . $student->name);
 
         return response()->json(['data' => 'ok']);
     }
@@ -135,7 +142,8 @@ class StudentController extends Controller
             'position_id' => 'required|integer',
             'years_in_position' => 'required|numeric|min:1|max:30',
             'payment_method_id' => 'required|integer',
-            'certificate_id' => 'required|integer',
+            //'certificate_id' => 'required|integer',
+            'certificates' => 'required|array',
             'have_studied' => 'boolean',
             'username' => 'string|nullable',
             'year_month' => 'date|nullable',
@@ -163,7 +171,7 @@ class StudentController extends Controller
             $student->position_id = $request->position_id;
             $student->years_in_position = $request->years_in_position;
             $student->payment_method_id = $request->payment_method_id;
-            $student->certificate_id = $request->certificate_id;
+            //$student->certificate_id = $request->certificate_id;
             $student->have_studied = $request->have_studied;
             $student->username = $request->username;
             $student->year_month = $request->year_month;
@@ -173,6 +181,9 @@ class StudentController extends Controller
             $student->store_id = $request->store_id;
             $student->save();
 
+            $arrayCertificates = collect($request->certificates)->pluck('id');
+            $student->certificates()->sync($arrayCertificates);
+
             return response()->json(['data' => 'ok']);
         });
     }
@@ -180,9 +191,9 @@ class StudentController extends Controller
     public function verify (Request $request, $id) {
 
         $this->validate($request, [
-            'verified' => 'boolean',
-            'discount' => 'boolean',
-            'observations' => 'string|nullable',
+            'verified' => 'boolean|required',
+            'discount' => 'boolean|required',
+            'observations' => 'string|nullable|required',
         ]);
 
         return DB::transaction(function () use ($request, $id) {
@@ -193,7 +204,6 @@ class StudentController extends Controller
             $student->save();
 
             SendStudentVerifiedEmail::dispatch($student);
-            info('Dispached verified student ' . $student->name);
 
             return response()->json(['data' => 'ok']);
         });
@@ -221,8 +231,8 @@ class StudentController extends Controller
                 'Puesto Actual' => $value->position->name,
                 'Años de antiguedad en el puesto' => $value->years_in_position,
                 'Forma de pago' => $value->paymentMethod->name,
-                'Diplomado al que Aplica' => $value->certificate->name,
-                'Ha cursado' => $value->have_studied,
+                'Diplomados a los que Aplicas' => $value->certificates->implode('name', ', '),
+                'Ha cursado' => ($value->have_studied) ? 'Si' : 'No',
                 '¿Cual fue tu nombre de usuario?' => $value->username,
                 '¿En que Mes y año cursaste?' => $value->year_month,
                 'Mes y año' => $value->year_month,

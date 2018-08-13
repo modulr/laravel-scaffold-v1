@@ -11,4 +11,10 @@ class StudentListCertificate extends Model
 
     protected $dates = ['deleted_at'];
     protected $guarded = ['id'];
+    protected $hidden = ['pivot'];
+
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'student_certificate', 'student_id', 'certificate_id');
+    }
 }

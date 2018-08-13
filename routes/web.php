@@ -12,6 +12,7 @@
 */
 
 Route::get('/', function () {
+    //return view('register');
     return view('close');
     //return redirect('login');
 });

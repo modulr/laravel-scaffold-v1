@@ -13,10 +13,16 @@ class Student extends Model
 
     protected $dates = ['deleted_at'];
     protected $guarded = ['id'];
+    protected $hidden = ['pivot'];
 
-    public function certificate()
+    // public function certificate()
+    // {
+    //     return $this->belongsTo(StudentListCertificate::class);
+    // }
+
+    public function certificates()
     {
-        return $this->belongsTo(StudentListCertificate::class);
+        return $this->belongsToMany(StudentListCertificate::class, 'student_certificate', 'student_id', 'certificate_id');
     }
 
     public function gender()

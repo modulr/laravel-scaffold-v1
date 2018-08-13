@@ -38,7 +38,7 @@ class StudentRegistered extends Mailable
      */
     public function build()
     {
-        return $this->subject('Se ha registrado un participante para la tienda ' . $this->store->name)
+        return $this->subject('Nuevo registro / '. $this->store->store_id .' / '. $this->student->name .' '. $this->student->last_name)
             ->markdown('emails.students.registered');
     }
 }
