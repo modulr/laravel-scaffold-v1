@@ -1,4 +1,4 @@
-var cacheName = 'stbPWA';
+var cacheName = 'stbPWA2';
 var filesToCache = [
     '/',
     '/index.php',
