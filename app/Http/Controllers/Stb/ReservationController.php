@@ -45,9 +45,9 @@ class ReservationController extends Controller
         return $saucer;
     }
 
-    public function cancel($id)
+    public function cancel($reservationId)
     {
-        return Reservation::destroy($id);
+        return Reservation::destroy($reservationId);
     }
 
     public function myReservations()
@@ -65,26 +65,28 @@ class ReservationController extends Controller
             ->paginate(20);
     }
 
-    public function approve($saucerId)
+    public function approve($reservationId)
     {
-        $reservation = Reservation::find($saucerId);
+        $reservation = Reservation::find($reservationId);
         $reservation->approved = true;
         $reservation->save();
 
-        $saucer = Saucer::find($saucerId);
+        $saucer = Saucer::find($reservation->saucer_id);
 
-        Mail::to(Auth::user())->send(new Approve($saucer, Auth::user()));
+        Mail::to($reservation->user)->send(new Approve($saucer));
 
         return $reservation;
     }
 
-    public function reject($saucerId)
+    public function reject($reservationId)
     {
-        $reservation = Reservation::destroy($saucerId);
+        $reservation = Reservation::find($reservationId);
 
-        $saucer = Saucer::find($saucerId);
+        Reservation::destroy($reservationId);
 
-        Mail::to(Auth::user())->send(new Reject($saucer, Auth::user()));
+        $saucer = Saucer::find($reservation->saucer_id);
+
+        Mail::to($reservation->user)->send(new Reject($saucer));
 
         return $reservation;
     }

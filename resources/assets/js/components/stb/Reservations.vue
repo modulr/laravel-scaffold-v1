@@ -6,7 +6,7 @@
             <div>
                 <div class="row">
                     <div class="col-sm-4 hidden-xs">
-                        <p class="lead">Cerca de ti</p>
+                        <p class="lead">Reservaciones</p>
                     </div>
                     <div class="col-xs-12 col-sm-4 col-sm-offset-4 text-center">
                         <input type="text" class="form-control" placeholder="Buscar" v-model="search">

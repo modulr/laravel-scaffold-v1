@@ -8,24 +8,21 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Models\Stb\Saucer;
-use App\User;
 
 class Approve extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $saucer;
-    public $user;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Saucer $saucer, User $user)
+    public function __construct(Saucer $saucer)
     {
         $this->saucer = $saucer;
-        $this->user = $user;
     }
 
     /**
