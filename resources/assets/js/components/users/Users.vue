@@ -352,30 +352,27 @@
                 swal({
                     title: "Are you sure?",
                     text: "You will not be able to recover this user!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
-                    axios.delete('/users/destroy/' + self.userEdit.id)
-                    .then(response => {
-                        self.users.splice(self.userEdit.index, 1);
-                        swal({
-                            title: "Deleted!",
-                            text: "The user has been deleted.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
-                        });
-                        self.userEdit = {};
-                        this.error = {};
-                        $('#modalEditUser').modal('hide');
-                    })
-                    .catch(error => {
-                        self.error = error.response.data;
-                    });
+                    icon: "warning"
+                })
+                .then((value) => {
+                    if (value) {
+                        axios.delete('/users/destroy/' + self.userEdit.id)
+                        .then(response => {
+                            self.users.splice(self.userEdit.index, 1);
+                            swal({
+                                title: "Deleted!",
+                                text: "The user has been deleted.",
+                                icon: "success",
+                                timer: 1000
+                            });
+                            self.userEdit = {};
+                            this.error = {};
+                            $('#modalEditUser').modal('hide');
+                        })
+                        .catch(error => {
+                            self.error = error.response.data;
+                        })
+                    }
                 });
             },
             newAvatar (response) {

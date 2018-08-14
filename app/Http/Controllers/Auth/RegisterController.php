@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use App\Models\Profile\ProfilePersonal;
-use App\Models\Profile\ProfileWork;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+
+use App\User;
 
 use Avatar;
 use Storage;
@@ -79,14 +78,6 @@ class RegisterController extends Controller
         Storage::put('avatars/'.$user->id.'/avatar.png', $avatar);
 
         $user->roles()->attach([2]);
-
-        ProfilePersonal::create([
-            'user_id' => $user->id
-        ]);
-
-        ProfileWork::create([
-            'user_id' => $user->id
-        ]);
 
         return $user;
     }

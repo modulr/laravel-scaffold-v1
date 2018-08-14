@@ -5,13 +5,10 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 use App\user;
-use App\Models\Profile\ProfilePersonal;
 use App\Models\Profile\ProfileContact;
-use App\Models\Profile\ProfileEducation;
-use App\Models\Profile\ProfileFamily;
 use App\Models\Profile\ProfilePlace;
-use App\Models\Profile\ProfileWork;
 
 class ProfileController extends Controller
 {

@@ -15,8 +15,6 @@
 </template>
 
 <script>
-    import comingSoon from '../../../mixins/comingSoon'
-
     export default {
         data () {
             return {
@@ -25,7 +23,6 @@
             }
         },
         props:['user'],
-        mixins: [ comingSoon ],
         mounted() {
             var str = window.location.pathname;
             var res = str.split("/");
@@ -35,8 +32,6 @@
             } else if (res.length == 4) {
                 this.activeLink = res[3];
             }
-            console.log(this.authUser);
-            console.log(this.user);
         }
     }
 </script>

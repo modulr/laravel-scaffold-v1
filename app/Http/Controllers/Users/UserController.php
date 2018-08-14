@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+
+use App\User;
+
 use App\Http\Helpers\Upload;
 use Storage;
 use Avatar;
-use App\User;
-use App\Models\Profile\ProfilePersonal;
-use App\Models\Profile\ProfileWork;
 
 class UserController extends Controller
 {
@@ -58,14 +58,6 @@ class UserController extends Controller
         $user = User::with('roles')->find($user->id);
         $user->avatar = $request->avatar;
         $user->save();
-
-        ProfilePersonal::create([
-            'user_id' => $user->id
-        ]);
-
-        ProfileWork::create([
-            'user_id' => $user->id
-        ]);
 
         return $user;
     }

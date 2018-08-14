@@ -47,7 +47,7 @@
                 var btn = $(e.target).button('loading')
                 axios.put('/api/profile/update/'+this.user.id, this.user)
                 .then(response => {
-                    this.user = response.data;
+                    //this.user = response.data;
                     this.error = {};
                     btn.button('reset')
                     SnotifyService.success('The profile has been saved success!')

@@ -324,29 +324,26 @@
                 swal({
                     title: "Are you sure?",
                     text: "You will not be able to recover this role and will be remove all users use it!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function(){
-                    axios.delete('/roles/destroy/' + self.roleEdit.id)
-                    .then(response => {
-                        self.roles.splice(self.roleEdit.index, 1);
-                        swal({
-                            title: "Deleted!",
-                            text: "The role has been deleted.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
-                        });
-                        self.error = {};
-                        $('#modalEditRole').modal('hide');
-                    })
-                    .catch(error => {
-                        self.error = error.response.data;
-                    });
+                    icon: "warning"
+                })
+                .then((value) => {
+                    if (value) {
+                        axios.delete('/roles/destroy/' + self.roleEdit.id)
+                        .then(response => {
+                            self.roles.splice(self.roleEdit.index, 1);
+                            swal({
+                                title: "Deleted!",
+                                text: "The role has been deleted.",
+                                icon: "success",
+                                timer: 1000
+                            });
+                            self.error = {};
+                            $('#modalEditRole').modal('hide');
+                        })
+                        .catch(error => {
+                            self.error = error.response.data;
+                        })
+                    }
                 });
             }
 

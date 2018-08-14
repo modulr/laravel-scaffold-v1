@@ -18,8 +18,6 @@
     import ProfileSidebarEdit from './Sidebar.vue';
     import ProfilePersonalEdit from './Personal.vue';
     import ProfileContactEdit from './Contact.vue';
-    import ProfileEducationEdit from './Education.vue';
-    import ProfileFamilyEdit from './Family.vue';
     import ProfilePlaceEdit from './Place.vue';
 
     export default {

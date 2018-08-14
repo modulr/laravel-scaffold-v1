@@ -79,7 +79,6 @@ export default {
                 title: "Are you sure?",
                 text: "You will not be able to recover this place!",
                 icon: "warning",
-                buttons: false,
             })
             .then((value) => {
                 if (value) {
