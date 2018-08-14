@@ -92,4 +92,11 @@ class ProfileController extends Controller
         return ProfilePlace::destroy($id);
     }
 
+    public function password(Request $request, $id)
+    {
+        $user = User::find($id);
+        if (!Auth::user()->hasPermission('update-all-profile') && Auth::user()->id != $user->id)
+            return redirect('dashboard');
+        return view('profile.edit.password', ['user' => $user]);
+    }
 }
