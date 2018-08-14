@@ -46,7 +46,7 @@
                         </ul>
                     </li> -->
                     <!-- Notifications -->
-                    <li class="dropdown notifications">
+                    <!-- <li class="dropdown notifications">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" @click="markAsRead">
                             <i class="fa fa-bell fa-lg"></i>
                             <span class="label label-danger" v-show="unReadNotifications.length>0">{{unReadNotifications.length}}</span>
@@ -68,7 +68,6 @@
                                     </div>
                                     <hr>
                                 </a>
-                                <!-- Init Message  -->
                                 <div class="init-message" v-if="notifications.length == 0">
                                     <i class="fa fa-bell" aria-hidden="true"></i>
                                     <p class="lead">No existen notificaciones</p>
@@ -78,7 +77,7 @@
                                 <a href="/notifications"><small>Ver todas las notificaciones</small></a>
                             </li>
                         </ul>
-                    </lli>
+                    </li> -->
                     <!-- User -->
                     <li class="dropdown user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
