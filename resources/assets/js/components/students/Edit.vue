@@ -425,7 +425,6 @@ export default {
             axios.get('/api/students/show/'+this.id)
             .then(response => {
                 this.student.data = response.data
-                console.log(this.student.data);
             });
         },
         updateStudent (e) {

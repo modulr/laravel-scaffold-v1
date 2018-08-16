@@ -13,5 +13,15 @@
         justify-content:center;
         -webkit-align-items:center;
         align-items:center;
+
+        h3 {
+            margin: 0 30px;
+        }
+
+        img {
+            max-width: 70%;
+            height: auto;
+            margin-bottom: 30px;
+        }
     }
 }

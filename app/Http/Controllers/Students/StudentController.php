@@ -197,13 +197,13 @@ class StudentController extends Controller
         ]);
 
         return DB::transaction(function () use ($request, $id) {
-            $student = Student::find($id);
+            $student = Student::with('store.advisor')->find($id);
             $student->verified = $request->verified;
             $student->discount = $request->discount;
             $student->observations = $request->observations;
             $student->save();
 
-            SendStudentVerifiedEmail::dispatch($student);
+            SendStudentVerifiedEmail::dispatch($student, $student->store->advisor);
 
             return response()->json(['data' => 'ok']);
         });

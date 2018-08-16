@@ -11,22 +11,26 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
 
 use App\Mail\StudentVerified;
+
 use App\Models\Students\Student;
+use App\User;
 
 class SendStudentVerifiedEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $student;
+    public $user;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Student $student)
+    public function __construct(Student $student, User $user)
     {
         $this->student = $student;
+        $this->user = $user;
     }
 
     /**
@@ -37,6 +41,7 @@ class SendStudentVerifiedEmail implements ShouldQueue
     public function handle()
     {
         Mail::to($this->student->email)
+            ->cc($this->user->email)
             ->send(new StudentVerified($this->student));
 
         //info('Emailed verified student ' . $this->student->name);
