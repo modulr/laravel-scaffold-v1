@@ -9,7 +9,6 @@ return [
             'files' => 'r,c,u,d',
             'events' => 'r,c,u,d',
             'contacts' => 'r,c,u,d',
-            'autoparts' => 'r,c,u,d',
             'users' => 'r,c,u,d',
             'roles' => 'r,c,u,d',
         ],
@@ -20,7 +19,6 @@ return [
             'files' => 'r,c,u,d',
             'events' => 'r,c,u,d',
             'contacts' => 'r,c,u,d',
-            'autoparts' => 'r,c,u,d',
         ],
     ],
     // 'permission_structure' => [
