@@ -41,6 +41,8 @@
             'unReadNotifications' => (Auth::user()) ? Auth::user()->unReadNotifications : [],
         ]) !!};
     </script>
+    <script type="text/javascript" src="https://resources.openpay.mx/lib/openpay.v1.min.js"></script>
+    <script type="text/javascript" src="https://resources.openpay.mx/lib/openpay-data.v1.min.js"></script>
 </head>
 <body>
     <div id="app">

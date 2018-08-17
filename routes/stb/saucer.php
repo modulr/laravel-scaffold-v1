@@ -28,7 +28,3 @@ Route::group(['namespace' => 'Stb'], function() {
         Route::delete('/images/destroy/{id}', 'SaucerController@destroyImage')->middleware('permission:delete-events');
     });
 });
-
-// Checkout
-Route::post('/paypal/checkout', 'PaypalController@getCheckout');
-Route::get('/paypal/status', 'PaypalController@getStatus');

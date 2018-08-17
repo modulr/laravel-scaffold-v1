@@ -26,8 +26,11 @@
                                     <div class="warning" v-if="reservation.approved == 0">
                                         <b>{{reservation.quantity}}</b> Por confirmar
                                     </div>
-                                    <div class="primary" v-else>
+                                    <div class="primary" v-if="reservation.approved == 1 && reservation.paid == 0">
                                         <b>{{reservation.quantity}}</b> Confirmado
+                                    </div>
+                                    <div class="success" v-if="reservation.approved == 1 && reservation.paid == 1">
+                                        <b>{{reservation.quantity}}</b> Pagado
                                     </div>
                                 </div>
                                 <img :src="reservation.saucer.images[0].url_thumbnail" v-if="reservation.saucer.images.length">
@@ -105,7 +108,7 @@
                     swal({
                         title: "Aprobación confirmada",
                         text:  "Tu Aprobación ha sido enviada a "+ reservation.user.name +", se enviaron los datos de la ubicación a su correo.",
-                        type:  "success",
+                        icon:  "success",
                     })
                     reservation.approved = 1
                 })
@@ -116,7 +119,7 @@
                     swal({
                         title: "Aprobación rechazada",
                         text:  "Se le notificara al comensal "+ reservation.user.name +" que su reservacion fue rechazada",
-                        type:  "success",
+                        icon:  "success",
                     })
                     this.reservations.splice(index, 1)
                 })

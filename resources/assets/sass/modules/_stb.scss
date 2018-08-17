@@ -183,12 +183,12 @@ $ribbon-tail: 20px;
       font-weight: bold;
       height: 100px;
       line-height: 120px;
-      &.warning {
-        background: $brand-warning;
+      &.success {
+        background: $brand-success;
         &:after {
-            border-left: $ribbon-w/2 solid $brand-warning;
-            border-right: $ribbon-w/2 solid $brand-warning;
-        }
+            border-left: $ribbon-w/2 solid $brand-success;
+            border-right: $ribbon-w/2 solid $brand-success;
+          }
       }
       &.primary {
         background: $brand-primary;
@@ -196,6 +196,13 @@ $ribbon-tail: 20px;
             border-left: $ribbon-w/2 solid $brand-primary;
             border-right: $ribbon-w/2 solid $brand-primary;
           }
+      }
+      &.warning {
+        background: $brand-warning;
+        &:after {
+            border-left: $ribbon-w/2 solid $brand-warning;
+            border-right: $ribbon-w/2 solid $brand-warning;
+        }
       }
       &.danger {
         background: $brand-danger;

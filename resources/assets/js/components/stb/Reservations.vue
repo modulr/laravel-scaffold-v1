@@ -26,8 +26,11 @@
                                     <div class="warning" v-if="reservation.approved == 0">
                                         <b>{{reservation.quantity}}</b> Por confirmar
                                     </div>
-                                    <div class="primary" v-else>
+                                    <div class="primary" v-if="reservation.approved == 1 && reservation.paid == 0">
                                         <b>{{reservation.quantity}}</b> Confirmado
+                                    </div>
+                                    <div class="success" v-if="reservation.approved == 1 && reservation.paid == 1">
+                                        <b>{{reservation.quantity}}</b> Pagado
                                     </div>
                                 </div>
                                 <img :src="reservation.saucer.images[0].url_thumbnail" v-if="reservation.saucer.images.length">
@@ -55,12 +58,12 @@
                                 <div class="col-xs-5 text-right">
                                     <a href="#" class="btn btn-block btn-danger"
                                     @click.prevent="cancel(reservation, index)"
-                                     v-if="reservation.approved == 0">
+                                    v-if="reservation.approved == 0">
                                         Cancelar
                                     </a>
                                     <a href="#" class="btn btn-block btn-success"
-                                    @click.prevent="pay(reservation.saucer)"
-                                     v-else>
+                                    @click.prevent="pay(reservation)"
+                                    v-if="reservation.approved == 1 && reservation.paid == 0">
                                         Pagar
                                     </a>
                                 </div>
@@ -105,7 +108,7 @@
                     swal({
                         title: "Reservacion cancelada",
                         text:  "Tu reservacion fue cancelada y hemos notificado al cocinero.",
-                        type:  "success",
+                        icon:  "success",
                     })
                     this.reservations.splice(index, 1)
                 })
@@ -113,24 +116,66 @@
                     swal({
                         title: "Reservacion fallida",
                         text:  "Algo salio mal al intentar cancelar la reservacion, por favor intentalo de nuevo.",
-                        type:  "warning",
+                        icon:  "warning",
                     })
                 })
             },
-            pay(saucer) {
-                axios.post('/paypal/checkout', saucer)
-                .then(response => {
-                    if (response.data.success) {
-                        location.href = response.data.approvalUrl;
-                    }
-                })
-                .catch(error => {
-                    swal({
-                        title: "Pago fallido",
-                        text:  "Algo salio mal al intentar hacer tu pago, por favor intentalo de nuevo",
-                        type:  "warning",
+            pay(reservation) {
+
+                OpenPay.setId(process.env.MIX_OPENPAY_ID);
+                OpenPay.setApiKey(process.env.MIX_OPENPAY_PUBLIC_KEY);
+                OpenPay.setSandboxMode(!JSON.parse(process.env.MIX_OPENPAY_SANDBOX_MODE));
+
+                OpenPay.token.create({
+                    "card_number":"5555555555554444",
+                    "holder_name":"Juan Perez Ramirez",
+                    "expiration_year":"20",
+                    "expiration_month":"12",
+                    "cvv2":"110"
+                }, onSuccess, onError);
+
+                function onSuccess (success) {
+
+                    var tokenId = success.data.id
+                    var deviceDataId = OpenPay.deviceData.setup()
+
+                    axios.post('/openpay/pay', {
+                        tokenId: tokenId,
+                        deviceDataId: deviceDataId,
+                        reservation: reservation
                     })
-                })
+                    .then(response => {
+                        console.log(response);
+                        reservation.saucer.paid = 1
+                        swal({
+                            title: "Pago exitoso",
+                            text:  "Tu pago fue procesado correctamente, te enviamos un correo electronico con la direccion del lugar.",
+                            icon:  "success",
+                        })
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+
+                }
+
+                function onError (error) {
+                    console.log(error);
+                }
+
+                // axios.post('/paypal/checkout', saucer)
+                // .then(response => {
+                //     if (response.data.success) {
+                //         location.href = response.data.approvalUrl;
+                //     }
+                // })
+                // .catch(error => {
+                //     swal({
+                //         title: "Pago fallido",
+                //         text:  "Algo salio mal al intentar hacer tu pago, por favor intentalo de nuevo",
+                //         icon:  "warning",
+                //     })
+                // })
             }
         }
     }

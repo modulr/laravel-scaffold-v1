@@ -107,7 +107,7 @@
                     swal({
                         title: "Peticion enviada",
                         text:  "Se ha enviado una peticion para "+saucer.quantity+" lugares al cocinero, te notificaremos cuando acepte la peticion de reservacion para que finalices tu reservacion.",
-                        type:  "success",
+                        icon:  "success",
                     })
                 })
                 .catch(error => {

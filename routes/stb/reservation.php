@@ -19,3 +19,10 @@ Route::group(['namespace' => 'Stb'], function() {
         Route::get('/reject/{reservationId}', 'ReservationController@reject')->middleware('permission:update-events');
     });
 });
+
+// OpenPay
+Route::post('/openpay/pay', 'OpenPayController@pay');
+
+// Paypal Checkout
+Route::post('/paypal/checkout', 'PaypalController@getCheckout');
+Route::get('/paypal/status', 'PaypalController@getStatus');

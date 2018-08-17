@@ -13,6 +13,7 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "laravolt/avatar": "^1.8",
+        "openpay/sdk": "dev-master",
         "paypal/rest-api-sdk-php": "^1.13",
         "pusher/pusher-php-server": "^2.0",
         "santigarcor/laratrust": "5.0.*"

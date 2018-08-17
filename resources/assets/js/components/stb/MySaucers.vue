@@ -448,11 +448,7 @@
                 swal({
                     title: "Are you sure?",
                     text: "You will not be able to recover this Saucer!",
-                    type: "warning",
-                    showLoaderOnConfirm: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
+                    icon: "warning"
                 },
                 function(){
                     axios.delete('/saucer/destroy/' + self.saucerEdit.id)
@@ -461,9 +457,8 @@
                         swal({
                             title: "Deleted!",
                             text: "The Saucer has been deleted.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
+                            icon: "success",
+                            timer: 1000
                         });
                         self.error = {};
                         $('#modalEdit').modal('hide');
