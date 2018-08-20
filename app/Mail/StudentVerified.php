@@ -31,6 +31,7 @@ class StudentVerified extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.students.verified');
+        return $this->subject('UC Información de pago / ' .$this->student->name)
+            ->markdown('emails.students.verified');
     }
 }
