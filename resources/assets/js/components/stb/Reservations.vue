@@ -124,7 +124,7 @@
 
                 OpenPay.setId(process.env.MIX_OPENPAY_ID);
                 OpenPay.setApiKey(process.env.MIX_OPENPAY_PUBLIC_KEY);
-                OpenPay.setSandboxMode(!JSON.parse(process.env.MIX_OPENPAY_SANDBOX_MODE));
+                OpenPay.setSandboxMode(process.env.MIX_OPENPAY_SANDBOX_MODE);
 
                 OpenPay.token.create({
                     "card_number":"5555555555554444",
