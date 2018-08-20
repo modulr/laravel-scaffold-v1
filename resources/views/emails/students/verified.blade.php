@@ -1,6 +1,7 @@
 @component('mail::message')
 
 Estimado **_{{$student->name}} {{$student->last_name}}_**,
+
 Tienda: **_{{$student->store->store_id}} {{$student->store->name}}_**<br>
 Región: **_{{$student->store->region}}_**<br>
 Gerencia: **_{{$student->store->management}}_**<br>
@@ -10,7 +11,7 @@ Validamos tu inscripción. En un lapso de 15 días hábiles recibirás un correo
 Te hacemos llegar la información bancaria para el pago de los diplomados en
 
 @foreach($student->certificates as $certificate)
-- **_{{$certificate->name}}_**<br>
+- **{{$certificate->name}}**<br>
 @endforeach
 
 Cada diplomado tiene un costo de $1,570.00 + IVA

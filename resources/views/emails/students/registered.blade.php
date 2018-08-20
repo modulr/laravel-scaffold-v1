@@ -10,7 +10,7 @@ Gerencia: **_{{$student->store->management}}_**<br>
 Ha realizado su preinscripción en línea en el diplomado:
 
 @foreach($student->certificates as $certificate)
-- **_{{$certificate->name}}_**<br>
+- **{{$certificate->name}}**<br>
 @endforeach
 
 Requerimos de tu apoyo para validar la pertenencia de este participante al construrama que señala.
