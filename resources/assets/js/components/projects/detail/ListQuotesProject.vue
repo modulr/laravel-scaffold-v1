@@ -48,8 +48,8 @@
                                     <td> {{ quote.id }} </td>
                                     <td> {{ quote.name }} </td>
                                     <td> {{ quote.project.name }} </td>
-                                    <td> {{ quote.designer.name }} </td>
-                                    <td> {{ quote.salesman.name }} </td>
+                                    <td> {{ quote.designer | displayData('name', 'Diseñador eliminado') }} </td>
+                                    <td> {{ quote.salesman | displayData('name', 'Vendedor eliminado') }} </td>
                                     <td> {{ quote.amount | currency }} </td>
                                     <td> {{ totalInvoices(quote) | currency }} </td>
                                     <td> {{ quote.currency.title }} </td>
@@ -103,13 +103,13 @@
                                             <dl>                                                
                                                 <dd>Designer</dd>
                                                 <dt>
-                                                    {{quote.designer.name}}
+                                                    {{quote.designer | displayData('name', 'Diseñador eliminado')}}
                                                 </dt>
                                             </dl>
                                             <dl>                                                
                                                 <dd>Salesman</dd>
                                                 <dt>
-                                                    {{quote.salesman.name}}
+                                                    {{quote.salesman | displayData('name', 'Vendedor eliminado')}}
                                                 </dt>
                                             </dl>
                                         </div>
@@ -166,8 +166,8 @@
                                                     <th>Amount</th> 
                                                     <th>Percentage Of Quote</th>
                                                     <th>Status</th>
-                                                    <th>{{quote.designer.name}}</th>
-                                                    <th>{{quote.salesman.name}}</th>                                                    
+                                                    <th>{{quote.designer | displayData('name', 'Diseñador eliminado')}}</th>
+                                                    <th>{{quote.salesman | displayData('name', 'Vendedor eliminado')}}</th>                                                    
                                                 </thead>
                                                 <tbody>
                                                 <tr v-for="(invoice,index) in quote.invoices">
@@ -247,6 +247,15 @@ export default {
         },
         dateMonth (date) {
             return date ? moment(date).format('MMMM') : '';
+        },
+        displayData (obj, key, string) {
+            if (!obj) {
+                return string;
+            }
+            if (obj[key]) {
+                return obj[key];
+            }
+            return string;
         }
     },
     mounted() {
