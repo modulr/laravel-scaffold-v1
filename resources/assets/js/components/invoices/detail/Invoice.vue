@@ -62,6 +62,47 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Quotes</h3>
+          <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Project</th>
+                    <th>Designer</th>
+                    <th>Salesman</th>
+                    <th>Amount</th>
+                    <th>Invoiced</th>
+                    <th>Currency</th>
+                    <th>Request Date</th>
+                    <th>Delivery Date</th>
+                    <th>Status</th>                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(quote, index) in invoice.quotes">
+                    <td> {{ quote.id }} </td>
+                    <td> {{ quote.name }} </td>
+                    <td> {{ quote.project.name }} </td>
+                    <td> {{ quote.designer | displayData('name', 'Diseñador eliminado') }} </td>
+                    <td> {{ quote.salesman | displayData('name', 'Vendedor eliminado') }} </td>
+                    <td> {{ quote.amount | currency }} </td>
+                    <td> {{ quote.pivot.amount | currency }} </td>
+                    <td> {{ quote.currency.title }} </td>
+                    <td> {{ quote.request_date | date }} </td>
+                    <td> {{ quote.delivery_date | date }} </td>
+                    <td>
+                        <span class="chip" :class="'status-'+quote.status.title">
+                            {{quote.status.title}}
+                        </span>
+                    </td>                    
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -89,6 +130,15 @@
     filters: {
       date(date) {
         return moment(date).format('LL');
+      },
+      displayData (obj, key, string) {
+          if (!obj) {
+              return string;
+          }
+          if (obj[key]) {
+              return obj[key];
+          }
+          return string;
       }
     },
     methods: {
@@ -113,6 +163,15 @@
                       self.error = error.response.data;
                   });
             });
+      },
+      totalInvoices (quote) {
+        let total = 0.00
+        quote.invoices.forEach(item => {
+            total += parseFloat(item.pivot.amount)
+        })
+        quote.invoiced = total
+        quote.remainder = quote.amount - quote.invoiced
+        return total
       }
     }
   }

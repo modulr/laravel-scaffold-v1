@@ -54,6 +54,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Description</th>
+                                    <th>Project</th>
                                     <th>Amount</th>          
                                     <th>Status</th>                          
                                     <th>Created At</th>
@@ -70,6 +71,9 @@
                                         <a class="heading" :href="'/invoices/'+item.id">
                                             <strong>{{item.description }}</strong>
                                         </a>
+                                    </td>
+                                    <td>
+                                        {{ item.quotes[0]['project']['name'] }}
                                     </td>
                                     <td>
                                         {{item.amount | currency}}

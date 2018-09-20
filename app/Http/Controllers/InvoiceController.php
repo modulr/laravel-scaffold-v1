@@ -15,7 +15,13 @@ class InvoiceController extends Controller
 {
     public function __construct()
     {
-        $this->relationships = ['quotes', 'owner', 'invoice_status'];
+        $this->relationships = ['quotes',
+            'quotes.project',
+            'quotes.invoices',
+            'quotes.currency',
+            'quotes.status',
+            'owner',
+            'invoice_status'];
     }
     /**
      * Display a listing of the resource.
