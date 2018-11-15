@@ -20,6 +20,8 @@ class InvoiceController extends Controller
             'quotes.invoices',
             'quotes.currency',
             'quotes.status',
+            'quotes.designer',
+            'quotes.salesman',
             'owner',
             'invoice_status'];
     }

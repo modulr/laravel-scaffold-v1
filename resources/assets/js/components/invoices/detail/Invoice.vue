@@ -51,7 +51,7 @@
             </div>
             <div class="col-sm-2">
               <a href="#" class="btn btn-primary pull-right" @click.prevent="changeStatus(3)">
-                  <i class="mdi mdi-thumb-up mdi-lg"></i> Mark as Chargued
+                  <i class="mdi mdi-thumb-up mdi-lg"></i> Mark as Charged
               </a>
             </div>
             <div class="col-sm-2">
@@ -86,8 +86,8 @@
                     <td> {{ quote.id }} </td>
                     <td> {{ quote.name }} </td>
                     <td> {{ quote.project.name }} </td>
-                    <td> {{ quote.designer | displayData('name', 'Diseñador eliminado') }} </td>
-                    <td> {{ quote.salesman | displayData('name', 'Vendedor eliminado') }} </td>
+                    <td> {{ quote.designer ? quote.designer.name : 'Diseñador eliminado'}} </td>
+                    <td> {{ quote.salesman ? quote.salesman.name : 'Vendedor eliminado' }} </td>
                     <td> {{ quote.amount | currency }} </td>
                     <td> {{ quote.pivot.amount | currency }} </td>
                     <td> {{ quote.currency.title }} </td>
