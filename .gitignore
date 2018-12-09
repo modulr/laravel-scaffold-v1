@@ -11,8 +11,6 @@ npm-debug.log
 yarn-error.log
 .env
 *.DS_Store
-/public/css
-/public/js
 after.sh
 composer.lock
 package-lock.json
