@@ -92,7 +92,7 @@ class UsersTableSeeder extends Seeder
         $user = \App\User::create([
             'name' => 'admin',
             'email' => 'admin@modulr.io',
-            'password' => bcrypt('secret')
+            'password' => bcrypt('admin')
         ]);
 
         $avatar = Avatar::create($user->name)->getImageObject()->encode('png');

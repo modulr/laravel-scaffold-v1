@@ -1,10 +1,9 @@
-var CACHE_NAME = 'modulr-cache-v1';
+var CACHE_NAME = 'ls_v1_pwa';
 var urlsToCache = [
   //'/',
   '/js/app.js',
   '/css/app.css',
-  '/img/icon/favicon-96x96.png',
-  '/img/icon/android-chrome-192x192.png',
+  //'/icon/',
   '/img/logos/logo-name.svg'
 ];
 
