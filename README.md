@@ -1,4 +1,4 @@
-# Laravel Scaffold
+# Laravel Scaffold v1
 
 ### The base for developing awesome projects
 
